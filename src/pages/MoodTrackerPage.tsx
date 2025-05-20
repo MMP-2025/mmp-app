@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Smile, Meh, Frown, Angry, Ecstatic } from 'lucide-react';
+import { Smile, Meh, Frown, Angry, ThumbsUp } from 'lucide-react';
 
 const MoodTrackerPage = () => {
   return (
@@ -15,7 +15,7 @@ const MoodTrackerPage = () => {
         <h2 className="text-xl font-semibold mb-4">How are you feeling today?</h2>
         <div className="grid grid-cols-5 gap-2 text-center">
           {[
-            { name: 'Ecstatic', icon: Ecstatic },
+            { name: 'Ecstatic', icon: ThumbsUp },
             { name: 'Happy', icon: Smile },
             { name: 'Neutral', icon: Meh },
             { name: 'Sad', icon: Frown },
