@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from "@/components/ui/sonner";
+import { Link } from 'react-router-dom';
 
 const quotes = [
   { text: "You don't have to control your thoughts. You just have to stop letting them control you.", author: "Dan Millman" },
@@ -54,18 +55,11 @@ const HomePage = () => {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold text-center mb-2">Welcome to MindfulPath</h1>
+        <h1 className="text-3xl font-bold text-center mb-2">Welcome to Making Meaning Psychology</h1>
         <p className="text-center text-muted-foreground">Your daily companion for mental wellbeing</p>
       </div>
       
-      <Card className="p-6 bg-mental-peach/20">
-        <h2 className="text-xl font-semibold mb-4">Quote of the Day</h2>
-        <blockquote className="italic text-lg">
-          "{todaysQuote.text}"
-        </blockquote>
-        <p className="text-right mt-2">— {todaysQuote.author}</p>
-      </Card>
-      
+      {/* Question of the day - now at the top */}
       <Card className="p-6 bg-mental-blue/20">
         <h2 className="text-xl font-semibold mb-4">Question of the Day</h2>
         <p className="text-lg mb-4">{todaysQuestion}</p>
@@ -86,21 +80,22 @@ const HomePage = () => {
         </div>
       </Card>
       
+      {/* Quick access and mood tracker in the middle */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="p-6 bg-mental-beige/20">
           <h2 className="text-xl font-semibold mb-2">Quick Access</h2>
           <div className="grid grid-cols-2 gap-2">
-            <Button className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
-              My Journal
+            <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
+              <Link to="/journal">My Journal</Link>
             </Button>
-            <Button className="bg-mental-green hover:bg-mental-green/80 w-full text-left justify-start">
-              Mood Check-in
+            <Button asChild className="bg-mental-green hover:bg-mental-green/80 w-full text-left justify-start">
+              <Link to="/mood">Mood Check-in</Link>
             </Button>
-            <Button className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
-              Mindfulness
+            <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
+              <Link to="/mindfulness">Mindfulness</Link>
             </Button>
-            <Button className="bg-mental-gray hover:bg-mental-gray/80 w-full text-left justify-start">
-              Today's Plan
+            <Button asChild className="bg-mental-gray hover:bg-mental-gray/80 w-full text-left justify-start">
+              <Link to="/planner">Today's Plan</Link>
             </Button>
           </div>
         </Card>
@@ -108,11 +103,20 @@ const HomePage = () => {
         <Card className="p-6 bg-mental-green/20">
           <h2 className="text-xl font-semibold mb-2">How are you feeling?</h2>
           <p className="mb-4">Take a moment to check in with yourself.</p>
-          <Button className="w-full bg-mental-blue hover:bg-mental-blue/80">
-            Track My Mood
+          <Button asChild className="w-full bg-mental-blue hover:bg-mental-blue/80">
+            <Link to="/mood">Track My Mood</Link>
           </Button>
         </Card>
       </div>
+      
+      {/* Quote of the day - moved to the bottom */}
+      <Card className="p-6 bg-mental-peach/20">
+        <h2 className="text-xl font-semibold mb-4">Quote of the Day</h2>
+        <blockquote className="italic text-lg">
+          "{todaysQuote.text}"
+        </blockquote>
+        <p className="text-right mt-2">— {todaysQuote.author}</p>
+      </Card>
     </div>
   );
 };

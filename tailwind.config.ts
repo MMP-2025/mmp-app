@@ -64,16 +64,16 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				mental: {
-					gray: '#CCC6c6',
-					peach: '#FADCD6', 
+					gray: '#CCC6C6',
+					peach: '#FADCD6',
 					blue: '#B6D1D9',
 					beige: '#E5C7B5',
 					green: '#AEC29B'
 				}
 			},
 			fontFamily: {
-				'marmelad': ['Marmelad', 'sans-serif'],
-				'sora': ['Sora', 'sans-serif'],
+				sans: ['Sora', 'sans-serif'],
+				marmelad: ['Marmelad', 'serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -106,12 +106,21 @@ export default {
 						opacity: '1',
 						transform: 'translateY(0)'
 					}
+				},
+				'pulse-slow': {
+					'0%, 100%': {
+						opacity: '1'
+					},
+					'50%': {
+						opacity: '0.8'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.5s ease-out'
+				'fade-in': 'fade-in 0.5s ease-out',
+				'pulse-slow': 'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			}
 		}
 	},

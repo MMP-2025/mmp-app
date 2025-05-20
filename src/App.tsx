@@ -10,6 +10,8 @@ import { SidebarLayout } from "@/components/layout/SidebarLayout";
 import HomePage from "./pages/HomePage";
 import MoodTrackerPage from "./pages/MoodTrackerPage";
 import JournalPage from "./pages/JournalPage";
+import MindfulnessPage from "./pages/MindfulnessPage";
+import GratitudePage from "./pages/GratitudePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
               <Route path="/" element={<HomePage />} />
               <Route path="/mood" element={<MoodTrackerPage />} />
               <Route path="/journal" element={<JournalPage />} />
+              <Route path="/mindfulness" element={<MindfulnessPage />} />
+              <Route path="/gratitude" element={<GratitudePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </SidebarLayout>

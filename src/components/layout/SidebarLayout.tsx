@@ -36,7 +36,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     <div className="flex min-h-screen">
       <Sidebar className="border-r border-mental-gray/20">
         <SidebarHeader className="p-4">
-          <h1 className="text-xl font-bold text-center">MindfulPath</h1>
+          <h1 className="text-xl font-bold text-center">Making Meaning Psychology</h1>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
@@ -58,7 +58,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter className="p-4 text-xs text-center text-mental-gray">
-          <p>© 2025 MindfulPath</p>
+          <p>© 2025 Making Meaning Psychology</p>
           <p>A private psychology practice app</p>
         </SidebarFooter>
       </Sidebar>
