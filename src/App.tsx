@@ -12,6 +12,10 @@ import MoodTrackerPage from "./pages/MoodTrackerPage";
 import JournalPage from "./pages/JournalPage";
 import MindfulnessPage from "./pages/MindfulnessPage";
 import GratitudePage from "./pages/GratitudePage";
+import PlannerPage from "./pages/PlannerPage";
+import RemindersPage from "./pages/RemindersPage";
+import TimerPage from "./pages/TimerPage";
+import PromptsPage from "./pages/PromptsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +34,10 @@ const App = () => (
               <Route path="/journal" element={<JournalPage />} />
               <Route path="/mindfulness" element={<MindfulnessPage />} />
               <Route path="/gratitude" element={<GratitudePage />} />
+              <Route path="/planner" element={<PlannerPage />} />
+              <Route path="/reminders" element={<RemindersPage />} />
+              <Route path="/timer" element={<TimerPage />} />
+              <Route path="/prompts" element={<PromptsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </SidebarLayout>

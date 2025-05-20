@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Book, Calendar, Clock, FileText, Home, Info, MessageSquare, Smile, Timer, User } from 'lucide-react';
+import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Plus } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -13,23 +13,25 @@ import {
   SidebarMenuItem,
   SidebarMenuButton
 } from "@/components/ui/sidebar";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
 }
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
+  const location = useLocation();
+  
   const menuItems = [
     { icon: Home, label: 'Home', path: '/' },
     { icon: Smile, label: 'Mood Tracker', path: '/mood' },
     { icon: FileText, label: 'Journal', path: '/journal' },
-    { icon: MessageSquare, label: 'Mindfulness', path: '/mindfulness' },
     { icon: Calendar, label: 'Planner', path: '/planner' },
-    { icon: Clock, label: 'Timer', path: '/timer' },
-    { icon: Info, label: 'Information', path: '/info' },
-    { icon: Book, label: 'Gratitude', path: '/gratitude' },
-    { icon: User, label: 'Profile', path: '/profile' },
+    { icon: Bell, label: 'Reminders', path: '/reminders' },
+    { icon: Timer, label: 'Timer', path: '/timer' },
+    { icon: Book, label: 'Mindfulness', path: '/mindfulness' },
+    { icon: Plus, label: 'Gratitude', path: '/gratitude' },
+    { icon: Pencil, label: 'Prompts', path: '/prompts' },
   ];
 
   return (
@@ -46,7 +48,12 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                 {menuItems.map((item) => (
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton asChild>
-                      <Link to={item.path} className="flex items-center gap-2">
+                      <Link 
+                        to={item.path} 
+                        className={`flex items-center gap-2 ${
+                          location.pathname === item.path ? 'text-primary font-medium' : ''
+                        }`}
+                      >
                         <item.icon className="h-5 w-5" />
                         <span>{item.label}</span>
                       </Link>
