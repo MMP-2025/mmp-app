@@ -30,12 +30,12 @@ const MoodTrackerPage = () => {
     <div className="min-h-screen bg-mental-blue p-6">
       <div className="space-y-6 max-w-4xl mx-auto">
         <div>
-          <h1 className="text-3xl font-bold mb-2 text-mental-gray">Mood Tracker</h1>
-          <p className="text-mental-gray">Track and understand your emotional patterns</p>
+          <h1 className="text-3xl font-bold mb-2 text-gray-800">Mood Tracker</h1>
+          <p className="text-gray-700">Track and understand your emotional patterns</p>
         </div>
         
         <Card className="p-6 bg-white/90">
-          <h2 className="text-xl font-semibold mb-4 text-mental-gray">How are you feeling today?</h2>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">How are you feeling today?</h2>
           <div className="grid grid-cols-5 gap-2 text-center mb-6">
             {[
               { name: 'Ecstatic', icon: Laugh },
@@ -49,12 +49,12 @@ const MoodTrackerPage = () => {
                 onClick={() => handleMoodSelection(mood.name)}
                 className={`p-4 rounded-md transition-all flex flex-col items-center gap-2 ${
                   selectedMood === mood.name 
-                    ? 'bg-mental-peach border-2 border-mental-gray' 
+                    ? 'bg-mental-peach border-2 border-gray-600' 
                     : 'hover:bg-mental-peach/40'
                 }`}
               >
-                <mood.icon className="h-8 w-8 text-mental-gray" />
-                <span className="text-mental-gray">{mood.name}</span>
+                <mood.icon className="h-8 w-8 text-gray-700" />
+                <span className="text-gray-700">{mood.name}</span>
               </button>
             ))}
           </div>
@@ -62,14 +62,14 @@ const MoodTrackerPage = () => {
           {selectedMood && (
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-medium mb-2 text-mental-gray">
+                <h3 className="text-lg font-medium mb-2 text-gray-800">
                   Tell us more about feeling {selectedMood.toLowerCase()}...
                 </h3>
                 <Textarea
                   placeholder="What's on your mind? How are you feeling right now?"
                   value={moodNote}
                   onChange={(e) => setMoodNote(e.target.value)}
-                  className="min-h-[120px] border-mental-gray/30 focus:border-mental-gray text-mental-gray"
+                  className="min-h-[120px] border-gray-300 focus:border-gray-600 text-gray-800"
                 />
               </div>
               <Button 
@@ -83,8 +83,8 @@ const MoodTrackerPage = () => {
         </Card>
         
         <Card className="p-6 bg-white/90">
-          <h2 className="text-xl font-semibold mb-4 text-mental-gray">Your Mood History</h2>
-          <p className="text-mental-gray">Mood visualization will appear here</p>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Mood History</h2>
+          <p className="text-gray-700">Mood visualization will appear here</p>
         </Card>
       </div>
     </div>

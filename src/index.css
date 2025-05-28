@@ -6,25 +6,25 @@
 @layer base {
   :root {
     --background: 255 255 255;
-    --foreground: 204 198 198;
+    --foreground: 51 51 51;
 
     --card: 250 250 255;
-    --card-foreground: 204 198 198;
+    --card-foreground: 51 51 51;
 
     --popover: 255 255 255;
-    --popover-foreground: 204 198 198;
+    --popover-foreground: 51 51 51;
 
     --primary: 255 141 255;
     --primary-foreground: 255 255 255;
 
     --secondary: 229 224 255;
-    --secondary-foreground: 204 198 198;
+    --secondary-foreground: 51 51 51;
 
     --muted: 241 240 251;
-    --muted-foreground: 204 198 198;
+    --muted-foreground: 107 114 128;
 
     --accent: 211 228 253;
-    --accent-foreground: 204 198 198;
+    --accent-foreground: 51 51 51;
 
     --destructive: 234 56 76;
     --destructive-foreground: 255 255 255;
@@ -36,66 +36,66 @@
     --radius: 0.8rem;
 
     --sidebar-background: 255 255 255;
-    --sidebar-foreground: 204 198 198;
+    --sidebar-foreground: 51 51 51;
     --sidebar-primary: 155 135 245;
     --sidebar-primary-foreground: 255 255 255;
     --sidebar-accent: 241 240 251;
-    --sidebar-accent-foreground: 204 198 198;
+    --sidebar-accent-foreground: 51 51 51;
     --sidebar-border: 235 235 245;
     --sidebar-ring: 155 135 245;
   }
 
   .dark {
     --background: 30 30 46;
-    --foreground: 204 198 198;
+    --foreground: 229 229 229;
 
     --card: 36 36 54;
-    --card-foreground: 204 198 198;
+    --card-foreground: 229 229 229;
 
     --popover: 36 36 54;
-    --popover-foreground: 204 198 198;
+    --popover-foreground: 229 229 229;
 
     --primary: 155 135 245;
     --primary-foreground: 255 255 255;
 
     --secondary: 50 50 75;
-    --secondary-foreground: 204 198 198;
+    --secondary-foreground: 229 229 229;
 
     --muted: 50 50 75;
-    --muted-foreground: 204 198 198;
+    --muted-foreground: 156 163 175;
 
     --accent: 50 60 100;
-    --accent-foreground: 204 198 198;
+    --accent-foreground: 229 229 229;
 
     --destructive: 234 56 76;
-    --destructive-foreground: 204 198 198;
+    --destructive-foreground: 229 229 229;
 
     --border: 50 50 75;
     --input: 50 50 75;
     --ring: 155 135 245;
 
     --sidebar-background: 36 36 54;
-    --sidebar-foreground: 204 198 198;
+    --sidebar-foreground: 229 229 229;
     --sidebar-primary: 155 135 245;
     --sidebar-primary-foreground: 255 255 255;
     --sidebar-accent: 50 50 75;
-    --sidebar-accent-foreground: 204 198 198;
+    --sidebar-accent-foreground: 229 229 229;
     --sidebar-border: 50 50 75;
     --sidebar-ring: 155 135 245;
   }
 
   html {
     font-family: 'Sora', sans-serif;
-    color: #CCC6C6;
+    color: #333333;
   }
 
   body {
-    color: #CCC6C6;
+    color: #333333;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Marmelad', serif;
-    color: #CCC6C6;
+    color: #333333;
   }
   
   /* Custom color palette */
