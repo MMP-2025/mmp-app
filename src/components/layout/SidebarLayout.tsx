@@ -47,7 +47,7 @@ export function SidebarLayout({
         <SidebarHeader className="p-4">
           <h1 className="font-bold text-center text-[_#7e868b] text-[#7e868b]">Making Meaning Psychology</h1>
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="bg-[#fadcd6]">
           <SidebarGroup>
             <SidebarGroupLabel className="text-gray-700">Navigation</SidebarGroupLabel>
             <SidebarGroupContent>
