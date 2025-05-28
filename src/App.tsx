@@ -15,7 +15,6 @@ import GratitudePage from "./pages/GratitudePage";
 import PlannerPage from "./pages/PlannerPage";
 import RemindersPage from "./pages/RemindersPage";
 import TimerPage from "./pages/TimerPage";
-import PromptsPage from "./pages/PromptsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,20 +26,61 @@ const App = () => (
         <SidebarProvider>
           <Toaster />
           <Sonner />
-          <SidebarLayout>
+          <div className="w-full min-h-screen">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={
+                <div className="bg-mental-peach min-h-screen">
+                  <SidebarLayout>
+                    <HomePage />
+                  </SidebarLayout>
+                </div>
+              } />
               <Route path="/mood" element={<MoodTrackerPage />} />
-              <Route path="/journal" element={<JournalPage />} />
-              <Route path="/mindfulness" element={<MindfulnessPage />} />
-              <Route path="/gratitude" element={<GratitudePage />} />
-              <Route path="/planner" element={<PlannerPage />} />
-              <Route path="/reminders" element={<RemindersPage />} />
-              <Route path="/timer" element={<TimerPage />} />
-              <Route path="/prompts" element={<PromptsPage />} />
+              <Route path="/journal" element={
+                <div className="bg-mental-green min-h-screen">
+                  <SidebarLayout>
+                    <JournalPage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/mindfulness" element={
+                <div className="bg-mental-beige min-h-screen">
+                  <SidebarLayout>
+                    <MindfulnessPage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/gratitude" element={
+                <div className="bg-mental-gray min-h-screen">
+                  <SidebarLayout>
+                    <GratitudePage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/planner" element={
+                <div className="bg-mental-blue min-h-screen">
+                  <SidebarLayout>
+                    <PlannerPage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/reminders" element={
+                <div className="bg-mental-peach min-h-screen">
+                  <SidebarLayout>
+                    <RemindersPage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/timer" element={
+                <div className="bg-mental-green min-h-screen">
+                  <SidebarLayout>
+                    <TimerPage />
+                  </SidebarLayout>
+                </div>
+              } />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </SidebarLayout>
+          </div>
         </SidebarProvider>
       </BrowserRouter>
     </TooltipProvider>
