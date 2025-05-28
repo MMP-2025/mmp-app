@@ -45,13 +45,13 @@ export const MonthlyView: React.FC<MonthlyViewProps> = ({ selectedDate, events }
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-medium">
+      <h3 className="text-xl font-medium text-gray-800">
         {format(selectedDate, 'MMMM yyyy')}
       </h3>
       
       <div className="grid grid-cols-7 gap-1 text-center">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="font-medium p-1">{day}</div>
+          <div key={day} className="font-medium p-1 text-gray-800">{day}</div>
         ))}
       </div>
       
@@ -78,20 +78,20 @@ export const MonthlyView: React.FC<MonthlyViewProps> = ({ selectedDate, events }
                 >
                   {isValidDate && (
                     <>
-                      <div className={`text-right text-sm ${isToday ? 'font-bold' : ''}`}>
+                      <div className={`text-right text-sm text-gray-800 ${isToday ? 'font-bold' : ''}`}>
                         {format(day, 'd')}
                       </div>
                       <div className="mt-1">
                         {dayEvents.slice(0, 2).map(event => (
                           <div 
                             key={event.id} 
-                            className="text-xs bg-mental-blue/30 p-1 mb-1 rounded truncate"
+                            className="text-xs bg-mental-blue/30 p-1 mb-1 rounded truncate text-gray-800"
                           >
                             {event.title}
                           </div>
                         ))}
                         {dayEvents.length > 2 && (
-                          <div className="text-xs text-center text-muted-foreground">
+                          <div className="text-xs text-center text-gray-600">
                             +{dayEvents.length - 2} more
                           </div>
                         )}

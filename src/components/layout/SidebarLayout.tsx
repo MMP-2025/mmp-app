@@ -37,11 +37,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     <div className="flex min-h-screen">
       <Sidebar className="border-r border-mental-gray/20">
         <SidebarHeader className="p-4">
-          <h1 className="text-xl font-bold text-center">Making Meaning Psychology</h1>
+          <h1 className="text-xl font-bold text-center text-gray-800">Making Meaning Psychology</h1>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-gray-700">Navigation</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {menuItems.map((item) => (
@@ -49,7 +49,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                     <SidebarMenuButton asChild>
                       <Link 
                         to={item.path} 
-                        className={`flex items-center gap-2 ${
+                        className={`flex items-center gap-2 text-gray-800 ${
                           location.pathname === item.path ? 'text-primary font-medium' : ''
                         }`}
                       >
@@ -63,7 +63,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter className="p-4 text-xs text-center text-mental-gray">
+        <SidebarFooter className="p-4 text-xs text-center text-gray-600">
           <p>© 2025 Making Meaning Psychology</p>
           <p>A private psychology practice app</p>
         </SidebarFooter>

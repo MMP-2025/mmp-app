@@ -21,7 +21,7 @@ export const DailySchedule: React.FC<DailyScheduleProps> = ({ selectedDate, even
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-medium">
+      <h3 className="text-xl font-medium text-gray-800">
         {format(selectedDate, 'EEEE, MMMM d, yyyy')}
       </h3>
       
@@ -40,19 +40,19 @@ export const DailySchedule: React.FC<DailyScheduleProps> = ({ selectedDate, even
                 hourEvents.length > 0 ? 'bg-mental-blue/20' : 'bg-muted/20'
               }`}
             >
-              <div className="w-16 font-medium">{timeSlot}</div>
+              <div className="w-16 font-medium text-gray-800">{timeSlot}</div>
               <div className="flex-1">
                 {hourEvents.length > 0 ? (
                   <div className="space-y-1">
                     {hourEvents.map(event => (
                       <div key={event.id} className="bg-mental-blue/40 p-2 rounded">
-                        <p className="font-medium">{event.title}</p>
-                        <p className="text-xs text-muted-foreground">{event.time}</p>
+                        <p className="font-medium text-gray-800">{event.title}</p>
+                        <p className="text-xs text-gray-600">{event.time}</p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-muted-foreground text-sm italic">No events</div>
+                  <div className="text-gray-600 text-sm italic">No events</div>
                 )}
               </div>
             </div>

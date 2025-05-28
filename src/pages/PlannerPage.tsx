@@ -45,56 +45,56 @@ const PlannerPage = () => {
     <div className="space-y-6 max-w-6xl mx-auto">
       <div className="flex items-center gap-4">
         <Button asChild variant="outline" size="sm">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 text-gray-800">
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
         </Button>
         <div>
-          <h1 className="text-3xl font-bold mb-2">Planner</h1>
-          <p className="text-muted-foreground">Organize your schedule and plan your activities</p>
+          <h1 className="text-3xl font-bold mb-2 text-gray-800">Planner</h1>
+          <p className="text-gray-700">Organize your schedule and plan your activities</p>
         </div>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle className="text-lg">Calendar & Events</CardTitle>
+            <CardTitle className="text-lg text-gray-800">Calendar & Events</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label className="text-sm font-medium mb-2 block">Select Date</Label>
+              <Label className="text-sm font-medium mb-2 block text-gray-800">Select Date</Label>
               <Calendar
                 mode="single"
                 selected={selectedDate}
                 onSelect={(date) => date && setSelectedDate(date)}
-                className="rounded-md border w-full"
+                className="rounded-md border w-full text-gray-800"
               />
             </div>
             
             <div className="space-y-3 pt-4 border-t">
-              <Label className="text-sm font-medium">Add New Event</Label>
+              <Label className="text-sm font-medium text-gray-800">Add New Event</Label>
               <div className="space-y-2">
                 <Input 
                   placeholder="Event title" 
                   value={newEventTitle}
                   onChange={(e) => setNewEventTitle(e.target.value)}
-                  className="text-sm"
+                  className="text-sm text-gray-800"
                 />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <Clock className="h-4 w-4 text-gray-600" />
                   <Input 
                     type="time" 
                     value={newEventTime}
                     onChange={(e) => setNewEventTime(e.target.value)}
-                    className="text-sm"
+                    className="text-sm text-gray-800"
                   />
                 </div>
               </div>
               <Button 
-                className="w-full"
+                className="w-full bg-gray-800 text-white hover:bg-gray-700"
                 onClick={handleAddEvent}
                 size="sm"
               >
@@ -106,15 +106,15 @@ const PlannerPage = () => {
         
         <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle className="text-lg">Schedule Views</CardTitle>
+            <CardTitle className="text-lg text-gray-800">Schedule Views</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="day" className="w-full">
               <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="day">Day</TabsTrigger>
-                <TabsTrigger value="week">Week</TabsTrigger>
-                <TabsTrigger value="month">Month</TabsTrigger>
-                <TabsTrigger value="year">Year</TabsTrigger>
+                <TabsTrigger value="day" className="text-gray-800">Day</TabsTrigger>
+                <TabsTrigger value="week" className="text-gray-800">Week</TabsTrigger>
+                <TabsTrigger value="month" className="text-gray-800">Month</TabsTrigger>
+                <TabsTrigger value="year" className="text-gray-800">Year</TabsTrigger>
               </TabsList>
               
               <TabsContent value="day" className="mt-4">

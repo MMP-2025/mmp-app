@@ -16,7 +16,7 @@ export const WeeklyView: React.FC<WeeklyViewProps> = ({ selectedDate, events }) 
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-medium">
+      <h3 className="text-xl font-medium text-gray-800">
         Week of {format(startDate, 'MMMM d, yyyy')}
       </h3>
       
@@ -31,7 +31,7 @@ export const WeeklyView: React.FC<WeeklyViewProps> = ({ selectedDate, events }) 
               <div className={`text-center p-2 rounded-md ${
                 day.toDateString() === new Date().toDateString() 
                   ? 'bg-mental-blue font-bold text-white' 
-                  : 'bg-muted/30'
+                  : 'bg-muted/30 text-gray-800'
               }`}>
                 <div>{format(day, 'EEE')}</div>
                 <div>{format(day, 'd')}</div>
@@ -41,18 +41,18 @@ export const WeeklyView: React.FC<WeeklyViewProps> = ({ selectedDate, events }) 
                 {dayEvents.length > 0 ? (
                   <div className="space-y-1 text-xs">
                     {dayEvents.slice(0, 3).map(event => (
-                      <div key={event.id} className="bg-mental-blue/20 p-1 rounded truncate">
+                      <div key={event.id} className="bg-mental-blue/20 p-1 rounded truncate text-gray-800">
                         {event.time} - {event.title}
                       </div>
                     ))}
                     {dayEvents.length > 3 && (
-                      <div className="text-center text-muted-foreground">
+                      <div className="text-center text-gray-600">
                         +{dayEvents.length - 3} more
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="text-center text-xs text-muted-foreground italic mt-2">
+                  <div className="text-center text-xs text-gray-600 italic mt-2">
                     No events
                   </div>
                 )}
