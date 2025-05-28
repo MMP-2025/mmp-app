@@ -35,7 +35,7 @@ const MoodTrackerPage = () => {
             </Button>
             <div>
               <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Mood Tracker</h1>
-              <p className="text-gray-700">Track and understand your emotional patterns</p>
+              <p className="text-[#7e868b]">Track and understand your emotional patterns</p>
             </div>
           </div>
           
