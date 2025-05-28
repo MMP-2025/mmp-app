@@ -53,7 +53,7 @@ const HomePage = () => {
   return <div className="space-y-8 max-w-4xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold text-center mb-2 text-[#7e868b]">Welcome to Making Meaning Psychology</h1>
-        <p className="text-center text-muted-foreground">Your daily companion for mental wellbeing</p>
+        <p className="text-center text-base font-normal text-[#7e868b]">Your daily companion for mental wellbeing</p>
       </div>
       
       {/* Question of the day - now at the top */}
