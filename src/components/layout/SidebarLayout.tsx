@@ -44,7 +44,7 @@ export function SidebarLayout({
   }];
   return <div className="flex min-h-screen">
       <Sidebar className="border-r border-mental-gray/20">
-        <SidebarHeader className="p-4">
+        <SidebarHeader className="p-4 bg-[fadcd6]">
           <h1 className="font-bold text-center text-[_#7e868b] text-[#7e868b]">Making Meaning Psychology</h1>
         </SidebarHeader>
         <SidebarContent className="bg-[#fadcd6]">
