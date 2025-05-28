@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Timer, Play, Pause, RotateCcw, Bell, Clock } from 'lucide-react';
+import { Timer, Play, Pause, RotateCcw, Bell, Clock, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Link } from 'react-router-dom';
 
 const TimerPage = () => {
   // Pomodoro timer
@@ -144,9 +145,17 @@ const TimerPage = () => {
   
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Timer</h1>
-        <p className="text-muted-foreground">Track time for productivity and mindfulness</p>
+      <div className="flex items-center gap-4">
+        <Button asChild variant="outline" size="sm">
+          <Link to="/" className="flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Link>
+        </Button>
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Timer</h1>
+          <p className="text-muted-foreground">Track time for productivity and mindfulness</p>
+        </div>
       </div>
       
       <audio ref={audioRef} src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" />
@@ -220,34 +229,48 @@ const TimerPage = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-4 gap-2 mt-6">
+              <div className="grid grid-cols-6 gap-2 mt-6">
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(1)}
                   className="text-sm"
                 >
-                  1 min
+                  1m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(5)}
                   className="text-sm"
                 >
-                  5 min
+                  5m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(10)}
                   className="text-sm"
                 >
-                  10 min
+                  10m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(15)}
                   className="text-sm"
                 >
-                  15 min
+                  15m
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setCustomCountdown(30)}
+                  className="text-sm"
+                >
+                  30m
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setCustomCountdown(60)}
+                  className="text-sm"
+                >
+                  1h
                 </Button>
               </div>
               
@@ -257,7 +280,7 @@ const TimerPage = () => {
                   <Slider
                     value={[countdownMinutes]}
                     min={1}
-                    max={60}
+                    max={120}
                     step={1}
                     onValueChange={(value) => {
                       if (isCountdownPaused) {
@@ -265,7 +288,7 @@ const TimerPage = () => {
                       }
                     }}
                   />
-                  <span className="min-w-[40px] text-center">{countdownMinutes}</span>
+                  <span className="min-w-[50px] text-center">{countdownMinutes}m</span>
                 </div>
               </div>
               

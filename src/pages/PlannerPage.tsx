@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CalendarIcon, Plus, Clock } from 'lucide-react';
+import { CalendarIcon, Plus, Clock, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { DailySchedule } from '@/components/planner/DailySchedule';
@@ -15,6 +15,7 @@ import { WeeklyView } from '@/components/planner/WeeklyView';
 import { MonthlyView } from '@/components/planner/MonthlyView';
 import { YearlyView } from '@/components/planner/YearlyView';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 const PlannerPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -41,51 +42,61 @@ const PlannerPage = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Planner</h1>
-        <p className="text-muted-foreground">Organize your schedule and plan your activities</p>
+    <div className="space-y-6 max-w-6xl mx-auto">
+      <div className="flex items-center gap-4">
+        <Button asChild variant="outline" size="sm">
+          <Link to="/" className="flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Link>
+        </Button>
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Planner</h1>
+          <p className="text-muted-foreground">Organize your schedule and plan your activities</p>
+        </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="md:col-span-1">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Select Date</CardTitle>
+            <CardTitle className="text-lg">Calendar & Events</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={(date) => date && setSelectedDate(date)}
-              className="p-3 pointer-events-auto"
-            />
+          <CardContent className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Select Date</Label>
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={(date) => date && setSelectedDate(date)}
+                className="rounded-md border w-full"
+              />
+            </div>
             
-            <div className="mt-6 space-y-4">
-              <h3 className="font-medium">Add New Event</h3>
+            <div className="space-y-3 pt-4 border-t">
+              <Label className="text-sm font-medium">Add New Event</Label>
               <div className="space-y-2">
-                <Label htmlFor="event-title">Event Title</Label>
                 <Input 
-                  id="event-title" 
-                  placeholder="Enter event title" 
+                  placeholder="Event title" 
                   value={newEventTitle}
                   onChange={(e) => setNewEventTitle(e.target.value)}
+                  className="text-sm"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="event-time">Time</Label>
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <Input 
-                    id="event-time" 
                     type="time" 
                     value={newEventTime}
                     onChange={(e) => setNewEventTime(e.target.value)}
+                    className="text-sm"
                   />
                 </div>
               </div>
               <Button 
                 className="w-full"
                 onClick={handleAddEvent}
+                size="sm"
               >
                 <Plus className="mr-2 h-4 w-4" /> Add Event
               </Button>
@@ -93,13 +104,13 @@ const PlannerPage = () => {
           </CardContent>
         </Card>
         
-        <Card className="md:col-span-2">
+        <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle>Schedule View</CardTitle>
+            <CardTitle className="text-lg">Schedule Views</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="day" className="w-full">
-              <TabsList className="w-full grid grid-cols-4">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="day">Day</TabsTrigger>
                 <TabsTrigger value="week">Week</TabsTrigger>
                 <TabsTrigger value="month">Month</TabsTrigger>

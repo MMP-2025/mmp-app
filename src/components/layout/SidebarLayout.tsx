@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Plus } from 'lucide-react';
+import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -30,8 +30,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     { icon: Bell, label: 'Reminders', path: '/reminders' },
     { icon: Timer, label: 'Timer', path: '/timer' },
     { icon: Book, label: 'Mindfulness', path: '/mindfulness' },
-    { icon: Plus, label: 'Gratitude', path: '/gratitude' },
-    { icon: Pencil, label: 'Prompts', path: '/prompts' },
+    { icon: Pencil, label: 'Gratitude', path: '/gratitude' },
   ];
 
   return (
