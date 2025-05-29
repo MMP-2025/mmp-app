@@ -62,7 +62,7 @@ const PlannerPage = () => {
           <CardContent className="space-y-4">
             <div>
               <Label className="text-sm font-medium mb-2 block text-gray-800">Select Date</Label>
-              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full text-gray-800 bg-mental-peach" />
+              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full text-[#7e868b] bg-mental-peach" />
             </div>
             
             <div className="space-y-3 pt-4 border-t bg-mental-peach">
