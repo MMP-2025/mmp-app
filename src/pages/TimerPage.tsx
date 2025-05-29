@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -162,9 +161,9 @@ const TimerPage = () => {
       
       <Tabs defaultValue="pomodoro" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="pomodoro">Pomodoro</TabsTrigger>
-          <TabsTrigger value="countdown">Countdown</TabsTrigger>
-          <TabsTrigger value="stopwatch">Stopwatch</TabsTrigger>
+          <TabsTrigger value="pomodoro" className="text-[#7e868b]">Pomodoro</TabsTrigger>
+          <TabsTrigger value="countdown" className="text-[#7e868b]">Countdown</TabsTrigger>
+          <TabsTrigger value="stopwatch" className="text-[#7e868b]">Stopwatch</TabsTrigger>
         </TabsList>
         
         {/* Pomodoro Timer Tab */}
@@ -190,15 +189,16 @@ const TimerPage = () => {
                 <Button
                   variant={isPomodoroPaused ? "default" : "outline"}
                   onClick={() => setIsPomodoroPaused(!isPomodoroPaused)}
+                  className="text-[#7e868b]"
                 >
                   {isPomodoroPaused ? (
-                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> Start</>
+                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></>
                   ) : (
-                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> Pause</>
+                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>
                   )}
                 </Button>
-                <Button variant="outline" onClick={resetPomodoro}>
-                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> Reset
+                <Button variant="outline" onClick={resetPomodoro} className="text-[#7e868b]">
+                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
                 </Button>
               </div>
               
@@ -233,42 +233,42 @@ const TimerPage = () => {
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(1)}
-                  className="text-sm"
+                  className="text-sm text-[#7e868b]"
                 >
                   1m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(5)}
-                  className="text-sm"
+                  className="text-sm text-[#7e868b]"
                 >
                   5m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(10)}
-                  className="text-sm"
+                  className="text-sm text-[#7e868b]"
                 >
                   10m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(15)}
-                  className="text-sm"
+                  className="text-sm text-[#7e868b]"
                 >
                   15m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(30)}
-                  className="text-sm"
+                  className="text-sm text-[#7e868b]"
                 >
                   30m
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setCustomCountdown(60)}
-                  className="text-sm"
+                  className="text-sm text-[#7e868b]"
                 >
                   1h
                 </Button>
@@ -296,15 +296,16 @@ const TimerPage = () => {
                 <Button
                   variant={isCountdownPaused ? "default" : "outline"}
                   onClick={() => setIsCountdownPaused(!isCountdownPaused)}
+                  className="text-[#7e868b]"
                 >
                   {isCountdownPaused ? (
-                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> Start</>
+                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></>
                   ) : (
-                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> Pause</>
+                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>
                   )}
                 </Button>
-                <Button variant="outline" onClick={resetCountdown}>
-                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> Reset
+                <Button variant="outline" onClick={resetCountdown} className="text-[#7e868b]">
+                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
                 </Button>
               </div>
             </CardContent>
@@ -331,15 +332,16 @@ const TimerPage = () => {
                 <Button
                   variant={isStopwatchPaused ? "default" : "outline"}
                   onClick={() => setIsStopwatchPaused(!isStopwatchPaused)}
+                  className="text-[#7e868b]"
                 >
                   {isStopwatchPaused ? (
-                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> Start</>
+                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></>
                   ) : (
-                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> Pause</>
+                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>
                   )}
                 </Button>
-                <Button variant="outline" onClick={resetStopwatch}>
-                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> Reset
+                <Button variant="outline" onClick={resetStopwatch} className="text-[#7e868b]">
+                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
                 </Button>
               </div>
             </CardContent>
