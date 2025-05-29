@@ -78,7 +78,8 @@ const HomePage = () => {
               <Link to="/journal">My Journal</Link>
             </Button>
             <Button asChild className="bg-mental-green hover:bg-mental-green/80 w-full text-left justify-start">
-              <Link to="/mood">Mood Check-in</Link>
+              <Link to="/mood">Mood 
+Check-in</Link>
             </Button>
             <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
               <Link to="/mindfulness">Mindfulness</Link>
