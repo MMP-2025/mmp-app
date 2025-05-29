@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -16,33 +15,32 @@ import { MonthlyView } from '@/components/planner/MonthlyView';
 import { YearlyView } from '@/components/planner/YearlyView';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
-
 const PlannerPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventTime, setNewEventTime] = useState('12:00');
-  const [events, setEvents] = useState<Array<{id: string, title: string, date: Date, time: string}>>([]);
-  
+  const [events, setEvents] = useState<Array<{
+    id: string;
+    title: string;
+    date: Date;
+    time: string;
+  }>>([]);
   const handleAddEvent = () => {
     if (!newEventTitle.trim()) {
       toast.error('Please enter an event title');
       return;
     }
-    
     const newEvent = {
       id: Date.now().toString(),
       title: newEventTitle,
       date: selectedDate,
       time: newEventTime
     };
-    
     setEvents([...events, newEvent]);
     setNewEventTitle('');
     toast.success('Event added successfully!');
   };
-
-  return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+  return <div className="space-y-6 max-w-6xl mx-auto">
       <div className="flex items-center gap-4">
         <Button asChild variant="outline" size="sm">
           <Link to="/" className="flex items-center gap-2 text-gray-800">
@@ -58,46 +56,27 @@ const PlannerPage = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <Card className="lg:col-span-1">
-          <CardHeader>
+          <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-gray-800">Calendar & Events</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <Label className="text-sm font-medium mb-2 block text-gray-800">Select Date</Label>
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={(date) => date && setSelectedDate(date)}
-                className="rounded-md border w-full text-gray-800"
-              />
+              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full text-gray-800 bg-mental-peach" />
             </div>
             
-            <div className="space-y-3 pt-4 border-t">
+            <div className="space-y-3 pt-4 border-t bg-mental-peach">
               <Label className="text-sm font-medium text-gray-800">Add New Event</Label>
               <div className="space-y-2">
-                <Input 
-                  placeholder="Event title" 
-                  value={newEventTitle}
-                  onChange={(e) => setNewEventTitle(e.target.value)}
-                  className="text-sm text-gray-800"
-                />
+                <Input placeholder="Event title" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="text-sm text-gray-800" />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-gray-600" />
-                  <Input 
-                    type="time" 
-                    value={newEventTime}
-                    onChange={(e) => setNewEventTime(e.target.value)}
-                    className="text-sm text-gray-800"
-                  />
+                  <Input type="time" value={newEventTime} onChange={e => setNewEventTime(e.target.value)} className="text-sm text-gray-800" />
                 </div>
               </div>
-              <Button 
-                className="w-full bg-gray-800 text-white hover:bg-gray-700"
-                onClick={handleAddEvent}
-                size="sm"
-              >
+              <Button className="w-full bg-gray-800 text-white hover:bg-gray-700" onClick={handleAddEvent} size="sm">
                 <Plus className="mr-2 h-4 w-4" /> Add Event
               </Button>
             </div>
@@ -105,10 +84,10 @@ const PlannerPage = () => {
         </Card>
         
         <Card className="lg:col-span-3">
-          <CardHeader>
+          <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-gray-800">Schedule Views</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="bg-mental-peach">
             <Tabs defaultValue="day" className="w-full">
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="day" className="text-gray-800">Day</TabsTrigger>
@@ -118,12 +97,7 @@ const PlannerPage = () => {
               </TabsList>
               
               <TabsContent value="day" className="mt-4">
-                <DailySchedule 
-                  selectedDate={selectedDate} 
-                  events={events.filter(event => 
-                    event.date.toDateString() === selectedDate.toDateString()
-                  )}
-                />
+                <DailySchedule selectedDate={selectedDate} events={events.filter(event => event.date.toDateString() === selectedDate.toDateString())} />
               </TabsContent>
               
               <TabsContent value="week" className="mt-4">
@@ -141,8 +115,6 @@ const PlannerPage = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default PlannerPage;
