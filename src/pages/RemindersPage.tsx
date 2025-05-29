@@ -70,15 +70,15 @@ const RemindersPage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Reminders</h1>
-        <p className="text-muted-foreground">Keep track of your tasks and earn rewards</p>
+        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Reminders</h1>
+        <p className="text-[#7e868b]">Keep track of your tasks and earn rewards</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
+              <CardTitle className="flex items-center text-[#7e868b]">
                 <Bell className="mr-2 h-5 w-5" />
                 Add New Reminder
               </CardTitle>
@@ -100,11 +100,11 @@ const RemindersPage = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>Your Reminders</CardTitle>
+              <CardTitle className="text-[#7e868b]">Your Reminders</CardTitle>
             </CardHeader>
             <CardContent>
               {reminders.length === 0 ? (
-                <div className="text-center py-6 text-muted-foreground">
+                <div className="text-center py-6 text-[#7e868b]">
                   No reminders yet. Add one above!
                 </div>
               ) : (
@@ -124,7 +124,7 @@ const RemindersPage = () => {
                         />
                         <Label 
                           htmlFor={`reminder-${reminder.id}`}
-                          className={reminder.completed ? 'line-through text-muted-foreground' : ''}
+                          className={reminder.completed ? 'line-through text-[#7e868b]' : 'text-[#7e868b]'}
                         >
                           {reminder.text}
                         </Label>
@@ -133,6 +133,7 @@ const RemindersPage = () => {
                         variant="ghost" 
                         size="sm" 
                         onClick={() => deleteReminder(reminder.id)}
+                        className="text-[#7e868b]"
                       >
                         Remove
                       </Button>
@@ -147,57 +148,57 @@ const RemindersPage = () => {
         <div className="md:col-span-1">
           <Card className="sticky top-4">
             <CardHeader className="bg-mental-blue/20 rounded-t-lg">
-              <CardTitle className="flex items-center">
+              <CardTitle className="flex items-center text-[#7e868b]">
                 <Award className="mr-2 h-5 w-5" /> 
                 Reward System
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
               <div className="text-center mb-4">
-                <div className="text-4xl font-bold">{rewardPoints}</div>
-                <div className="text-muted-foreground">Total Points</div>
+                <div className="text-4xl font-bold text-[#7e868b]">{rewardPoints}</div>
+                <div className="text-[#7e868b]">Total Points</div>
               </div>
               
               <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-sm text-[#7e868b]">
                   <span>Level {rewardLevel}</span>
                   <span>Level {rewardLevel + 1}</span>
                 </div>
                 <Progress value={nextLevelProgress} className="h-2" />
-                <div className="text-xs text-center text-muted-foreground">
+                <div className="text-xs text-center text-[#7e868b]">
                   {50 - (rewardPoints % 50)} points to next level
                 </div>
               </div>
               
               <div className="space-y-3">
-                <h3 className="font-medium">Your Achievements</h3>
+                <h3 className="font-medium text-[#7e868b]">Your Achievements</h3>
                 {rewardLevel >= 1 && (
                   <div className="bg-mental-blue/20 p-2 rounded-md flex items-center">
                     <Check className="h-4 w-4 mr-2 text-mental-green" />
-                    <span>Beginner Achiever</span>
+                    <span className="text-[#7e868b]">Beginner Achiever</span>
                   </div>
                 )}
                 {rewardLevel >= 2 && (
                   <div className="bg-mental-blue/20 p-2 rounded-md flex items-center">
                     <Check className="h-4 w-4 mr-2 text-mental-green" />
-                    <span>Consistent Completer</span>
+                    <span className="text-[#7e868b]">Consistent Completer</span>
                   </div>
                 )}
                 {rewardLevel >= 3 && (
                   <div className="bg-mental-blue/20 p-2 rounded-md flex items-center">
                     <Check className="h-4 w-4 mr-2 text-mental-green" />
-                    <span>Task Master</span>
+                    <span className="text-[#7e868b]">Task Master</span>
                   </div>
                 )}
                 {rewardLevel === 0 && (
-                  <div className="text-sm text-muted-foreground text-center italic">
+                  <div className="text-sm text-[#7e868b] text-center italic">
                     Complete reminders to earn achievements!
                   </div>
                 )}
               </div>
             </CardContent>
             <CardFooter className="bg-mental-peach/10 rounded-b-lg flex justify-center">
-              <div className="text-xs text-center text-muted-foreground">
+              <div className="text-xs text-center text-[#7e868b]">
                 Complete reminders to earn points and unlock rewards!
               </div>
             </CardFooter>

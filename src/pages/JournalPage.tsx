@@ -78,12 +78,12 @@ const JournalPage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Journal</h1>
-        <p className="text-muted-foreground">Express your thoughts and feelings</p>
+        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Journal</h1>
+        <p className="text-[#7e868b]">Express your thoughts and feelings</p>
       </div>
       
       <Card className="p-6 bg-mental-beige/20">
-        <h2 className="text-xl font-semibold mb-4">New Entry</h2>
+        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">New Entry</h2>
         <div className="flex flex-wrap gap-3 mb-4">
           <Button
             onClick={getRandomPrompt}
@@ -103,7 +103,7 @@ const JournalPage = () => {
         
         {currentPrompt && (
           <div className="bg-mental-blue/10 p-4 rounded-md mb-4">
-            <p className="font-medium">Prompt: {currentPrompt}</p>
+            <p className="font-medium text-[#7e868b]">Prompt: {currentPrompt}</p>
           </div>
         )}
         
@@ -123,16 +123,16 @@ const JournalPage = () => {
       </Card>
       
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Recent Entries</h2>
+        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Recent Entries</h2>
         
         {journalEntries.length === 0 ? (
-          <p className="text-center text-muted-foreground">Your journal entries will appear here</p>
+          <p className="text-center text-[#7e868b]">Your journal entries will appear here</p>
         ) : (
           <div className="space-y-4">
             {journalEntries.map(entry => (
               <div key={entry.id} className="border border-mental-gray/20 rounded-md p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm text-muted-foreground">{formatDate(entry.date)}</p>
+                  <p className="text-sm text-[#7e868b]">{formatDate(entry.date)}</p>
                   {entry.hasPrompt && (
                     <div className="flex items-center gap-1 text-xs text-mental-blue bg-mental-blue/10 px-2 py-1 rounded-full">
                       <MessageSquare className="h-3 w-3" />
@@ -142,12 +142,12 @@ const JournalPage = () => {
                 </div>
                 
                 {entry.hasPrompt && entry.prompt && (
-                  <p className="text-sm italic mb-2 text-muted-foreground">
+                  <p className="text-sm italic mb-2 text-[#7e868b]">
                     Prompt: {entry.prompt}
                   </p>
                 )}
                 
-                <p className="whitespace-pre-wrap">{entry.content}</p>
+                <p className="whitespace-pre-wrap text-[#7e868b]">{entry.content}</p>
               </div>
             ))}
           </div>

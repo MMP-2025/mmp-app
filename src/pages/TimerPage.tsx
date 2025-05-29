@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -147,14 +146,14 @@ const TimerPage = () => {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-4">
         <Button asChild variant="outline" size="sm">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 text-[#7e868b]">
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
         </Button>
         <div>
-          <h1 className="text-3xl font-bold mb-2">Timer</h1>
-          <p className="text-muted-foreground">Track time for productivity and mindfulness</p>
+          <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Timer</h1>
+          <p className="text-[#7e868b]">Track time for productivity and mindfulness</p>
         </div>
       </div>
       
@@ -171,17 +170,17 @@ const TimerPage = () => {
         <TabsContent value="pomodoro">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
+              <CardTitle className="flex items-center text-[#7e868b]">
                 <Timer className="mr-2 h-5 w-5" />
                 Pomodoro Timer
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="text-6xl font-bold font-mono">
+                <div className="text-6xl font-bold font-mono text-[#7e868b]">
                   {formatTime(pomodoroMinutes, pomodoroSeconds)}
                 </div>
-                <p className="text-muted-foreground mt-2">
+                <p className="text-[#7e868b] mt-2">
                   Focus for 25 minutes, then take a short break
                 </p>
               </div>
@@ -203,8 +202,8 @@ const TimerPage = () => {
               </div>
               
               <div className="p-4 bg-mental-green/10 rounded-md mt-6">
-                <h3 className="font-medium mb-2">Pomodoro Technique</h3>
-                <p className="text-sm text-muted-foreground">
+                <h3 className="font-medium mb-2 text-[#7e868b]">Pomodoro Technique</h3>
+                <p className="text-sm text-[#7e868b]">
                   The Pomodoro Technique is a time management method that uses a timer to break work into intervals, 
                   traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro.
                 </p>
@@ -217,14 +216,14 @@ const TimerPage = () => {
         <TabsContent value="countdown">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
+              <CardTitle className="flex items-center text-[#7e868b]">
                 <Clock className="mr-2 h-5 w-5" />
                 Countdown Timer
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="text-6xl font-bold font-mono">
+                <div className="text-6xl font-bold font-mono text-[#7e868b]">
                   {formatTime(countdownMinutes, countdownSeconds)}
                 </div>
               </div>
@@ -275,7 +274,7 @@ const TimerPage = () => {
               </div>
               
               <div className="space-y-2 mt-4">
-                <Label>Custom Time (minutes):</Label>
+                <Label className="text-[#7e868b]">Custom Time (minutes):</Label>
                 <div className="flex items-center gap-2">
                   <Slider
                     value={[countdownMinutes]}
@@ -288,7 +287,7 @@ const TimerPage = () => {
                       }
                     }}
                   />
-                  <span className="min-w-[50px] text-center">{countdownMinutes}m</span>
+                  <span className="min-w-[50px] text-center text-[#7e868b]">{countdownMinutes}m</span>
                 </div>
               </div>
               
@@ -315,14 +314,14 @@ const TimerPage = () => {
         <TabsContent value="stopwatch">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
+              <CardTitle className="flex items-center text-[#7e868b]">
                 <Clock className="mr-2 h-5 w-5" />
                 Stopwatch
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="text-6xl font-bold font-mono">
+                <div className="text-6xl font-bold font-mono text-[#7e868b]">
                   {formatStopwatchTime(stopwatchTime)}
                 </div>
               </div>

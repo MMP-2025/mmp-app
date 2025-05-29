@@ -103,10 +103,10 @@ const GratitudePage = () => {
       case 1: // Three Good Things
         return (
           <div className="space-y-4">
-            <h3 className="font-medium">What are three good things that happened today?</h3>
+            <h3 className="font-medium text-[#7e868b]">What are three good things that happened today?</h3>
             {[0, 1, 2].map(index => (
               <div key={index} className="space-y-2">
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-medium text-[#7e868b]">
                   Good thing #{index + 1}:
                 </label>
                 <Textarea
@@ -123,7 +123,7 @@ const GratitudePage = () => {
         return (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">
+              <label className="block text-sm font-medium mb-1 text-[#7e868b]">
                 To whom are you writing this letter?
               </label>
               <Input
@@ -133,7 +133,7 @@ const GratitudePage = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">
+              <label className="block text-sm font-medium mb-1 text-[#7e868b]">
                 Your gratitude letter:
               </label>
               <Textarea
@@ -149,7 +149,7 @@ const GratitudePage = () => {
       default:
         return (
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-[#7e868b]">
               What are you grateful for today?
             </label>
             <Textarea
@@ -166,14 +166,14 @@ const GratitudePage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Gratitude Practices</h1>
-        <p className="text-muted-foreground">Cultivate appreciation for life's blessings</p>
+        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Gratitude Practices</h1>
+        <p className="text-[#7e868b]">Cultivate appreciation for life's blessings</p>
       </div>
       
       {selectedExercise ? (
         <Card className="p-6 bg-mental-peach/20">
-          <h2 className="text-2xl font-semibold mb-2">{selectedExercise.title}</h2>
-          <p className="mb-6">{selectedExercise.instructions}</p>
+          <h2 className="text-2xl font-semibold mb-2 text-[#7e868b]">{selectedExercise.title}</h2>
+          <p className="mb-6 text-[#7e868b]">{selectedExercise.instructions}</p>
           
           {renderExerciseForm()}
           
@@ -196,11 +196,11 @@ const GratitudePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {gratitudeExercises.map(exercise => (
             <Card key={exercise.id} className="p-6">
-              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#7e868b]">
                 <Heart className="h-5 w-5 text-mental-peach" />
                 {exercise.title}
               </h2>
-              <p className="mb-4">{exercise.description}</p>
+              <p className="mb-4 text-[#7e868b]">{exercise.description}</p>
               <Button
                 onClick={() => setSelectedExercise(exercise)}
                 className="w-full bg-mental-peach hover:bg-mental-peach/80"
@@ -213,19 +213,19 @@ const GratitudePage = () => {
       )}
       
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Your Gratitude Collection</h2>
+        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Your Gratitude Collection</h2>
         
         {gratitudeEntries.length === 0 ? (
-          <p className="text-center text-muted-foreground">Your gratitude entries will appear here</p>
+          <p className="text-center text-[#7e868b]">Your gratitude entries will appear here</p>
         ) : (
           <div className="space-y-4">
             {gratitudeEntries.map(entry => (
               <div key={entry.id} className="border border-mental-gray/20 rounded-md p-4">
-                <div className="flex items-center gap-1 mb-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1 mb-2 text-sm text-[#7e868b]">
                   <Check className="h-4 w-4 text-mental-green" />
                   <span>{formatDate(entry.date)}</span>
                 </div>
-                <p className="whitespace-pre-wrap">{entry.content}</p>
+                <p className="whitespace-pre-wrap text-[#7e868b]">{entry.content}</p>
               </div>
             ))}
           </div>
