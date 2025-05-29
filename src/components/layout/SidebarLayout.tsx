@@ -44,7 +44,7 @@ export function SidebarLayout({
   }];
   return <div className="flex min-h-screen">
       <Sidebar className="border-r border-mental-gray/20">
-        <SidebarHeader className="p-4 bg-[fadcd6]">
+        <SidebarHeader className="p-4 bg-[fadcd6] bg-mental-blue">
           <h1 className="font-bold text-center text-[_#7e868b] text-[#7e868b]">Making Meaning Psychology</h1>
         </SidebarHeader>
         <SidebarContent className="bg-[#fadcd6]">
@@ -64,9 +64,9 @@ export function SidebarLayout({
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter className="p-4 text-xs text-center text-gray-600">
+        <SidebarFooter className="p-4 text-xs text-center text-gray-600 bg-mental-blue">
           <p>© 2025 Making Meaning Psychology</p>
-          <p>A private psychology practice app</p>
+          
         </SidebarFooter>
       </Sidebar>
       <main className="flex-1 p-4 md:p-6">{children}</main>
