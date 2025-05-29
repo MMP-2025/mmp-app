@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,8 +59,8 @@ const HomePage = () => {
       
       {/* Question of the day - now at the top */}
       <Card className="p-6 bg-mental-blue/20">
-        <h2 className="text-xl font-semibold mb-4">Question of the Day</h2>
-        <p className="text-lg mb-4">{todaysQuestion}</p>
+        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Question of the Day</h2>
+        <p className="text-lg mb-4 text-[#7e868b]">{todaysQuestion}</p>
         
         <div className="space-y-4">
           <Input placeholder="Write your response..." value={response} onChange={e => setResponse(e.target.value)} className="bg-white" />
@@ -72,7 +73,7 @@ const HomePage = () => {
       {/* Quick access and mood tracker in the middle */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="p-6 bg-mental-beige/20">
-          <h2 className="text-xl font-semibold mb-2">Quick Access</h2>
+          <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">Quick Access</h2>
           <div className="grid grid-cols-2 gap-2">
             <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
               <Link to="/journal">My Journal</Link>
@@ -90,8 +91,8 @@ const HomePage = () => {
         </Card>
         
         <Card className="p-6 bg-mental-green/20">
-          <h2 className="text-xl font-semibold mb-2">How are you feeling?</h2>
-          <p className="mb-4">Take a moment to check in with yourself.</p>
+          <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">How are you feeling?</h2>
+          <p className="mb-4 text-[#7e868b]">Take a moment to check in with yourself.</p>
           <Button asChild className="w-full bg-mental-blue hover:bg-mental-blue/80">
             <Link to="/mood">Track My Mood</Link>
           </Button>
@@ -100,11 +101,11 @@ const HomePage = () => {
       
       {/* Quote of the day - moved to the bottom */}
       <Card className="p-6 bg-mental-peach/20">
-        <h2 className="text-xl font-semibold mb-4">Quote of the Day</h2>
-        <blockquote className="italic text-lg">
+        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Quote of the Day</h2>
+        <blockquote className="italic text-lg text-[#7e868b]">
           "{todaysQuote.text}"
         </blockquote>
-        <p className="text-right mt-2">— {todaysQuote.author}</p>
+        <p className="text-right mt-2 text-[#7e868b]">— {todaysQuote.author}</p>
       </Card>
     </div>;
 };
