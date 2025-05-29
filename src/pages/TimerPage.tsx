@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -147,7 +148,7 @@ const TimerPage = () => {
       <div className="flex items-center gap-4">
         <Button asChild variant="outline" size="sm">
           <Link to="/" className="flex items-center gap-2 text-[#7e868b]">
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 text-[#7e868b]" />
             Back to Home
           </Link>
         </Button>
@@ -171,7 +172,7 @@ const TimerPage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center text-[#7e868b]">
-                <Timer className="mr-2 h-5 w-5" />
+                <Timer className="mr-2 h-5 w-5 text-[#7e868b]" />
                 Pomodoro Timer
               </CardTitle>
             </CardHeader>
@@ -191,13 +192,13 @@ const TimerPage = () => {
                   onClick={() => setIsPomodoroPaused(!isPomodoroPaused)}
                 >
                   {isPomodoroPaused ? (
-                    <><Play className="mr-2 h-4 w-4" /> Start</>
+                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> Start</>
                   ) : (
-                    <><Pause className="mr-2 h-4 w-4" /> Pause</>
+                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> Pause</>
                   )}
                 </Button>
                 <Button variant="outline" onClick={resetPomodoro}>
-                  <RotateCcw className="mr-2 h-4 w-4" /> Reset
+                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> Reset
                 </Button>
               </div>
               
@@ -217,7 +218,7 @@ const TimerPage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center text-[#7e868b]">
-                <Clock className="mr-2 h-5 w-5" />
+                <Clock className="mr-2 h-5 w-5 text-[#7e868b]" />
                 Countdown Timer
               </CardTitle>
             </CardHeader>
@@ -297,13 +298,13 @@ const TimerPage = () => {
                   onClick={() => setIsCountdownPaused(!isCountdownPaused)}
                 >
                   {isCountdownPaused ? (
-                    <><Play className="mr-2 h-4 w-4" /> Start</>
+                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> Start</>
                   ) : (
-                    <><Pause className="mr-2 h-4 w-4" /> Pause</>
+                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> Pause</>
                   )}
                 </Button>
                 <Button variant="outline" onClick={resetCountdown}>
-                  <RotateCcw className="mr-2 h-4 w-4" /> Reset
+                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> Reset
                 </Button>
               </div>
             </CardContent>
@@ -315,7 +316,7 @@ const TimerPage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center text-[#7e868b]">
-                <Clock className="mr-2 h-5 w-5" />
+                <Clock className="mr-2 h-5 w-5 text-[#7e868b]" />
                 Stopwatch
               </CardTitle>
             </CardHeader>
@@ -332,13 +333,13 @@ const TimerPage = () => {
                   onClick={() => setIsStopwatchPaused(!isStopwatchPaused)}
                 >
                   {isStopwatchPaused ? (
-                    <><Play className="mr-2 h-4 w-4" /> Start</>
+                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> Start</>
                   ) : (
-                    <><Pause className="mr-2 h-4 w-4" /> Pause</>
+                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> Pause</>
                   )}
                 </Button>
                 <Button variant="outline" onClick={resetStopwatch}>
-                  <RotateCcw className="mr-2 h-4 w-4" /> Reset
+                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> Reset
                 </Button>
               </div>
             </CardContent>

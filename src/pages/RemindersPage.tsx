@@ -79,7 +79,7 @@ const RemindersPage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center text-[#7e868b]">
-                <Bell className="mr-2 h-5 w-5" />
+                <Bell className="mr-2 h-5 w-5 text-[#7e868b]" />
                 Add New Reminder
               </CardTitle>
             </CardHeader>
@@ -92,7 +92,7 @@ const RemindersPage = () => {
                   onKeyDown={(e) => e.key === 'Enter' && handleAddReminder()}
                 />
                 <Button onClick={handleAddReminder}>
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-4 w-4 text-[#7e868b]" />
                 </Button>
               </div>
             </CardContent>
@@ -149,7 +149,7 @@ const RemindersPage = () => {
           <Card className="sticky top-4">
             <CardHeader className="bg-mental-blue/20 rounded-t-lg">
               <CardTitle className="flex items-center text-[#7e868b]">
-                <Award className="mr-2 h-5 w-5" /> 
+                <Award className="mr-2 h-5 w-5 text-[#7e868b]" /> 
                 Reward System
               </CardTitle>
             </CardHeader>
@@ -174,19 +174,19 @@ const RemindersPage = () => {
                 <h3 className="font-medium text-[#7e868b]">Your Achievements</h3>
                 {rewardLevel >= 1 && (
                   <div className="bg-mental-blue/20 p-2 rounded-md flex items-center">
-                    <Check className="h-4 w-4 mr-2 text-mental-green" />
+                    <Check className="h-4 w-4 mr-2 text-[#7e868b]" />
                     <span className="text-[#7e868b]">Beginner Achiever</span>
                   </div>
                 )}
                 {rewardLevel >= 2 && (
                   <div className="bg-mental-blue/20 p-2 rounded-md flex items-center">
-                    <Check className="h-4 w-4 mr-2 text-mental-green" />
+                    <Check className="h-4 w-4 mr-2 text-[#7e868b]" />
                     <span className="text-[#7e868b]">Consistent Completer</span>
                   </div>
                 )}
                 {rewardLevel >= 3 && (
                   <div className="bg-mental-blue/20 p-2 rounded-md flex items-center">
-                    <Check className="h-4 w-4 mr-2 text-mental-green" />
+                    <Check className="h-4 w-4 mr-2 text-[#7e868b]" />
                     <span className="text-[#7e868b]">Task Master</span>
                   </div>
                 )}

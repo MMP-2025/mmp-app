@@ -89,14 +89,14 @@ const JournalPage = () => {
             onClick={getRandomPrompt}
             className="bg-mental-blue hover:bg-mental-blue/80 flex items-center gap-2"
           >
-            <Quote className="h-4 w-4" />
+            <Quote className="h-4 w-4 text-[#7e868b]" />
             Get Writing Prompt
           </Button>
           <Button
             onClick={startFreeWriting}
             className="bg-mental-green hover:bg-mental-green/80 flex items-center gap-2"
           >
-            <Edit className="h-4 w-4" />
+            <Edit className="h-4 w-4 text-[#7e868b]" />
             Free Writing
           </Button>
         </div>
@@ -135,7 +135,7 @@ const JournalPage = () => {
                   <p className="text-sm text-[#7e868b]">{formatDate(entry.date)}</p>
                   {entry.hasPrompt && (
                     <div className="flex items-center gap-1 text-xs text-mental-blue bg-mental-blue/10 px-2 py-1 rounded-full">
-                      <MessageSquare className="h-3 w-3" />
+                      <MessageSquare className="h-3 w-3 text-[#7e868b]" />
                       <span>Prompted</span>
                     </div>
                   )}
