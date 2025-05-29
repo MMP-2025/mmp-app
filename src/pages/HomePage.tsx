@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -72,7 +71,7 @@ const HomePage = () => {
       
       {/* Quick access and mood tracker in the middle */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="p-6 bg-mental-beige/20">
+        <Card className="p-6 bg-mental-beige/20 bg-[ccc6c6]">
           <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">Quick Access</h2>
           <div className="grid grid-cols-2 gap-2">
             <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
