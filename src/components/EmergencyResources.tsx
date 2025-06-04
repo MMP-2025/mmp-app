@@ -2,42 +2,108 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Phone, AlertTriangle } from 'lucide-react';
+import { Phone, AlertTriangle, MessageSquare, Globe } from 'lucide-react';
 
 const EmergencyResources = () => {
   const hotlines = [
     {
-      name: "National Suicide Prevention Lifeline",
+      name: "988 Suicide & Crisis Lifeline",
       number: "988",
-      description: "24/7 crisis support"
+      description: "For anyone in any mental health crisis",
+      options: [
+        { type: "call", value: "988", icon: Phone },
+        { type: "text", value: "988", icon: MessageSquare },
+        { type: "website", value: "988lifeline.org/chat", icon: Globe }
+      ]
     },
     {
-      name: "Crisis Text Line",
-      number: "Text HOME to 741741",
-      description: "24/7 text-based crisis support"
+      name: "NYC WELL",
+      number: "1-888-692-9355",
+      description: "Emotional support, mental health crisis, substance abuse (200+ languages)",
+      options: [
+        { type: "call", value: "1-888-692-9355", icon: Phone },
+        { type: "text", value: "Text 'WELL' to 65173", icon: MessageSquare }
+      ]
     },
     {
-      name: "National Domestic Violence Hotline",
-      number: "1-800-799-7233",
-      description: "24/7 confidential support"
+      name: "New York State HOPEline",
+      number: "1-877-846-7369",
+      description: "For gambling and chemical dependencies",
+      options: [
+        { type: "call", value: "1-877-846-7369", icon: Phone },
+        { type: "text", value: "Text 467369", icon: MessageSquare }
+      ]
     },
     {
-      name: "SAMHSA National Helpline",
-      number: "1-800-662-4357",
-      description: "Treatment referral and information"
+      name: "The Samaritans NYC",
+      number: "1-212-673-3000",
+      description: "Mental health crisis, trauma, loss, suicidality",
+      options: [
+        { type: "call", value: "1-212-673-3000", icon: Phone }
+      ]
     },
     {
-      name: "Trevor Project (LGBTQ+ Youth)",
-      number: "1-866-488-7386",
-      description: "24/7 crisis support for LGBTQ+ youth"
+      name: "NY Suicide Prevention Center",
+      number: "Text GOT5 to 741741",
+      description: "Anonymous crisis text line",
+      options: [
+        { type: "text", value: "Text GOT5 to 741741", icon: MessageSquare },
+        { type: "text", value: "Text GOT5U to 741741 (College Students)", icon: MessageSquare }
+      ]
+    },
+    {
+      name: "NY State Domestic Violence and Sexual Violence Hotline",
+      number: "1-800-942-6906",
+      description: "24-hour hotline available in most languages",
+      options: [
+        { type: "call", value: "1-800-942-6906", icon: Phone },
+        { type: "text", value: "844-997-2121", icon: MessageSquare }
+      ]
+    },
+    {
+      name: "Safe Horizon Domestic Violence Hotline",
+      number: "1-800-621-4673",
+      description: "24-hour hotline for domestic violence (most languages)",
+      options: [
+        { type: "call", value: "1-800-621-4673", icon: Phone }
+      ]
+    },
+    {
+      name: "Safe Horizon Rape and Sexual Assault Hotline",
+      number: "1-212-227-3000",
+      description: "24-hour hotline for rape and sexual assault victims",
+      options: [
+        { type: "call", value: "1-212-227-3000", icon: Phone }
+      ]
+    },
+    {
+      name: "Safe Horizon Crime Victims Hotline",
+      number: "1-866-689-4357",
+      description: "24-hour hotline for crime victims and families",
+      options: [
+        { type: "call", value: "1-866-689-4357", icon: Phone }
+      ]
+    },
+    {
+      name: "NY State Central Register of Child Abuse & Maltreatment",
+      number: "1-800-342-3720",
+      description: "To report child abuse",
+      options: [
+        { type: "call", value: "1-800-342-3720", icon: Phone }
+      ]
     }
   ];
 
-  const handleCall = (number: string) => {
-    // Remove non-numeric characters for tel: link
-    const cleanNumber = number.replace(/[^\d]/g, '');
-    if (cleanNumber) {
-      window.location.href = `tel:${cleanNumber}`;
+  const handleAction = (type: string, value: string) => {
+    if (type === "call") {
+      const cleanNumber = value.replace(/[^\d]/g, '');
+      if (cleanNumber) {
+        window.location.href = `tel:${cleanNumber}`;
+      }
+    } else if (type === "text") {
+      console.log(`Text action: ${value}`);
+    } else if (type === "website") {
+      window.open(`https://${value}`, '_blank');
     }
   };
 
@@ -54,21 +120,26 @@ const EmergencyResources = () => {
           If you're in crisis or need immediate support, please reach out:
         </p>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
           {hotlines.map((hotline, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border">
-              <div className="flex-1">
-                <h4 className="font-medium text-[#7e868b]">{hotline.name}</h4>
+            <div key={index} className="p-4 bg-white rounded-lg border">
+              <div className="mb-3">
+                <h4 className="font-medium text-[#7e868b] mb-1">{hotline.name}</h4>
                 <p className="text-sm text-[#7e868b]">{hotline.description}</p>
               </div>
-              <Button
-                onClick={() => handleCall(hotline.number)}
-                className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 shrink-0"
-                size="sm"
-              >
-                <Phone className="h-4 w-4" />
-                {hotline.number}
-              </Button>
+              <div className="flex flex-wrap gap-2">
+                {hotline.options.map((option, optionIndex) => (
+                  <Button
+                    key={optionIndex}
+                    onClick={() => handleAction(option.type, option.value)}
+                    className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 text-xs"
+                    size="sm"
+                  >
+                    <option.icon className="h-3 w-3" />
+                    {option.value}
+                  </Button>
+                ))}
+              </div>
             </div>
           ))}
         </div>

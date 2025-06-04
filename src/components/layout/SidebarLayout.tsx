@@ -18,11 +18,6 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       path: '/'
     },
     {
-      icon: Phone,
-      label: 'Crisis Resources',
-      path: '/crisis'
-    },
-    {
       icon: Smile,
       label: 'Mood Tracker',
       path: '/mood'
@@ -56,6 +51,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       icon: Pencil,
       label: 'Gratitude',
       path: '/gratitude'
+    },
+    {
+      icon: Phone,
+      label: 'Crisis Resources',
+      path: '/crisis'
     }
   ];
 
