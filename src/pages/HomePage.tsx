@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from "@/components/ui/sonner";
 import { Link } from 'react-router-dom';
+import EmergencyResources from '@/components/EmergencyResources';
+
 const quotes = [{
   text: "You don't have to control your thoughts. You just have to stop letting them control you.",
   author: "Dan Millman"
@@ -39,6 +41,7 @@ const HomePage = () => {
   const todaysQuote = getRandomItem(quotes);
   const todaysQuestion = getRandomItem(questions);
   const [response, setResponse] = useState('');
+
   const handleSubmitResponse = () => {
     if (!response.trim()) {
       toast.warning("Please write a response before submitting");
@@ -50,36 +53,48 @@ const HomePage = () => {
     console.log("Response submitted:", response);
     setResponse('');
   };
-  return <div className="space-y-8 max-w-4xl mx-auto">
+
+  return (
+    <div className="space-y-8 max-w-4xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold text-center mb-2 text-[#7e868b]">Welcome to Making Meaning Psychology</h1>
         <p className="text-center text-base font-normal text-[#7e868b]">Your daily companion for mental wellbeing</p>
       </div>
       
-      {/* Question of the day - now at the top */}
+      {/* Emergency Resources - at the top for immediate access */}
+      <EmergencyResources />
+      
+      {/* Question of the day */}
       <Card className="p-6 bg-mental-blue/20">
         <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Question of the Day</h2>
         <p className="text-lg mb-4 text-[#7e868b]">{todaysQuestion}</p>
         
         <div className="space-y-4">
-          <Input placeholder="Write your response..." value={response} onChange={e => setResponse(e.target.value)} className="bg-white" />
-          <Button onClick={handleSubmitResponse} className="w-full bg-mental-green hover:bg-mental-green/80">
+          <Input 
+            placeholder="Write your response..." 
+            value={response} 
+            onChange={e => setResponse(e.target.value)} 
+            className="bg-white" 
+          />
+          <Button 
+            onClick={handleSubmitResponse} 
+            className="w-full bg-mental-green hover:bg-mental-green/80"
+          >
             Submit Response
           </Button>
         </div>
       </Card>
       
-      {/* Quick access and mood tracker in the middle */}
+      {/* Quick access and mood tracker */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="p-6 bg-[ccc6c6] bg-mental-gray">
+        <Card className="p-6 bg-mental-gray">
           <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">Quick Access</h2>
           <div className="grid grid-cols-2 gap-2">
             <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
               <Link to="/journal">My Journal</Link>
             </Button>
             <Button asChild className="bg-mental-green hover:bg-mental-green/80 w-full text-left justify-start">
-              <Link to="/mood">Mood 
-Check-in</Link>
+              <Link to="/mood">Mood Check-in</Link>
             </Button>
             <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
               <Link to="/mindfulness">Mindfulness</Link>
@@ -99,7 +114,7 @@ Check-in</Link>
         </Card>
       </div>
       
-      {/* Quote of the day - moved to the bottom */}
+      {/* Quote of the day */}
       <Card className="p-6 bg-mental-peach/20">
         <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Quote of the Day</h2>
         <blockquote className="italic text-lg text-[#7e868b]">
@@ -107,6 +122,8 @@ Check-in</Link>
         </blockquote>
         <p className="text-right mt-2 text-[#7e868b]">— {todaysQuote.author}</p>
       </Card>
-    </div>;
+    </div>
+  );
 };
+
 export default HomePage;
