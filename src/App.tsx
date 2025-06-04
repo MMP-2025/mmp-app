@@ -16,6 +16,9 @@ import PlannerPage from "./pages/PlannerPage";
 import RemindersPage from "./pages/RemindersPage";
 import TimerPage from "./pages/TimerPage";
 import CrisisResourcesPage from "./pages/CrisisResourcesPage";
+import SupportToolkitPage from "./pages/SupportToolkitPage";
+import ProfilePage from "./pages/ProfilePage";
+import CommunityPage from "./pages/CommunityPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -83,6 +86,27 @@ const App = () => (
                 <div className="bg-mental-green min-h-screen">
                   <SidebarLayout>
                     <TimerPage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/support-toolkit" element={
+                <div className="bg-mental-beige min-h-screen">
+                  <SidebarLayout>
+                    <SupportToolkitPage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/profile" element={
+                <div className="bg-mental-gray min-h-screen">
+                  <SidebarLayout>
+                    <ProfilePage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/community" element={
+                <div className="bg-mental-blue min-h-screen">
+                  <SidebarLayout>
+                    <CommunityPage />
                   </SidebarLayout>
                 </div>
               } />

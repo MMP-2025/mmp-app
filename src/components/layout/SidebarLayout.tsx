@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone, FolderOpen, User, Users } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { Link, useLocation } from 'react-router-dom';
 
@@ -10,12 +10,19 @@ interface SidebarLayoutProps {
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   const location = useLocation();
+  const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   
   const menuItems = [
     {
       icon: Home,
       label: 'Home',
       path: '/'
+    },
+    {
+      icon: User,
+      label: 'Profile',
+      path: '/profile'
     },
     {
       icon: Smile,
@@ -53,47 +60,96 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       path: '/gratitude'
     },
     {
+      icon: FolderOpen,
+      label: 'Support Toolkit',
+      path: '/support-toolkit'
+    },
+    {
+      icon: Users,
+      label: 'Community',
+      path: '/community'
+    },
+    {
       icon: Phone,
       label: 'Crisis Resources',
       path: '/crisis'
     }
   ];
 
+  // Auto-hide after 3 seconds when not interacting
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    
+    if (isClicked && !isHovered) {
+      timeout = setTimeout(() => {
+        setIsClicked(false);
+      }, 3000);
+    }
+    
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [isClicked, isHovered]);
+
+  const sidebarVisible = isHovered || isClicked;
+
   return (
     <div className="flex min-h-screen">
-      <Sidebar className="border-r border-mental-gray/20">
-        <SidebarHeader className="p-4 bg-[fadcd6] bg-mental-blue">
-          <h1 className="font-bold text-center text-[_#7e868b] text-[#7e868b]">Making Meaning Psychology</h1>
-        </SidebarHeader>
-        <SidebarContent className="bg-[#fadcd6]">
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-gray-700">Navigation</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {menuItems.map(item => (
-                  <SidebarMenuItem key={item.label}>
-                    <SidebarMenuButton asChild>
-                      <Link
-                        to={item.path}
-                        className={`flex items-center gap-2 text-gray-800 ${
-                          location.pathname === item.path ? 'text-primary font-medium' : ''
-                        }`}
-                      >
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter className="p-4 text-xs text-center text-gray-600 bg-mental-blue">
-          <p>© 2025 Making Meaning Psychology</p>
-        </SidebarFooter>
-      </Sidebar>
-      <main className="flex-1 p-4 md:p-6">{children}</main>
+      <div 
+        className={`fixed left-0 top-0 h-full z-50 transition-transform duration-300 ${
+          sidebarVisible ? 'translate-x-0' : '-translate-x-full'
+        }`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <Sidebar className="border-r border-mental-gray/20 h-full">
+          <SidebarHeader className="p-4 bg-[#fadcd6]">
+            <h1 className="font-bold text-center text-[#7e868b]">Making Meaning Psychology</h1>
+          </SidebarHeader>
+          <SidebarContent className="bg-[#fadcd6]">
+            <SidebarGroup>
+              <SidebarGroupLabel className="text-gray-700">Navigation</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {menuItems.map(item => (
+                    <SidebarMenuItem key={item.label}>
+                      <SidebarMenuButton asChild>
+                        <Link
+                          to={item.path}
+                          className={`flex items-center gap-2 text-gray-800 ${
+                            location.pathname === item.path ? 'text-primary font-medium' : ''
+                          }`}
+                        >
+                          <item.icon className="h-5 w-5" />
+                          <span>{item.label}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter className="p-4 text-xs text-center text-gray-600 bg-[#fadcd6]">
+            <p>© 2025 Making Meaning Psychology</p>
+          </SidebarFooter>
+        </Sidebar>
+      </div>
+
+      {/* Click area to show sidebar when hidden */}
+      {!sidebarVisible && (
+        <div 
+          className="fixed left-0 top-0 w-4 h-full z-40 cursor-pointer bg-gradient-to-r from-[#fadcd6]/50 to-transparent"
+          onClick={() => setIsClicked(true)}
+          onMouseEnter={() => setIsHovered(true)}
+        />
+      )}
+
+      <main className={`flex-1 p-4 md:p-6 transition-all duration-300 ${
+        sidebarVisible ? 'ml-64' : 'ml-0'
+      }`}>
+        {children}
+      </main>
     </div>
   );
 }
