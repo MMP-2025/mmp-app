@@ -15,6 +15,7 @@ import GratitudePage from "./pages/GratitudePage";
 import PlannerPage from "./pages/PlannerPage";
 import RemindersPage from "./pages/RemindersPage";
 import TimerPage from "./pages/TimerPage";
+import CrisisResourcesPage from "./pages/CrisisResourcesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,13 @@ const App = () => (
                 <div className="bg-mental-peach min-h-screen">
                   <SidebarLayout>
                     <HomePage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/crisis" element={
+                <div className="bg-red-50 min-h-screen">
+                  <SidebarLayout>
+                    <CrisisResourcesPage />
                   </SidebarLayout>
                 </div>
               } />

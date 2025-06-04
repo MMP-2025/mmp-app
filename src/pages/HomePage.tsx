@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from "@/components/ui/sonner";
 import { Link } from 'react-router-dom';
-import EmergencyResources from '@/components/EmergencyResources';
 
 const quotes = [{
   text: "You don't have to control your thoughts. You just have to stop letting them control you.",
@@ -28,7 +28,9 @@ const quotes = [{
   text: "Your present circumstances don't determine where you can go; they merely determine where you start.",
   author: "Nido Qubein"
 }];
+
 const questions = ["What brought you joy today?", "What's one small thing you can do for yourself today?", "What are you grateful for right now?", "What's something that challenged you recently, and how did you handle it?", "What's one boundary you want to set this week?", "What helps you feel calm when you're stressed?", "What's one self-care activity you'd like to try?"];
+
 const getRandomItem = (array: any[]) => {
   // Use date as seed to get the same item for the entire day
   const today = new Date();
@@ -37,6 +39,7 @@ const getRandomItem = (array: any[]) => {
   const index = seed % array.length;
   return array[index];
 };
+
 const HomePage = () => {
   const todaysQuote = getRandomItem(quotes);
   const todaysQuestion = getRandomItem(questions);
@@ -60,9 +63,6 @@ const HomePage = () => {
         <h1 className="text-3xl font-bold text-center mb-2 text-[#7e868b]">Welcome to Making Meaning Psychology</h1>
         <p className="text-center text-base font-normal text-[#7e868b]">Your daily companion for mental wellbeing</p>
       </div>
-      
-      {/* Emergency Resources - at the top for immediate access */}
-      <EmergencyResources />
       
       {/* Question of the day */}
       <Card className="p-6 bg-mental-blue/20">
