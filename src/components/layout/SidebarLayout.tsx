@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone, FolderOpen, User, Users } from 'lucide-react';
+import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone, FolderOpen, User, Users, Menu, Settings } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 
 interface SidebarLayoutProps {
@@ -73,6 +74,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       icon: Phone,
       label: 'Crisis Resources',
       path: '/crisis'
+    },
+    {
+      icon: Settings,
+      label: 'Provider Dashboard',
+      path: '/provider-dashboard'
     }
   ];
 
@@ -95,8 +101,18 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
   return (
     <div className="flex min-h-screen">
+      {/* Menu trigger button - always visible */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className="fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90"
+        onClick={() => setIsClicked(true)}
+      >
+        <Menu className="h-5 w-5" />
+      </Button>
+
       <div 
-        className={`fixed left-0 top-0 h-full z-50 transition-transform duration-300 ${
+        className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 ${
           sidebarVisible ? 'translate-x-0' : '-translate-x-full'
         }`}
         onMouseEnter={() => setIsHovered(true)}
@@ -136,10 +152,10 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         </Sidebar>
       </div>
 
-      {/* Click area to show sidebar when hidden */}
+      {/* Click area to show sidebar when hidden - reduced width */}
       {!sidebarVisible && (
         <div 
-          className="fixed left-0 top-0 w-4 h-full z-40 cursor-pointer bg-gradient-to-r from-[#fadcd6]/50 to-transparent"
+          className="fixed left-0 top-0 w-2 h-full z-30 cursor-pointer"
           onClick={() => setIsClicked(true)}
           onMouseEnter={() => setIsHovered(true)}
         />

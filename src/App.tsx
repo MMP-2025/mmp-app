@@ -19,6 +19,7 @@ import CrisisResourcesPage from "./pages/CrisisResourcesPage";
 import SupportToolkitPage from "./pages/SupportToolkitPage";
 import ProfilePage from "./pages/ProfilePage";
 import CommunityPage from "./pages/CommunityPage";
+import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -107,6 +108,13 @@ const App = () => (
                 <div className="bg-mental-blue min-h-screen">
                   <SidebarLayout>
                     <CommunityPage />
+                  </SidebarLayout>
+                </div>
+              } />
+              <Route path="/provider-dashboard" element={
+                <div className="bg-mental-gray min-h-screen">
+                  <SidebarLayout>
+                    <ProviderDashboard />
                   </SidebarLayout>
                 </div>
               } />
