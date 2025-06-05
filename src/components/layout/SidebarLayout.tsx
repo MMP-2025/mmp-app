@@ -4,6 +4,8 @@ import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phon
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import UserProfile from './UserProfile';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -11,6 +13,7 @@ interface SidebarLayoutProps {
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   const location = useLocation();
+  const { isProvider } = useAuth();
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   
@@ -74,13 +77,17 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       icon: Phone,
       label: 'Crisis Resources',
       path: '/crisis'
-    },
-    {
+    }
+  ];
+
+  // Add Provider Dashboard link only for providers
+  if (isProvider) {
+    menuItems.push({
       icon: Settings,
       label: 'Provider Dashboard',
       path: '/provider-dashboard'
-    }
-  ];
+    });
+  }
 
   // Auto-hide after 3 seconds when not interacting
   useEffect(() => {
@@ -110,6 +117,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       >
         <Menu className="h-5 w-5" />
       </Button>
+
+      {/* User Profile in top right */}
+      <div className="fixed top-4 right-4 z-50">
+        <UserProfile />
+      </div>
 
       <div 
         className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 ${

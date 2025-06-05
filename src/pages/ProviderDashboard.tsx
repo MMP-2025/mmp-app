@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,11 +14,13 @@ interface Quote {
   category: string;
 }
 
+type JournalPromptDifficulty = 'beginner' | 'intermediate' | 'advanced';
+
 interface JournalPrompt {
   id: string;
   prompt: string;
   category: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: JournalPromptDifficulty;
 }
 
 interface Resource {
@@ -36,7 +37,11 @@ const ProviderDashboard = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   
   const [newQuote, setNewQuote] = useState({ text: '', author: '', category: '' });
-  const [newPrompt, setNewPrompt] = useState({ prompt: '', category: '', difficulty: 'beginner' as const });
+  const [newPrompt, setNewPrompt] = useState<{ prompt: string; category: string; difficulty: JournalPromptDifficulty }>({ 
+    prompt: '', 
+    category: '', 
+    difficulty: 'beginner'
+  });
   const [newResource, setNewResource] = useState({ title: '', description: '', content: '', category: '' });
   
   const { toast } = useToast();
@@ -221,7 +226,7 @@ const ProviderDashboard = () => {
                 />
                 <select
                   value={newPrompt.difficulty}
-                  onChange={(e) => setNewPrompt(prev => ({ ...prev, difficulty: e.target.value as 'beginner' | 'intermediate' | 'advanced' }))}
+                  onChange={(e) => setNewPrompt(prev => ({ ...prev, difficulty: e.target.value as JournalPromptDifficulty }))}
                   className="p-2 border border-gray-300 rounded-md"
                 >
                   <option value="beginner">Beginner</option>
