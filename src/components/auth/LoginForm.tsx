@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,17 +7,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<UserRole>('patient');
   const [isLoading, setIsLoading] = useState(false);
-  const {
-    login
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
+  const { login } = useAuth();
+  const { toast } = useToast();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -36,7 +35,9 @@ const LoginForm = () => {
       setIsLoading(false);
     }
   };
-  return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="bg-mental-gray">
           <CardTitle className="text-2xl text-center text-[#7e868b]">
@@ -48,12 +49,28 @@ const LoginForm = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="email" className="">Email</Label>
-              <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-mental-gray" />
+              <Input 
+                id="email" 
+                type="email" 
+                value={email} 
+                onChange={e => setEmail(e.target.value)} 
+                required 
+                placeholder="Enter your email" 
+                className="bg-mental-gray" 
+              />
             </div>
             
             <div>
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="Enter your password" className="bg-mental-gray" />
+              <Input 
+                id="password" 
+                type="password" 
+                value={password} 
+                onChange={e => setPassword(e.target.value)} 
+                required 
+                placeholder="Enter your password" 
+                className="bg-mental-gray" 
+              />
             </div>
 
             <div className="bg-transparent">
@@ -65,11 +82,16 @@ const LoginForm = () => {
                 <SelectContent>
                   <SelectItem value="patient">Patient</SelectItem>
                   <SelectItem value="provider">Provider</SelectItem>
+                  <SelectItem value="non-patient">Non-Patient</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray">
+            <Button 
+              type="submit" 
+              disabled={isLoading} 
+              className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray"
+            >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
@@ -78,9 +100,12 @@ const LoginForm = () => {
             <p className="mb-2">Demo credentials:</p>
             <p><strong>Patient:</strong> patient@example.com / password</p>
             <p><strong>Provider:</strong> provider@example.com / password</p>
+            <p><strong>Non-Patient:</strong> nonpatient@example.com / password</p>
           </div>
         </CardContent>
       </Card>
-    </div>;
+    </div>
+  );
 };
+
 export default LoginForm;
