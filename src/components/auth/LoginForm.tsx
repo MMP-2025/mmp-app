@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,20 +6,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<UserRole>('patient');
   const [isLoading, setIsLoading] = useState(false);
-  
-  const { login } = useAuth();
-  const { toast } = useToast();
-
+  const {
+    login
+  } = useAuth();
+  const {
+    toast
+  } = useToast();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       await login(email, password, role);
       toast({
@@ -37,43 +36,27 @@ const LoginForm = () => {
       setIsLoading(false);
     }
   };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
+  return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
       <Card className="w-full max-w-md">
-        <CardHeader>
+        <CardHeader className="bg-mental-gray">
           <CardTitle className="text-2xl text-center text-[#7e868b]">
             Making Meaning Psychology
           </CardTitle>
-          <p className="text-center text-gray-600">Sign in to your account</p>
+          <p className="text-center text-mental-peach">Sign in to your account</p>
         </CardHeader>
-        <CardContent>
+        <CardContent className="bg-mental-gray">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Enter your email"
-              />
+              <Label htmlFor="email" className="">Email</Label>
+              <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-mental-gray" />
             </div>
             
             <div>
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Enter your password"
-              />
+              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="Enter your password" className="bg-mental-gray" />
             </div>
 
-            <div>
+            <div className="bg-transparent">
               <Label htmlFor="role">Role</Label>
               <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
                 <SelectTrigger>
@@ -86,7 +69,7 @@ const LoginForm = () => {
               </Select>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray">
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
@@ -98,8 +81,6 @@ const LoginForm = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
-
 export default LoginForm;
