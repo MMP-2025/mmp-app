@@ -1,13 +1,23 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Quote, FileText, HelpCircle, Trash2, Edit, Bell, Heart, Wrench } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+// Import form and list components
+import QuoteForm from '@/components/provider/QuoteForm';
+import QuoteList from '@/components/provider/QuoteList';
+import JournalPromptForm from '@/components/provider/JournalPromptForm';
+import JournalPromptList from '@/components/provider/JournalPromptList';
+import QuestionForm from '@/components/provider/QuestionForm';
+import QuestionList from '@/components/provider/QuestionList';
+import ToolkitForm from '@/components/provider/ToolkitForm';
+import ToolkitList from '@/components/provider/ToolkitList';
+import ReminderForm from '@/components/provider/ReminderForm';
+import ReminderList from '@/components/provider/ReminderList';
+import GratitudeForm from '@/components/provider/GratitudeForm';
+import GratitudeList from '@/components/provider/GratitudeList';
+
+// Type definitions
 interface Quote {
   id: string;
   text: string;
@@ -64,15 +74,16 @@ interface GratitudePrompt {
 }
 
 const ProviderDashboard = () => {
+  // State management
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [journalPrompts, setJournalPrompts] = useState<JournalPrompt[]>([]);
   const [resources, setResources] = useState<Resource[]>([]);
-  
   const [questions, setQuestions] = useState<Question[]>([]);
   const [toolkitItems, setToolkitItems] = useState<ToolkitItem[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [gratitudePrompts, setGratitudePrompts] = useState<GratitudePrompt[]>([]);
   
+  // Form states
   const [newQuote, setNewQuote] = useState({ text: '', author: '', category: '' });
   const [newPrompt, setNewPrompt] = useState<{ prompt: string; category: string; difficulty: JournalPromptDifficulty }>({ 
     prompt: '', 
@@ -80,7 +91,6 @@ const ProviderDashboard = () => {
     difficulty: 'beginner'
   });
   const [newResource, setNewResource] = useState({ title: '', description: '', content: '', category: '' });
-  
   const [newQuestion, setNewQuestion] = useState<{ question: string; category: string; type: Question['type'] }>({ question: '', category: '', type: 'reflection' });
   const [newToolkitItem, setNewToolkitItem] = useState({ title: '', description: '', instructions: '', category: '', duration: '' });
   const [newReminder, setNewReminder] = useState<{ title: string; message: string; frequency: Reminder['frequency']; category: string }>({ title: '', message: '', frequency: 'daily', category: '' });
@@ -88,6 +98,7 @@ const ProviderDashboard = () => {
   
   const { toast } = useToast();
 
+  // Handler functions
   const handleAddQuote = () => {
     if (!newQuote.text.trim()) return;
     
@@ -225,6 +236,7 @@ const ProviderDashboard = () => {
     });
   };
 
+  // Delete handlers
   const handleDeleteQuote = (id: string) => {
     setQuotes(prev => prev.filter(q => q.id !== id));
     toast({ title: "Quote deleted", description: "The quote has been removed." });
@@ -278,476 +290,75 @@ const ProviderDashboard = () => {
         </TabsList>
 
         <TabsContent value="quotes" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Plus className="h-5 w-5" />
-                Add New Quote
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Textarea
-                placeholder="Enter inspirational quote..."
-                value={newQuote.text}
-                onChange={(e) => setNewQuote(prev => ({ ...prev, text: e.target.value }))}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  placeholder="Author (optional)"
-                  value={newQuote.author}
-                  onChange={(e) => setNewQuote(prev => ({ ...prev, author: e.target.value }))}
-                />
-                <Input
-                  placeholder="Category (e.g., Motivation, Healing)"
-                  value={newQuote.category}
-                  onChange={(e) => setNewQuote(prev => ({ ...prev, category: e.target.value }))}
-                />
-              </div>
-              <Button onClick={handleAddQuote}>Add Quote</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Quote className="h-5 w-5" />
-                Saved Quotes ({quotes.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {quotes.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No quotes added yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {quotes.map(quote => (
-                    <div key={quote.id} className="p-4 border rounded-lg bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <p className="text-[#7e868b] mb-2">"{quote.text}"</p>
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <span>— {quote.author}</span>
-                            <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                              {quote.category}
-                            </span>
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteQuote(quote.id)}
-                          className="text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <QuoteForm 
+            newQuote={newQuote}
+            setNewQuote={setNewQuote}
+            onAddQuote={handleAddQuote}
+          />
+          <QuoteList 
+            quotes={quotes}
+            onDeleteQuote={handleDeleteQuote}
+          />
         </TabsContent>
 
         <TabsContent value="prompts" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Plus className="h-5 w-5" />
-                Add New Journal Prompt
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Textarea
-                placeholder="Enter journal prompt..."
-                value={newPrompt.prompt}
-                onChange={(e) => setNewPrompt(prev => ({ ...prev, prompt: e.target.value }))}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  placeholder="Category (e.g., Self-reflection, Goals)"
-                  value={newPrompt.category}
-                  onChange={(e) => setNewPrompt(prev => ({ ...prev, category: e.target.value }))}
-                />
-                <select
-                  value={newPrompt.difficulty}
-                  onChange={(e) => setNewPrompt(prev => ({ ...prev, difficulty: e.target.value as JournalPromptDifficulty }))}
-                  className="p-2 border border-gray-300 rounded-md"
-                >
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
-                </select>
-              </div>
-              <Button onClick={handleAddPrompt}>Add Prompt</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <FileText className="h-5 w-5" />
-                Saved Prompts ({journalPrompts.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {journalPrompts.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No prompts added yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {journalPrompts.map(prompt => (
-                    <div key={prompt.id} className="p-4 border rounded-lg bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <p className="text-[#7e868b] mb-2">{prompt.prompt}</p>
-                          <div className="flex items-center gap-2 text-sm">
-                            <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                              {prompt.category}
-                            </span>
-                            <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">
-                              {prompt.difficulty}
-                            </span>
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeletePrompt(prompt.id)}
-                          className="text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <JournalPromptForm 
+            newPrompt={newPrompt}
+            setNewPrompt={setNewPrompt}
+            onAddPrompt={handleAddPrompt}
+          />
+          <JournalPromptList 
+            journalPrompts={journalPrompts}
+            onDeletePrompt={handleDeletePrompt}
+          />
         </TabsContent>
 
         <TabsContent value="questions" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Plus className="h-5 w-5" />
-                Add New Question
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Textarea
-                placeholder="Enter question..."
-                value={newQuestion.question}
-                onChange={(e) => setNewQuestion(prev => ({ ...prev, question: e.target.value }))}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  placeholder="Category (e.g., Mental Health, Wellness)"
-                  value={newQuestion.category}
-                  onChange={(e) => setNewQuestion(prev => ({ ...prev, category: e.target.value }))}
-                />
-                <select
-                  value={newQuestion.type}
-                  onChange={(e) => setNewQuestion(prev => ({ ...prev, type: e.target.value as Question['type'] }))}
-                  className="p-2 border border-gray-300 rounded-md"
-                >
-                  <option value="reflection">Reflection</option>
-                  <option value="assessment">Assessment</option>
-                  <option value="screening">Screening</option>
-                </select>
-              </div>
-              <Button onClick={handleAddQuestion}>Add Question</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <HelpCircle className="h-5 w-5" />
-                Saved Questions ({questions.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {questions.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No questions added yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {questions.map(question => (
-                    <div key={question.id} className="p-4 border rounded-lg bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <p className="text-[#7e868b] mb-2">{question.question}</p>
-                          <div className="flex items-center gap-2 text-sm">
-                            <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                              {question.category}
-                            </span>
-                            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
-                              {question.type}
-                            </span>
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteQuestion(question.id)}
-                          className="text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <QuestionForm 
+            newQuestion={newQuestion}
+            setNewQuestion={setNewQuestion}
+            onAddQuestion={handleAddQuestion}
+          />
+          <QuestionList 
+            questions={questions}
+            onDeleteQuestion={handleDeleteQuestion}
+          />
         </TabsContent>
 
         <TabsContent value="toolkit" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Plus className="h-5 w-5" />
-                Add New Toolkit Item
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input
-                placeholder="Toolkit item title..."
-                value={newToolkitItem.title}
-                onChange={(e) => setNewToolkitItem(prev => ({ ...prev, title: e.target.value }))}
-              />
-              <Input
-                placeholder="Brief description..."
-                value={newToolkitItem.description}
-                onChange={(e) => setNewToolkitItem(prev => ({ ...prev, description: e.target.value }))}
-              />
-              <Textarea
-                placeholder="Step-by-step instructions..."
-                value={newToolkitItem.instructions}
-                onChange={(e) => setNewToolkitItem(prev => ({ ...prev, instructions: e.target.value }))}
-                rows={4}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  placeholder="Category (e.g., Breathing, Grounding)"
-                  value={newToolkitItem.category}
-                  onChange={(e) => setNewToolkitItem(prev => ({ ...prev, category: e.target.value }))}
-                />
-                <Input
-                  placeholder="Duration (e.g., 5 minutes)"
-                  value={newToolkitItem.duration}
-                  onChange={(e) => setNewToolkitItem(prev => ({ ...prev, duration: e.target.value }))}
-                />
-              </div>
-              <Button onClick={handleAddToolkitItem}>Add Toolkit Item</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Wrench className="h-5 w-5" />
-                Saved Toolkit Items ({toolkitItems.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {toolkitItems.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No toolkit items added yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {toolkitItems.map(item => (
-                    <div key={item.id} className="p-4 border rounded-lg bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-[#7e868b] mb-1">{item.title}</h4>
-                          <p className="text-sm text-gray-600 mb-2">{item.description}</p>
-                          <p className="text-sm text-gray-700 mb-2">{item.instructions.substring(0, 100)}...</p>
-                          <div className="flex items-center gap-2 text-sm">
-                            <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                              {item.category}
-                            </span>
-                            {item.duration && (
-                              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                                {item.duration}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteToolkitItem(item.id)}
-                          className="text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <ToolkitForm 
+            newToolkitItem={newToolkitItem}
+            setNewToolkitItem={setNewToolkitItem}
+            onAddToolkitItem={handleAddToolkitItem}
+          />
+          <ToolkitList 
+            toolkitItems={toolkitItems}
+            onDeleteToolkitItem={handleDeleteToolkitItem}
+          />
         </TabsContent>
 
         <TabsContent value="reminders" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Plus className="h-5 w-5" />
-                Add New Reminder
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input
-                placeholder="Reminder title..."
-                value={newReminder.title}
-                onChange={(e) => setNewReminder(prev => ({ ...prev, title: e.target.value }))}
-              />
-              <Textarea
-                placeholder="Reminder message..."
-                value={newReminder.message}
-                onChange={(e) => setNewReminder(prev => ({ ...prev, message: e.target.value }))}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  placeholder="Category (e.g., Self-care, Medication)"
-                  value={newReminder.category}
-                  onChange={(e) => setNewReminder(prev => ({ ...prev, category: e.target.value }))}
-                />
-                <select
-                  value={newReminder.frequency}
-                  onChange={(e) => setNewReminder(prev => ({ ...prev, frequency: e.target.value as Reminder['frequency'] }))}
-                  className="p-2 border border-gray-300 rounded-md"
-                >
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option>
-                </select>
-              </div>
-              <Button onClick={handleAddReminder}>Add Reminder</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Bell className="h-5 w-5" />
-                Saved Reminders ({reminders.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {reminders.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No reminders added yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {reminders.map(reminder => (
-                    <div key={reminder.id} className="p-4 border rounded-lg bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-[#7e868b] mb-1">{reminder.title}</h4>
-                          <p className="text-sm text-gray-700 mb-2">{reminder.message}</p>
-                          <div className="flex items-center gap-2 text-sm">
-                            <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">
-                              {reminder.category}
-                            </span>
-                            <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">
-                              {reminder.frequency}
-                            </span>
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteReminder(reminder.id)}
-                          className="text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <ReminderForm 
+            newReminder={newReminder}
+            setNewReminder={setNewReminder}
+            onAddReminder={handleAddReminder}
+          />
+          <ReminderList 
+            reminders={reminders}
+            onDeleteReminder={handleDeleteReminder}
+          />
         </TabsContent>
 
         <TabsContent value="gratitude" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Plus className="h-5 w-5" />
-                Add New Gratitude Prompt
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Textarea
-                placeholder="Enter gratitude prompt..."
-                value={newGratitudePrompt.prompt}
-                onChange={(e) => setNewGratitudePrompt(prev => ({ ...prev, prompt: e.target.value }))}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  placeholder="Category (e.g., Daily, Relationships)"
-                  value={newGratitudePrompt.category}
-                  onChange={(e) => setNewGratitudePrompt(prev => ({ ...prev, category: e.target.value }))}
-                />
-                <select
-                  value={newGratitudePrompt.difficulty}
-                  onChange={(e) => setNewGratitudePrompt(prev => ({ ...prev, difficulty: e.target.value as GratitudePrompt['difficulty'] }))}
-                  className="p-2 border border-gray-300 rounded-md"
-                >
-                  <option value="simple">Simple</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="deep">Deep</option>
-                </select>
-              </div>
-              <Button onClick={handleAddGratitudePrompt}>Add Gratitude Prompt</Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-                <Heart className="h-5 w-5" />
-                Saved Gratitude Prompts ({gratitudePrompts.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {gratitudePrompts.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No gratitude prompts added yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {gratitudePrompts.map(prompt => (
-                    <div key={prompt.id} className="p-4 border rounded-lg bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <p className="text-[#7e868b] mb-2">{prompt.prompt}</p>
-                          <div className="flex items-center gap-2 text-sm">
-                            <span className="px-2 py-1 bg-pink-100 text-pink-800 rounded-full text-xs">
-                              {prompt.category}
-                            </span>
-                            <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs">
-                              {prompt.difficulty}
-                            </span>
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteGratitudePrompt(prompt.id)}
-                          className="text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <GratitudeForm 
+            newGratitudePrompt={newGratitudePrompt}
+            setNewGratitudePrompt={setNewGratitudePrompt}
+            onAddGratitudePrompt={handleAddGratitudePrompt}
+          />
+          <GratitudeList 
+            gratitudePrompts={gratitudePrompts}
+            onDeleteGratitudePrompt={handleDeleteGratitudePrompt}
+          />
         </TabsContent>
       </Tabs>
     </div>
