@@ -6,8 +6,8 @@ const CrisisResourcesPage = () => {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold text-center mb-2 text-foreground">Crisis Resources</h1>
-        <p className="text-center text-base font-normal text-muted-foreground">
+        <h1 className="text-3xl font-bold text-center mb-2" style={{color: '#737373'}}>Crisis Resources</h1>
+        <p className="text-center text-base font-normal" style={{color: '#737373'}}>
           Immediate support and resources when you need them most
         </p>
       </div>
@@ -15,11 +15,11 @@ const CrisisResourcesPage = () => {
       <EmergencyResources />
       
       <div className="bg-white rounded-lg p-6 border shadow-sm">
-        <h2 className="text-xl font-semibold mb-4 text-foreground">Additional Resources</h2>
-        <div className="space-y-4 text-foreground">
+        <h2 className="text-xl font-semibold mb-4" style={{color: '#737373'}}>Additional Resources</h2>
+        <div className="space-y-4">
           <div>
-            <h3 className="font-medium">When to Seek Emergency Help</h3>
-            <ul className="list-disc list-inside text-sm space-y-1 mt-2 text-muted-foreground">
+            <h3 className="font-medium" style={{color: '#737373'}}>When to Seek Emergency Help</h3>
+            <ul className="list-disc list-inside text-sm space-y-1 mt-2" style={{color: '#737373'}}>
               <li>Having thoughts of harming yourself or others</li>
               <li>Feeling like you might act on suicidal thoughts</li>
               <li>Experiencing severe panic or anxiety attacks</li>
@@ -29,8 +29,8 @@ const CrisisResourcesPage = () => {
           </div>
           
           <div>
-            <h3 className="font-medium">Online Resources</h3>
-            <ul className="list-disc list-inside text-sm space-y-1 mt-2 text-muted-foreground">
+            <h3 className="font-medium" style={{color: '#737373'}}>Online Resources</h3>
+            <ul className="list-disc list-inside text-sm space-y-1 mt-2" style={{color: '#737373'}}>
               <li>Crisis Text Line: Text support available 24/7</li>
               <li>National Suicide Prevention Lifeline: 24/7 phone support</li>
               <li>SAMHSA Treatment Locator: Find local mental health services</li>
@@ -39,7 +39,7 @@ const CrisisResourcesPage = () => {
           </div>
           
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <p className="text-sm font-medium text-yellow-800">
+            <p className="text-sm font-medium" style={{color: '#737373'}}>
               Remember: Seeking help is a sign of strength, not weakness. These resources are here to support you.
             </p>
           </div>

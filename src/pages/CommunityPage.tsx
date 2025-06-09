@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Heart, MessageCircle, Users, Plus, Calendar, Smile, Frown, Meh, Bell, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+
 interface MoodPost {
   id: string;
   author: string;
@@ -140,38 +141,38 @@ const CommunityPage = () => {
   };
   return <div className="container mx-auto p-6 space-y-6 max-w-4xl ml-16">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Community & Wellness</h1>
-        <p className="text-[#7e868b]">Share your journey anonymously and stay motivated with daily reminders.</p>
+        <h1 className="text-3xl font-bold mb-2" style={{color: '#737373'}}>Community & Wellness</h1>
+        <p style={{color: '#737373'}}>Share your journey anonymously and stay motivated with daily reminders.</p>
       </div>
 
       {/* Community Stats and Reminders */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <Card className="bg-mental-peach">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+            <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
               <Users className="h-5 w-5" />
               Community Stats
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Active Members</span>
-              <span className="font-bold text-[#7e868b]">1,234</span>
+              <span className="text-sm" style={{color: '#737373'}}>Active Members</span>
+              <span className="font-bold" style={{color: '#737373'}}>1,234</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Posts Today</span>
-              <span className="font-bold text-[#7e868b]">89</span>
+              <span className="text-sm" style={{color: '#737373'}}>Posts Today</span>
+              <span className="font-bold" style={{color: '#737373'}}>89</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Support Given</span>
-              <span className="font-bold text-[#7e868b]">456</span>
+              <span className="text-sm" style={{color: '#737373'}}>Support Given</span>
+              <span className="font-bold" style={{color: '#737373'}}>456</span>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-mental-peach">
           <CardHeader className="bg-mental-peach">
-            <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+            <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
               <Bell className="h-5 w-5" />
               Today's Wellness Reminders
             </CardTitle>
@@ -179,10 +180,10 @@ const CommunityPage = () => {
           <CardContent className="space-y-2 bg-mental-peach">
             {reminders.map(reminder => <div key={reminder.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm">{reminder.message}</span>
+                  <Clock className="h-4 w-4" style={{color: '#737373'}} />
+                  <span className="text-sm" style={{color: '#737373'}}>{reminder.message}</span>
                 </div>
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="text-xs" style={{color: '#737373'}}>
                   +{reminder.points} pts
                 </Badge>
               </div>)}
@@ -193,20 +194,20 @@ const CommunityPage = () => {
       {/* Create New Post */}
       <Card className="bg-mental-peach">
         <CardHeader className="bg-mental-peach">
-          <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+          <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
             <Plus className="h-5 w-5" />
             Share Your Mood Anonymously
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 bg-mental-peach">
           <div>
-            <label className="block text-sm font-medium text-[#7e868b] mb-2">
+            <label className="block text-sm font-medium mb-2" style={{color: '#737373'}}>
               How are you feeling?
             </label>
             <div className="flex flex-wrap gap-2">
               {moodOptions.map(option => {
               const Icon = option.icon;
-              return <Button key={option.value} variant={selectedMood === option.value ? "default" : "outline"} size="sm" onClick={() => setSelectedMood(option.value as MoodPost['mood'])} className="flex items-center gap-2 text-base text-mental-gray">
+              return <Button key={option.value} variant={selectedMood === option.value ? "default" : "outline"} size="sm" onClick={() => setSelectedMood(option.value as MoodPost['mood'])} className="flex items-center gap-2 text-base" style={{color: '#737373'}}>
                     <Icon className="h-4 w-4" />
                     {option.label}
                   </Button>;
@@ -214,13 +215,13 @@ const CommunityPage = () => {
             </div>
           </div>
           
-          <Textarea placeholder="Share your thoughts, experiences, or words of encouragement with the community..." value={newPost} onChange={e => setNewPost(e.target.value)} rows={3} />
+          <Textarea placeholder="Share your thoughts, experiences, or words of encouragement with the community..." value={newPost} onChange={e => setNewPost(e.target.value)} rows={3} style={{color: '#737373'}} />
           
           <div className="flex justify-between items-center">
-            <p className="text-xs text-gray-500">
+            <p className="text-xs" style={{color: '#737373'}}>
               Remember: Be kind, supportive, and respectful. No personal information should be shared.
             </p>
-            <Button onClick={handleSubmitPost} disabled={!newPost.trim()} className="font-normal text-mental-gray">
+            <Button onClick={handleSubmitPost} disabled={!newPost.trim()} className="font-normal" style={{color: '#737373'}}>
               Share Post
             </Button>
           </div>
@@ -235,31 +236,31 @@ const CommunityPage = () => {
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <Avatar>
-                    <AvatarFallback>A</AvatarFallback>
+                    <AvatarFallback style={{color: '#737373'}}>A</AvatarFallback>
                   </Avatar>
                   
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-[#7e868b]">Anonymous User</span>
-                      <Badge className={getMoodColor(post.mood)}>
+                      <span className="font-medium" style={{color: '#737373'}}>Anonymous User</span>
+                      <Badge className={getMoodColor(post.mood)} style={{color: '#737373'}}>
                         <MoodIcon className="h-3 w-3 mr-1" />
                         {post.mood}
                       </Badge>
-                      <span className="text-sm text-gray-500 flex items-center gap-1">
+                      <span className="text-sm flex items-center gap-1" style={{color: '#737373'}}>
                         <Calendar className="h-3 w-3" />
                         {post.timestamp}
                       </span>
                     </div>
                     
-                    <p className="text-[#7e868b] mb-4">{post.content}</p>
+                    <p className="mb-4" style={{color: '#737373'}}>{post.content}</p>
                     
                     <div className="flex items-center gap-4">
-                      <Button variant="ghost" size="sm" onClick={() => handleLike(post.id)} className={`flex items-center gap-1 ${post.isLiked ? 'text-red-500' : 'text-gray-500'}`}>
+                      <Button variant="ghost" size="sm" onClick={() => handleLike(post.id)} className={`flex items-center gap-1 ${post.isLiked ? 'text-red-500' : ''}`} style={{color: post.isLiked ? '#ef4444' : '#737373'}}>
                         <Heart className={`h-4 w-4 ${post.isLiked ? 'fill-current' : ''}`} />
                         {post.likes}
                       </Button>
                       
-                      <Button variant="ghost" size="sm" className="flex items-center gap-1 text-gray-500">
+                      <Button variant="ghost" size="sm" className="flex items-center gap-1" style={{color: '#737373'}}>
                         <MessageCircle className="h-4 w-4" />
                         {post.comments}
                       </Button>

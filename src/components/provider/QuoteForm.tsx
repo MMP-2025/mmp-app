@@ -23,7 +23,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ newQuote, setNewQuote, onAddQuote
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-foreground">
+        <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
           <Plus className="h-5 w-5" />
           Add New Quote
         </CardTitle>
@@ -33,20 +33,23 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ newQuote, setNewQuote, onAddQuote
           placeholder="Enter inspirational quote..."
           value={newQuote.text}
           onChange={(e) => setNewQuote(prev => ({ ...prev, text: e.target.value }))}
+          style={{color: '#737373'}}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             placeholder="Author (optional)"
             value={newQuote.author}
             onChange={(e) => setNewQuote(prev => ({ ...prev, author: e.target.value }))}
+            style={{color: '#737373'}}
           />
           <Input
             placeholder="Category (e.g., Motivation, Healing)"
             value={newQuote.category}
             onChange={(e) => setNewQuote(prev => ({ ...prev, category: e.target.value }))}
+            style={{color: '#737373'}}
           />
         </div>
-        <Button onClick={onAddQuote}>Add Quote</Button>
+        <Button onClick={onAddQuote} style={{color: '#737373'}}>Add Quote</Button>
       </CardContent>
     </Card>
   );

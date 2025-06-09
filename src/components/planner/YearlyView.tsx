@@ -12,7 +12,7 @@ export const YearlyView: React.FC<YearlyViewProps> = ({ selectedDate, events }) 
   
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-medium text-foreground">
+      <h3 className="text-xl font-medium" style={{color: '#737373'}}>
         {format(selectedDate, 'yyyy')}
       </h3>
       
@@ -32,19 +32,19 @@ export const YearlyView: React.FC<YearlyViewProps> = ({ selectedDate, events }) 
                 isCurrentMonth ? 'bg-mental-blue/20 border border-mental-blue' : 'bg-muted/10'
               }`}
             >
-              <h4 className={`text-center mb-2 text-foreground ${isCurrentMonth ? 'font-bold' : ''}`}>
+              <h4 className={`text-center mb-2 ${isCurrentMonth ? 'font-bold' : ''}`} style={{color: '#737373'}}>
                 {format(month, 'MMMM')}
               </h4>
               
               <div className="text-sm">
                 <div className="flex justify-between items-center">
-                  <span className="text-foreground">Events:</span>
-                  <span className="font-medium text-foreground">{monthEvents.length}</span>
+                  <span style={{color: '#737373'}}>Events:</span>
+                  <span className="font-medium" style={{color: '#737373'}}>{monthEvents.length}</span>
                 </div>
                 
                 {monthEvents.length > 0 && (
                   <div className="mt-2 text-xs space-y-1">
-                    <div className="font-medium text-foreground">Top days:</div>
+                    <div className="font-medium" style={{color: '#737373'}}>Top days:</div>
                     {/* Group events by day and show top 3 days */}
                     {Object.entries(
                       monthEvents.reduce((acc, event) => {
@@ -56,7 +56,7 @@ export const YearlyView: React.FC<YearlyViewProps> = ({ selectedDate, events }) 
                       .sort((a, b) => b[1] - a[1])
                       .slice(0, 3)
                       .map(([day, count]) => (
-                        <div key={day} className="flex justify-between text-muted-foreground">
+                        <div key={day} className="flex justify-between" style={{color: '#737373'}}>
                           <span>{day}</span>
                           <span>{count} event{count !== 1 ? 's' : ''}</span>
                         </div>

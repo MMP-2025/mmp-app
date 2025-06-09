@@ -45,13 +45,13 @@ export const MonthlyView: React.FC<MonthlyViewProps> = ({ selectedDate, events }
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-medium text-foreground">
+      <h3 className="text-xl font-medium" style={{color: '#737373'}}>
         {format(selectedDate, 'MMMM yyyy')}
       </h3>
       
       <div className="grid grid-cols-7 gap-1 text-center">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="font-medium p-1 text-foreground">{day}</div>
+          <div key={day} className="font-medium p-1" style={{color: '#737373'}}>{day}</div>
         ))}
       </div>
       
@@ -78,20 +78,21 @@ export const MonthlyView: React.FC<MonthlyViewProps> = ({ selectedDate, events }
                 >
                   {isValidDate && (
                     <>
-                      <div className={`text-right text-sm text-foreground ${isToday ? 'font-bold' : ''}`}>
+                      <div className={`text-right text-sm ${isToday ? 'font-bold' : ''}`} style={{color: '#737373'}}>
                         {format(day, 'd')}
                       </div>
                       <div className="mt-1">
                         {dayEvents.slice(0, 2).map(event => (
                           <div 
                             key={event.id} 
-                            className="text-xs bg-mental-blue/30 p-1 mb-1 rounded truncate text-foreground"
+                            className="text-xs bg-mental-blue/30 p-1 mb-1 rounded truncate"
+                            style={{color: '#737373'}}
                           >
                             {event.title}
                           </div>
                         ))}
                         {dayEvents.length > 2 && (
-                          <div className="text-xs text-center text-muted-foreground">
+                          <div className="text-xs text-center" style={{color: '#737373'}}>
                             +{dayEvents.length - 2} more
                           </div>
                         )}

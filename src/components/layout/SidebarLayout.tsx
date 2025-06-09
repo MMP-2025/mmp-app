@@ -91,7 +91,7 @@ export function SidebarLayout({
   const sidebarVisible = isHovered || isClicked;
   return <div className="flex min-h-screen">
       {/* Menu trigger button - always visible */}
-      <Button variant="ghost" size="icon" onClick={() => setIsClicked(true)} className="fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90 text-mental-gray font-normal">
+      <Button variant="ghost" size="icon" onClick={() => setIsClicked(true)} className="fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90" style={{color: '#737373'}}>
         <Menu className="h-5 w-5" />
       </Button>
 
@@ -103,16 +103,16 @@ export function SidebarLayout({
       <div className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 ${sidebarVisible ? 'translate-x-0' : '-translate-x-full'}`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
         <Sidebar className="border-r border-mental-gray/20 h-full">
           <SidebarHeader className="p-4 bg-[#fadcd6]">
-            <h1 className="font-bold text-center text-foreground">Making Meaning Psychology</h1>
+            <h1 className="font-bold text-center" style={{color: '#737373'}}>Making Meaning Psychology</h1>
           </SidebarHeader>
           <SidebarContent className="bg-[#fadcd6]">
             <SidebarGroup>
-              <SidebarGroupLabel className="text-muted-foreground">Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel style={{color: '#737373'}}>Navigation</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {menuItems.map(item => <SidebarMenuItem key={item.label}>
                       <SidebarMenuButton asChild>
-                        <Link to={item.path} className={`flex items-center gap-2 text-foreground ${location.pathname === item.path ? 'text-primary font-medium' : ''}`}>
+                        <Link to={item.path} className={`flex items-center gap-2 ${location.pathname === item.path ? 'font-medium' : ''}`} style={{color: '#737373'}}>
                           <item.icon className="h-5 w-5" />
                           <span>{item.label}</span>
                         </Link>
@@ -122,8 +122,8 @@ export function SidebarLayout({
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="p-4 text-xs text-center text-muted-foreground bg-[#fadcd6]">
-            <p>© 2025 Making Meaning Psychology</p>
+          <SidebarFooter className="p-4 text-xs text-center bg-[#fadcd6]">
+            <p style={{color: '#737373'}}>© 2025 Making Meaning Psychology</p>
           </SidebarFooter>
         </Sidebar>
       </div>
