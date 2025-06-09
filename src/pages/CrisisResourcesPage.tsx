@@ -6,8 +6,8 @@ const CrisisResourcesPage = () => {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold text-center mb-2 text-[#7e868b]">Crisis Resources</h1>
-        <p className="text-center text-base font-normal text-[#7e868b]">
+        <h1 className="text-3xl font-bold text-center mb-2 text-foreground">Crisis Resources</h1>
+        <p className="text-center text-base font-normal text-muted-foreground">
           Immediate support and resources when you need them most
         </p>
       </div>
@@ -15,11 +15,11 @@ const CrisisResourcesPage = () => {
       <EmergencyResources />
       
       <div className="bg-white rounded-lg p-6 border shadow-sm">
-        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Additional Resources</h2>
-        <div className="space-y-4 text-[#7e868b]">
+        <h2 className="text-xl font-semibold mb-4 text-foreground">Additional Resources</h2>
+        <div className="space-y-4 text-foreground">
           <div>
             <h3 className="font-medium">When to Seek Emergency Help</h3>
-            <ul className="list-disc list-inside text-sm space-y-1 mt-2">
+            <ul className="list-disc list-inside text-sm space-y-1 mt-2 text-muted-foreground">
               <li>Having thoughts of harming yourself or others</li>
               <li>Feeling like you might act on suicidal thoughts</li>
               <li>Experiencing severe panic or anxiety attacks</li>
@@ -30,7 +30,7 @@ const CrisisResourcesPage = () => {
           
           <div>
             <h3 className="font-medium">Online Resources</h3>
-            <ul className="list-disc list-inside text-sm space-y-1 mt-2">
+            <ul className="list-disc list-inside text-sm space-y-1 mt-2 text-muted-foreground">
               <li>Crisis Text Line: Text support available 24/7</li>
               <li>National Suicide Prevention Lifeline: 24/7 phone support</li>
               <li>SAMHSA Treatment Locator: Find local mental health services</li>

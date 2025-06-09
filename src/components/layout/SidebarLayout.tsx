@@ -132,11 +132,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       >
         <Sidebar className="border-r border-mental-gray/20 h-full">
           <SidebarHeader className="p-4 bg-[#fadcd6]">
-            <h1 className="font-bold text-center text-[#7e868b]">Making Meaning Psychology</h1>
+            <h1 className="font-bold text-center text-foreground">Making Meaning Psychology</h1>
           </SidebarHeader>
           <SidebarContent className="bg-[#fadcd6]">
             <SidebarGroup>
-              <SidebarGroupLabel className="text-gray-700">Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel className="text-muted-foreground">Navigation</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {menuItems.map(item => (
@@ -144,7 +144,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                       <SidebarMenuButton asChild>
                         <Link
                           to={item.path}
-                          className={`flex items-center gap-2 text-gray-800 ${
+                          className={`flex items-center gap-2 text-foreground ${
                             location.pathname === item.path ? 'text-primary font-medium' : ''
                           }`}
                         >
@@ -158,7 +158,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="p-4 text-xs text-center text-gray-600 bg-[#fadcd6]">
+          <SidebarFooter className="p-4 text-xs text-center text-muted-foreground bg-[#fadcd6]">
             <p>© 2025 Making Meaning Psychology</p>
           </SidebarFooter>
         </Sidebar>

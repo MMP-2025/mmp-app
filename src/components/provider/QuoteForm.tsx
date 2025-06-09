@@ -23,7 +23,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ newQuote, setNewQuote, onAddQuote
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Plus className="h-5 w-5" />
           Add New Quote
         </CardTitle>
