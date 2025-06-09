@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -80,10 +81,10 @@ const ProviderDashboard = () => {
   });
   const [newResource, setNewResource] = useState({ title: '', description: '', content: '', category: '' });
   
-  const [newQuestion, setNewQuestion] = useState({ question: '', category: '', type: 'reflection' as const });
+  const [newQuestion, setNewQuestion] = useState<{ question: string; category: string; type: Question['type'] }>({ question: '', category: '', type: 'reflection' });
   const [newToolkitItem, setNewToolkitItem] = useState({ title: '', description: '', instructions: '', category: '', duration: '' });
-  const [newReminder, setNewReminder] = useState({ title: '', message: '', frequency: 'daily' as const, category: '' });
-  const [newGratitudePrompt, setNewGratitudePrompt] = useState({ prompt: '', category: '', difficulty: 'simple' as const });
+  const [newReminder, setNewReminder] = useState<{ title: string; message: string; frequency: Reminder['frequency']; category: string }>({ title: '', message: '', frequency: 'daily', category: '' });
+  const [newGratitudePrompt, setNewGratitudePrompt] = useState<{ prompt: string; category: string; difficulty: GratitudePrompt['difficulty'] }>({ prompt: '', category: '', difficulty: 'simple' });
   
   const { toast } = useToast();
 
