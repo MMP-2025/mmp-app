@@ -4,19 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import PersonalInfoCard from '@/components/profile/PersonalInfoCard';
-import EmergencyContactCard from '@/components/profile/EmergencyContactCard';
 import NotificationPreferencesCard from '@/components/profile/NotificationPreferencesCard';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
     username: '',
-    firstName: '',
-    lastName: '',
     email: '',
-    phone: '',
-    dateOfBirth: '',
-    bio: '',
-    timezone: '',
     preferredTheme: 'light',
     notifications: {
       moodReminders: true,
@@ -26,22 +19,10 @@ const ProfilePage = () => {
     }
   });
 
-  const [emergencyContact, setEmergencyContact] = useState({
-    name: '',
-    phone: ''
-  });
-
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
     setProfile(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleEmergencyContactChange = (field: string, value: string) => {
-    setEmergencyContact(prev => ({
       ...prev,
       [field]: value
     }));
@@ -77,11 +58,6 @@ const ProfilePage = () => {
         onInputChange={handleInputChange} 
       />
 
-      <EmergencyContactCard 
-        emergencyContact={emergencyContact}
-        onEmergencyContactChange={handleEmergencyContactChange}
-      />
-
       <NotificationPreferencesCard 
         notifications={profile.notifications}
         onNotificationChange={handleNotificationChange}
@@ -89,7 +65,7 @@ const ProfilePage = () => {
 
       {/* Save Button */}
       <div className="flex justify-end">
-        <Button onClick={handleSaveProfile} className="flex items-center gap-2">
+        <Button onClick={handleSaveProfile} className="flex items-center gap-2 bg-mental-peach text-[#737373] hover:bg-mental-blue">
           <Save className="h-4 w-4" />
           Save Profile
         </Button>

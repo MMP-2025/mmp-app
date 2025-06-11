@@ -13,14 +13,18 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<UserRole>('patient');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, loginAsGuest } = useAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await login(email, password, role);
+      if (role === 'guest') {
+        loginAsGuest();
+      } else {
+        await login(email, password, role);
+      }
       toast({
         title: "Login successful",
         description: `Welcome, ${role}!`
@@ -47,61 +51,72 @@ const LoginForm = () => {
         </CardHeader>
         <CardContent className="bg-mental-gray">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="email" className="">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                value={email} 
-                onChange={e => setEmail(e.target.value)} 
-                required 
-                placeholder="Enter your email" 
-                className="bg-mental-gray" 
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input 
-                id="password" 
-                type="password" 
-                value={password} 
-                onChange={e => setPassword(e.target.value)} 
-                required 
-                placeholder="Enter your password" 
-                className="bg-mental-gray" 
-              />
-            </div>
-
-            <div className="bg-transparent">
+            <div className="bg-mental-gray">
               <Label htmlFor="role">Role</Label>
               <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
-                <SelectTrigger>
+                <SelectTrigger className="bg-mental-gray">
                   <SelectValue placeholder="Select your role" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-mental-gray">
                   <SelectItem value="patient">Patient</SelectItem>
                   <SelectItem value="provider">Provider</SelectItem>
-                  <SelectItem value="non-patient">Non-Patient</SelectItem>
+                  <SelectItem value="guest">Guest</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+
+            {role !== 'guest' && (
+              <>
+                <div>
+                  <Label htmlFor="email" className="">Email</Label>
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    value={email} 
+                    onChange={e => setEmail(e.target.value)} 
+                    required 
+                    placeholder="Enter your email" 
+                    className="bg-mental-gray" 
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="password">Password</Label>
+                  <Input 
+                    id="password" 
+                    type="password" 
+                    value={password} 
+                    onChange={e => setPassword(e.target.value)} 
+                    required 
+                    placeholder="Enter your password" 
+                    className="bg-mental-gray" 
+                  />
+                </div>
+              </>
+            )}
+
+            {role === 'guest' && (
+              <div className="text-center p-4 bg-mental-blue rounded-md">
+                <p className="text-[#737373]">No login required for guest access</p>
+              </div>
+            )}
 
             <Button 
               type="submit" 
               disabled={isLoading} 
               className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray"
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? 'Signing in...' : role === 'guest' ? 'Continue as Guest' : 'Sign In'}
             </Button>
           </form>
 
-          <div className="mt-6 text-sm text-gray-600">
-            <p className="mb-2">Demo credentials:</p>
-            <p><strong>Patient:</strong> patient@example.com / password</p>
-            <p><strong>Provider:</strong> provider@example.com / password</p>
-            <p><strong>Non-Patient:</strong> nonpatient@example.com / password</p>
-          </div>
+          {role !== 'guest' && (
+            <div className="mt-6 text-sm text-gray-600">
+              <p className="mb-2">Demo credentials:</p>
+              <p><strong>Patient:</strong> patient@example.com / password</p>
+              <p><strong>Provider:</strong> provider@example.com / password</p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

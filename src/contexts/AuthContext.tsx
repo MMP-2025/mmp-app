@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type UserRole = 'patient' | 'provider' | 'non-patient';
+export type UserRole = 'patient' | 'provider' | 'guest';
 
 interface User {
   id: string;
@@ -13,11 +13,12 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role: UserRole) => Promise<void>;
+  loginAsGuest: () => void;
   logout: () => void;
   isAuthenticated: boolean;
   isProvider: boolean;
   isPatient: boolean;
-  isNonPatient: boolean;
+  isGuest: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -43,7 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       switch (role) {
         case 'provider': return 'Dr. Smith';
         case 'patient': return 'John Doe';
-        case 'non-patient': return 'Jane Smith';
+        case 'guest': return 'Guest User';
         default: return 'User';
       }
     };
@@ -57,6 +58,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(mockUser);
   };
 
+  const loginAsGuest = () => {
+    const guestUser: User = {
+      id: 'guest-' + Date.now().toString(),
+      name: 'Guest User',
+      email: '',
+      role: 'guest'
+    };
+    setUser(guestUser);
+  };
+
   const logout = () => {
     setUser(null);
   };
@@ -64,11 +75,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const value: AuthContextType = {
     user,
     login,
+    loginAsGuest,
     logout,
     isAuthenticated: !!user,
     isProvider: user?.role === 'provider',
     isPatient: user?.role === 'patient',
-    isNonPatient: user?.role === 'non-patient'
+    isGuest: user?.role === 'guest'
   };
 
   return (
