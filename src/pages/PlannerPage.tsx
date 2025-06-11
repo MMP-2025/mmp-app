@@ -67,7 +67,7 @@ const PlannerPage = () => {
             color: '#737373'
           }}>Calendar & Events</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 bg-mental-blue">
             <div>
               <Label className="text-sm font-medium mb-2 block" style={{
               color: '#737373'
