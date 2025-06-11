@@ -3,56 +3,87 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Upload, FileText, Trash2, Download, Plus } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { BookOpen, FileText, Download, Search, Filter } from 'lucide-react';
 
-interface ProviderResource {
+interface Resource {
   id: string;
-  name: string;
-  type: string;
-  category: 'worksheet' | 'guide' | 'template' | 'reference';
+  title: string;
   description: string;
-  uploadDate: string;
+  category: 'worksheet' | 'guide' | 'template' | 'reference';
+  type: 'PDF' | 'Article' | 'Worksheet' | 'Guide';
+  downloadUrl?: string;
 }
 
 const SupportToolkitPage = () => {
-  const [resources, setResources] = useState<ProviderResource[]>([]);
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState<ProviderResource['category']>('worksheet');
-  const { toast } = useToast();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
+  // Pre-populated resources for patients
+  const resources: Resource[] = [
+    {
+      id: '1',
+      title: 'Anxiety Management Worksheet',
+      description: 'Learn practical techniques to manage anxiety and stress in daily life.',
+      category: 'worksheet',
+      type: 'Worksheet'
+    },
+    {
+      id: '2',
+      title: 'Depression Coping Strategies Guide',
+      description: 'Evidence-based strategies for managing depression symptoms.',
+      category: 'guide',
+      type: 'Guide'
+    },
+    {
+      id: '3',
+      title: 'Mindfulness Daily Practice Template',
+      description: 'A structured template to help you build a consistent mindfulness practice.',
+      category: 'template',
+      type: 'PDF'
+    },
+    {
+      id: '4',
+      title: 'Crisis Prevention Plan',
+      description: 'Template to create your personal crisis prevention and management plan.',
+      category: 'template',
+      type: 'Worksheet'
+    },
+    {
+      id: '5',
+      title: 'Understanding Mental Health Conditions',
+      description: 'Comprehensive reference material about common mental health conditions.',
+      category: 'reference',
+      type: 'Article'
+    },
+    {
+      id: '6',
+      title: 'Cognitive Behavioral Therapy Techniques',
+      description: 'Learn CBT techniques you can practice at home.',
+      category: 'guide',
+      type: 'Guide'
+    },
+    {
+      id: '7',
+      title: 'Sleep Hygiene Checklist',
+      description: 'Improve your sleep quality with this comprehensive checklist.',
+      category: 'worksheet',
+      type: 'Worksheet'
+    },
+    {
+      id: '8',
+      title: 'Building Healthy Relationships',
+      description: 'Guide to developing and maintaining healthy relationships.',
+      category: 'guide',
+      type: 'Article'
+    }
+  ];
 
-    Array.from(files).forEach(file => {
-      const newResource: ProviderResource = {
-        id: Date.now() + Math.random().toString(),
-        name: file.name,
-        type: file.type,
-        category: category,
-        description: description || 'No description provided',
-        uploadDate: new Date().toLocaleDateString()
-      };
-
-      setResources(prev => [...prev, newResource]);
-    });
-
-    setDescription('');
-    toast({
-      title: "Resources uploaded successfully",
-      description: `${files.length} resource(s) added to your toolkit`,
-    });
-  };
-
-  const handleDeleteResource = (id: string) => {
-    setResources(prev => prev.filter(resource => resource.id !== id));
-    toast({
-      title: "Resource deleted",
-      description: "The resource has been removed from your toolkit",
-    });
-  };
+  const filteredResources = resources.filter(resource => {
+    const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         resource.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const categoryColors = {
     worksheet: 'bg-blue-100 text-blue-800',
@@ -61,68 +92,57 @@ const SupportToolkitPage = () => {
     reference: 'bg-orange-100 text-orange-800'
   };
 
+  const handleDownload = (resource: Resource) => {
+    // In a real app, this would trigger an actual download
+    console.log(`Downloading ${resource.title}`);
+    // For now, just show a placeholder message
+    alert(`Downloading ${resource.title}... (This would trigger a real download in production)`);
+  };
+
   return (
     <div className="container mx-auto p-6 space-y-6 ml-16">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Provider Support Toolkit</h1>
-        <p className="text-[#7e868b]">Upload and manage resources, worksheets, and materials for your practice.</p>
+        <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Resource Library</h1>
+        <p className="text-[#7e868b]">Access helpful mental health resources, worksheets, and guides to support your wellbeing journey.</p>
       </div>
 
-      {/* Upload Section */}
+      {/* Search and Filter Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-            <Upload className="h-5 w-5" />
-            Upload New Resources
+            <Search className="h-5 w-5" />
+            Find Resources
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-[#7e868b] mb-2">
-                Category
+                Search Resources
               </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as ProviderResource['category'])}
-                className="w-full p-2 border border-gray-300 rounded-md"
-              >
-                <option value="worksheet">Worksheet</option>
-                <option value="guide">Guide</option>
-                <option value="template">Template</option>
-                <option value="reference">Reference Material</option>
-              </select>
+              <Input
+                placeholder="Search by title or description..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full"
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-[#7e868b] mb-2">
-                Description
+                Filter by Category
               </label>
-              <Input
-                placeholder="Brief description of the resource..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              >
+                <option value="all">All Categories</option>
+                <option value="worksheet">Worksheets</option>
+                <option value="guide">Guides</option>
+                <option value="template">Templates</option>
+                <option value="reference">Reference Materials</option>
+              </select>
             </div>
-          </div>
-          
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <input
-              type="file"
-              multiple
-              accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
-              onChange={handleFileUpload}
-              className="hidden"
-              id="file-upload"
-            />
-            <label htmlFor="file-upload" className="cursor-pointer">
-              <Upload className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-              <p className="text-sm text-gray-600">
-                Click to upload files or drag and drop
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                PDF, DOC, TXT, JPG, PNG files supported
-              </p>
-            </label>
           </div>
         </CardContent>
       </Card>
@@ -131,57 +151,70 @@ const SupportToolkitPage = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-[#7e868b]">
-            <FileText className="h-5 w-5" />
-            Your Resource Library ({resources.length})
+            <BookOpen className="h-5 w-5" />
+            Available Resources ({filteredResources.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {resources.length === 0 ? (
+          {filteredResources.length === 0 ? (
             <div className="text-center py-8">
               <FileText className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-              <p className="text-gray-500">No resources uploaded yet</p>
-              <p className="text-sm text-gray-400">Upload your first resource to get started</p>
+              <p className="text-gray-500">No resources found matching your criteria</p>
+              <p className="text-sm text-gray-400">Try adjusting your search terms or filters</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {resources.map(resource => (
-                <div key={resource.id} className="flex items-center justify-between p-4 border rounded-lg bg-gray-50">
-                  <div className="flex items-center gap-3 flex-1">
-                    <FileText className="h-6 w-6 text-blue-500" />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-medium text-[#7e868b]">{resource.name}</h4>
-                        <span className={`px-2 py-1 rounded-full text-xs ${categoryColors[resource.category]}`}>
-                          {resource.category}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-600">{resource.description}</p>
-                      <p className="text-xs text-gray-500">
-                        Uploaded {resource.uploadDate}
-                      </p>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredResources.map(resource => (
+                <div key={resource.id} className="p-4 border rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <div className="flex items-start justify-between mb-3">
+                    <FileText className="h-6 w-6 text-blue-500 flex-shrink-0 mt-1" />
+                    <span className={`px-2 py-1 rounded-full text-xs ${categoryColors[resource.category]} ml-2`}>
+                      {resource.category}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => toast({ title: "Download", description: "Download functionality would be implemented here" })}
-                    >
-                      <Download className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDeleteResource(resource.id)}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                  
+                  <div className="mb-3">
+                    <h4 className="font-medium text-[#7e868b] mb-2">{resource.title}</h4>
+                    <p className="text-sm text-gray-600 mb-2">{resource.description}</p>
+                    <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                      {resource.type}
+                    </span>
                   </div>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDownload(resource)}
+                    className="w-full"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download
+                  </Button>
                 </div>
               ))}
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      {/* Help Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-[#7e868b]">How to Use These Resources</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="prose prose-sm max-w-none text-[#7e868b]">
+            <ul className="space-y-2">
+              <li><strong>Worksheets:</strong> Interactive tools to help you practice specific skills and techniques.</li>
+              <li><strong>Guides:</strong> Comprehensive materials explaining concepts and providing step-by-step instructions.</li>
+              <li><strong>Templates:</strong> Structured formats you can customize for your personal use.</li>
+              <li><strong>Reference Materials:</strong> Educational content to help you better understand mental health topics.</li>
+            </ul>
+            <p className="mt-4 text-sm">
+              These resources are designed to complement your therapy sessions and support your mental health journey. 
+              If you have questions about any resource, please discuss them with your healthcare provider.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
