@@ -13,14 +13,13 @@ import { useToast } from '@/hooks/use-toast';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     dateOfBirth: '',
     bio: '',
-    emergencyContact: '',
-    emergencyPhone: '',
     timezone: '',
     preferredTheme: 'light',
     notifications: {
@@ -31,10 +30,22 @@ const ProfilePage = () => {
     }
   });
 
+  const [emergencyContact, setEmergencyContact] = useState({
+    name: '',
+    phone: ''
+  });
+
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
     setProfile(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleEmergencyContactChange = (field: string, value: string) => {
+    setEmergencyContact(prev => ({
       ...prev,
       [field]: value
     }));
@@ -61,14 +72,14 @@ const ProfilePage = () => {
   return (
     <div className="container mx-auto p-6 space-y-6 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#7e868b] mb-2">User Profile</h1>
-        <p className="text-[#7e868b]">Manage your personal information and preferences.</p>
+        <h1 className="text-3xl font-bold text-[#737373] mb-2">User Profile</h1>
+        <p className="text-[#737373]">Manage your personal information and preferences.</p>
       </div>
 
       {/* Profile Picture & Basic Info */}
-      <Card>
+      <Card className="bg-mental-gray">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+          <CardTitle className="flex items-center gap-2 text-[#737373]">
             <User className="h-5 w-5" />
             Personal Information
           </CardTitle>
@@ -92,12 +103,23 @@ const ProfilePage = () => {
             </div>
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  value={profile.username}
+                  onChange={(e) => handleInputChange('username', e.target.value)}
+                  placeholder="Enter your username"
+                  className="bg-mental-gray border-[#737373]"
+                />
+              </div>
+              <div>
                 <Label htmlFor="firstName">First Name</Label>
                 <Input
                   id="firstName"
                   value={profile.firstName}
                   onChange={(e) => handleInputChange('firstName', e.target.value)}
                   placeholder="Enter your first name"
+                  className="bg-mental-gray border-[#737373]"
                 />
               </div>
               <div>
@@ -107,6 +129,7 @@ const ProfilePage = () => {
                   value={profile.lastName}
                   onChange={(e) => handleInputChange('lastName', e.target.value)}
                   placeholder="Enter your last name"
+                  className="bg-mental-gray border-[#737373]"
                 />
               </div>
             </div>
@@ -121,6 +144,7 @@ const ProfilePage = () => {
                 value={profile.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="your.email@example.com"
+                className="bg-mental-gray border-[#737373]"
               />
             </div>
             <div>
@@ -131,6 +155,7 @@ const ProfilePage = () => {
                 value={profile.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder="(555) 123-4567"
+                className="bg-mental-gray border-[#737373]"
               />
             </div>
             <div>
@@ -140,12 +165,13 @@ const ProfilePage = () => {
                 type="date"
                 value={profile.dateOfBirth}
                 onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+                className="bg-mental-gray border-[#737373]"
               />
             </div>
             <div>
               <Label htmlFor="timezone">Timezone</Label>
               <Select value={profile.timezone} onValueChange={(value) => handleInputChange('timezone', value)}>
-                <SelectTrigger>
+                <SelectTrigger className="bg-mental-gray border-[#737373]">
                   <SelectValue placeholder="Select your timezone" />
                 </SelectTrigger>
                 <SelectContent>
@@ -166,15 +192,16 @@ const ProfilePage = () => {
               onChange={(e) => handleInputChange('bio', e.target.value)}
               placeholder="Tell us a bit about yourself, your goals, or anything you'd like to share..."
               rows={4}
+              className="bg-mental-gray border-[#737373]"
             />
           </div>
         </CardContent>
       </Card>
 
-      {/* Emergency Contact */}
-      <Card>
+      {/* Emergency Contact - Separate Section */}
+      <Card className="bg-mental-peach">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+          <CardTitle className="flex items-center gap-2 text-[#737373]">
             <Shield className="h-5 w-5" />
             Emergency Contact
           </CardTitle>
@@ -185,9 +212,10 @@ const ProfilePage = () => {
               <Label htmlFor="emergencyContact">Emergency Contact Name</Label>
               <Input
                 id="emergencyContact"
-                value={profile.emergencyContact}
-                onChange={(e) => handleInputChange('emergencyContact', e.target.value)}
+                value={emergencyContact.name}
+                onChange={(e) => handleEmergencyContactChange('name', e.target.value)}
                 placeholder="Contact person's name"
+                className="bg-mental-peach border-[#737373]"
               />
             </div>
             <div>
@@ -195,9 +223,10 @@ const ProfilePage = () => {
               <Input
                 id="emergencyPhone"
                 type="tel"
-                value={profile.emergencyPhone}
-                onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
+                value={emergencyContact.phone}
+                onChange={(e) => handleEmergencyContactChange('phone', e.target.value)}
                 placeholder="(555) 123-4567"
+                className="bg-mental-peach border-[#737373]"
               />
             </div>
           </div>
@@ -205,9 +234,9 @@ const ProfilePage = () => {
       </Card>
 
       {/* Notification Preferences */}
-      <Card>
+      <Card className="bg-mental-blue">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+          <CardTitle className="flex items-center gap-2 text-[#737373]">
             <Bell className="h-5 w-5" />
             Notification Preferences
           </CardTitle>
@@ -219,10 +248,10 @@ const ProfilePage = () => {
             { key: 'appointmentReminders', label: 'Appointment reminders', icon: Calendar },
             { key: 'crisisAlerts', label: 'Crisis resource alerts', icon: Shield }
           ].map(({ key, label, icon: Icon }) => (
-            <div key={key} className="flex items-center justify-between p-3 border rounded-lg">
+            <div key={key} className="flex items-center justify-between p-3 border rounded-lg border-[#737373]">
               <div className="flex items-center gap-3">
-                <Icon className="h-5 w-5 text-gray-500" />
-                <span className="text-[#7e868b]">{label}</span>
+                <Icon className="h-5 w-5 text-[#737373]" />
+                <span className="text-[#737373]">{label}</span>
               </div>
               <Button
                 variant={profile.notifications[key as keyof typeof profile.notifications] ? "default" : "outline"}
