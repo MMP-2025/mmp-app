@@ -15,7 +15,6 @@ import { MonthlyView } from '@/components/planner/MonthlyView';
 import { YearlyView } from '@/components/planner/YearlyView';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
-
 const PlannerPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [newEventTitle, setNewEventTitle] = useState('');
@@ -26,85 +25,79 @@ const PlannerPage = () => {
     date: Date;
     time: string;
   }>>([]);
-
   const handleAddEvent = () => {
     if (!newEventTitle.trim()) {
       toast.error('Please enter an event title');
       return;
     }
-
     const newEvent = {
       id: Date.now().toString(),
       title: newEventTitle,
       date: selectedDate,
       time: newEventTime
     };
-
     setEvents([...events, newEvent]);
     setNewEventTitle('');
     toast.success('Event added successfully!');
   };
-
-  return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+  return <div className="space-y-6 max-w-6xl mx-auto">
       <div className="flex items-center gap-4">
         <Button asChild variant="outline" size="sm">
-          <Link to="/" className="flex items-center gap-2" style={{color: '#737373'}}>
+          <Link to="/" className="flex items-center gap-2" style={{
+          color: '#737373'
+        }}>
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
         </Button>
         <div>
-          <h1 className="text-3xl font-bold mb-2" style={{color: '#737373'}}>Planner</h1>
-          <p style={{color: '#737373'}}>Organize your schedule and plan your activities</p>
+          <h1 className="text-3xl font-bold mb-2" style={{
+          color: '#737373'
+        }}>Planner</h1>
+          <p style={{
+          color: '#737373'
+        }}>Organize your schedule and plan your activities</p>
         </div>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <Card className="lg:col-span-1">
           <CardHeader className="bg-mental-peach">
-            <CardTitle className="text-lg" style={{color: '#737373'}}>Calendar & Events</CardTitle>
+            <CardTitle className="text-lg" style={{
+            color: '#737373'
+          }}>Calendar & Events</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label className="text-sm font-medium mb-2 block" style={{color: '#737373'}}>Select Date</Label>
-              <Calendar 
-                mode="single" 
-                selected={selectedDate} 
-                onSelect={date => date && setSelectedDate(date)} 
-                className="rounded-md border w-full bg-mental-peach" 
-              />
+              <Label className="text-sm font-medium mb-2 block" style={{
+              color: '#737373'
+            }}>Select Date</Label>
+              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full bg-mental-peach" />
             </div>
             
             <div className="space-y-3 pt-4 border-t bg-mental-peach">
-              <Label className="text-sm font-medium" style={{color: '#737373'}}>Add New Event</Label>
+              <Label className="text-sm font-medium" style={{
+              color: '#737373'
+            }}>Add New Event</Label>
               <div className="space-y-2">
-                <Input 
-                  placeholder="Event title" 
-                  value={newEventTitle} 
-                  onChange={e => setNewEventTitle(e.target.value)} 
-                  className="text-sm" 
-                  style={{color: '#737373'}}
-                />
+                <Input placeholder="Event title" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="text-sm" style={{
+                color: '#737373'
+              }} />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4" style={{color: '#737373'}} />
-                  <Input 
-                    type="time" 
-                    value={newEventTime} 
-                    onChange={e => setNewEventTime(e.target.value)} 
-                    className="text-sm" 
-                    style={{color: '#737373'}}
-                  />
+                  <Clock className="h-4 w-4" style={{
+                  color: '#737373'
+                }} />
+                  <Input type="time" value={newEventTime} onChange={e => setNewEventTime(e.target.value)} className="text-sm" style={{
+                  color: '#737373'
+                }} />
                 </div>
               </div>
-              <Button 
-                className="w-full hover:opacity-90" 
-                onClick={handleAddEvent} 
-                size="sm"
-                style={{backgroundColor: '#737373', color: 'white'}}
-              >
+              <Button onClick={handleAddEvent} size="sm" style={{
+              backgroundColor: '#737373',
+              color: 'white'
+            }} className="w-full hover:opacity-90 bg-mental-gray">
                 <Plus className="mr-2 h-4 w-4" /> Add Event
               </Button>
             </div>
@@ -113,15 +106,25 @@ const PlannerPage = () => {
         
         <Card className="lg:col-span-3">
           <CardHeader className="bg-mental-peach">
-            <CardTitle className="text-lg" style={{color: '#737373'}}>Schedule Views</CardTitle>
+            <CardTitle className="text-lg" style={{
+            color: '#737373'
+          }}>Schedule Views</CardTitle>
           </CardHeader>
           <CardContent className="bg-mental-peach">
             <Tabs defaultValue="day" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="day" style={{color: '#737373'}}>Day</TabsTrigger>
-                <TabsTrigger value="week" style={{color: '#737373'}}>Week</TabsTrigger>
-                <TabsTrigger value="month" style={{color: '#737373'}}>Month</TabsTrigger>
-                <TabsTrigger value="year" style={{color: '#737373'}}>Year</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-4 bg-mental-gray">
+                <TabsTrigger value="day" style={{
+                color: '#737373'
+              }}>Day</TabsTrigger>
+                <TabsTrigger value="week" style={{
+                color: '#737373'
+              }}>Week</TabsTrigger>
+                <TabsTrigger value="month" style={{
+                color: '#737373'
+              }}>Month</TabsTrigger>
+                <TabsTrigger value="year" style={{
+                color: '#737373'
+              }}>Year</TabsTrigger>
               </TabsList>
               
               <TabsContent value="day" className="mt-4">
@@ -143,8 +146,6 @@ const PlannerPage = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default PlannerPage;
