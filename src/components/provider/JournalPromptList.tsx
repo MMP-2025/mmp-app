@@ -20,28 +20,28 @@ interface JournalPromptListProps {
 
 const JournalPromptList: React.FC<JournalPromptListProps> = ({ journalPrompts, onDeletePrompt }) => {
   return (
-    <Card>
+    <Card className="bg-mental-blue">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+        <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
           <FileText className="h-5 w-5" />
           Saved Prompts ({journalPrompts.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
         {journalPrompts.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No prompts added yet</p>
+          <p className="text-center py-8" style={{color: '#737373'}}>No prompts added yet</p>
         ) : (
           <div className="space-y-3">
             {journalPrompts.map(prompt => (
-              <div key={prompt.id} className="p-4 border rounded-lg bg-gray-50">
+              <div key={prompt.id} className="p-4 border rounded-lg bg-mental-peach/30">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="text-[#7e868b] mb-2">{prompt.prompt}</p>
+                    <p className="mb-2" style={{color: '#737373'}}>{prompt.prompt}</p>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                      <span className="px-2 py-1 bg-mental-green/50 rounded-full text-xs" style={{color: '#737373'}}>
                         {prompt.category}
                       </span>
-                      <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">
+                      <span className="px-2 py-1 bg-mental-beige/50 rounded-full text-xs" style={{color: '#737373'}}>
                         {prompt.difficulty}
                       </span>
                     </div>

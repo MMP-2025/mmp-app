@@ -18,26 +18,26 @@ interface QuoteListProps {
 
 const QuoteList: React.FC<QuoteListProps> = ({ quotes, onDeleteQuote }) => {
   return (
-    <Card>
+    <Card className="bg-mental-blue">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-foreground">
+        <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
           <Quote className="h-5 w-5" />
           Saved Quotes ({quotes.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
         {quotes.length === 0 ? (
-          <p className="text-muted-foreground text-center py-8">No quotes added yet</p>
+          <p className="text-center py-8" style={{color: '#737373'}}>No quotes added yet</p>
         ) : (
           <div className="space-y-3">
             {quotes.map(quote => (
-              <div key={quote.id} className="p-4 border rounded-lg bg-gray-50">
+              <div key={quote.id} className="p-4 border rounded-lg bg-mental-peach/30">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="text-foreground mb-2">"{quote.text}"</p>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <span>— {quote.author}</span>
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                    <p className="mb-2" style={{color: '#737373'}}>"{quote.text}"</p>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span style={{color: '#737373'}}>— {quote.author}</span>
+                      <span className="px-2 py-1 bg-mental-green/50 rounded-full text-xs" style={{color: '#737373'}}>
                         {quote.category}
                       </span>
                     </div>

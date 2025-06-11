@@ -21,7 +21,7 @@ interface QuoteFormProps {
 
 const QuoteForm: React.FC<QuoteFormProps> = ({ newQuote, setNewQuote, onAddQuote }) => {
   return (
-    <Card>
+    <Card className="bg-mental-blue">
       <CardHeader>
         <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
           <Plus className="h-5 w-5" />

@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Timer, Heart, MessageSquare } from 'lucide-react';
+import { Timer, Heart } from 'lucide-react';
 
 // Sample mindfulness exercises - in a real app, these would come from your database
 const mindfulnessExercises = [{
@@ -23,13 +24,17 @@ const mindfulnessExercises = [{
   description: "A practice that involves paying attention to parts of the body and bodily sensations in a gradual sequence.",
   steps: ["Lie down or sit in a comfortable position.", "Bring awareness to your feet, noticing any sensations.", "Slowly move your attention up through your legs, torso, arms, and head.", "Notice any areas of tension, discomfort, or ease.", "Try not to judge these sensations as good or bad.", "When your mind wanders, gently return to the body part you were focusing on.", "End by becoming aware of your body as a whole."]
 }];
+
 const MindfulnessPage = () => {
   const [selectedExercise, setSelectedExercise] = useState<typeof mindfulnessExercises[0] | null>(null);
   const [activeStep, setActiveStep] = useState(0);
+  const [favorites, setFavorites] = useState<number[]>([]);
+
   const startExercise = (exercise: typeof mindfulnessExercises[0]) => {
     setSelectedExercise(exercise);
     setActiveStep(0);
   };
+
   const nextStep = () => {
     if (selectedExercise && activeStep < selectedExercise.steps.length - 1) {
       setActiveStep(activeStep + 1);
@@ -39,6 +44,23 @@ const MindfulnessPage = () => {
       setActiveStep(0);
     }
   };
+
+  const toggleFavorite = (exerciseId: number) => {
+    setFavorites(prev => 
+      prev.includes(exerciseId)
+        ? prev.filter(id => id !== exerciseId)
+        : [...prev, exerciseId]
+    );
+  };
+
+  const sortedExercises = [...mindfulnessExercises].sort((a, b) => {
+    const aIsFavorite = favorites.includes(a.id);
+    const bIsFavorite = favorites.includes(b.id);
+    if (aIsFavorite && !bIsFavorite) return -1;
+    if (!aIsFavorite && bIsFavorite) return 1;
+    return 0;
+  });
+
   return <div className="space-y-6 max-w-4xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold mb-2">Mindfulness Exercises</h1>
@@ -65,8 +87,24 @@ const MindfulnessPage = () => {
             </Button>
           </div>
         </Card> : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {mindfulnessExercises.map(exercise => <Card key={exercise.id} className="p-6 bg-mental-green">
-              <h2 className="text-xl font-semibold mb-2">{exercise.title}</h2>
+          {sortedExercises.map(exercise => <Card key={exercise.id} className="p-6 bg-mental-green">
+              <div className="flex justify-between items-start mb-2">
+                <h2 className="text-xl font-semibold">{exercise.title}</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => toggleFavorite(exercise.id)}
+                  className="p-1"
+                >
+                  <Heart 
+                    className={`h-6 w-6 ${
+                      favorites.includes(exercise.id) 
+                        ? 'fill-red-500 text-red-500' 
+                        : 'text-gray-400'
+                    }`} 
+                  />
+                </Button>
+              </div>
               <div className="flex items-center text-sm text-muted-foreground mb-4">
                 <Timer className="mr-1 h-4 w-4" /> 
                 <span>{exercise.duration}</span>
@@ -94,4 +132,5 @@ const MindfulnessPage = () => {
       </Card>
     </div>;
 };
+
 export default MindfulnessPage;
