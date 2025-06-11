@@ -61,7 +61,7 @@ const PlannerPage = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <Card className="lg:col-span-1">
+        <Card className="lg:col-span-1 bg-mental-blue">
           <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg" style={{
             color: '#737373'
