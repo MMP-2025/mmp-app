@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { Upload } from 'lucide-react';
 
 // Import form and list components
 import QuoteForm from '@/components/provider/QuoteForm';
@@ -15,6 +17,7 @@ import ReminderForm from '@/components/provider/ReminderForm';
 import ReminderList from '@/components/provider/ReminderList';
 import GratitudeForm from '@/components/provider/GratitudeForm';
 import GratitudeList from '@/components/provider/GratitudeList';
+import BulkImportModal from '@/components/provider/BulkImportModal';
 
 // Type definitions
 interface Quote {
@@ -278,6 +281,55 @@ const ProviderDashboard = () => {
     });
   };
 
+  // Bulk import handlers
+  const handleBulkImportQuotes = (items: any[]) => {
+    setQuotes(prev => [...prev, ...items]);
+    toast({
+      title: "Bulk import successful",
+      description: `${items.length} quotes have been imported.`
+    });
+  };
+
+  const handleBulkImportPrompts = (items: any[]) => {
+    setJournalPrompts(prev => [...prev, ...items]);
+    toast({
+      title: "Bulk import successful", 
+      description: `${items.length} journal prompts have been imported.`
+    });
+  };
+
+  const handleBulkImportQuestions = (items: any[]) => {
+    setQuestions(prev => [...prev, ...items]);
+    toast({
+      title: "Bulk import successful",
+      description: `${items.length} questions have been imported.`
+    });
+  };
+
+  const handleBulkImportToolkitItems = (items: any[]) => {
+    setToolkitItems(prev => [...prev, ...items]);
+    toast({
+      title: "Bulk import successful",
+      description: `${items.length} toolkit items have been imported.`
+    });
+  };
+
+  const handleBulkImportReminders = (items: any[]) => {
+    setReminders(prev => [...prev, ...items]);
+    toast({
+      title: "Bulk import successful",
+      description: `${items.length} reminders have been imported.`
+    });
+  };
+
+  const handleBulkImportGratitudePrompts = (items: any[]) => {
+    setGratitudePrompts(prev => [...prev, ...items]);
+    toast({
+      title: "Bulk import successful",
+      description: `${items.length} gratitude prompts have been imported.`
+    });
+  };
+
   // Delete handlers
   const handleDeleteQuote = (id: string) => {
     setQuotes(prev => prev.filter(q => q.id !== id));
@@ -345,32 +397,92 @@ const ProviderDashboard = () => {
         </TabsList>
 
         <TabsContent value="quotes" className="space-y-6">
-          <QuoteForm newQuote={newQuote} setNewQuote={setNewQuote} onAddQuote={handleAddQuote} />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <QuoteForm newQuote={newQuote} setNewQuote={setNewQuote} onAddQuote={handleAddQuote} />
+            </div>
+            <BulkImportModal type="quotes" onImport={handleBulkImportQuotes}>
+              <Button variant="outline" className="h-fit">
+                <Upload className="h-4 w-4 mr-2" />
+                Bulk Import
+              </Button>
+            </BulkImportModal>
+          </div>
           <QuoteList quotes={quotes} onDeleteQuote={handleDeleteQuote} />
         </TabsContent>
 
         <TabsContent value="prompts" className="space-y-6">
-          <JournalPromptForm newPrompt={newPrompt} setNewPrompt={setNewPrompt} onAddPrompt={handleAddPrompt} />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <JournalPromptForm newPrompt={newPrompt} setNewPrompt={setNewPrompt} onAddPrompt={handleAddPrompt} />
+            </div>
+            <BulkImportModal type="journalPrompts" onImport={handleBulkImportPrompts}>
+              <Button variant="outline" className="h-fit">
+                <Upload className="h-4 w-4 mr-2" />
+                Bulk Import
+              </Button>
+            </BulkImportModal>
+          </div>
           <JournalPromptList journalPrompts={journalPrompts} onDeletePrompt={handleDeletePrompt} />
         </TabsContent>
 
         <TabsContent value="questions" className="space-y-6">
-          <QuestionForm newQuestion={newQuestion} setNewQuestion={setNewQuestion} onAddQuestion={handleAddQuestion} />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <QuestionForm newQuestion={newQuestion} setNewQuestion={setNewQuestion} onAddQuestion={handleAddQuestion} />
+            </div>
+            <BulkImportModal type="questions" onImport={handleBulkImportQuestions}>
+              <Button variant="outline" className="h-fit">
+                <Upload className="h-4 w-4 mr-2" />
+                Bulk Import
+              </Button>
+            </BulkImportModal>
+          </div>
           <QuestionList questions={questions} onDeleteQuestion={handleDeleteQuestion} />
         </TabsContent>
 
         <TabsContent value="toolkit" className="space-y-6">
-          <ToolkitForm newToolkitItem={newToolkitItem} setNewToolkitItem={setNewToolkitItem} onAddToolkitItem={handleAddToolkitItem} />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <ToolkitForm newToolkitItem={newToolkitItem} setNewToolkitItem={setNewToolkitItem} onAddToolkitItem={handleAddToolkitItem} />
+            </div>
+            <BulkImportModal type="toolkitItems" onImport={handleBulkImportToolkitItems}>
+              <Button variant="outline" className="h-fit">
+                <Upload className="h-4 w-4 mr-2" />
+                Bulk Import
+              </Button>
+            </BulkImportModal>
+          </div>
           <ToolkitList toolkitItems={toolkitItems} onDeleteToolkitItem={handleDeleteToolkitItem} />
         </TabsContent>
 
         <TabsContent value="reminders" className="space-y-6">
-          <ReminderForm newReminder={newReminder} setNewReminder={setNewReminder} onAddReminder={handleAddReminder} />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <ReminderForm newReminder={newReminder} setNewReminder={setNewReminder} onAddReminder={handleAddReminder} />
+            </div>
+            <BulkImportModal type="reminders" onImport={handleBulkImportReminders}>
+              <Button variant="outline" className="h-fit">
+                <Upload className="h-4 w-4 mr-2" />
+                Bulk Import
+              </Button>
+            </BulkImportModal>
+          </div>
           <ReminderList reminders={reminders} onDeleteReminder={handleDeleteReminder} />
         </TabsContent>
 
         <TabsContent value="gratitude" className="space-y-6">
-          <GratitudeForm newGratitudePrompt={newGratitudePrompt} setNewGratitudePrompt={setNewGratitudePrompt} onAddGratitudePrompt={handleAddGratitudePrompt} />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <GratitudeForm newGratitudePrompt={newGratitudePrompt} setNewGratitudePrompt={setNewGratitudePrompt} onAddGratitudePrompt={handleAddGratitudePrompt} />
+            </div>
+            <BulkImportModal type="gratitudePrompts" onImport={handleBulkImportGratitudePrompts}>
+              <Button variant="outline" className="h-fit">
+                <Upload className="h-4 w-4 mr-2" />
+                Bulk Import
+              </Button>
+            </BulkImportModal>
+          </div>
           <GratitudeList gratitudePrompts={gratitudePrompts} onDeleteGratitudePrompt={handleDeleteGratitudePrompt} />
         </TabsContent>
       </Tabs>
