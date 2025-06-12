@@ -99,7 +99,7 @@ const HomePage = () => {
             <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
               <Link to="/mindfulness">Mindfulness</Link>
             </Button>
-            <Button asChild className="bg-mental-gray hover:bg-mental-gray/80 w-full text-left justify-start">
+            <Button asChild className="bg-mental-beige hover:bg-mental-beige/80 w-full text-left justify-start">
               <Link to="/planner">Today's Plan</Link>
             </Button>
           </div>
