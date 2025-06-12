@@ -26,12 +26,16 @@ const BulkDataImport: React.FC<BulkDataImportProps> = ({ type, onImport }) => {
   };
 
   const handleImport = () => {
-    const items = bulkSets
-      .filter(set => selectedSets.includes(set.id))
-      .flatMap(set => set.items);
+    const allItems: any[] = [];
     
-    if (items.length > 0) {
-      onImport(items);
+    bulkSets
+      .filter(set => selectedSets.includes(set.id))
+      .forEach(set => {
+        allItems.push(...set.items);
+      });
+    
+    if (allItems.length > 0) {
+      onImport(allItems);
     }
   };
 
