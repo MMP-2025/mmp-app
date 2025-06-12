@@ -66,6 +66,14 @@ export const parseTextareaData = (
           difficulty: 'simple' as const
         };
       
+      case 'mindfulnessPrompts':
+        return {
+          id,
+          prompt: line.trim(),
+          category: defaultCategory || 'General',
+          duration: '5 minutes'
+        };
+      
       default:
         return { id, content: line.trim() };
     }
@@ -161,6 +169,15 @@ export const generateJSONTemplate = (type: ImportType) => {
         }
       ];
     
+    case 'mindfulnessPrompts':
+      return [
+        {
+          prompt: "Take five deep breaths and notice the sensations",
+          category: "Breathing",
+          duration: "5 minutes"
+        }
+      ];
+    
     default:
       return [];
   }
@@ -185,6 +202,9 @@ export const generateCSVTemplate = (type: ImportType) => {
     
     case 'gratitudePrompts':
       return 'prompt,category,difficulty\n"Three things you\'re grateful for","Daily","simple"';
+    
+    case 'mindfulnessPrompts':
+      return 'prompt,category,duration\n"Focus on your breath","Breathing","5 minutes"';
     
     default:
       return '';
@@ -234,6 +254,21 @@ export const getBulkData = (type: ImportType) => {
             question: p.text,
             category: 'Mindfulness',
             type: 'reflection' as const
+          }))
+        }
+      ];
+    
+    case 'mindfulnessPrompts':
+      return [
+        {
+          id: 'mindfulness-basic',
+          name: 'Basic Mindfulness Prompts',
+          description: 'Simple mindfulness exercises and prompts',
+          items: bulkPrompts.filter(p => p.category === 'mindfulness').map(p => ({
+            id: p.id,
+            prompt: p.text,
+            category: 'Mindfulness',
+            duration: '5 minutes'
           }))
         }
       ];

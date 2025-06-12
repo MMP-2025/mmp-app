@@ -16,7 +16,7 @@ import JSONImport from './JSONImport';
 import CSVImport from './CSVImport';
 import BulkDataImport from './BulkDataImport';
 
-export type ImportType = 'quotes' | 'journalPrompts' | 'questions' | 'toolkitItems' | 'reminders' | 'gratitudePrompts';
+export type ImportType = 'quotes' | 'journalPrompts' | 'questions' | 'toolkitItems' | 'reminders' | 'gratitudePrompts' | 'mindfulnessPrompts';
 
 interface BulkImportModalProps {
   type: ImportType;
@@ -48,7 +48,8 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({
       questions: 'Questions',
       toolkitItems: 'Toolkit Items',
       reminders: 'Reminders',
-      gratitudePrompts: 'Gratitude Prompts'
+      gratitudePrompts: 'Gratitude Prompts',
+      mindfulnessPrompts: 'Mindfulness Prompts'
     };
     return labels[type];
   };
