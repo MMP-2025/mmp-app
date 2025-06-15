@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Target, Calendar, TrendingUp, BarChart3, Brain, Activity, Cloud, Camera, Heart } from 'lucide-react';
 
 interface MoodTrackerTabsProps {
@@ -10,7 +10,7 @@ interface MoodTrackerTabsProps {
 
 const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({ currentTab, onTabChange }) => {
   return (
-    <TabsList className="grid w-full grid-cols-12">
+    <TabsList className="flex h-auto w-full flex-wrap justify-start">
       <TabsTrigger value="track" className="flex items-center gap-2">
         <Target className="h-4 w-4" />
         Track Mood
