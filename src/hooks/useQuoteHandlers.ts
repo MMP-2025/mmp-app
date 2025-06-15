@@ -6,7 +6,8 @@ interface UseQuoteHandlersProps {
   setQuotes: React.Dispatch<React.SetStateAction<Quote[]>>;
   newQuote: { text: string; author: string; category: string };
   setNewQuote: React.Dispatch<React.SetStateAction<{ text: string; author: string; category: string }>>;
-  toast: any;
+  showSuccess: (title: string, description?: string) => void;
+  showError: (title: string, description?: string) => void;
 }
 
 export const useQuoteHandlers = ({
@@ -14,10 +15,15 @@ export const useQuoteHandlers = ({
   setQuotes,
   newQuote,
   setNewQuote,
-  toast
+  showSuccess,
+  showError
 }: UseQuoteHandlersProps) => {
   const handleAddQuote = () => {
-    if (!newQuote.text.trim()) return;
+    if (!newQuote.text.trim()) {
+      showError("Validation Error", "Quote text is required");
+      return;
+    }
+    
     const quote: Quote = {
       id: Date.now().toString(),
       text: newQuote.text,
@@ -26,26 +32,22 @@ export const useQuoteHandlers = ({
     };
     setQuotes(prev => [...prev, quote]);
     setNewQuote({ text: '', author: '', category: '' });
-    toast({
-      title: "Quote added",
-      description: "The inspirational quote has been added to the database."
-    });
+    showSuccess("Quote added", "The inspirational quote has been added to the database.");
   };
 
   const handleDeleteQuote = (id: string) => {
     setQuotes(prev => prev.filter(q => q.id !== id));
-    toast({
-      title: "Quote deleted",
-      description: "The quote has been removed."
-    });
+    showSuccess("Quote deleted", "The quote has been removed.");
   };
 
   const handleBulkImportQuotes = (items: any[]) => {
+    if (items.length === 0) {
+      showError("Import Error", "No valid quotes found to import");
+      return;
+    }
+    
     setQuotes(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} quotes have been imported.`
-    });
+    showSuccess("Bulk import successful", `${items.length} quotes have been imported.`);
   };
 
   return {

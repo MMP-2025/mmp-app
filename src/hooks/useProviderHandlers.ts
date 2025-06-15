@@ -1,4 +1,3 @@
-
 import { useQuoteHandlers } from './useQuoteHandlers';
 import { useJournalPromptHandlers } from './useJournalPromptHandlers';
 import { useResourceHandlers } from './useResourceHandlers';
@@ -51,7 +50,9 @@ interface UseProviderHandlersProps {
   setNewGratitudePrompt: React.Dispatch<React.SetStateAction<{ prompt: string; category: string; difficulty: GratitudePrompt['difficulty'] }>>;
   newMindfulnessPrompt: { prompt: string; category: string; duration: string };
   setNewMindfulnessPrompt: React.Dispatch<React.SetStateAction<{ prompt: string; category: string; duration: string }>>;
-  toast: any;
+  showSuccess: (title: string, description?: string) => void;
+  showError: (title: string, description?: string) => void;
+  showInfo: (title: string, description?: string) => void;
 }
 
 export const useProviderHandlers = (props: UseProviderHandlersProps) => {
@@ -60,7 +61,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setQuotes: props.setQuotes,
     newQuote: props.newQuote,
     setNewQuote: props.setNewQuote,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   const journalPromptHandlers = useJournalPromptHandlers({
@@ -68,7 +70,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setJournalPrompts: props.setJournalPrompts,
     newPrompt: props.newPrompt,
     setNewPrompt: props.setNewPrompt,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   const resourceHandlers = useResourceHandlers({
@@ -76,7 +79,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setResources: props.setResources,
     newResource: props.newResource,
     setNewResource: props.setNewResource,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   const questionHandlers = useQuestionHandlers({
@@ -84,7 +88,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setQuestions: props.setQuestions,
     newQuestion: props.newQuestion,
     setNewQuestion: props.setNewQuestion,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   const toolkitHandlers = useToolkitHandlers({
@@ -92,7 +97,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setToolkitItems: props.setToolkitItems,
     newToolkitItem: props.newToolkitItem,
     setNewToolkitItem: props.setNewToolkitItem,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   const reminderHandlers = useReminderHandlers({
@@ -100,7 +106,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setReminders: props.setReminders,
     newReminder: props.newReminder,
     setNewReminder: props.setNewReminder,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   const gratitudeHandlers = useGratitudeHandlers({
@@ -108,7 +115,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setGratitudePrompts: props.setGratitudePrompts,
     newGratitudePrompt: props.newGratitudePrompt,
     setNewGratitudePrompt: props.setNewGratitudePrompt,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   const mindfulnessHandlers = useMindfulnessHandlers({
@@ -116,7 +124,8 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
     setMindfulnessPrompts: props.setMindfulnessPrompts,
     newMindfulnessPrompt: props.newMindfulnessPrompt,
     setNewMindfulnessPrompt: props.setNewMindfulnessPrompt,
-    toast: props.toast
+    showSuccess: props.showSuccess,
+    showError: props.showError
   });
 
   return {

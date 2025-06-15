@@ -1,5 +1,4 @@
-
-import { useToast } from '@/hooks/use-toast';
+import { useToastService } from '@/hooks/useToastService';
 import { useQuoteData } from './useQuoteData';
 import { useJournalPromptData } from './useJournalPromptData';
 import { useResourceData } from './useResourceData';
@@ -10,7 +9,7 @@ import { useGratitudeData } from './useGratitudeData';
 import { useMindfulnessData } from './useMindfulnessData';
 
 export const useProviderData = () => {
-  const { toast } = useToast();
+  const toastService = useToastService();
   
   const quoteData = useQuoteData();
   const journalPromptData = useJournalPromptData();
@@ -70,6 +69,9 @@ export const useProviderData = () => {
     newMindfulnessPrompt: mindfulnessData.newMindfulnessPrompt,
     setNewMindfulnessPrompt: mindfulnessData.setNewMindfulnessPrompt,
     
-    toast
+    toast: toastService.toast,
+    showSuccess: toastService.showSuccess,
+    showError: toastService.showError,
+    showInfo: toastService.showInfo
   };
 };
