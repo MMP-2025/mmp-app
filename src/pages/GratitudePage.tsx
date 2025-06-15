@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useToastService } from '@/hooks/useToastService';
 import { Heart, Check, BookmarkPlus, BookmarkCheck } from 'lucide-react';
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 
 // Sample gratitude exercises - in a real app, these would come from your database
 const gratitudeExercises = [{
@@ -159,103 +160,107 @@ const GratitudePage = () => {
     }
   };
 
-  return <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Gratitude Practices</h1>
-        <p className="text-[#7e868b]">Cultivate appreciation for life's blessings</p>
-      </div>
+  return (
+    <SidebarLayout>
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <div>
+          <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Gratitude Practices</h1>
+          <p className="text-[#7e868b]">Cultivate appreciation for life's blessings</p>
+        </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex gap-2 mb-6">
-        <Button
-          variant={currentView === 'all' ? 'default' : 'outline'}
-          onClick={() => setCurrentView('all')}
-          className="bg-mental-peach hover:bg-mental-peach/80"
-        >
-          All Practices
-        </Button>
-        <Button
-          variant={currentView === 'saved' ? 'default' : 'outline'}
-          onClick={() => setCurrentView('saved')}
-          className="bg-mental-green hover:bg-mental-green/80"
-        >
-          Saved Practices ({savedExercises.length})
-        </Button>
-      </div>
-      
-      {selectedExercise ? <Card className="p-6 bg-mental-peach/20">
-          <h2 className="text-2xl font-semibold mb-2 text-[#7e868b]">{selectedExercise.title}</h2>
-          <p className="mb-6 text-[#7e868b]">{selectedExercise.instructions}</p>
-          
-          {renderExerciseForm()}
-          
-          <div className="mt-6 flex gap-3">
-            <Button onClick={saveGratitude} className="flex-1 bg-mental-green hover:bg-mental-green/80">
-              Save Practice
-            </Button>
-            <Button onClick={() => setSelectedExercise(null)} variant="outline" className="bg-mental-green">
-              Cancel
-            </Button>
-          </div>
-        </Card> : <>
-          {currentView === 'saved' && savedExercises.length === 0 ? (
-            <Card className="p-8 bg-mental-peach/20 text-center">
-              <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-mental-peach" />
-              <h3 className="text-xl font-semibold mb-2 text-[#7e868b]">No Saved Practices</h3>
-              <p className="text-[#7e868b] mb-4">
-                You haven't saved any practices yet. Browse all practices and save your favorites!
-              </p>
-              <Button 
-                onClick={() => setCurrentView('all')} 
-                className="bg-mental-peach hover:bg-mental-peach/80"
-              >
-                Browse All Practices
-              </Button>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {getDisplayedExercises().map(exercise => <Card key={exercise.id} className="p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-semibold flex items-center gap-2 text-[#7e868b]">
-                      <Heart className="h-5 w-5 text-mental-peach" />
-                      {exercise.title}
-                    </h2>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleSaved(exercise.id)}
-                      className="p-1"
-                    >
-                      {savedExercises.includes(exercise.id) ? (
-                        <BookmarkCheck className="h-6 w-6 text-blue-600" />
-                      ) : (
-                        <BookmarkPlus className="h-6 w-6 text-gray-400" />
-                      )}
-                    </Button>
-                  </div>
-                  <p className="mb-4 text-[#7e868b]">{exercise.description}</p>
-                  <Button onClick={() => setSelectedExercise(exercise)} className="w-full bg-mental-peach hover:bg-mental-peach/80">
-                    Start Practice
-                  </Button>
-                </Card>)}
-            </div>
-          )}
-        </>}
-      
-      <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Your Gratitude Collection</h2>
+        {/* Navigation Tabs */}
+        <div className="flex gap-2 mb-6">
+          <Button
+            variant={currentView === 'all' ? 'default' : 'outline'}
+            onClick={() => setCurrentView('all')}
+            className="bg-mental-peach hover:bg-mental-peach/80"
+          >
+            All Practices
+          </Button>
+          <Button
+            variant={currentView === 'saved' ? 'default' : 'outline'}
+            onClick={() => setCurrentView('saved')}
+            className="bg-mental-green hover:bg-mental-green/80"
+          >
+            Saved Practices ({savedExercises.length})
+          </Button>
+        </div>
         
-        {gratitudeEntries.length === 0 ? <p className="text-center text-[#7e868b]">Your gratitude entries will appear here</p> : <div className="space-y-4">
-            {gratitudeEntries.map(entry => <div key={entry.id} className="border border-mental-gray/20 rounded-md p-4">
-                <div className="flex items-center gap-1 mb-2 text-sm text-[#7e868b]">
-                  <Check className="h-4 w-4 text-mental-green" />
-                  <span>{formatDate(entry.date)}</span>
-                </div>
-                <p className="whitespace-pre-wrap text-[#7e868b]">{entry.content}</p>
-              </div>)}
-          </div>}
-      </Card>
-    </div>;
+        {selectedExercise ? <Card className="p-6 bg-mental-peach/20">
+            <h2 className="text-2xl font-semibold mb-2 text-[#7e868b]">{selectedExercise.title}</h2>
+            <p className="mb-6 text-[#7e868b]">{selectedExercise.instructions}</p>
+            
+            {renderExerciseForm()}
+            
+            <div className="mt-6 flex gap-3">
+              <Button onClick={saveGratitude} className="flex-1 bg-mental-green hover:bg-mental-green/80">
+                Save Practice
+              </Button>
+              <Button onClick={() => setSelectedExercise(null)} variant="outline" className="bg-mental-green">
+                Cancel
+              </Button>
+            </div>
+          </Card> : <>
+            {currentView === 'saved' && savedExercises.length === 0 ? (
+              <Card className="p-8 bg-mental-peach/20 text-center">
+                <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-mental-peach" />
+                <h3 className="text-xl font-semibold mb-2 text-[#7e868b]">No Saved Practices</h3>
+                <p className="text-[#7e868b] mb-4">
+                  You haven't saved any practices yet. Browse all practices and save your favorites!
+                </p>
+                <Button 
+                  onClick={() => setCurrentView('all')} 
+                  className="bg-mental-peach hover:bg-mental-peach/80"
+                >
+                  Browse All Practices
+                </Button>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {getDisplayedExercises().map(exercise => <Card key={exercise.id} className="p-6">
+                    <div className="flex justify-between items-start mb-2">
+                      <h2 className="text-xl font-semibold flex items-center gap-2 text-[#7e868b]">
+                        <Heart className="h-5 w-5 text-mental-peach" />
+                        {exercise.title}
+                      </h2>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleSaved(exercise.id)}
+                        className="p-1"
+                      >
+                        {savedExercises.includes(exercise.id) ? (
+                          <BookmarkCheck className="h-6 w-6 text-blue-600" />
+                        ) : (
+                          <BookmarkPlus className="h-6 w-6 text-gray-400" />
+                        )}
+                      </Button>
+                    </div>
+                    <p className="mb-4 text-[#7e868b]">{exercise.description}</p>
+                    <Button onClick={() => setSelectedExercise(exercise)} className="w-full bg-mental-peach hover:bg-mental-peach/80">
+                      Start Practice
+                    </Button>
+                  </Card>)}
+              </div>
+            )}
+          </>}
+        
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Your Gratitude Collection</h2>
+          
+          {gratitudeEntries.length === 0 ? <p className="text-center text-[#7e868b]">Your gratitude entries will appear here</p> : <div className="space-y-4">
+              {gratitudeEntries.map(entry => <div key={entry.id} className="border border-mental-gray/20 rounded-md p-4">
+                  <div className="flex items-center gap-1 mb-2 text-sm text-[#7e868b]">
+                    <Check className="h-4 w-4 text-mental-green" />
+                    <span>{formatDate(entry.date)}</span>
+                  </div>
+                  <p className="whitespace-pre-wrap text-[#7e868b]">{entry.content}</p>
+                </div>)}
+            </div>}
+        </Card>
+      </div>
+    </SidebarLayout>
+  );
 };
 
 export default GratitudePage;

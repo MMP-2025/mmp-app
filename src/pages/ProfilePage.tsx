@@ -5,6 +5,7 @@ import { Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import PersonalInfoCard from '@/components/profile/PersonalInfoCard';
 import NotificationPreferencesCard from '@/components/profile/NotificationPreferencesCard';
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -47,30 +48,32 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#737373] mb-2">User Profile</h1>
-        <p className="text-[#737373]">Manage your personal information and preferences.</p>
+    <SidebarLayout>
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-[#737373] mb-2">User Profile</h1>
+          <p className="text-[#737373]">Manage your personal information and preferences.</p>
+        </div>
+
+        <PersonalInfoCard 
+          profile={profile} 
+          onInputChange={handleInputChange} 
+        />
+
+        <NotificationPreferencesCard 
+          notifications={profile.notifications}
+          onNotificationChange={handleNotificationChange}
+        />
+
+        {/* Save Button */}
+        <div className="flex justify-end">
+          <Button onClick={handleSaveProfile} className="flex items-center gap-2 bg-mental-peach text-[#737373] hover:bg-mental-blue">
+            <Save className="h-4 w-4" />
+            Save Profile
+          </Button>
+        </div>
       </div>
-
-      <PersonalInfoCard 
-        profile={profile} 
-        onInputChange={handleInputChange} 
-      />
-
-      <NotificationPreferencesCard 
-        notifications={profile.notifications}
-        onNotificationChange={handleNotificationChange}
-      />
-
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <Button onClick={handleSaveProfile} className="flex items-center gap-2 bg-mental-peach text-[#737373] hover:bg-mental-blue">
-          <Save className="h-4 w-4" />
-          Save Profile
-        </Button>
-      </div>
-    </div>
+    </SidebarLayout>
   );
 };
 

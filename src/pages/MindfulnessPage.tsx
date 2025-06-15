@@ -9,6 +9,7 @@ import MindfulnessProgressTracker from '@/components/mindfulness/MindfulnessProg
 import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import MindfulnessExercises from '@/components/mindfulness/MindfulnessExercises';
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 
 // Sample mindfulness exercises - in a real app, these would come from your database
 interface MindfulnessSession {
@@ -47,75 +48,77 @@ const MindfulnessPage = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Mindfulness & Meditation</h1>
-        <p className="text-muted-foreground">Practice being present and cultivate awareness</p>
+    <SidebarLayout>
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Mindfulness & Meditation</h1>
+          <p className="text-muted-foreground">Practice being present and cultivate awareness</p>
+        </div>
+
+        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="exercises" className="flex items-center gap-2">
+              <Brain className="h-4 w-4" />
+              Exercises
+            </TabsTrigger>
+            <TabsTrigger value="audio" className="flex items-center gap-2">
+              <Headphones className="h-4 w-4" />
+              Audio Guided
+            </TabsTrigger>
+            <TabsTrigger value="breathing" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Breathing
+            </TabsTrigger>
+            <TabsTrigger value="progress" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Progress
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="exercises" className="space-y-6">
+            <MindfulnessExercises />
+          </TabsContent>
+
+          <TabsContent value="audio" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AudioMeditation
+                title="Morning Meditation"
+                duration={600} // 10 minutes
+                onComplete={() => handleSessionComplete('meditation', 10)}
+              />
+              <AudioMeditation
+                title="Evening Relaxation"
+                duration={900} // 15 minutes
+                onComplete={() => handleSessionComplete('meditation', 15)}
+              />
+              <AudioMeditation
+                title="Quick Mindfulness"
+                duration={300} // 5 minutes
+                onComplete={() => handleSessionComplete('meditation', 5)}
+              />
+              <BodyScanVisualization
+                onComplete={() => handleSessionComplete('body_scan', 12)}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="breathing" className="space-y-6">
+            <GuidedBreathingVisualizer
+              defaultTechnique="4-4-4-4"
+              cycleGoal={12}
+              onComplete={(durationInMinutes) => handleSessionComplete('breathing', durationInMinutes)}
+            />
+          </TabsContent>
+
+          <TabsContent value="progress" className="space-y-6">
+            <MindfulnessProgressTracker
+              sessions={sessions}
+              weeklyGoal={70} // 70 minutes per week default goal
+            />
+          </TabsContent>
+        </Tabs>
       </div>
-
-      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="exercises" className="flex items-center gap-2">
-            <Brain className="h-4 w-4" />
-            Exercises
-          </TabsTrigger>
-          <TabsTrigger value="audio" className="flex items-center gap-2">
-            <Headphones className="h-4 w-4" />
-            Audio Guided
-          </TabsTrigger>
-          <TabsTrigger value="breathing" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            Breathing
-          </TabsTrigger>
-          <TabsTrigger value="progress" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            Progress
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="exercises" className="space-y-6">
-          <MindfulnessExercises />
-        </TabsContent>
-
-        <TabsContent value="audio" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AudioMeditation
-              title="Morning Meditation"
-              duration={600} // 10 minutes
-              onComplete={() => handleSessionComplete('meditation', 10)}
-            />
-            <AudioMeditation
-              title="Evening Relaxation"
-              duration={900} // 15 minutes
-              onComplete={() => handleSessionComplete('meditation', 15)}
-            />
-            <AudioMeditation
-              title="Quick Mindfulness"
-              duration={300} // 5 minutes
-              onComplete={() => handleSessionComplete('meditation', 5)}
-            />
-            <BodyScanVisualization
-              onComplete={() => handleSessionComplete('body_scan', 12)}
-            />
-          </div>
-        </TabsContent>
-
-        <TabsContent value="breathing" className="space-y-6">
-          <GuidedBreathingVisualizer
-            defaultTechnique="4-4-4-4"
-            cycleGoal={12}
-            onComplete={(durationInMinutes) => handleSessionComplete('breathing', durationInMinutes)}
-          />
-        </TabsContent>
-
-        <TabsContent value="progress" className="space-y-6">
-          <MindfulnessProgressTracker
-            sessions={sessions}
-            weeklyGoal={70} // 70 minutes per week default goal
-          />
-        </TabsContent>
-      </Tabs>
-    </div>
+    </SidebarLayout>
   );
 };
 
