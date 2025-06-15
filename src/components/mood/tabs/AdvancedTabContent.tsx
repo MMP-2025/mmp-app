@@ -6,8 +6,9 @@ import MoodPredictionSystem from '../MoodPredictionSystem';
 import WeatherCorrelation from '../WeatherCorrelation';
 import TriggerPatternRecognition from '../TriggerPatternRecognition';
 import AIInsights from '../../personalization/AIInsights';
-import AdvancedAnalytics from '../../analytics/AdvancedAnalytics';
+// import AdvancedAnalytics from '../../analytics/AdvancedAnalytics';
 import HabitTracker from '../../habits/HabitTracker';
+import { Card } from '@/components/ui/card';
 
 interface WeatherData {
   condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'windy';
@@ -42,7 +43,12 @@ const AdvancedTabContent: React.FC<AdvancedTabContentProps> = ({
   return (
     <>
       <TabsContent value="advanced">
-        <AdvancedAnalytics />
+        <Card className="p-6 bg-white/90">
+          <h3 className="text-lg font-semibold" style={{color: '#737373'}}>Advanced Analytics</h3>
+          <p style={{color: '#737373'}}>
+            More advanced analytics are coming soon!
+          </p>
+        </Card>
       </TabsContent>
 
       <TabsContent value="correlations">
