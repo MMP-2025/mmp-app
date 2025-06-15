@@ -34,7 +34,7 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({ achievement })
     >
       <div className="flex items-center gap-3 mb-3">
         <div className={`p-2 rounded-full ${achievement.badgeColor} ${achievement.completed ? 'opacity-100' : 'opacity-50'}`}>
-          <Icon className="h-5 w-5 text-white" />
+          <Icon size={20} color="white" />
         </div>
         <div className="flex-1">
           <h4 className="font-semibold" style={{color: '#737373'}}>{achievement.title}</h4>
