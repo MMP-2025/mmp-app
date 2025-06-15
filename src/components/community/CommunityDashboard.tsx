@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Target, Share2, Trophy, MessageCircle, Heart, Calendar, Award } from 'lucide-react';
 import { contentManager } from '@/utils/contentManager';
 import PeerSupportGroups from './PeerSupportGroups';
-import CommunityCallenges from './CommunityChallenges';
+import CommunityChallenges from './CommunityChallenges';
 import ResourceSharing from './ResourceSharing';
 
 const CommunityDashboard = () => {
@@ -73,7 +73,7 @@ const CommunityDashboard = () => {
         </TabsContent>
 
         <TabsContent value="challenges">
-          <CommunityCallenges />
+          <CommunityChallenges />
         </TabsContent>
 
         <TabsContent value="resources">
