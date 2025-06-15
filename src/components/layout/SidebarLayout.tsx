@@ -5,6 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, Si
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 import UserProfile from './UserProfile';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ interface SidebarLayoutProps {
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   const location = useLocation();
+  const { isProvider } = useAuth();
   const [isClicked, setIsClicked] = useState(false);
 
   const menuItems = [
@@ -27,12 +29,15 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     { icon: Wrench, label: 'Support Toolkit', path: '/support-toolkit' },
     { icon: Users, label: 'Community', path: '/community' },
     { icon: Phone, label: 'Crisis Resources', path: '/crisis' },
-    {
+  ];
+
+  if (isProvider) {
+    menuItems.push({
       icon: Settings,
       label: 'Provider Dashboard',
       path: '/provider-dashboard'
-    }
-  ];
+    });
+  }
 
   // Auto-hide after 3 seconds when not interacting
   useEffect(() => {
@@ -117,4 +122,3 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     </div>
   );
 }
-
