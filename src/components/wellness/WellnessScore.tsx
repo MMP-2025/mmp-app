@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import { WellnessMetricsCard } from './WellnessMetricsCard';
 import { WellnessScoreHistory } from './WellnessScoreHistory';
 import { WellnessInsights } from './WellnessInsights';
 import { WellnessScoreCalculator } from '@/services/wellness/wellnessScoreCalculator';
-import { WellnessScore } from '@/types/wellness';
+import type { WellnessScore } from '@/types/wellness';
 
 interface ScoreHistory {
   date: string;
