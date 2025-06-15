@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -5,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { SidebarLayout } from "@/components/layout/SidebarLayout";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { PersonalizationProvider } from "@/contexts/PersonalizationContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
@@ -13,8 +13,8 @@ import AccessibilityToolbar from "@/components/accessibility/AccessibilityToolba
 import VoiceControl from "@/components/accessibility/VoiceControl";
 import LoginForm from "@/components/auth/LoginForm";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import AdvancedAnalytics from './components/analytics/AdvancedAnalytics';
 import { registerSW } from './utils/serviceWorker';
+import PageWrapper from "@/components/PageWrapper";
 
 import HomePage from "./pages/HomePage";
 import MoodTrackerPage from "./pages/MoodTrackerPage";
@@ -57,90 +57,66 @@ const AppContent = () => {
           <div className="w-full min-h-screen">
             <Routes>
               <Route path="/" element={
-                <div className="bg-mental-peach min-h-screen">
-                  <SidebarLayout>
-                    <HomePage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-peach">
+                  <HomePage />
+                </PageWrapper>
               } />
               <Route path="/crisis" element={
-                <div className="bg-red-50 min-h-screen">
-                  <SidebarLayout>
-                    <CrisisResourcesPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-red-50">
+                  <CrisisResourcesPage />
+                </PageWrapper>
               } />
               <Route path="/mood" element={<MoodTrackerPage />} />
               <Route path="/journal" element={
-                <div className="bg-mental-green min-h-screen">
-                  <SidebarLayout>
-                    <JournalPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-green">
+                  <JournalPage />
+                </PageWrapper>
               } />
               <Route path="/mindfulness" element={
-                <div className="bg-mental-beige min-h-screen">
-                  <SidebarLayout>
-                    <MindfulnessPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-beige">
+                  <MindfulnessPage />
+                </PageWrapper>
               } />
               <Route path="/gratitude" element={
-                <div className="bg-mental-gray min-h-screen">
-                  <SidebarLayout>
-                    <GratitudePage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-gray">
+                  <GratitudePage />
+                </PageWrapper>
               } />
               <Route path="/planner" element={
-                <div className="bg-mental-blue min-h-screen">
-                  <SidebarLayout>
-                    <PlannerPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-blue">
+                  <PlannerPage />
+                </PageWrapper>
               } />
               <Route path="/reminders" element={
-                <div className="bg-mental-peach min-h-screen">
-                  <SidebarLayout>
-                    <RemindersPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-peach">
+                  <RemindersPage />
+                </PageWrapper>
               } />
               <Route path="/timer" element={
-                <div className="bg-mental-green min-h-screen">
-                  <SidebarLayout>
-                    <TimerPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-green">
+                  <TimerPage />
+                </PageWrapper>
               } />
               <Route path="/support-toolkit" element={
-                <div className="bg-mental-beige min-h-screen">
-                  <SidebarLayout>
-                    <SupportToolkitPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-beige">
+                  <SupportToolkitPage />
+                </PageWrapper>
               } />
               <Route path="/profile" element={
-                <div className="bg-mental-gray min-h-screen">
-                  <SidebarLayout>
-                    <ProfilePage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-gray">
+                  <ProfilePage />
+                </PageWrapper>
               } />
               <Route path="/community" element={
-                <div className="bg-mental-blue min-h-screen">
-                  <SidebarLayout>
-                    <CommunityPage />
-                  </SidebarLayout>
-                </div>
+                <PageWrapper backgroundColor="bg-mental-blue">
+                  <CommunityPage />
+                </PageWrapper>
               } />
               <Route path="/provider-dashboard" element={
                 <ProtectedRoute requiredRole="provider">
-                  <div className="bg-mental-gray min-h-screen">
-                    <SidebarLayout>
-                      <ProviderDashboard />
-                    </SidebarLayout>
-                  </div>
+                  <PageWrapper backgroundColor="bg-mental-gray">
+                    <ProviderDashboard />
+                  </PageWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/personalization" element={
