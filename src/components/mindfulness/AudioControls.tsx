@@ -34,9 +34,9 @@ const AudioControls: React.FC<AudioControlsProps> = ({
         disabled={disabled}
       >
         {isPlaying ? (
-          <Pause className="h-8 w-8 text-neutral-500" />
+          <Pause className="h-8 w-8 text-[#737373]" />
         ) : (
-          <Play className="h-8 w-8 text-neutral-500" />
+          <Play className="h-8 w-8 text-[#737373]" />
         )}
       </Button>
 

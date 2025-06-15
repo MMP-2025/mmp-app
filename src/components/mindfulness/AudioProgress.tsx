@@ -26,7 +26,7 @@ const AudioProgress: React.FC<AudioProgressProps> = ({ currentTime, duration, on
     <>
       <div className="mb-6">
         <Progress value={progress} className="h-2 mb-2" />
-        <div className="flex justify-between text-sm text-neutral-500">
+        <div className="flex justify-between text-sm text-[#737373]">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>

@@ -12,7 +12,7 @@ interface VolumeControlProps {
 const VolumeControl: React.FC<VolumeControlProps> = ({ volume, onVolumeChange, disabled }) => {
   return (
     <div className="flex items-center gap-3">
-      <Volume2 className="h-4 w-4 text-neutral-500" />
+      <Volume2 className="h-4 w-4 text-[#737373]" />
       <Slider
         value={[volume]}
         onValueChange={onVolumeChange}
@@ -21,7 +21,7 @@ const VolumeControl: React.FC<VolumeControlProps> = ({ volume, onVolumeChange, d
         className="flex-1"
         disabled={disabled}
       />
-      <span className="text-sm text-neutral-500">{volume}%</span>
+      <span className="text-sm text-[#737373]">{volume}%</span>
     </div>
   );
 };

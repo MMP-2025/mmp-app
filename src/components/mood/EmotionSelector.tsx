@@ -15,7 +15,7 @@ const emotions = [
 const EmotionSelector: React.FC<EmotionSelectorProps> = ({ onEmotionSelect, selectedEmotion }) => {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-4 text-neutral-500">How are you feeling?</h3>
+      <h3 className="text-lg font-semibold mb-4 text-[#737373]">How are you feeling?</h3>
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {emotions.map(emotion => (
           <Button
@@ -24,7 +24,7 @@ const EmotionSelector: React.FC<EmotionSelectorProps> = ({ onEmotionSelect, sele
             className={`transition-colors ${
               selectedEmotion === emotion
                 ? 'bg-mental-green text-white hover:bg-mental-green/90'
-                : 'bg-mental-beige text-neutral-700 hover:bg-mental-beige/80'
+                : 'bg-mental-beige text-[#737373] hover:bg-mental-beige/80'
             }`}
           >
             {emotion}

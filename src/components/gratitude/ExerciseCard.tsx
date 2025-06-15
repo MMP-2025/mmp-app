@@ -16,7 +16,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, onStartPractice, 
   return (
     <Card className="p-6">
       <div className="flex justify-between items-start mb-2">
-        <h2 className="text-xl font-semibold flex items-center gap-2 text-[#7e868b]">
+        <h2 className="text-xl font-semibold flex items-center gap-2 text-[#737373]">
           {exercise.title}
         </h2>
         <Button
@@ -26,13 +26,13 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise, onStartPractice, 
           className="p-1"
         >
           {isSaved ? (
-            <BookmarkCheck className="h-6 w-6 text-neutral-500" />
+            <BookmarkCheck className="h-6 w-6 text-[#737373]" />
           ) : (
-            <BookmarkPlus className="h-6 w-6 text-gray-400" />
+            <BookmarkPlus className="h-6 w-6 text-[#737373] opacity-60" />
           )}
         </Button>
       </div>
-      <p className="mb-4 text-[#7e868b]">{exercise.description}</p>
+      <p className="mb-4 text-[#737373]">{exercise.description}</p>
       <Button onClick={() => onStartPractice(exercise)} className="w-full bg-mental-peach hover:bg-mental-peach/80">
         Start Practice
       </Button>

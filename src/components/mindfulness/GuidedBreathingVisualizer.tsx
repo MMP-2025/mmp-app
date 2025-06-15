@@ -50,14 +50,14 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
 
   return (
     <Card className="p-8 bg-mental-beige text-center">
-      <h3 className="text-xl font-semibold mb-6 text-neutral-500">
+      <h3 className="text-xl font-semibold mb-6 text-[#737373]">
         Guided Breathing Visualizer
       </h3>
       
       <BreathingVisualizerCircle phase={phase} />
 
       <div className="mb-6">
-        <div className="flex justify-around text-sm text-neutral-500">
+        <div className="flex justify-around text-sm text-[#737373]">
           <span>Cycle: {cycleCount} / {cycleGoal}</span>
           <span>Time: {formatTime(totalTime)}</span>
         </div>
@@ -70,7 +70,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
       />
 
       <div className="mt-6 space-y-3">
-        <p className="text-sm font-medium text-neutral-500">Choose a technique:</p>
+        <p className="text-sm font-medium text-[#737373]">Choose a technique:</p>
         <div className="flex justify-center flex-wrap gap-2">
           {Object.keys(techniques).map((key) => (
             <Button
