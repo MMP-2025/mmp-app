@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target, Brain, BarChart3, Activity, Cloud } from 'lucide-react';
+import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target, Brain, BarChart3, Activity, Cloud, Camera, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
@@ -23,6 +23,10 @@ import AdvancedAnalytics from '@/components/analytics/AdvancedAnalytics';
 import HabitTracker from '@/components/habits/HabitTracker';
 import WeatherCorrelation from '@/components/mood/WeatherCorrelation';
 import TriggerPatternRecognition from '@/components/mood/TriggerPatternRecognition';
+import ProgressPhotography from '@/components/photography/ProgressPhotography';
+import CBTModules from '@/components/therapy/CBTModules';
+import ExposureTherapyTracker from '@/components/therapy/ExposureTherapyTracker';
+import CopingSkillsLibrary from '@/components/therapy/CopingSkillsLibrary';
 
 interface WeatherData {
   condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'windy';
@@ -183,7 +187,7 @@ const MoodTrackerPage = () => {
           </div>
           
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-9">
+            <TabsList className="grid w-full grid-cols-12">
               <TabsTrigger value="track" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
                 Track Mood
@@ -219,6 +223,18 @@ const MoodTrackerPage = () => {
               <TabsTrigger value="environment" className="flex items-center gap-2">
                 <Cloud className="h-4 w-4" />
                 Environment
+              </TabsTrigger>
+              <TabsTrigger value="photography" className="flex items-center gap-2">
+                <Camera className="h-4 w-4" />
+                Photography
+              </TabsTrigger>
+              <TabsTrigger value="cbt" className="flex items-center gap-2">
+                <Brain className="h-4 w-4" />
+                CBT
+              </TabsTrigger>
+              <TabsTrigger value="coping" className="flex items-center gap-2">
+                <Heart className="h-4 w-4" />
+                Coping Skills
               </TabsTrigger>
             </TabsList>
 
@@ -376,6 +392,21 @@ const MoodTrackerPage = () => {
                 <WeatherCorrelation moodHistory={moodHistory} />
                 <TriggerPatternRecognition moodHistory={moodHistory} />
               </div>
+            </TabsContent>
+
+            <TabsContent value="photography">
+              <ProgressPhotography />
+            </TabsContent>
+
+            <TabsContent value="cbt">
+              <div className="space-y-6">
+                <CBTModules />
+                <ExposureTherapyTracker />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="coping">
+              <CopingSkillsLibrary />
             </TabsContent>
           </Tabs>
         </div>
