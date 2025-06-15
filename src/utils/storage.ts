@@ -62,5 +62,7 @@ export const STORAGE_KEYS = {
   MINDFULNESS_PROGRESS: 'mindfulness_progress',
   SAVED_PROMPTS: 'saved_prompts',
   PLANNER_EVENTS: 'planner_events',
-  REMINDERS: 'reminders'
+  REMINDERS: 'reminders',
+  USER_BEHAVIOR: 'user_behavior',
+  PERSONALIZED_CONTENT: 'personalized_content'
 } as const;

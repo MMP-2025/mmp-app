@@ -16,6 +16,8 @@ import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import MoodAnalytics from '@/components/mood/MoodAnalytics';
 import MoodFactors from '@/components/mood/MoodFactors';
 import MoodCorrelationTracker from '@/components/mood/MoodCorrelationTracker';
+import { usePersonalization } from '@/hooks/usePersonalization';
+import AIInsights from '@/components/personalization/AIInsights';
 
 interface MoodEntry {
   id: string;
@@ -39,6 +41,7 @@ const MoodTrackerPage = () => {
   const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
   const [currentTab, setCurrentTab] = useState('track');
   const { trackMoodEntry, trackAction } = useAnalytics();
+  const { trackFeatureUsage, trackMoodEntry: trackMoodEntryPersonalized, userBehavior } = usePersonalization();
 
   const moodFactors = [
     'Work/School', 'Relationships', 'Health', 'Sleep', 'Exercise',
@@ -50,7 +53,10 @@ const MoodTrackerPage = () => {
     // Load mood history from storage
     const savedMoods = StorageManager.load<MoodEntry[]>(STORAGE_KEYS.MOOD_ENTRIES, []);
     setMoodHistory(savedMoods);
-  }, []);
+    
+    // Track feature usage
+    trackFeatureUsage('mood-tracker');
+  }, [trackFeatureUsage]);
 
   const handleMoodSelection = (moodName: string) => {
     setSelectedMood(moodName);
@@ -87,8 +93,9 @@ const MoodTrackerPage = () => {
     setMoodHistory(updatedHistory);
     StorageManager.save(STORAGE_KEYS.MOOD_ENTRIES, updatedHistory);
 
-    // Track analytics
+    // Track analytics and personalization
     trackMoodEntry(selectedMood, moodNote);
+    trackMoodEntryPersonalized(selectedMood, selectedFactors);
     
     toast.success('Mood entry saved successfully!');
     setSelectedMood(null);
@@ -159,7 +166,7 @@ const MoodTrackerPage = () => {
           </div>
           
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="track" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
                 Track Mood
@@ -175,6 +182,10 @@ const MoodTrackerPage = () => {
               <TabsTrigger value="correlations" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 Correlations
+              </TabsTrigger>
+              <TabsTrigger value="insights" className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                AI Insights
               </TabsTrigger>
             </TabsList>
 
@@ -309,6 +320,10 @@ const MoodTrackerPage = () => {
 
             <TabsContent value="correlations">
               <MoodCorrelationTracker moodHistory={moodHistory} />
+            </TabsContent>
+
+            <TabsContent value="insights">
+              <AIInsights moodHistory={moodHistory} userBehavior={userBehavior} />
             </TabsContent>
           </Tabs>
         </div>
