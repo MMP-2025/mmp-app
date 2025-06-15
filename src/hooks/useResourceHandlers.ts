@@ -6,7 +6,8 @@ interface UseResourceHandlersProps {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
   newResource: { title: string; description: string; content: string; category: string };
   setNewResource: React.Dispatch<React.SetStateAction<{ title: string; description: string; content: string; category: string }>>;
-  toast: any;
+  showSuccess: (title: string, description?: string) => void;
+  showError: (title: string, description?: string) => void;
 }
 
 export const useResourceHandlers = ({
@@ -14,10 +15,15 @@ export const useResourceHandlers = ({
   setResources,
   newResource,
   setNewResource,
-  toast
+  showSuccess,
+  showError
 }: UseResourceHandlersProps) => {
   const handleAddResource = () => {
-    if (!newResource.title.trim() || !newResource.content.trim()) return;
+    if (!newResource.title.trim() || !newResource.content.trim()) {
+      showError("Validation Error", "Title and content are required");
+      return;
+    }
+    
     const resource: Resource = {
       id: Date.now().toString(),
       title: newResource.title,
@@ -27,18 +33,12 @@ export const useResourceHandlers = ({
     };
     setResources(prev => [...prev, resource]);
     setNewResource({ title: '', description: '', content: '', category: '' });
-    toast({
-      title: "Resource added",
-      description: "The resource has been added to the database."
-    });
+    showSuccess("Resource added", "The resource has been added to the database.");
   };
 
   const handleDeleteResource = (id: string) => {
     setResources(prev => prev.filter(r => r.id !== id));
-    toast({
-      title: "Resource deleted",
-      description: "The resource has been removed."
-    });
+    showSuccess("Resource deleted", "The resource has been removed.");
   };
 
   return {

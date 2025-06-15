@@ -6,7 +6,8 @@ interface UseMindfulnessHandlersProps {
   setMindfulnessPrompts: React.Dispatch<React.SetStateAction<MindfulnessPrompt[]>>;
   newMindfulnessPrompt: { prompt: string; category: string; duration: string };
   setNewMindfulnessPrompt: React.Dispatch<React.SetStateAction<{ prompt: string; category: string; duration: string }>>;
-  toast: any;
+  showSuccess: (title: string, description?: string) => void;
+  showError: (title: string, description?: string) => void;
 }
 
 export const useMindfulnessHandlers = ({
@@ -14,10 +15,15 @@ export const useMindfulnessHandlers = ({
   setMindfulnessPrompts,
   newMindfulnessPrompt,
   setNewMindfulnessPrompt,
-  toast
+  showSuccess,
+  showError
 }: UseMindfulnessHandlersProps) => {
   const handleAddMindfulnessPrompt = () => {
-    if (!newMindfulnessPrompt.prompt.trim()) return;
+    if (!newMindfulnessPrompt.prompt.trim()) {
+      showError("Validation Error", "Prompt text is required");
+      return;
+    }
+    
     const mindfulnessPrompt: MindfulnessPrompt = {
       id: Date.now().toString(),
       prompt: newMindfulnessPrompt.prompt,
@@ -26,26 +32,22 @@ export const useMindfulnessHandlers = ({
     };
     setMindfulnessPrompts(prev => [...prev, mindfulnessPrompt]);
     setNewMindfulnessPrompt({ prompt: '', category: '', duration: '5 minutes' });
-    toast({
-      title: "Mindfulness prompt added",
-      description: "The mindfulness prompt has been added to the database."
-    });
+    showSuccess("Mindfulness prompt added", "The mindfulness prompt has been added to the database.");
   };
 
   const handleDeleteMindfulnessPrompt = (id: string) => {
     setMindfulnessPrompts(prev => prev.filter(m => m.id !== id));
-    toast({
-      title: "Mindfulness prompt deleted",
-      description: "The mindfulness prompt has been removed."
-    });
+    showSuccess("Mindfulness prompt deleted", "The mindfulness prompt has been removed.");
   };
 
   const handleBulkImportMindfulnessPrompts = (items: any[]) => {
+    if (items.length === 0) {
+      showError("Import Error", "No valid mindfulness prompts found to import");
+      return;
+    }
+    
     setMindfulnessPrompts(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} mindfulness prompts have been imported.`
-    });
+    showSuccess("Bulk import successful", `${items.length} mindfulness prompts have been imported.`);
   };
 
   return {

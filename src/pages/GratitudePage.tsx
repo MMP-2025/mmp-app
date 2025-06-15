@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { toast } from "@/components/ui/sonner";
+import { useToastService } from '@/hooks/useToastService';
 import { Heart, Check, BookmarkPlus, BookmarkCheck } from 'lucide-react';
 
 // Sample gratitude exercises - in a real app, these would come from your database
@@ -39,6 +38,8 @@ const GratitudePage = () => {
   const [savedExercises, setSavedExercises] = useState<number[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
 
+  const { showSuccess, showWarning } = useToastService();
+
   const handleThreeGoodThingsChange = (index: number, value: string) => {
     const updated = [...threeGoodThings];
     updated[index] = value;
@@ -49,10 +50,10 @@ const GratitudePage = () => {
     setSavedExercises(prev => {
       const isCurrentlySaved = prev.includes(exerciseId);
       if (isCurrentlySaved) {
-        toast.success('Exercise removed from saved');
+        showSuccess('Exercise removed from saved');
         return prev.filter(id => id !== exerciseId);
       } else {
-        toast.success('Exercise saved!');
+        showSuccess('Exercise saved!');
         return [...prev, exerciseId];
       }
     });
@@ -70,21 +71,21 @@ const GratitudePage = () => {
     if (selectedExercise?.id === 1) {
       // Three Good Things
       if (threeGoodThings.filter(thing => thing.trim()).length < 3) {
-        toast.warning("Please fill in all three gratitude items");
+        showWarning("Please fill in all three gratitude items");
         return;
       }
       content = threeGoodThings.join('\n\n');
     } else if (selectedExercise?.id === 2) {
       // Gratitude Letter
       if (!letterRecipient.trim() || !letterContent.trim()) {
-        toast.warning("Please fill in both recipient and letter content");
+        showWarning("Please fill in both recipient and letter content");
         return;
       }
       content = `Dear ${letterRecipient},\n\n${letterContent}`;
     } else {
       // Gratitude Jar or default
       if (!gratitudeContent.trim()) {
-        toast.warning("Please write something you're grateful for");
+        showWarning("Please write something you're grateful for");
         return;
       }
       content = gratitudeContent;
@@ -106,7 +107,7 @@ const GratitudePage = () => {
       setGratitudeContent('');
     }
     setSelectedExercise(null);
-    toast.success("Gratitude practice saved");
+    showSuccess("Gratitude practice saved");
   };
 
   const formatDate = (date: Date) => {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BookmarkPlus, BookmarkCheck } from "lucide-react";
-import { toast } from "@/components/ui/sonner";
+import { useToastService } from '@/hooks/useToastService';
 
 interface JournalPromptBrowserProps {
   currentView: 'all' | 'saved';
@@ -22,6 +22,8 @@ const JournalPromptBrowser: React.FC<JournalPromptBrowserProps> = ({
   onToggleSavedPrompt,
   onSelectPrompt
 }) => {
+  const { showInfo } = useToastService();
+
   const getDisplayedPrompts = () => {
     if (currentView === 'saved') {
       return savedPrompts;
@@ -31,7 +33,7 @@ const JournalPromptBrowser: React.FC<JournalPromptBrowserProps> = ({
 
   const handleSelectPrompt = (prompt: string) => {
     onSelectPrompt(prompt);
-    toast.info("Prompt selected. Start writing!");
+    showInfo("Prompt selected. Start writing!");
   };
 
   return (

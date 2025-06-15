@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { toast } from "@/components/ui/sonner";
+import { useToastService } from '@/hooks/useToastService';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import JournalEntryForm from '@/components/journal/JournalEntryForm';
@@ -26,6 +25,7 @@ const JournalPage = () => {
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
   const { trackJournalEntry, trackAction } = useAnalytics();
+  const { showSuccess, showWarning, showInfo } = useToastService();
 
   useEffect(() => {
     // Load data from storage
@@ -48,10 +48,10 @@ const JournalPage = () => {
       let newSavedPrompts;
       
       if (isCurrentlySaved) {
-        toast.success('Prompt removed from saved');
+        showSuccess('Prompt removed from saved');
         newSavedPrompts = prev.filter(p => p !== prompt);
       } else {
-        toast.success('Prompt saved!');
+        showSuccess('Prompt saved!');
         newSavedPrompts = [...prev, prompt];
       }
       
@@ -71,26 +71,26 @@ const JournalPage = () => {
   const getRandomPrompt = () => {
     const displayedPrompts = getDisplayedPrompts();
     if (displayedPrompts.length === 0) {
-      toast.warning("No prompts available in this view");
+      showWarning("No prompts available in this view");
       return;
     }
     const randomIndex = Math.floor(Math.random() * displayedPrompts.length);
     setCurrentPrompt(displayedPrompts[randomIndex]);
     setJournalContent(''); // Clear any existing content
     trackAction('random_prompt_selected', { prompt: displayedPrompts[randomIndex] });
-    toast.info("New prompt loaded. Happy writing!");
+    showInfo("New prompt loaded. Happy writing!");
   };
 
   const startFreeWriting = () => {
     setCurrentPrompt('');
     setJournalContent(''); // Clear any existing content
     trackAction('free_writing_started');
-    toast.info("Ready for free writing. Express yourself!");
+    showInfo("Ready for free writing. Express yourself!");
   };
 
   const saveJournalEntry = () => {
     if (!journalContent.trim()) {
-      toast.warning("Please write something before saving");
+      showWarning("Please write something before saving");
       return;
     }
     
@@ -113,7 +113,7 @@ const JournalPage = () => {
     
     setJournalContent('');
     setCurrentPrompt('');
-    toast.success("Journal entry saved");
+    showSuccess("Journal entry saved");
   };
 
   const selectPrompt = (prompt: string) => {

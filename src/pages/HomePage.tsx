@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { toast } from "@/components/ui/sonner";
+import { useToastService } from '@/hooks/useToastService';
 import { Link } from 'react-router-dom';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { usePersonalization } from '@/contexts/PersonalizationContext';
@@ -50,10 +50,11 @@ const HomePage = () => {
   const [response, setResponse] = useState('');
   const { trackAction } = useAnalytics();
   const { preferences, getRecommendations } = usePersonalization();
+  const { showSuccess, showWarning } = useToastService();
 
   const handleSubmitResponse = () => {
     if (!response.trim()) {
-      toast.warning("Please write a response before submitting");
+      showWarning("Please write a response before submitting");
       return;
     }
 
@@ -63,7 +64,7 @@ const HomePage = () => {
       responseLength: response.length 
     });
 
-    toast.success("Your response has been recorded");
+    showSuccess("Your response has been recorded");
     console.log("Response submitted:", response);
     setResponse('');
   };

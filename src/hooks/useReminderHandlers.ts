@@ -6,7 +6,8 @@ interface UseReminderHandlersProps {
   setReminders: React.Dispatch<React.SetStateAction<Reminder[]>>;
   newReminder: { title: string; message: string; frequency: Reminder['frequency']; category: string };
   setNewReminder: React.Dispatch<React.SetStateAction<{ title: string; message: string; frequency: Reminder['frequency']; category: string }>>;
-  toast: any;
+  showSuccess: (title: string, description?: string) => void;
+  showError: (title: string, description?: string) => void;
 }
 
 export const useReminderHandlers = ({
@@ -14,10 +15,15 @@ export const useReminderHandlers = ({
   setReminders,
   newReminder,
   setNewReminder,
-  toast
+  showSuccess,
+  showError
 }: UseReminderHandlersProps) => {
   const handleAddReminder = () => {
-    if (!newReminder.title.trim() || !newReminder.message.trim()) return;
+    if (!newReminder.title.trim() || !newReminder.message.trim()) {
+      showError("Validation Error", "Title and message are required");
+      return;
+    }
+    
     const reminder: Reminder = {
       id: Date.now().toString(),
       title: newReminder.title,
@@ -27,26 +33,22 @@ export const useReminderHandlers = ({
     };
     setReminders(prev => [...prev, reminder]);
     setNewReminder({ title: '', message: '', frequency: 'daily', category: '' });
-    toast({
-      title: "Reminder added",
-      description: "The reminder has been added to the database."
-    });
+    showSuccess("Reminder added", "The reminder has been added to the database.");
   };
 
   const handleDeleteReminder = (id: string) => {
     setReminders(prev => prev.filter(r => r.id !== id));
-    toast({
-      title: "Reminder deleted",
-      description: "The reminder has been removed."
-    });
+    showSuccess("Reminder deleted", "The reminder has been removed.");
   };
 
   const handleBulkImportReminders = (items: any[]) => {
+    if (items.length === 0) {
+      showError("Import Error", "No valid reminders found to import");
+      return;
+    }
+    
     setReminders(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} reminders have been imported.`
-    });
+    showSuccess("Bulk import successful", `${items.length} reminders have been imported.`);
   };
 
   return {

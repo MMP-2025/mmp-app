@@ -6,7 +6,8 @@ interface UseToolkitHandlersProps {
   setToolkitItems: React.Dispatch<React.SetStateAction<ToolkitItem[]>>;
   newToolkitItem: { title: string; description: string; instructions: string; category: string; duration: string };
   setNewToolkitItem: React.Dispatch<React.SetStateAction<{ title: string; description: string; instructions: string; category: string; duration: string }>>;
-  toast: any;
+  showSuccess: (title: string, description?: string) => void;
+  showError: (title: string, description?: string) => void;
 }
 
 export const useToolkitHandlers = ({
@@ -14,10 +15,15 @@ export const useToolkitHandlers = ({
   setToolkitItems,
   newToolkitItem,
   setNewToolkitItem,
-  toast
+  showSuccess,
+  showError
 }: UseToolkitHandlersProps) => {
   const handleAddToolkitItem = () => {
-    if (!newToolkitItem.title.trim() || !newToolkitItem.instructions.trim()) return;
+    if (!newToolkitItem.title.trim() || !newToolkitItem.instructions.trim()) {
+      showError("Validation Error", "Title and instructions are required");
+      return;
+    }
+    
     const toolkitItem: ToolkitItem = {
       id: Date.now().toString(),
       title: newToolkitItem.title,
@@ -28,26 +34,22 @@ export const useToolkitHandlers = ({
     };
     setToolkitItems(prev => [...prev, toolkitItem]);
     setNewToolkitItem({ title: '', description: '', instructions: '', category: '', duration: '' });
-    toast({
-      title: "Toolkit item added",
-      description: "The toolkit item has been added to the database."
-    });
+    showSuccess("Toolkit item added", "The toolkit item has been added to the database.");
   };
 
   const handleDeleteToolkitItem = (id: string) => {
     setToolkitItems(prev => prev.filter(t => t.id !== id));
-    toast({
-      title: "Toolkit item deleted",
-      description: "The toolkit item has been removed."
-    });
+    showSuccess("Toolkit item deleted", "The toolkit item has been removed.");
   };
 
   const handleBulkImportToolkitItems = (items: any[]) => {
+    if (items.length === 0) {
+      showError("Import Error", "No valid toolkit items found to import");
+      return;
+    }
+    
     setToolkitItems(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} toolkit items have been imported.`
-    });
+    showSuccess("Bulk import successful", `${items.length} toolkit items have been imported.`);
   };
 
   return {
