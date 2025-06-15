@@ -45,7 +45,8 @@ const ProviderDashboard = () => {
       callback: () => {
         const quotesTab = document.querySelector('[data-state="active"][value="quotes"]');
         if (!quotesTab) {
-          document.querySelector('[value="quotes"]')?.click();
+          const quotesTabTrigger = document.querySelector('[value="quotes"]') as HTMLElement;
+          quotesTabTrigger?.click();
         }
       }
     },
@@ -55,7 +56,8 @@ const ProviderDashboard = () => {
       callback: () => {
         const promptsTab = document.querySelector('[data-state="active"][value="prompts"]');
         if (!promptsTab) {
-          document.querySelector('[value="prompts"]')?.click();
+          const promptsTabTrigger = document.querySelector('[value="prompts"]') as HTMLElement;
+          promptsTabTrigger?.click();
         }
       }
     }

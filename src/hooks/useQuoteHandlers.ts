@@ -62,11 +62,11 @@ export const useQuoteHandlers = ({
         return;
       }
       
-      const validatedItems = items.map(item => {
+      const validatedItems: Quote[] = items.map(item => {
         const validated = quoteSchema.parse(item);
         return {
-          ...validated,
           id: Date.now().toString() + Math.random(),
+          text: validated.text,
           author: validated.author || 'Anonymous',
           category: validated.category || 'General'
         };
