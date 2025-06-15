@@ -1,14 +1,14 @@
-
 import { useState, useCallback } from 'react';
 import { StorageManager } from '@/utils/storage';
 import { Award, Trophy, Star, Target, Calendar, Flame, Heart, Brain } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Achievement {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType;
+  icon: LucideIcon;
   category: 'streak' | 'milestone' | 'engagement' | 'progress';
   requirement: number;
   currentProgress: number;

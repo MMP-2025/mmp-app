@@ -1,12 +1,16 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StorageManager } from '@/utils/storage';
-import { TrendingUp, TrendingDown, Target, Lightbulb, Calendar, BarChart3 } from 'lucide-react';
+import { Target } from 'lucide-react';
 import { toast } from 'sonner';
+import { WellnessScoreDisplay } from './WellnessScoreDisplay';
+import { WellnessMetricsCard } from './WellnessMetricsCard';
+import { WellnessScoreHistory } from './WellnessScoreHistory';
+import { WellnessInsights } from './WellnessInsights';
+import { WellnessScoreCalculator } from './WellnessScoreCalculator';
 
 interface WellnessMetric {
   name: string;
@@ -61,9 +65,8 @@ const WellnessScore: React.FC = () => {
       breakdown
     };
 
-    // Remove today's entry if it exists and add the new one
     const filteredHistory = history.filter(entry => entry.date !== today);
-    const updatedHistory = [newEntry, ...filteredHistory].slice(0, 30); // Keep last 30 days
+    const updatedHistory = [newEntry, ...filteredHistory].slice(0, 30);
     
     setScoreHistory(updatedHistory);
     StorageManager.save('wellness_score_history', updatedHistory);
@@ -72,9 +75,8 @@ const WellnessScore: React.FC = () => {
   const calculateWellnessScore = () => {
     setIsCalculating(true);
     
-    // Simulate calculation delay
     setTimeout(() => {
-      const score = performWellnessCalculation();
+      const score = WellnessScoreCalculator.performWellnessCalculation();
       setCurrentScore(score);
       saveScoreHistory(score);
       setIsCalculating(false);
@@ -82,246 +84,10 @@ const WellnessScore: React.FC = () => {
     }, 1500);
   };
 
-  const performWellnessCalculation = (): WellnessScore => {
-    const moodEntries = StorageManager.load('mood_entries', []);
-    const journalEntries = StorageManager.load('journal_entries', []);
-    const mindfulnessProgress = StorageManager.load('mindfulness_progress', { sessions: [] });
-    const userBehavior = StorageManager.load('user_behavior', null);
-
-    // Calculate individual metrics
-    const moodScore = calculateMoodScore(moodEntries);
-    const consistencyScore = calculateConsistencyScore(moodEntries);
-    const engagementScore = calculateEngagementScore(userBehavior);
-    const mindfulnessScore = calculateMindfulnessScore(mindfulnessProgress);
-    const journalingScore = calculateJournalingScore(journalEntries);
-
-    const metrics: WellnessMetric[] = [
-      {
-        name: 'Mood Stability',
-        value: moodScore.value,
-        weight: 0.3,
-        trend: moodScore.trend,
-        suggestion: moodScore.suggestion
-      },
-      {
-        name: 'Consistency',
-        value: consistencyScore.value,
-        weight: 0.25,
-        trend: consistencyScore.trend,
-        suggestion: consistencyScore.suggestion
-      },
-      {
-        name: 'App Engagement',
-        value: engagementScore.value,
-        weight: 0.2,
-        trend: engagementScore.trend,
-        suggestion: engagementScore.suggestion
-      },
-      {
-        name: 'Mindfulness Practice',
-        value: mindfulnessScore.value,
-        weight: 0.15,
-        trend: mindfulnessScore.trend,
-        suggestion: mindfulnessScore.suggestion
-      },
-      {
-        name: 'Self-Reflection',
-        value: journalingScore.value,
-        weight: 0.1,
-        trend: journalingScore.trend,
-        suggestion: journalingScore.suggestion
-      }
-    ];
-
-    // Calculate weighted overall score
-    const overallScore = metrics.reduce((total, metric) => {
-      return total + (metric.value * metric.weight);
-    }, 0);
-
-    // Generate improvements and strengths
-    const improvements = metrics
-      .filter(metric => metric.value < 70)
-      .sort((a, b) => a.value - b.value)
-      .slice(0, 3)
-      .map(metric => metric.suggestion);
-
-    const strengths = metrics
-      .filter(metric => metric.value >= 80)
-      .map(metric => `Strong ${metric.name.toLowerCase()}`);
-
-    return {
-      overall: Math.round(overallScore),
-      metrics,
-      calculatedAt: new Date().toISOString(),
-      improvements,
-      strengths
-    };
-  };
-
-  const calculateMoodScore = (moodEntries: any[]): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
-    const recentEntries = moodEntries.slice(0, 7); // Last 7 entries
-    if (recentEntries.length === 0) {
-      return {
-        value: 50,
-        trend: 'stable',
-        suggestion: 'Start tracking your mood daily to build awareness'
-      };
-    }
-
-    const moodValues = recentEntries.map(entry => {
-      const moodMap: { [key: string]: number } = {
-        'Ecstatic': 100,
-        'Happy': 80,
-        'Neutral': 60,
-        'Sad': 30,
-        'Angry': 20
-      };
-      return moodMap[entry.mood] || 50;
-    });
-
-    const average = moodValues.reduce((a, b) => a + b, 0) / moodValues.length;
-    
-    let trend: 'up' | 'down' | 'stable' = 'stable';
-    if (moodValues.length > 3) {
-      const recentAvg = moodValues.slice(0, 3).reduce((a, b) => a + b, 0) / 3;
-      const olderAvg = moodValues.slice(-3).reduce((a, b) => a + b, 0) / 3;
-      trend = recentAvg > olderAvg ? 'up' : recentAvg < olderAvg ? 'down' : 'stable';
-    }
-
-    return {
-      value: Math.round(average),
-      trend,
-      suggestion: average < 60 ? 
-        'Consider mindfulness exercises or speaking with someone you trust' :
-        'Great mood stability! Keep maintaining your positive habits'
-    };
-  };
-
-  const calculateConsistencyScore = (moodEntries: any[]): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
-    const last7Days = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      return date.toISOString().split('T')[0];
-    });
-
-    const trackedDays = last7Days.filter(date => 
-      moodEntries.some(entry => entry.date === date)
-    ).length;
-
-    const percentage = (trackedDays / 7) * 100;
-
-    const trend: 'up' | 'down' | 'stable' = percentage > 70 ? 'up' : percentage > 40 ? 'stable' : 'down';
-
-    return {
-      value: Math.round(percentage),
-      trend,
-      suggestion: percentage < 50 ? 
-        'Try setting daily reminders to track your mood consistently' :
-        'Excellent consistency in mood tracking!'
-    };
-  };
-
-  const calculateEngagementScore = (userBehavior: any): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
-    if (!userBehavior) {
-      return {
-        value: 30,
-        trend: 'stable',
-        suggestion: 'Explore different app features to enhance your wellness journey'
-      };
-    }
-
-    const featureUsage = userBehavior.mostUsedFeatures?.length || 0;
-    const engagementLevel = userBehavior.engagementLevel;
-    
-    let score = 40;
-    if (engagementLevel === 'high') score = 90;
-    else if (engagementLevel === 'medium') score = 70;
-    
-    score += Math.min(featureUsage * 5, 20); // Bonus for feature diversity
-
-    const trend: 'up' | 'down' | 'stable' = featureUsage > 3 ? 'up' : 'stable';
-
-    return {
-      value: Math.min(score, 100),
-      trend,
-      suggestion: score < 60 ? 
-        'Try exploring journaling, mindfulness, or gratitude features' :
-        'Great engagement with the app features!'
-    };
-  };
-
-  const calculateMindfulnessScore = (mindfulnessProgress: any): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
-    const sessions = mindfulnessProgress.sessions || [];
-    const recentSessions = sessions.filter((session: any) => {
-      const sessionDate = new Date(session.date);
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      return sessionDate >= weekAgo;
-    });
-
-    const score = Math.min(recentSessions.length * 20, 100);
-
-    const trend: 'up' | 'down' | 'stable' = recentSessions.length > 2 ? 'up' : recentSessions.length > 0 ? 'stable' : 'down';
-
-    return {
-      value: score,
-      trend,
-      suggestion: score < 40 ? 
-        'Regular mindfulness practice can significantly improve wellbeing' :
-        'Wonderful mindfulness practice! Keep up the great work'
-    };
-  };
-
-  const calculateJournalingScore = (journalEntries: any[]): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
-    const recentEntries = journalEntries.filter((entry: any) => {
-      const entryDate = new Date(entry.date);
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      return entryDate >= weekAgo;
-    });
-
-    const score = Math.min(recentEntries.length * 25, 100);
-
-    const trend: 'up' | 'down' | 'stable' = recentEntries.length > 2 ? 'up' : recentEntries.length > 0 ? 'stable' : 'down';
-
-    return {
-      value: score,
-      trend,
-      suggestion: score < 50 ? 
-        'Journaling helps process emotions and track progress' :
-        'Excellent self-reflection through journaling!'
-    };
-  };
-
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600';
     if (score >= 60) return 'text-yellow-600';
     return 'text-red-600';
-  };
-
-  const getScoreLabel = (score: number) => {
-    if (score >= 80) return 'Excellent';
-    if (score >= 60) return 'Good';
-    if (score >= 40) return 'Fair';
-    return 'Needs Attention';
-  };
-
-  const getTrendIcon = (trend: string) => {
-    switch (trend) {
-      case 'up':
-        return <TrendingUp className="h-4 w-4 text-green-500" />;
-      case 'down':
-        return <TrendingDown className="h-4 w-4 text-red-500" />;
-      default:
-        return <BarChart3 className="h-4 w-4 text-gray-500" />;
-    }
-  };
-
-  const getFilteredHistory = () => {
-    if (selectedPeriod === 'week') {
-      return scoreHistory.slice(0, 7);
-    }
-    return scoreHistory.slice(0, 30);
   };
 
   return (
@@ -353,106 +119,25 @@ const WellnessScore: React.FC = () => {
             </TabsList>
 
             <TabsContent value="week" className="space-y-6">
-              {/* Overall Score */}
-              <div className="text-center p-6 bg-gradient-to-br from-mental-blue/20 to-mental-peach/20 rounded-lg">
-                <div className={`text-4xl font-bold mb-2 ${getScoreColor(currentScore.overall)}`}>
-                  {currentScore.overall}/100
-                </div>
-                <div className="text-lg font-medium mb-2" style={{color: '#737373'}}>
-                  {getScoreLabel(currentScore.overall)}
-                </div>
-                <Progress value={currentScore.overall} className="w-48 mx-auto" />
-                <p className="text-sm text-gray-500 mt-2">
-                  Last updated: {new Date(currentScore.calculatedAt).toLocaleDateString()}
-                </p>
-              </div>
-
-              {/* Metric Breakdown */}
-              <div>
-                <h4 className="font-semibold mb-4" style={{color: '#737373'}}>Detailed Breakdown</h4>
-                <div className="space-y-3">
-                  {currentScore.metrics.map(metric => (
-                    <div key={metric.name} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium" style={{color: '#737373'}}>{metric.name}</span>
-                          {getTrendIcon(metric.trend)}
-                          <Badge variant="outline" className="text-xs">
-                            {Math.round(metric.weight * 100)}% weight
-                          </Badge>
-                        </div>
-                        <Progress value={metric.value} className="mb-2" />
-                        <p className="text-xs text-gray-600">{metric.suggestion}</p>
-                      </div>
-                      <div className={`text-xl font-bold ml-4 ${getScoreColor(metric.value)}`}>
-                        {metric.value}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Improvements and Strengths */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {currentScore.improvements.length > 0 && (
-                  <Card className="p-4 bg-red-50">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Lightbulb className="h-4 w-4 text-red-600" />
-                      <h5 className="font-semibold text-red-800">Areas for Improvement</h5>
-                    </div>
-                    <ul className="space-y-1">
-                      {currentScore.improvements.map((improvement, index) => (
-                        <li key={index} className="text-sm text-red-700">
-                          • {improvement}
-                        </li>
-                      ))}
-                    </ul>
-                  </Card>
-                )}
-
-                {currentScore.strengths.length > 0 && (
-                  <Card className="p-4 bg-green-50">
-                    <div className="flex items-center gap-2 mb-3">
-                      <TrendingUp className="h-4 w-4 text-green-600" />
-                      <h5 className="font-semibold text-green-800">Your Strengths</h5>
-                    </div>
-                    <ul className="space-y-1">
-                      {currentScore.strengths.map((strength, index) => (
-                        <li key={index} className="text-sm text-green-700">
-                          • {strength}
-                        </li>
-                      ))}
-                    </ul>
-                  </Card>
-                )}
-              </div>
+              <WellnessScoreDisplay 
+                score={currentScore.overall} 
+                calculatedAt={currentScore.calculatedAt} 
+              />
+              
+              <WellnessMetricsCard metrics={currentScore.metrics} />
+              
+              <WellnessInsights 
+                improvements={currentScore.improvements}
+                strengths={currentScore.strengths}
+              />
             </TabsContent>
 
             <TabsContent value="month" className="space-y-6">
-              {/* Score History */}
-              <div>
-                <h4 className="font-semibold mb-4" style={{color: '#737373'}}>Score History</h4>
-                {getFilteredHistory().length > 0 ? (
-                  <div className="space-y-2">
-                    {getFilteredHistory().map(entry => (
-                      <div key={entry.date} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <Calendar className="h-4 w-4" style={{color: '#737373'}} />
-                          <span style={{color: '#737373'}}>{new Date(entry.date).toLocaleDateString()}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Progress value={entry.score} className="w-24" />
-                          <span className={`font-semibold ${getScoreColor(entry.score)}`}>
-                            {entry.score}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p style={{color: '#737373'}}>No historical data available yet. Keep using the app to see your progress!</p>
-                )}
-              </div>
+              <WellnessScoreHistory 
+                scoreHistory={scoreHistory}
+                selectedPeriod={selectedPeriod}
+                getScoreColor={getScoreColor}
+              />
             </TabsContent>
           </Tabs>
         )}
