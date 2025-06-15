@@ -1,5 +1,8 @@
 
+import { useState } from 'react';
 import { Quote } from '@/types/provider';
+import { quoteSchema } from '@/schemas/providerValidation';
+import { VALIDATION_MESSAGES } from '@/constants/provider';
 
 interface UseQuoteHandlersProps {
   quotes: Quote[];
@@ -18,21 +21,32 @@ export const useQuoteHandlers = ({
   showSuccess,
   showError
 }: UseQuoteHandlersProps) => {
-  const handleAddQuote = () => {
-    if (!newQuote.text.trim()) {
-      showError("Validation Error", "Quote text is required");
-      return;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddQuote = async () => {
+    setIsLoading(true);
+    try {
+      const validatedQuote = quoteSchema.parse(newQuote);
+      
+      const quote: Quote = {
+        id: Date.now().toString(),
+        text: validatedQuote.text,
+        author: validatedQuote.author || 'Anonymous',
+        category: validatedQuote.category || 'General'
+      };
+      
+      setQuotes(prev => [...prev, quote]);
+      setNewQuote({ text: '', author: '', category: '' });
+      showSuccess("Quote added", "The inspirational quote has been added to the database.");
+    } catch (error: any) {
+      if (error.errors) {
+        showError("Validation Error", error.errors[0].message);
+      } else {
+        showError("Error", "Failed to add quote");
+      }
+    } finally {
+      setIsLoading(false);
     }
-    
-    const quote: Quote = {
-      id: Date.now().toString(),
-      text: newQuote.text,
-      author: newQuote.author || 'Anonymous',
-      category: newQuote.category || 'General'
-    };
-    setQuotes(prev => [...prev, quote]);
-    setNewQuote({ text: '', author: '', category: '' });
-    showSuccess("Quote added", "The inspirational quote has been added to the database.");
   };
 
   const handleDeleteQuote = (id: string) => {
@@ -40,19 +54,37 @@ export const useQuoteHandlers = ({
     showSuccess("Quote deleted", "The quote has been removed.");
   };
 
-  const handleBulkImportQuotes = (items: any[]) => {
-    if (items.length === 0) {
-      showError("Import Error", "No valid quotes found to import");
-      return;
+  const handleBulkImportQuotes = async (items: any[]) => {
+    setIsLoading(true);
+    try {
+      if (items.length === 0) {
+        showError("Import Error", VALIDATION_MESSAGES.NO_ITEMS_TO_IMPORT);
+        return;
+      }
+      
+      const validatedItems = items.map(item => {
+        const validated = quoteSchema.parse(item);
+        return {
+          ...validated,
+          id: Date.now().toString() + Math.random(),
+          author: validated.author || 'Anonymous',
+          category: validated.category || 'General'
+        };
+      });
+      
+      setQuotes(prev => [...prev, ...validatedItems]);
+      showSuccess("Bulk import successful", `${validatedItems.length} quotes have been imported.`);
+    } catch (error: any) {
+      showError("Import Error", "Some items failed validation and were not imported");
+    } finally {
+      setIsLoading(false);
     }
-    
-    setQuotes(prev => [...prev, ...items]);
-    showSuccess("Bulk import successful", `${items.length} quotes have been imported.`);
   };
 
   return {
     handleAddQuote,
     handleDeleteQuote,
-    handleBulkImportQuotes
+    handleBulkImportQuotes,
+    isLoading
   };
 };

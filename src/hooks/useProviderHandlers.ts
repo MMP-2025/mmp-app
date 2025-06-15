@@ -129,10 +129,11 @@ export const useProviderHandlers = (props: UseProviderHandlersProps) => {
   });
 
   return {
-    // Quote handlers
+    // Quote handlers with loading state
     handleAddQuote: quoteHandlers.handleAddQuote,
     handleDeleteQuote: quoteHandlers.handleDeleteQuote,
     handleBulkImportQuotes: quoteHandlers.handleBulkImportQuotes,
+    isLoading: quoteHandlers.isLoading,
     
     // Journal prompt handlers
     handleAddPrompt: journalPromptHandlers.handleAddPrompt,
