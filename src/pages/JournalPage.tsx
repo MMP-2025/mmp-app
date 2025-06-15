@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { useToastService } from '@/hooks/useToastService';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import JournalEntryForm from '@/components/journal/JournalEntryForm';
-import JournalPromptBrowser from '@/components/journal/JournalPromptBrowser';
 import JournalEntriesList from '@/components/journal/JournalEntriesList';
 
 interface JournalEntry {
@@ -23,7 +23,6 @@ const JournalPage = () => {
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
-  const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
   const { trackJournalEntry, trackAction } = useAnalytics();
   const { showSuccess, showWarning, showInfo } = useToastService();
 
@@ -61,23 +60,15 @@ const JournalPage = () => {
     });
   };
 
-  const getDisplayedPrompts = () => {
-    if (currentView === 'saved') {
-      return savedPrompts;
-    }
-    return journalPrompts;
-  };
-
   const getRandomPrompt = () => {
-    const displayedPrompts = getDisplayedPrompts();
-    if (displayedPrompts.length === 0) {
-      showWarning("No prompts available in this view");
+    if (journalPrompts.length === 0) {
+      showWarning("No prompts available");
       return;
     }
-    const randomIndex = Math.floor(Math.random() * displayedPrompts.length);
-    setCurrentPrompt(displayedPrompts[randomIndex]);
+    const randomIndex = Math.floor(Math.random() * journalPrompts.length);
+    setCurrentPrompt(journalPrompts[randomIndex]);
     setJournalContent(''); // Clear any existing content
-    trackAction('random_prompt_selected', { prompt: displayedPrompts[randomIndex] });
+    trackAction('random_prompt_selected', { prompt: journalPrompts[randomIndex] });
     showInfo("New prompt loaded. Happy writing!");
   };
 
@@ -116,26 +107,12 @@ const JournalPage = () => {
     showSuccess("Journal entry saved");
   };
 
-  const selectPrompt = (prompt: string) => {
-    setCurrentPrompt(prompt);
-    setJournalContent('');
-  };
-
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Journal</h1>
         <p className="text-[#7e868b]">Express your thoughts and feelings</p>
       </div>
-
-      <JournalPromptBrowser
-        currentView={currentView}
-        setCurrentView={setCurrentView}
-        savedPrompts={savedPrompts}
-        allPrompts={journalPrompts}
-        onToggleSavedPrompt={toggleSavedPrompt}
-        onSelectPrompt={selectPrompt}
-      />
       
       <JournalEntryForm
         journalContent={journalContent}
