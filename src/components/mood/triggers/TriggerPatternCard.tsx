@@ -20,7 +20,7 @@ const TriggerPatternCard: React.FC<TriggerPatternCardProps> = ({ trigger }) => {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'high': return 'text-destructive bg-destructive/10 border-destructive/20';
-      case 'medium': return 'text-orange-800 bg-orange-100 border-orange-200';
+      case 'medium': return 'text-primary-foreground bg-primary/20 border-primary';
       case 'low': return 'text-secondary bg-secondary/10 border-secondary/20';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
@@ -63,7 +63,7 @@ const TriggerPatternCard: React.FC<TriggerPatternCardProps> = ({ trigger }) => {
           <SeverityIcon className="h-5 w-5" />
           <h5 className="font-medium">{trigger.trigger}</h5>
         </div>
-        <Badge variant="outline" className={`text-xs ${trigger.severity === 'high' ? 'border-destructive' : trigger.severity === 'medium' ? 'border-orange-500' : 'border-secondary'}`}>
+        <Badge variant="outline" className={`text-xs ${trigger.severity === 'high' ? 'border-destructive' : trigger.severity === 'medium' ? 'border-primary' : 'border-secondary'}`}>
           {trigger.severity} priority
         </Badge>
       </div>
