@@ -3,5 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./styles/base-layer.css";
-@import "./styles/components-layer.css";
+@import "./styles/base/variables.css";
+@import "./styles/base/global.css";
+@import "./styles/components/utilities.css";
+@import "./styles/components/overrides.css";
+@import "./styles/accessibility/main.css";

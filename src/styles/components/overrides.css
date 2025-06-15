@@ -1,0 +1,49 @@
+
+@layer components {
+  /* Fix visibility issues for highlighted/selected elements */
+  .rdp-day_selected {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 2px solid #737373 !important;
+  }
+
+  .rdp-day_today {
+    background-color: rgb(var(--mental-peach)) !important;
+    color: #737373 !important;
+    border: 2px solid #737373 !important;
+  }
+
+  /* Fix toast/popup visibility */
+  .sonner-toast {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 1px solid #737373 !important;
+  }
+
+  /* Fix dropdown/select visibility */
+  [data-state="open"], [data-state="checked"], [data-highlighted] {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !importa_nt;
+    border: 1px solid #737373 !important;
+  }
+
+  /* Fix button hover/focus states */
+  .bg-white:hover, .bg-white:focus {
+    background-color: rgb(var(--mental-blue)) !important;
+    border: 1px solid #737373 !important;
+  }
+
+  /* Replace white/transparent backgrounds */
+  * {
+    color: #737373 !important;
+  }
+
+  input, textarea, select {
+    background-color: rgb(var(--mental-gray)) !important;
+    border-color: #737373 !important;
+  }
+
+  .bg-white, .bg-transparent, [style*="background: white"], [style*="background-color: white"] {
+    background-color: rgb(var(--mental-gray)) !important;
+  }
+}

@@ -1,0 +1,126 @@
+
+@layer base {
+  /* Accessibility: Screen reader only content */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* High contrast mode */
+  .high-contrast {
+    --background: 0 0 0; /* black */
+    --foreground: 255 255 255; /* white */
+    --card: 0 0 0;
+    --card-foreground: 255 255 255;
+    --border: 255 255 255;
+    --input: 0 0 0;
+  }
+
+  .high-contrast * {
+    background-color: black !important;
+    color: white !important;
+    border-color: white !important;
+  }
+
+  .high-contrast button, .high-contrast [role="button"] {
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid white !important;
+  }
+
+  /* Font size adjustments */
+  .text-small {
+    font-size: 0.875rem;
+  }
+
+  .text-medium {
+    font-size: 1rem;
+  }
+
+  .text-large {
+    font-size: 1.125rem;
+  }
+
+  .text-extra-large {
+    font-size: 1.25rem;
+  }
+
+  /* Reduced motion */
+  .reduce-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Enhanced focus visibility */
+  .focus-visible *:focus {
+    outline: 3px solid #007acc !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Skip links */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #007acc;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 1000;
+  }
+
+  .skip-link:focus {
+    top: 6px;
+  }
+}
+
+@layer components {
+  /* Keyboard navigation improvements */
+  [tabindex]:focus,
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus,
+  a:focus {
+    outline: 3px solid #007acc;
+    outline-offset: 2px;
+  }
+
+  /* Better link visibility */
+  a {
+    text-decoration: underline;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  /* Enhanced button states */
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Better form field labels */
+  label {
+    font-weight: 600;
+  }
+
+  /* ARIA live regions */
+  [aria-live] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}
