@@ -1,30 +1,20 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bell, Quote, TrendingUp, Target, Clock, Lightbulb } from 'lucide-react';
-import { personalizationEngine } from '@/utils/personalizationEngine';
-import { PersonalizedContent, AdaptiveReminder } from '@/types/personalization';
+import { Bell, Quote, TrendingUp, Target, Clock, Lightbulb, Loader2 } from 'lucide-react';
+import { usePersonalization } from '@/hooks/usePersonalization';
 import { Link } from 'react-router-dom';
 
 const PersonalizedDashboard = () => {
-  const [personalizedQuote, setPersonalizedQuote] = useState<PersonalizedContent | null>(null);
-  const [adaptiveReminders, setAdaptiveReminders] = useState<AdaptiveReminder[]>([]);
-  const [recommendations, setRecommendations] = useState<Array<{ type: string; reason: string; priority: number }>>([]);
-  const [userBehavior, setUserBehavior] = useState(personalizationEngine.getUserBehavior());
-
-  useEffect(() => {
-    // Load personalized content
-    const quote = personalizationEngine.getPersonalizedQuote();
-    const reminders = personalizationEngine.getAdaptiveReminders();
-    const recs = personalizationEngine.getContentRecommendations();
-    
-    setPersonalizedQuote(quote);
-    setAdaptiveReminders(reminders);
-    setRecommendations(recs);
-    setUserBehavior(personalizationEngine.getUserBehavior());
-  }, []);
+  const {
+    personalizedQuote,
+    adaptiveReminders,
+    recommendations,
+    userBehavior,
+    isLoading,
+  } = usePersonalization();
 
   const getFeatureLink = (type: string): string => {
     switch (type) {
@@ -47,6 +37,15 @@ const PersonalizedDashboard = () => {
       default: return Lightbulb;
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-6 min-h-[200px]">
+        <Loader2 className="h-8 w-8 animate-spin text-mental-blue" />
+        <p className="ml-4 text-neutral-500">Loading your personalized content...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -198,3 +197,4 @@ const PersonalizedDashboard = () => {
 };
 
 export default PersonalizedDashboard;
+
