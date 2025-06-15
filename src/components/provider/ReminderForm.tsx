@@ -1,28 +1,26 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus } from 'lucide-react';
-interface Reminder {
-  id: string;
-  title: string;
-  message: string;
-  frequency: 'daily' | 'weekly' | 'monthly';
-  category: string;
-}
+import { Reminder } from '@/types/provider';
+
 interface ReminderFormProps {
   newReminder: {
     title: string;
     message: string;
     frequency: Reminder['frequency'];
     category: string;
+    targetUser?: string;
   };
   setNewReminder: React.Dispatch<React.SetStateAction<{
     title: string;
     message: string;
     frequency: Reminder['frequency'];
     category: string;
+    targetUser?: string;
   }>>;
   onAddReminder: () => void;
 }
@@ -61,6 +59,10 @@ const ReminderForm: React.FC<ReminderFormProps> = ({
             <option value="monthly">Monthly</option>
           </select>
         </div>
+        <Input placeholder="Target User ID (optional, leave blank for all users)" value={newReminder.targetUser || ''} onChange={e => setNewReminder(prev => ({
+          ...prev,
+          targetUser: e.target.value
+        }))} />
         <Button onClick={onAddReminder} className="bg-mental-gray">Add Reminder</Button>
       </CardContent>
     </Card>;

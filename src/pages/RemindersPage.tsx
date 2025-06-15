@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,56 +9,69 @@ import { Plus, Bell, Award, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Progress } from '@/components/ui/progress';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
-interface Reminder {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
+import { useProviderData } from '@/hooks/useProviderData';
+import { useProviderHandlers } from '@/hooks/useProviderHandlers';
+
+// Mock current user ID until auth is implemented
+const CURRENT_USER_ID = 'user123';
+
 const RemindersPage = () => {
-  const [newReminder, setNewReminder] = useState('');
-  const [reminders, setReminders] = useState<Reminder[]>([]);
+  // Using shared state and handlers
+  const data = useProviderData();
+  const handlers = useProviderHandlers(data);
+
+  const [newReminderText, setNewReminderText] = useState('');
+  const [completedReminders, setCompletedReminders] = useState<Set<string>>(new Set());
   const [rewardPoints, setRewardPoints] = useState(0);
+
+  const userReminders = useMemo(() => {
+    return data.reminders.filter(r => 
+      !r.targetUser || r.targetUser === '' || r.targetUser === CURRENT_USER_ID
+    );
+  }, [data.reminders]);
+
   const handleAddReminder = () => {
-    if (!newReminder.trim()) {
+    if (!newReminderText.trim()) {
       toast.error('Please enter a reminder');
       return;
     }
-    const reminder: Reminder = {
-      id: Date.now().toString(),
-      text: newReminder,
-      completed: false,
-      createdAt: new Date()
-    };
-    setReminders([...reminders, reminder]);
-    setNewReminder('');
-    toast.success('Reminder added!');
-  };
-  const toggleCompleted = (id: string) => {
-    setReminders(reminders.map(reminder => {
-      if (reminder.id === id) {
-        const newCompleted = !reminder.completed;
+    
+    // Use the shared `newReminder` state structure
+    data.setNewReminder({
+      title: newReminderText,
+      message: 'User-created reminder', // Default message for simple user reminders
+      frequency: 'daily',
+      category: 'Personal',
+      targetUser: CURRENT_USER_ID // Set the target user
+    });
 
-        // Add points when completing a reminder
-        if (newCompleted) {
-          setRewardPoints(prev => prev + 10);
-          toast.success('You earned 10 points!');
-        } else {
-          setRewardPoints(prev => Math.max(0, prev - 10));
-          toast.info('10 points removed');
-        }
-        return {
-          ...reminder,
-          completed: newCompleted
-        };
-      }
-      return reminder;
-    }));
+    // Use a timeout to ensure state is updated before calling the handler
+    setTimeout(() => {
+      handlers.handleAddReminder();
+      setNewReminderText('');
+    }, 0);
   };
+
+  const toggleCompleted = (id: string) => {
+    const newCompletedSet = new Set(completedReminders);
+    const isCompleted = completedReminders.has(id);
+    
+    if (isCompleted) {
+      newCompletedSet.delete(id);
+      setRewardPoints(prev => Math.max(0, prev - 10));
+      toast.info('10 points removed');
+    } else {
+      newCompletedSet.add(id);
+      setRewardPoints(prev => prev + 10);
+      toast.success('You earned 10 points!');
+    }
+    setCompletedReminders(newCompletedSet);
+  };
+
   const deleteReminder = (id: string) => {
-    setReminders(reminders.filter(reminder => reminder.id !== id));
-    toast.info('Reminder removed');
+    handlers.handleDeleteReminder(id);
   };
+
   const rewardLevel = Math.floor(rewardPoints / 50);
   const nextLevelProgress = rewardPoints % 50 * 2; // Calculate percentage to next level
 
@@ -81,7 +94,7 @@ const RemindersPage = () => {
               </CardHeader>
               <CardContent className="bg-mental-green">
                 <div className="flex items-center space-x-2">
-                  <Input placeholder="Enter your reminder" value={newReminder} onChange={e => setNewReminder(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAddReminder()} />
+                  <Input placeholder="Enter your reminder" value={newReminderText} onChange={e => setNewReminderText(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAddReminder()} />
                   <Button onClick={handleAddReminder} className="text-mental-green bg-mental-green">
                     <Plus className="h-4 w-4 text-[#7e868b]" />
                   </Button>
@@ -94,20 +107,26 @@ const RemindersPage = () => {
                 <CardTitle className="text-[#7e868b]">Your Reminders</CardTitle>
               </CardHeader>
               <CardContent className="bg-mental-green">
-                {reminders.length === 0 ? <div className="text-center py-6 text-[#7e868b]">
+                {userReminders.length === 0 ? <div className="text-center py-6 text-[#7e868b]">
                     No reminders yet. Add one above!
                   </div> : <div className="space-y-2">
-                    {reminders.map(reminder => <div key={reminder.id} className={`flex items-center justify-between p-3 rounded-md ${reminder.completed ? 'bg-mental-green/20' : 'bg-mental-peach/20'}`}>
+                    {userReminders.map(reminder => {
+                      const isCompleted = completedReminders.has(reminder.id);
+                      return (<div key={reminder.id} className={`flex items-center justify-between p-3 rounded-md ${isCompleted ? 'bg-mental-green/20' : 'bg-mental-peach/20'}`}>
                         <div className="flex items-center space-x-3">
-                          <Checkbox id={`reminder-${reminder.id}`} checked={reminder.completed} onCheckedChange={() => toggleCompleted(reminder.id)} />
-                          <Label htmlFor={`reminder-${reminder.id}`} className={reminder.completed ? 'line-through text-[#7e868b]' : 'text-[#7e868b]'}>
-                            {reminder.text}
-                          </Label>
+                          <Checkbox id={`reminder-${reminder.id}`} checked={isCompleted} onCheckedChange={() => toggleCompleted(reminder.id)} />
+                          <div>
+                            <Label htmlFor={`reminder-${reminder.id}`} className={isCompleted ? 'line-through text-[#7e868b]' : 'text-[#7e868b]'}>
+                              {reminder.title}
+                            </Label>
+                             <p className="text-sm text-gray-500">{reminder.message}</p>
+                          </div>
                         </div>
                         <Button variant="ghost" size="sm" onClick={() => deleteReminder(reminder.id)} className="text-[#7e868b]">
                           Remove
                         </Button>
-                      </div>)}
+                      </div>)
+                    })}
                   </div>}
               </CardContent>
             </Card>

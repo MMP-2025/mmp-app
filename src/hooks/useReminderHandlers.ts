@@ -4,8 +4,8 @@ import { Reminder } from '@/types/provider';
 interface UseReminderHandlersProps {
   reminders: Reminder[];
   setReminders: React.Dispatch<React.SetStateAction<Reminder[]>>;
-  newReminder: { title: string; message: string; frequency: Reminder['frequency']; category: string };
-  setNewReminder: React.Dispatch<React.SetStateAction<{ title: string; message: string; frequency: Reminder['frequency']; category: string }>>;
+  newReminder: { title: string; message: string; frequency: Reminder['frequency']; category: string; targetUser?: string };
+  setNewReminder: React.Dispatch<React.SetStateAction<{ title: string; message: string; frequency: Reminder['frequency']; category: string; targetUser?: string }>>;
   showSuccess: (title: string, description?: string) => void;
   showError: (title: string, description?: string) => void;
 }
@@ -29,10 +29,11 @@ export const useReminderHandlers = ({
       title: newReminder.title,
       message: newReminder.message,
       frequency: newReminder.frequency,
-      category: newReminder.category || 'General'
+      category: newReminder.category || 'General',
+      targetUser: newReminder.targetUser || undefined
     };
     setReminders(prev => [...prev, reminder]);
-    setNewReminder({ title: '', message: '', frequency: 'daily', category: '' });
+    setNewReminder({ title: '', message: '', frequency: 'daily', category: '', targetUser: '' });
     showSuccess("Reminder added", "The reminder has been added to the database.");
   };
 

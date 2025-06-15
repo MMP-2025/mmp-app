@@ -9,11 +9,13 @@ export const useReminderData = () => {
     message: string;
     frequency: Reminder['frequency'];
     category: string;
+    targetUser?: string;
   }>({
     title: '',
     message: '',
     frequency: 'daily',
-    category: ''
+    category: '',
+    targetUser: ''
   });
 
   return {

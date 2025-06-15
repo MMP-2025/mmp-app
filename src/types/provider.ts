@@ -1,4 +1,3 @@
-
 export interface Quote {
   id: string;
   text: string;
@@ -45,6 +44,7 @@ export interface Reminder {
   message: string;
   frequency: 'daily' | 'weekly' | 'monthly';
   category: string;
+  targetUser?: string;
 }
 
 export interface GratitudePrompt {
