@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play, Pause, RotateCcw, Settings } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { techniques } from '@/data/breathingTechniques';
 
 const GuidedBreathingVisualizer: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
@@ -14,13 +14,6 @@ const GuidedBreathingVisualizer: React.FC = () => {
   
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const phaseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const techniques = {
-    '4-7-8': { inhale: 4, hold: 7, exhale: 8, pause: 0 },
-    '4-4-4-4': { inhale: 4, hold: 4, exhale: 4, pause: 4 },
-    '6-2-6-2': { inhale: 6, hold: 2, exhale: 6, pause: 2 },
-    'simple': { inhale: 4, hold: 0, exhale: 4, pause: 0 }
-  };
 
   const currentTechnique = techniques[technique as keyof typeof techniques];
 
@@ -145,7 +138,7 @@ const GuidedBreathingVisualizer: React.FC = () => {
 
   return (
     <Card className="p-8 bg-mental-beige text-center">
-      <h3 className="text-xl font-semibold mb-6" style={{ color: '#737373' }}>
+      <h3 className="text-xl font-semibold mb-6 text-neutral-500">
         Guided Breathing Visualizer
       </h3>
       
@@ -166,10 +159,10 @@ const GuidedBreathingVisualizer: React.FC = () => {
 
       {/* Phase Instructions */}
       <div className="mb-6">
-        <p className="text-lg font-medium mb-2" style={{ color: '#737373' }}>
+        <p className="text-lg font-medium mb-2 text-neutral-500">
           {getPhaseInstruction()}
         </p>
-        <p className="text-sm" style={{ color: '#737373' }}>
+        <p className="text-sm text-neutral-500">
           Cycle {cycleCount}
         </p>
       </div>
@@ -210,7 +203,7 @@ const GuidedBreathingVisualizer: React.FC = () => {
       {showSettings && (
         <div className="space-y-4 p-4 bg-white/50 rounded-lg">
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: '#737373' }}>
+            <label className="block text-sm font-medium mb-2 text-neutral-500">
               Breathing Technique
             </label>
             <Select value={technique} onValueChange={setTechnique}>
@@ -226,7 +219,7 @@ const GuidedBreathingVisualizer: React.FC = () => {
             </Select>
           </div>
           
-          <div className="text-sm" style={{ color: '#737373' }}>
+          <div className="text-sm text-neutral-500">
             <p className="font-medium">Current Pattern:</p>
             <p>
               Inhale: {currentTechnique.inhale}s • 

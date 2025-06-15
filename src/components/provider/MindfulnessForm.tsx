@@ -23,10 +23,10 @@ const MindfulnessForm: React.FC<MindfulnessFormProps> = ({
 }) => {
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-[#7e868b] mb-4">Add New Mindfulness Prompt</h2>
+      <h2 className="text-xl font-semibold text-neutral-500 mb-4">Add New Mindfulness Prompt</h2>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-[#7e868b] mb-1">Prompt</label>
+          <label className="block text-sm font-medium text-neutral-500 mb-1">Prompt</label>
           <textarea
             value={newMindfulnessPrompt.prompt}
             onChange={(e) => setNewMindfulnessPrompt({...newMindfulnessPrompt, prompt: e.target.value})}
@@ -37,7 +37,7 @@ const MindfulnessForm: React.FC<MindfulnessFormProps> = ({
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#7e868b] mb-1">Category</label>
+            <label className="block text-sm font-medium text-neutral-500 mb-1">Category</label>
             <input
               type="text"
               value={newMindfulnessPrompt.category}
@@ -47,7 +47,7 @@ const MindfulnessForm: React.FC<MindfulnessFormProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#7e868b] mb-1">Duration</label>
+            <label className="block text-sm font-medium text-neutral-500 mb-1">Duration</label>
             <input
               type="text"
               value={newMindfulnessPrompt.duration}

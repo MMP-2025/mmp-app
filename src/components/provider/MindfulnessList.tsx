@@ -15,7 +15,7 @@ const MindfulnessList: React.FC<MindfulnessListProps> = ({
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="p-6 border-b">
-        <h2 className="text-xl font-semibold text-[#7e868b]">Mindfulness Prompts ({mindfulnessPrompts.length})</h2>
+        <h2 className="text-xl font-semibold text-neutral-500">Mindfulness Prompts ({mindfulnessPrompts.length})</h2>
       </div>
       <div className="p-6">
         {mindfulnessPrompts.length === 0 ? (
@@ -26,7 +26,7 @@ const MindfulnessList: React.FC<MindfulnessListProps> = ({
               <div key={prompt.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="text-[#7e868b] mb-2">{prompt.prompt}</p>
+                    <p className="text-neutral-500 mb-2">{prompt.prompt}</p>
                     <div className="flex gap-2">
                       <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
                         {prompt.category}

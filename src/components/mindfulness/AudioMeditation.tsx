@@ -72,12 +72,12 @@ const AudioMeditation: React.FC<AudioMeditationProps> = ({
 
   return (
     <Card className="p-6 bg-mental-green">
-      <h3 className="text-xl font-semibold mb-4" style={{color: '#737373'}}>{title}</h3>
+      <h3 className="text-xl font-semibold mb-4 text-neutral-500">{title}</h3>
       
       {/* Progress Bar */}
       <div className="mb-6">
         <Progress value={progress} className="h-2 mb-2" />
-        <div className="flex justify-between text-sm" style={{color: '#737373'}}>
+        <div className="flex justify-between text-sm text-neutral-500">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
@@ -110,9 +110,9 @@ const AudioMeditation: React.FC<AudioMeditationProps> = ({
           className="rounded-full w-16 h-16 bg-mental-blue hover:bg-mental-blue/80"
         >
           {isPlaying ? (
-            <Pause className="h-8 w-8" style={{color: '#737373'}} />
+            <Pause className="h-8 w-8 text-neutral-500" />
           ) : (
-            <Play className="h-8 w-8" style={{color: '#737373'}} />
+            <Play className="h-8 w-8 text-neutral-500" />
           )}
         </Button>
 
@@ -127,7 +127,7 @@ const AudioMeditation: React.FC<AudioMeditationProps> = ({
 
       {/* Volume Control */}
       <div className="flex items-center gap-3">
-        <Volume2 className="h-4 w-4" style={{color: '#737373'}} />
+        <Volume2 className="h-4 w-4 text-neutral-500" />
         <Slider
           value={volume}
           onValueChange={setVolume}
@@ -135,7 +135,7 @@ const AudioMeditation: React.FC<AudioMeditationProps> = ({
           step={1}
           className="flex-1"
         />
-        <span className="text-sm" style={{color: '#737373'}}>{volume[0]}%</span>
+        <span className="text-sm text-neutral-500">{volume[0]}%</span>
       </div>
 
       {/* Stop Button */}

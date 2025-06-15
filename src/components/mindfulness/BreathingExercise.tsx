@@ -106,7 +106,7 @@ const BreathingExercise: React.FC<BreathingExerciseProps> = ({ onComplete }) => 
 
   return (
     <Card className="p-8 bg-mental-blue/20 text-center">
-      <h3 className="text-2xl font-semibold mb-8" style={{color: '#737373'}}>
+      <h3 className="text-2xl font-semibold mb-8 text-neutral-500">
         4-4-6 Breathing Exercise
       </h3>
 
@@ -123,10 +123,10 @@ const BreathingExercise: React.FC<BreathingExerciseProps> = ({ onComplete }) => 
         />
         <div className="absolute inset-8 rounded-full bg-white/20 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-3xl font-bold mb-2" style={{color: '#737373'}}>
+            <div className="text-3xl font-bold mb-2 text-neutral-500">
               {timeRemaining}
             </div>
-            <div className="text-lg" style={{color: '#737373'}}>
+            <div className="text-lg text-neutral-500">
               {getInstructions()}
             </div>
           </div>
@@ -136,12 +136,12 @@ const BreathingExercise: React.FC<BreathingExerciseProps> = ({ onComplete }) => 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="text-center">
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{cycleCount}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Cycles</div>
+          <div className="text-2xl font-bold text-neutral-500">{cycleCount}</div>
+          <div className="text-sm text-neutral-500">Cycles</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{formatTime(totalTime)}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Total Time</div>
+          <div className="text-2xl font-bold text-neutral-500">{formatTime(totalTime)}</div>
+          <div className="text-sm text-neutral-500">Total Time</div>
         </div>
       </div>
 
