@@ -14,3 +14,9 @@ export interface WellnessScore {
   improvements: string[];
   strengths: string[];
 }
+
+export interface ScoreHistory {
+  date: string;
+  score: number;
+  breakdown: { [key: string]: number };
+}

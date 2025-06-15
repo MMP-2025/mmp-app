@@ -1,73 +1,23 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { StorageManager } from '@/utils/storage';
 import { Target } from 'lucide-react';
-import { toast } from 'sonner';
 import { WellnessScoreDisplay } from './WellnessScoreDisplay';
 import { WellnessMetricsCard } from './WellnessMetricsCard';
 import { WellnessScoreHistory } from './WellnessScoreHistory';
 import { WellnessInsights } from './WellnessInsights';
-import { WellnessScoreCalculator } from '@/services/wellness/wellnessScoreCalculator';
-import type { WellnessScore } from '@/types/wellness';
-
-interface ScoreHistory {
-  date: string;
-  score: number;
-  breakdown: { [key: string]: number };
-}
+import { useWellnessScoreHistory } from '@/hooks/useWellnessScoreHistory';
+import { useWellnessScoreCalculator } from '@/hooks/useWellnessScoreCalculator';
 
 const WellnessScore: React.FC = () => {
-  const [currentScore, setCurrentScore] = useState<WellnessScore | null>(null);
-  const [scoreHistory, setScoreHistory] = useState<ScoreHistory[]>([]);
-  const [isCalculating, setIsCalculating] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month'>('week');
-
-  useEffect(() => {
-    loadScoreHistory();
-    calculateWellnessScore();
-  }, []);
-
-  const loadScoreHistory = () => {
-    const history = StorageManager.load<ScoreHistory[]>('wellness_score_history', []);
-    setScoreHistory(history);
-  };
-
-  const saveScoreHistory = (newScore: WellnessScore) => {
-    const history = [...scoreHistory];
-    const today = new Date().toISOString().split('T')[0];
-    
-    const breakdown = newScore.metrics.reduce((acc, metric) => {
-      acc[metric.name] = metric.value;
-      return acc;
-    }, {} as { [key: string]: number });
-
-    const newEntry: ScoreHistory = {
-      date: today,
-      score: newScore.overall,
-      breakdown
-    };
-
-    const filteredHistory = history.filter(entry => entry.date !== today);
-    const updatedHistory = [newEntry, ...filteredHistory].slice(0, 30);
-    
-    setScoreHistory(updatedHistory);
-    StorageManager.save('wellness_score_history', updatedHistory);
-  };
-
-  const calculateWellnessScore = () => {
-    setIsCalculating(true);
-    
-    setTimeout(() => {
-      const score = WellnessScoreCalculator.performWellnessCalculation();
-      setCurrentScore(score);
-      saveScoreHistory(score);
-      setIsCalculating(false);
-      toast.success('Wellness score updated!');
-    }, 1500);
-  };
+  
+  const { scoreHistory, saveScoreToHistory } = useWellnessScoreHistory();
+  const { currentScore, isCalculating, calculateWellnessScore } = useWellnessScoreCalculator({ 
+    saveScoreToHistory 
+  });
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600';

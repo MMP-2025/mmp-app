@@ -1,13 +1,7 @@
-
 import React from 'react';
 import { Progress } from '@/components/ui/progress';
 import { Calendar } from 'lucide-react';
-
-interface ScoreHistory {
-  date: string;
-  score: number;
-  breakdown: { [key: string]: number };
-}
+import type { ScoreHistory } from '@/types/wellness';
 
 interface WellnessScoreHistoryProps {
   scoreHistory: ScoreHistory[];
