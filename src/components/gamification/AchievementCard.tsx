@@ -2,12 +2,13 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { LucideIcon } from 'lucide-react';
 
 interface Achievement {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType;
+  icon: LucideIcon;
   category: 'streak' | 'milestone' | 'engagement' | 'progress';
   requirement: number;
   currentProgress: number;
