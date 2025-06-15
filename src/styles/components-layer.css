@@ -1,0 +1,133 @@
+
+@layer components {
+  .bg-mental-gray {
+    background-color: rgb(var(--mental-gray));
+  }
+  
+  .bg-mental-peach {
+    background-color: rgb(var(--mental-peach));
+  }
+  
+  .bg-mental-blue {
+    background-color: rgb(var(--mental-blue));
+  }
+  
+  .bg-mental-beige {
+    background-color: rgb(var(--mental-beige));
+  }
+  
+  .bg-mental-green {
+    background-color: rgb(var(--mental-green));
+  }
+  
+  .text-mental-gray {
+    color: rgb(var(--mental-gray));
+  }
+  
+  .text-mental-peach {
+    color: rgb(var(--mental-peach));
+  }
+  
+  .text-mental-blue {
+    color: rgb(var(--mental-blue));
+  }
+  
+  .text-mental-beige {
+    color: rgb(var(--mental-beige));
+  }
+  
+  .text-mental-green {
+    color: rgb(var(--mental-green));
+  }
+
+  .text-destructive {
+    color: hsl(var(--destructive));
+  }
+
+  /* Fix visibility issues for highlighted/selected elements */
+  .rdp-day_selected {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 2px solid #737373 !important;
+  }
+
+  .rdp-day_today {
+    background-color: rgb(var(--mental-peach)) !important;
+    color: #737373 !important;
+    border: 2px solid #737373 !important;
+  }
+
+  /* Fix toast/popup visibility */
+  .sonner-toast {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 1px solid #737373 !important;
+  }
+
+  /* Fix dropdown/select visibility */
+  [data-state="open"], [data-state="checked"], [data-highlighted] {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 1px solid #737373 !important;
+  }
+
+  /* Fix button hover/focus states */
+  .bg-white:hover, .bg-white:focus {
+    background-color: rgb(var(--mental-blue)) !important;
+    border: 1px solid #737373 !important;
+  }
+
+  /* Replace white/transparent backgrounds */
+  * {
+    color: #737373 !important;
+  }
+
+  input, textarea, select {
+    background-color: rgb(var(--mental-gray)) !important;
+    border-color: #737373 !important;
+  }
+
+  .bg-white, .bg-transparent, [style*="background: white"], [style*="background-color: white"] {
+    background-color: rgb(var(--mental-gray)) !important;
+  }
+
+  /* Keyboard navigation improvements */
+  [tabindex]:focus,
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus,
+  a:focus {
+    outline: 3px solid #007acc;
+    outline-offset: 2px;
+  }
+
+  /* Better link visibility */
+  a {
+    text-decoration: underline;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  /* Enhanced button states */
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Better form field labels */
+  label {
+    font-weight: 600;
+  }
+
+  /* ARIA live regions */
+  [aria-live] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}
