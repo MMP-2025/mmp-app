@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { personalizationEngine, UserBehavior, PersonalizedContent, AdaptiveReminder } from '@/utils/personalizationEngine';
+import { personalizationEngine } from '@/utils/personalizationEngine';
+import { UserBehavior, PersonalizedContent, AdaptiveReminder } from '@/types/personalization';
 
 export const usePersonalization = () => {
   const [personalizedQuote, setPersonalizedQuote] = useState<PersonalizedContent | null>(null);
