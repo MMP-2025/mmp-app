@@ -1,4 +1,12 @@
 
+import { useQuoteHandlers } from './useQuoteHandlers';
+import { useJournalPromptHandlers } from './useJournalPromptHandlers';
+import { useResourceHandlers } from './useResourceHandlers';
+import { useQuestionHandlers } from './useQuestionHandlers';
+import { useToolkitHandlers } from './useToolkitHandlers';
+import { useReminderHandlers } from './useReminderHandlers';
+import { useGratitudeHandlers } from './useGratitudeHandlers';
+import { useMindfulnessHandlers } from './useMindfulnessHandlers';
 import {
   Quote,
   JournalPrompt,
@@ -47,294 +55,108 @@ interface UseProviderHandlersProps {
 }
 
 export const useProviderHandlers = (props: UseProviderHandlersProps) => {
-  const {
-    quotes, setQuotes, journalPrompts, setJournalPrompts, resources, setResources,
-    questions, setQuestions, toolkitItems, setToolkitItems, reminders, setReminders,
-    gratitudePrompts, setGratitudePrompts, mindfulnessPrompts, setMindfulnessPrompts,
-    newQuote, setNewQuote, newPrompt, setNewPrompt, newResource, setNewResource,
-    newQuestion, setNewQuestion, newToolkitItem, setNewToolkitItem,
-    newReminder, setNewReminder, newGratitudePrompt, setNewGratitudePrompt,
-    newMindfulnessPrompt, setNewMindfulnessPrompt, toast
-  } = props;
+  const quoteHandlers = useQuoteHandlers({
+    quotes: props.quotes,
+    setQuotes: props.setQuotes,
+    newQuote: props.newQuote,
+    setNewQuote: props.setNewQuote,
+    toast: props.toast
+  });
 
-  // Handler functions
-  const handleAddQuote = () => {
-    if (!newQuote.text.trim()) return;
-    const quote: Quote = {
-      id: Date.now().toString(),
-      text: newQuote.text,
-      author: newQuote.author || 'Anonymous',
-      category: newQuote.category || 'General'
-    };
-    setQuotes(prev => [...prev, quote]);
-    setNewQuote({ text: '', author: '', category: '' });
-    toast({
-      title: "Quote added",
-      description: "The inspirational quote has been added to the database."
-    });
-  };
+  const journalPromptHandlers = useJournalPromptHandlers({
+    journalPrompts: props.journalPrompts,
+    setJournalPrompts: props.setJournalPrompts,
+    newPrompt: props.newPrompt,
+    setNewPrompt: props.setNewPrompt,
+    toast: props.toast
+  });
 
-  const handleAddPrompt = () => {
-    if (!newPrompt.prompt.trim()) return;
-    const prompt: JournalPrompt = {
-      id: Date.now().toString(),
-      prompt: newPrompt.prompt,
-      category: newPrompt.category || 'General',
-      difficulty: newPrompt.difficulty
-    };
-    setJournalPrompts(prev => [...prev, prompt]);
-    setNewPrompt({ prompt: '', category: '', difficulty: 'beginner' });
-    toast({
-      title: "Journal prompt added",
-      description: "The journal prompt has been added to the database."
-    });
-  };
+  const resourceHandlers = useResourceHandlers({
+    resources: props.resources,
+    setResources: props.setResources,
+    newResource: props.newResource,
+    setNewResource: props.setNewResource,
+    toast: props.toast
+  });
 
-  const handleAddResource = () => {
-    if (!newResource.title.trim() || !newResource.content.trim()) return;
-    const resource: Resource = {
-      id: Date.now().toString(),
-      title: newResource.title,
-      description: newResource.description,
-      content: newResource.content,
-      category: newResource.category || 'General'
-    };
-    setResources(prev => [...prev, resource]);
-    setNewResource({ title: '', description: '', content: '', category: '' });
-    toast({
-      title: "Resource added",
-      description: "The resource has been added to the database."
-    });
-  };
+  const questionHandlers = useQuestionHandlers({
+    questions: props.questions,
+    setQuestions: props.setQuestions,
+    newQuestion: props.newQuestion,
+    setNewQuestion: props.setNewQuestion,
+    toast: props.toast
+  });
 
-  const handleAddQuestion = () => {
-    if (!newQuestion.question.trim()) return;
-    const question: Question = {
-      id: Date.now().toString(),
-      question: newQuestion.question,
-      category: newQuestion.category || 'General',
-      type: newQuestion.type
-    };
-    setQuestions(prev => [...prev, question]);
-    setNewQuestion({ question: '', category: '', type: 'reflection' });
-    toast({
-      title: "Question added",
-      description: "The question has been added to the database."
-    });
-  };
+  const toolkitHandlers = useToolkitHandlers({
+    toolkitItems: props.toolkitItems,
+    setToolkitItems: props.setToolkitItems,
+    newToolkitItem: props.newToolkitItem,
+    setNewToolkitItem: props.setNewToolkitItem,
+    toast: props.toast
+  });
 
-  const handleAddToolkitItem = () => {
-    if (!newToolkitItem.title.trim() || !newToolkitItem.instructions.trim()) return;
-    const toolkitItem: ToolkitItem = {
-      id: Date.now().toString(),
-      title: newToolkitItem.title,
-      description: newToolkitItem.description,
-      instructions: newToolkitItem.instructions,
-      category: newToolkitItem.category || 'General',
-      duration: newToolkitItem.duration
-    };
-    setToolkitItems(prev => [...prev, toolkitItem]);
-    setNewToolkitItem({ title: '', description: '', instructions: '', category: '', duration: '' });
-    toast({
-      title: "Toolkit item added",
-      description: "The toolkit item has been added to the database."
-    });
-  };
+  const reminderHandlers = useReminderHandlers({
+    reminders: props.reminders,
+    setReminders: props.setReminders,
+    newReminder: props.newReminder,
+    setNewReminder: props.setNewReminder,
+    toast: props.toast
+  });
 
-  const handleAddReminder = () => {
-    if (!newReminder.title.trim() || !newReminder.message.trim()) return;
-    const reminder: Reminder = {
-      id: Date.now().toString(),
-      title: newReminder.title,
-      message: newReminder.message,
-      frequency: newReminder.frequency,
-      category: newReminder.category || 'General'
-    };
-    setReminders(prev => [...prev, reminder]);
-    setNewReminder({ title: '', message: '', frequency: 'daily', category: '' });
-    toast({
-      title: "Reminder added",
-      description: "The reminder has been added to the database."
-    });
-  };
+  const gratitudeHandlers = useGratitudeHandlers({
+    gratitudePrompts: props.gratitudePrompts,
+    setGratitudePrompts: props.setGratitudePrompts,
+    newGratitudePrompt: props.newGratitudePrompt,
+    setNewGratitudePrompt: props.setNewGratitudePrompt,
+    toast: props.toast
+  });
 
-  const handleAddGratitudePrompt = () => {
-    if (!newGratitudePrompt.prompt.trim()) return;
-    const gratitudePrompt: GratitudePrompt = {
-      id: Date.now().toString(),
-      prompt: newGratitudePrompt.prompt,
-      category: newGratitudePrompt.category || 'General',
-      difficulty: newGratitudePrompt.difficulty
-    };
-    setGratitudePrompts(prev => [...prev, gratitudePrompt]);
-    setNewGratitudePrompt({ prompt: '', category: '', difficulty: 'simple' });
-    toast({
-      title: "Gratitude prompt added",
-      description: "The gratitude prompt has been added to the database."
-    });
-  };
-
-  const handleAddMindfulnessPrompt = () => {
-    if (!newMindfulnessPrompt.prompt.trim()) return;
-    const mindfulnessPrompt: MindfulnessPrompt = {
-      id: Date.now().toString(),
-      prompt: newMindfulnessPrompt.prompt,
-      category: newMindfulnessPrompt.category || 'General',
-      duration: newMindfulnessPrompt.duration
-    };
-    setMindfulnessPrompts(prev => [...prev, mindfulnessPrompt]);
-    setNewMindfulnessPrompt({ prompt: '', category: '', duration: '5 minutes' });
-    toast({
-      title: "Mindfulness prompt added",
-      description: "The mindfulness prompt has been added to the database."
-    });
-  };
-
-  // Bulk import handlers
-  const handleBulkImportQuotes = (items: any[]) => {
-    setQuotes(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} quotes have been imported.`
-    });
-  };
-
-  const handleBulkImportPrompts = (items: any[]) => {
-    setJournalPrompts(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful", 
-      description: `${items.length} journal prompts have been imported.`
-    });
-  };
-
-  const handleBulkImportQuestions = (items: any[]) => {
-    setQuestions(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} questions have been imported.`
-    });
-  };
-
-  const handleBulkImportToolkitItems = (items: any[]) => {
-    setToolkitItems(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} toolkit items have been imported.`
-    });
-  };
-
-  const handleBulkImportReminders = (items: any[]) => {
-    setReminders(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} reminders have been imported.`
-    });
-  };
-
-  const handleBulkImportGratitudePrompts = (items: any[]) => {
-    setGratitudePrompts(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} gratitude prompts have been imported.`
-    });
-  };
-
-  const handleBulkImportMindfulnessPrompts = (items: any[]) => {
-    setMindfulnessPrompts(prev => [...prev, ...items]);
-    toast({
-      title: "Bulk import successful",
-      description: `${items.length} mindfulness prompts have been imported.`
-    });
-  };
-
-  // Delete handlers
-  const handleDeleteQuote = (id: string) => {
-    setQuotes(prev => prev.filter(q => q.id !== id));
-    toast({
-      title: "Quote deleted",
-      description: "The quote has been removed."
-    });
-  };
-
-  const handleDeletePrompt = (id: string) => {
-    setJournalPrompts(prev => prev.filter(p => p.id !== id));
-    toast({
-      title: "Prompt deleted",
-      description: "The journal prompt has been removed."
-    });
-  };
-
-  const handleDeleteResource = (id: string) => {
-    setResources(prev => prev.filter(r => r.id !== id));
-    toast({
-      title: "Resource deleted",
-      description: "The resource has been removed."
-    });
-  };
-
-  const handleDeleteQuestion = (id: string) => {
-    setQuestions(prev => prev.filter(q => q.id !== id));
-    toast({
-      title: "Question deleted",
-      description: "The question has been removed."
-    });
-  };
-
-  const handleDeleteToolkitItem = (id: string) => {
-    setToolkitItems(prev => prev.filter(t => t.id !== id));
-    toast({
-      title: "Toolkit item deleted",
-      description: "The toolkit item has been removed."
-    });
-  };
-
-  const handleDeleteReminder = (id: string) => {
-    setReminders(prev => prev.filter(r => r.id !== id));
-    toast({
-      title: "Reminder deleted",
-      description: "The reminder has been removed."
-    });
-  };
-
-  const handleDeleteGratitudePrompt = (id: string) => {
-    setGratitudePrompts(prev => prev.filter(g => g.id !== id));
-    toast({
-      title: "Gratitude prompt deleted",
-      description: "The gratitude prompt has been removed."
-    });
-  };
-
-  const handleDeleteMindfulnessPrompt = (id: string) => {
-    setMindfulnessPrompts(prev => prev.filter(m => m.id !== id));
-    toast({
-      title: "Mindfulness prompt deleted",
-      description: "The mindfulness prompt has been removed."
-    });
-  };
+  const mindfulnessHandlers = useMindfulnessHandlers({
+    mindfulnessPrompts: props.mindfulnessPrompts,
+    setMindfulnessPrompts: props.setMindfulnessPrompts,
+    newMindfulnessPrompt: props.newMindfulnessPrompt,
+    setNewMindfulnessPrompt: props.setNewMindfulnessPrompt,
+    toast: props.toast
+  });
 
   return {
-    handleAddQuote,
-    handleAddPrompt,
-    handleAddResource,
-    handleAddQuestion,
-    handleAddToolkitItem,
-    handleAddReminder,
-    handleAddGratitudePrompt,
-    handleAddMindfulnessPrompt,
-    handleBulkImportQuotes,
-    handleBulkImportPrompts,
-    handleBulkImportQuestions,
-    handleBulkImportToolkitItems,
-    handleBulkImportReminders,
-    handleBulkImportGratitudePrompts,
-    handleBulkImportMindfulnessPrompts,
-    handleDeleteQuote,
-    handleDeletePrompt,
-    handleDeleteResource,
-    handleDeleteQuestion,
-    handleDeleteToolkitItem,
-    handleDeleteReminder,
-    handleDeleteGratitudePrompt,
-    handleDeleteMindfulnessPrompt
+    // Quote handlers
+    handleAddQuote: quoteHandlers.handleAddQuote,
+    handleDeleteQuote: quoteHandlers.handleDeleteQuote,
+    handleBulkImportQuotes: quoteHandlers.handleBulkImportQuotes,
+    
+    // Journal prompt handlers
+    handleAddPrompt: journalPromptHandlers.handleAddPrompt,
+    handleDeletePrompt: journalPromptHandlers.handleDeletePrompt,
+    handleBulkImportPrompts: journalPromptHandlers.handleBulkImportPrompts,
+    
+    // Resource handlers
+    handleAddResource: resourceHandlers.handleAddResource,
+    handleDeleteResource: resourceHandlers.handleDeleteResource,
+    
+    // Question handlers
+    handleAddQuestion: questionHandlers.handleAddQuestion,
+    handleDeleteQuestion: questionHandlers.handleDeleteQuestion,
+    handleBulkImportQuestions: questionHandlers.handleBulkImportQuestions,
+    
+    // Toolkit handlers
+    handleAddToolkitItem: toolkitHandlers.handleAddToolkitItem,
+    handleDeleteToolkitItem: toolkitHandlers.handleDeleteToolkitItem,
+    handleBulkImportToolkitItems: toolkitHandlers.handleBulkImportToolkitItems,
+    
+    // Reminder handlers
+    handleAddReminder: reminderHandlers.handleAddReminder,
+    handleDeleteReminder: reminderHandlers.handleDeleteReminder,
+    handleBulkImportReminders: reminderHandlers.handleBulkImportReminders,
+    
+    // Gratitude handlers
+    handleAddGratitudePrompt: gratitudeHandlers.handleAddGratitudePrompt,
+    handleDeleteGratitudePrompt: gratitudeHandlers.handleDeleteGratitudePrompt,
+    handleBulkImportGratitudePrompts: gratitudeHandlers.handleBulkImportGratitudePrompts,
+    
+    // Mindfulness handlers
+    handleAddMindfulnessPrompt: mindfulnessHandlers.handleAddMindfulnessPrompt,
+    handleDeleteMindfulnessPrompt: mindfulnessHandlers.handleDeleteMindfulnessPrompt,
+    handleBulkImportMindfulnessPrompts: mindfulnessHandlers.handleBulkImportMindfulnessPrompts
   };
 };
