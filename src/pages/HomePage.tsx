@@ -1,14 +1,12 @@
-
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToastService } from '@/hooks/useToastService';
-import { Link } from 'react-router-dom';
-import { useAnalytics } from '@/hooks/useAnalytics';
+import React from 'react';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import WellnessScore from '@/components/wellness/WellnessScore';
+import PersonalizedRecommendations from '@/components/home/PersonalizedRecommendations';
+import DailyQuestion from '@/components/home/DailyQuestion';
+import QuickAccess from '@/components/home/QuickAccess';
+import MoodCheckIn from '@/components/home/MoodCheckIn';
+import QuoteOfTheDay from '@/components/home/QuoteOfTheDay';
 
 const quotes = [{
   text: "You don't have to control your thoughts. You just have to stop letting them control you.",
@@ -47,27 +45,7 @@ const getRandomItem = (array: any[]) => {
 const HomePage = () => {
   const todaysQuote = getRandomItem(quotes);
   const todaysQuestion = getRandomItem(questions);
-  const [response, setResponse] = useState('');
-  const { trackAction } = useAnalytics();
   const { getRecommendations } = useUserPreferences();
-  const { showSuccess, showWarning } = useToastService();
-
-  const handleSubmitResponse = () => {
-    if (!response.trim()) {
-      showWarning("Please write a response before submitting");
-      return;
-    }
-
-    // Track analytics
-    trackAction('daily_question_answered', { 
-      question: todaysQuestion, 
-      responseLength: response.length 
-    });
-
-    showSuccess("Your response has been recorded");
-    console.log("Response submitted:", response);
-    setResponse('');
-  };
 
   const recommendations = getRecommendations();
 
@@ -85,83 +63,20 @@ const HomePage = () => {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-8">
-          {/* Personalized Recommendations */}
-          {recommendations.length > 0 && (
-            <Card className="p-6 bg-mental-blue/10">
-              <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Personalized Recommendations</h2>
-              <div className="space-y-2">
-                {recommendations.map((rec, index) => (
-                  <p key={index} className="text-[#7e868b] flex items-center">
-                    <span className="w-2 h-2 bg-mental-blue rounded-full mr-2"></span>
-                    {rec}
-                  </p>
-                ))}
-              </div>
-            </Card>
-          )}
+          <PersonalizedRecommendations recommendations={recommendations} />
           
-          {/* Question of the day */}
-          <Card className="p-6 bg-mental-blue/20">
-            <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Question of the Day</h2>
-            <p className="text-lg mb-4 text-[#7e868b]">{todaysQuestion}</p>
-            
-            <div className="space-y-4">
-              <Input 
-                placeholder="Write your response..." 
-                value={response} 
-                onChange={e => setResponse(e.target.value)} 
-                className="bg-white" 
-              />
-              <Button 
-                onClick={handleSubmitResponse} 
-                className="w-full bg-mental-green hover:bg-mental-green/80"
-              >
-                Submit Response
-              </Button>
-            </div>
-          </Card>
+          <DailyQuestion question={todaysQuestion} />
           
-          {/* Quick access and mood tracker */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card className="p-6 bg-mental-gray">
-              <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">Quick Access</h2>
-              <div className="grid grid-cols-2 gap-2">
-                <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
-                  <Link to="/journal">My Journal</Link>
-                </Button>
-                <Button asChild className="bg-mental-green hover:bg-mental-green/80 w-full text-left justify-start">
-                  <Link to="/mood">Mood Check-in</Link>
-                </Button>
-                <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
-                  <Link to="/mindfulness">Mindfulness</Link>
-                </Button>
-                <Button asChild className="bg-mental-beige hover:bg-mental-beige/80 w-full text-left justify-start">
-                  <Link to="/planner">Today's Plan</Link>
-                </Button>
-              </div>
-            </Card>
-            
-            <Card className="p-6 bg-mental-green/20">
-              <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">How are you feeling?</h2>
-              <p className="mb-4 text-[#7e868b]">Take a moment to check in with yourself.</p>
-              <Button asChild className="w-full bg-mental-blue hover:bg-mental-blue/80">
-                <Link to="/mood">Track My Mood</Link>
-              </Button>
-            </Card>
+            <QuickAccess />
+            <MoodCheckIn />
           </div>
           
-          {/* Quote of the day */}
-          <Card className="p-6 bg-mental-peach/20">
-            <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Quote of the Day</h2>
-            <blockquote className="italic text-lg text-[#7e868b]">
-              "{todaysQuote.text}"
-            </blockquote>
-            <p className="text-right mt-2 text-[#7e868b]">— {todaysQuote.author}</p>
-          </Card>
+          <QuoteOfTheDay quote={todaysQuote} />
         </TabsContent>
 
         <TabsContent value="progress">
-          <AnalyticsDashboard />
+          <WellnessScore />
         </TabsContent>
       </Tabs>
     </div>
