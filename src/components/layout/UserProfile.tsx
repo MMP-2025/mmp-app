@@ -10,12 +10,12 @@ const UserProfile = () => {
   if (!user) return null;
 
   return (
-    <div className="flex items-center gap-2 p-2 bg-white/80 rounded-lg">
+    <div className="flex items-center gap-2 p-2 bg-background/80 rounded-lg">
       <div className="flex items-center gap-2">
         <User className="h-4 w-4" />
         <div className="text-sm">
           <p className="font-medium">{user.name}</p>
-          <p className="text-xs text-gray-600 capitalize">{user.role}</p>
+          <p className="text-xs text-muted-foreground capitalize">{user.role}</p>
         </div>
       </div>
       <Button variant="ghost" size="sm" onClick={logout}>

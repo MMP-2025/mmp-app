@@ -11,7 +11,7 @@ const TherapeuticTools = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Brain className="h-5 w-5" />
           Therapeutic Tools & Exercises
         </CardTitle>

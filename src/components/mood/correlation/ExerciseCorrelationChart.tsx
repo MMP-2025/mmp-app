@@ -40,14 +40,14 @@ const ExerciseCorrelationChart: React.FC<ExerciseCorrelationChartProps> = ({ moo
 
   return (
     <Card className="p-6 bg-white/90">
-      <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Exercise Impact on Mood</h3>
+      <h3 className="text-lg font-semibold mb-4 text-foreground">Exercise Impact on Mood</h3>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={exerciseComparison}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="category" />
           <YAxis domain={[0, 10]} />
           <Tooltip />
-          <Bar dataKey="avgIntensity" fill="#22c55e" />
+          <Bar dataKey="avgIntensity" fill="#AEC29B" />
         </BarChart>
       </ResponsiveContainer>
     </Card>

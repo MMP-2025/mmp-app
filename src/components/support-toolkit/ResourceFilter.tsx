@@ -20,7 +20,7 @@ const ResourceFilter: React.FC<ResourceFilterProps> = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Search className="h-5 w-5" />
           Find Resources
         </CardTitle>
@@ -28,7 +28,7 @@ const ResourceFilter: React.FC<ResourceFilterProps> = ({
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#7e868b] mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Search Resources
             </label>
             <Input
@@ -39,13 +39,13 @@ const ResourceFilter: React.FC<ResourceFilterProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#7e868b] mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Filter by Category
             </label>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-input rounded-md bg-background"
             >
               <option value="all">All Categories</option>
               <option value="worksheet">Worksheets</option>

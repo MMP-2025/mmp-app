@@ -12,12 +12,12 @@ interface MoodDistributionChartProps {
   moodDistribution: MoodDistribution[];
 }
 
-const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
+const COLORS = ['#E5C7B5', '#AEC29B', '#B6D1D9', '#FADCD6', '#CCC6C6'];
 
 const MoodDistributionChart: React.FC<MoodDistributionChartProps> = ({ moodDistribution }) => {
   return (
     <Card className="p-6 bg-white/90">
-      <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Mood Distribution</h3>
+      <h3 className="text-lg font-semibold mb-4 text-foreground">Mood Distribution</h3>
       <ResponsiveContainer width="100%" height={250}>
         <PieChart>
           <Pie

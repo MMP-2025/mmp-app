@@ -42,25 +42,25 @@ const MoodHistoryItem: React.FC<MoodHistoryItemProps> = ({ entry }) => {
   };
 
   const getIntensityColor = (intensity: number) => {
-    if (intensity <= 3) return 'text-red-500';
-    if (intensity <= 6) return 'text-yellow-500';
-    return 'text-green-500';
+    if (intensity <= 3) return 'text-destructive';
+    if (intensity <= 6) return 'text-mental-beige';
+    return 'text-mental-green';
   };
 
   const MoodIcon = getMoodIcon(entry.mood);
 
   return (
     <div className="flex items-start gap-3 p-4 bg-mental-peach/20 rounded-md">
-      <MoodIcon className="h-6 w-6 mt-1" style={{color: '#737373'}} />
+      <MoodIcon className="h-6 w-6 mt-1 text-foreground" />
       <div className="flex-1">
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-2">
-            <span className="font-medium" style={{color: '#737373'}}>{entry.mood}</span>
+            <span className="font-medium text-foreground">{entry.mood}</span>
             <Badge variant="outline" className={getIntensityColor(entry.intensity)}>
               {entry.intensity}/10
             </Badge>
           </div>
-          <span className="text-sm" style={{color: '#737373'}}>{formatDate(entry.timestamp)}</span>
+          <span className="text-sm text-foreground">{formatDate(entry.timestamp)}</span>
         </div>
         {entry.factors.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-2">
@@ -72,7 +72,7 @@ const MoodHistoryItem: React.FC<MoodHistoryItemProps> = ({ entry }) => {
           </div>
         )}
         {entry.note && (
-          <p className="text-sm" style={{color: '#737373'}}>{entry.note}</p>
+          <p className="text-sm text-foreground">{entry.note}</p>
         )}
       </div>
     </div>

@@ -59,7 +59,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         variant="ghost" 
         size="icon" 
         onClick={() => setIsClicked(true)} 
-        className="fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90 text-neutral-500"
+        className="fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground"
       >
         <Menu className="h-5 w-5" />
       </Button>
@@ -67,7 +67,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       {/* User Profile and Home Button in top right */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-4">
         <Link to="/" aria-label="Go to Home page">
-            <Button variant="ghost" size="icon" className="bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90 text-neutral-500">
+            <Button variant="ghost" size="icon" className="bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground">
                 <Home className="h-5 w-5" />
             </Button>
         </Link>
@@ -80,12 +80,12 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         }`}
       >
         <Sidebar className="border-r border-mental-gray/20 h-full">
-          <SidebarHeader className="p-4 bg-[#fadcd6]">
-            <h1 className="font-bold text-center text-neutral-500">Making Meaning Psychology</h1>
+          <SidebarHeader className="p-4 bg-sidebar">
+            <h1 className="font-bold text-center text-sidebar-foreground">Making Meaning Psychology</h1>
           </SidebarHeader>
-          <SidebarContent className="bg-[#fadcd6]">
+          <SidebarContent className="bg-sidebar">
             <SidebarGroup>
-              <SidebarGroupLabel className="text-neutral-500">Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel className="text-sidebar-foreground">Navigation</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {menuItems.map(item => (
@@ -93,7 +93,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                       <SidebarMenuButton asChild>
                         <Link 
                           to={item.path} 
-                          className={`flex items-center gap-2 text-neutral-500 ${
+                          className={`flex items-center gap-2 text-sidebar-foreground ${
                             location.pathname === item.path ? 'font-medium' : ''
                           }`} 
                           onClick={() => setIsClicked(false)}
@@ -108,8 +108,8 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="p-4 text-xs text-center bg-[#fadcd6]">
-            <p className="text-neutral-500">© 2025 Making Meaning Psychology</p>
+          <SidebarFooter className="p-4 text-xs text-center bg-sidebar">
+            <p className="text-sidebar-foreground">© 2025 Making Meaning Psychology</p>
           </SidebarFooter>
         </Sidebar>
       </div>

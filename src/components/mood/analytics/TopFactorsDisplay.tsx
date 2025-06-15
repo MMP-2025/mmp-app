@@ -15,7 +15,7 @@ interface TopFactorsDisplayProps {
 const TopFactorsDisplay: React.FC<TopFactorsDisplayProps> = ({ topFactors }) => {
   return (
     <Card className="p-6 bg-white/90">
-      <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Most Common Factors</h3>
+      <h3 className="text-lg font-semibold mb-4 text-foreground">Most Common Factors</h3>
       <div className="space-y-3">
         {topFactors.map((factor, index) => (
           <div key={factor.factor} className="flex items-center justify-between">
@@ -28,7 +28,7 @@ const TopFactorsDisplay: React.FC<TopFactorsDisplayProps> = ({ topFactors }) => 
                   minWidth: '20px'
                 }}
               />
-              <span className="text-sm font-medium" style={{color: '#737373'}}>{factor.count}</span>
+              <span className="text-sm font-medium text-foreground">{factor.count}</span>
             </div>
           </div>
         ))}
