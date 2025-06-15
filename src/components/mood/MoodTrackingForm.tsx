@@ -2,11 +2,10 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import MoodFormHeader from './forms/MoodFormHeader';
-import MoodSelector from './MoodSelector';
-import MoodIntensitySlider from './forms/MoodIntensitySlider';
 import MoodNoteInput from './forms/MoodNoteInput';
 import MoodFactors from './MoodFactors';
 import SaveMoodButton from './forms/SaveMoodButton';
+import EmotionWheel from './EmotionWheel';
 
 interface MoodTrackingFormProps {
   selectedMood: string | null;
@@ -33,23 +32,23 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
   onFactorToggle,
   onSaveMood
 }) => {
+  const handleEmotionSelect = (emotion: string, intensity: number) => {
+    onMoodSelection(emotion);
+    onIntensityChange([intensity]);
+  };
+
   return (
     <Card className="p-6 bg-white/90">
       <MoodFormHeader />
       
       <div className="space-y-6">
-        <MoodSelector 
-          selectedMood={selectedMood} 
-          onMoodSelection={onMoodSelection} 
+        <EmotionWheel 
+          onEmotionSelect={handleEmotionSelect} 
+          selectedEmotion={selectedMood || undefined} 
         />
         
         {selectedMood && (
           <>
-            <MoodIntensitySlider
-              intensity={moodIntensity}
-              onIntensityChange={onIntensityChange}
-            />
-            
             <MoodFactors
               factors={moodFactors}
               selectedFactors={selectedFactors}

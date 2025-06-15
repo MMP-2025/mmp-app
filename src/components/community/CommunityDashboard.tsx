@@ -6,15 +6,13 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Target, Share2, Trophy, MessageCircle, Heart, Calendar, Award } from 'lucide-react';
 import { contentManager } from '@/utils/contentManager';
-import PeerSupportGroups from './PeerSupportGroups';
 import CommunityChallenges from './CommunityChallenges';
 import ResourceSharing from './ResourceSharing';
 
 const CommunityDashboard = () => {
-  const [activeTab, setActiveTab] = useState('groups');
+  const [activeTab, setActiveTab] = useState('challenges');
   const [communityStats, setCommunityStats] = useState({
     totalMembers: 1247,
-    activeGroups: 23,
     completedChallenges: 156,
     sharedResources: 89
   });
@@ -31,14 +29,10 @@ const CommunityDashboard = () => {
           Connect with others on similar mental health journeys, share experiences, and grow together.
         </p>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-3 bg-white/60 rounded-md">
             <div className="text-2xl font-bold text-mental-blue">{communityStats.totalMembers}</div>
             <div className="text-sm" style={{color: '#737373'}}>Community Members</div>
-          </div>
-          <div className="text-center p-3 bg-white/60 rounded-md">
-            <div className="text-2xl font-bold text-mental-green">{communityStats.activeGroups}</div>
-            <div className="text-sm" style={{color: '#737373'}}>Support Groups</div>
           </div>
           <div className="text-center p-3 bg-white/60 rounded-md">
             <div className="text-2xl font-bold text-mental-peach">{communityStats.completedChallenges}</div>
@@ -53,11 +47,7 @@ const CommunityDashboard = () => {
 
       {/* Community Features Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="groups" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Support Groups
-          </TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="challenges" className="flex items-center gap-2">
             <Target className="h-4 w-4" />
             Challenges
@@ -67,10 +57,6 @@ const CommunityDashboard = () => {
             Resource Sharing
           </TabsTrigger>
         </TabsList>
-
-        <TabsContent value="groups">
-          <PeerSupportGroups />
-        </TabsContent>
 
         <TabsContent value="challenges">
           <CommunityChallenges />
