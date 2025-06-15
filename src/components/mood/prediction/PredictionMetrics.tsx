@@ -26,9 +26,9 @@ const PredictionMetrics: React.FC<PredictionMetricsProps> = ({ metrics }) => {
 
   const getTrendColor = (trend: string) => {
     switch (trend) {
-      case 'up': return 'text-green-600';
-      case 'down': return 'text-red-600';
-      default: return 'text-gray-600';
+      case 'up': return 'text-mental-green';
+      case 'down': return 'text-destructive';
+      default: return 'text-muted-foreground';
     }
   };
 

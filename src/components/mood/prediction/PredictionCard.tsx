@@ -2,7 +2,7 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { AlertTriangle, TrendingUp, Target, Clock } from 'lucide-react';
+import { AlertTriangle, TrendingUp, Target, Clock, Lightbulb } from 'lucide-react';
 
 interface Prediction {
   type: 'risk' | 'improvement' | 'maintenance';
@@ -72,8 +72,11 @@ const PredictionCard: React.FC<PredictionCardProps> = ({ prediction }) => {
             )}
             
             <div className="mt-3 p-2 bg-white/60 rounded-md">
-              <p className="text-xs font-medium">💡 Recommendation:</p>
-              <p className="text-xs">{prediction.recommendation}</p>
+              <p className="flex items-center text-xs font-medium">
+                <Lightbulb className="h-4 w-4 mr-1.5 text-mental-blue" />
+                Recommendation:
+              </p>
+              <p className="text-xs pl-6">{prediction.recommendation}</p>
             </div>
           </div>
         </div>
