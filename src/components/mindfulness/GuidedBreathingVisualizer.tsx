@@ -264,7 +264,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
             <label className="block text-sm font-medium mb-2 text-neutral-500">
               Breathing Technique
             </label>
-            <Select value={technique} onValueChange={setTechnique}>
+            <Select value={technique} onValueChange={(value) => setTechnique(value as keyof typeof techniques)}>
               <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
