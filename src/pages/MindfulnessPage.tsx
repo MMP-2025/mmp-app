@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Brain, Headphones, Activity } from 'lucide-react';
 import AudioMeditation from '@/components/mindfulness/AudioMeditation';
-import BreathingExercise from '@/components/mindfulness/BreathingExercise';
+import GuidedBreathingVisualizer from '@/components/mindfulness/GuidedBreathingVisualizer';
 import BodyScanVisualization from '@/components/mindfulness/BodyScanVisualization';
 import MindfulnessProgressTracker from '@/components/mindfulness/MindfulnessProgressTracker';
 import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
@@ -15,7 +14,7 @@ import MindfulnessExercises from '@/components/mindfulness/MindfulnessExercises'
 interface MindfulnessSession {
   id: string;
   type: 'meditation' | 'breathing' | 'body_scan';
-  duration: number;
+  duration: number; // in minutes
   completedAt: number;
   quality?: 'poor' | 'good' | 'excellent';
 }
@@ -44,7 +43,7 @@ const MindfulnessPage = () => {
     StorageManager.save(STORAGE_KEYS.MINDFULNESS_PROGRESS, updatedSessions);
     
     trackMindfulnessSession(type, duration);
-    toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} session completed!`);
+    toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} session of ${duration} minute${duration > 1 ? 's' : ''} completed!`);
   };
 
   return (
@@ -102,8 +101,10 @@ const MindfulnessPage = () => {
         </TabsContent>
 
         <TabsContent value="breathing" className="space-y-6">
-          <BreathingExercise
-            onComplete={() => handleSessionComplete('breathing', 3)}
+          <GuidedBreathingVisualizer
+            defaultTechnique="4-4-4-4"
+            cycleGoal={12}
+            onComplete={(durationInMinutes) => handleSessionComplete('breathing', durationInMinutes)}
           />
         </TabsContent>
 
