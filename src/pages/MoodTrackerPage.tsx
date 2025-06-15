@@ -19,7 +19,7 @@ import MoodCorrelationTracker from '@/components/mood/MoodCorrelationTracker';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import AIInsights from '@/components/personalization/AIInsights';
 import MoodPredictionSystem from '@/components/mood/MoodPredictionSystem';
-import AdvancedAnalytics from '@/components/mood/AdvancedAnalytics';
+import AdvancedAnalytics from '@/components/analytics/AdvancedAnalytics';
 
 interface MoodEntry {
   id: string;
