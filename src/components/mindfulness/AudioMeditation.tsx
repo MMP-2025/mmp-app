@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,7 +25,7 @@ const AudioMeditation: React.FC<AudioMeditationProps> = ({
   const [volume, setVolume] = useState([70]);
 
   const placeholderAudio = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-  const source = audioUrl ? placeholderAudio : '';
+  const source = audioUrl || placeholderAudio;
 
   useEffect(() => {
     const audio = audioRef.current;

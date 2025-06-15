@@ -38,15 +38,15 @@ const getPhaseInstruction = (phase: Phase) => {
 const getPhaseColor = (phase: Phase) => {
   switch (phase) {
     case 'inhale':
-      return 'bg-blue-400';
+      return 'bg-mental-blue';
     case 'hold':
-      return 'bg-yellow-400';
+      return 'bg-mental-peach';
     case 'exhale':
-      return 'bg-green-400';
+      return 'bg-mental-green';
     case 'pause':
-      return 'bg-purple-400';
+      return 'bg-mental-beige';
     default:
-      return 'bg-gray-400';
+      return 'bg-mental-gray';
   }
 };
 
@@ -60,8 +60,8 @@ const BreathingVisualizerCircle: React.FC<BreathingVisualizerCircleProps> = ({ p
             style={{ transform: getCircleTransform(phase), filter: 'blur(0.5px)' }}
           />
         </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-white font-semibold text-lg">
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="text-white font-semibold text-lg" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.2)' }}>
             {getPhaseInstruction(phase)}
           </div>
         </div>

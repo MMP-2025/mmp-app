@@ -1,45 +1,75 @@
-import React, { useState } from 'react';
+
+import React, { useState, useCallback, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useToastService } from '@/hooks/useToastService';
-import { Heart, Check, BookmarkPlus, BookmarkCheck } from 'lucide-react';
+import { Check, BookmarkPlus, BookmarkCheck, Shuffle } from 'lucide-react';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 
-// Sample gratitude exercises - in a real app, these would come from your database
-const gratitudeExercises = [{
-  id: 1,
-  title: "Three Good Things",
-  description: "Write down three things that went well today, along with why they happened.",
-  instructions: "Think of three positive events from your day, no matter how small. For each event, reflect on what caused it and how you felt afterward."
-}, {
-  id: 2,
-  title: "Gratitude Letter",
-  description: "Write a letter expressing gratitude to someone who has positively impacted your life.",
-  instructions: "Think of someone who has done something important for you whom you have never properly thanked. Write a detailed letter expressing your gratitude for their specific actions and how they affected you."
-}, {
-  id: 3,
-  title: "Gratitude Jar",
-  description: "Create a collection of moments, people, and things you're grateful for.",
-  instructions: "Each day, write down one thing you're grateful for on a small piece of paper. Add it to your virtual gratitude jar. When you're feeling down, you can look back at these notes."
-}];
+const gratitudeExercises = [
+  {
+    id: 1,
+    title: "Three Good Things",
+    description: "Write down three things that went well today, and why they happened.",
+    instructions: "Think of three positive events from your day, no matter how small. For each, reflect on what caused it."
+  },
+  {
+    id: 2,
+    title: "Gratitude Letter",
+    description: "Write a letter to someone who has positively impacted your life.",
+    instructions: "Think of someone who has done something important for you whom you have never properly thanked. Write a detailed letter expressing your gratitude."
+  },
+  {
+    id: 3,
+    title: "Gratitude Jar",
+    description: "Create a collection of moments, people, and things you're grateful for.",
+    instructions: "Each day, write down one thing you're grateful for. Add it to your virtual gratitude jar to look back on later."
+  },
+  {
+    id: 4,
+    title: "Mindful Moment",
+    description: "Describe something you experienced with all five senses today.",
+    instructions: "Pick a simple moment from your day—like drinking coffee or listening to music—and describe the sights, sounds, smells, tastes, and feelings involved."
+  },
+  {
+    id: 5,
+    title: "Strength Spotlight",
+    description: "What is a personal strength you were grateful for today?",
+    instructions: "Reflect on a quality you possess, like kindness, persistence, or creativity. How did it serve you or others today? Express gratitude for it."
+  },
+  {
+    id: 6,
+    title: "Nature's Beauty",
+    description: "Note something beautiful you saw in nature recently.",
+    instructions: "Think about a plant, animal, sunset, or any natural element that caught your eye. Describe what you saw and how it made you feel."
+  },
+];
 
 const GratitudePage = () => {
   const [selectedExercise, setSelectedExercise] = useState<typeof gratitudeExercises[0] | null>(null);
-  const [gratitudeEntries, setGratitudeEntries] = useState<{
-    id: number;
-    content: string;
-    date: Date;
-  }[]>([]);
+  const [gratitudeEntries, setGratitudeEntries] = useState<{ id: number; content: string; date: Date; }[]>([]);
   const [gratitudeContent, setGratitudeContent] = useState('');
   const [threeGoodThings, setThreeGoodThings] = useState(['', '', '']);
   const [letterRecipient, setLetterRecipient] = useState('');
   const [letterContent, setLetterContent] = useState('');
   const [savedExercises, setSavedExercises] = useState<number[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
-
+  const [displayedExercises, setDisplayedExercises] = useState<typeof gratitudeExercises>([]);
+  
   const { showSuccess, showWarning } = useToastService();
+
+  const shuffleExercises = useCallback(() => {
+    const shuffled = [...gratitudeExercises].sort(() => 0.5 - Math.random());
+    setDisplayedExercises(shuffled.slice(0, 3));
+  }, []);
+
+  useEffect(() => {
+    if (currentView === 'all') {
+      shuffleExercises();
+    }
+  }, [currentView, shuffleExercises]);
 
   const handleThreeGoodThingsChange = (index: number, value: string) => {
     const updated = [...threeGoodThings];
@@ -64,7 +94,7 @@ const GratitudePage = () => {
     if (currentView === 'saved') {
       return gratitudeExercises.filter(exercise => savedExercises.includes(exercise.id));
     }
-    return gratitudeExercises;
+    return displayedExercises;
   };
 
   const saveGratitude = () => {
@@ -184,6 +214,15 @@ const GratitudePage = () => {
           >
             Saved Practices ({savedExercises.length})
           </Button>
+          {currentView === 'all' && (
+            <Button
+              variant="outline"
+              onClick={shuffleExercises}
+            >
+              <Shuffle className="h-4 w-4 mr-2" />
+              New Practices
+            </Button>
+          )}
         </div>
         
         {selectedExercise ? <Card className="p-6 bg-mental-peach/20">
@@ -220,7 +259,6 @@ const GratitudePage = () => {
                 {getDisplayedExercises().map(exercise => <Card key={exercise.id} className="p-6">
                     <div className="flex justify-between items-start mb-2">
                       <h2 className="text-xl font-semibold flex items-center gap-2 text-[#7e868b]">
-                        <Heart className="h-5 w-5 text-mental-peach" />
                         {exercise.title}
                       </h2>
                       <Button
@@ -230,7 +268,7 @@ const GratitudePage = () => {
                         className="p-1"
                       >
                         {savedExercises.includes(exercise.id) ? (
-                          <BookmarkCheck className="h-6 w-6 text-blue-600" />
+                          <BookmarkCheck className="h-6 w-6 text-neutral-500" />
                         ) : (
                           <BookmarkPlus className="h-6 w-6 text-gray-400" />
                         )}

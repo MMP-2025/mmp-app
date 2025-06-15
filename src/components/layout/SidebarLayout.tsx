@@ -54,23 +54,25 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
   return (
     <div className="flex min-h-screen">
-      {/* Menu trigger button - always visible */}
-      <Button 
-        variant="ghost" 
-        size="icon" 
-        onClick={() => setIsClicked(true)} 
-        className="fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground"
-      >
-        <Menu className="h-5 w-5" />
-      </Button>
-
-      {/* User Profile and Home Button in top right */}
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-4">
+      {/* Menu trigger and Home button - always visible in top-left */}
+      <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => setIsClicked(true)} 
+          className="bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
         <Link to="/" aria-label="Go to Home page">
-            <Button variant="ghost" size="icon" className="bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground">
-                <Home className="h-5 w-5" />
-            </Button>
+          <Button variant="ghost" size="icon" className="bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground">
+              <Home className="h-5 w-5" />
+          </Button>
         </Link>
+      </div>
+
+      {/* User Profile in top right */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-4">
         <UserProfile />
       </div>
 
