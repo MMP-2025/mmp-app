@@ -58,7 +58,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, isSaved, onToggle
       </div>
       
       <Button
-        variant="outline"
+        variant="secondary"
         size="sm"
         onClick={() => handleDownload(resource)}
         className="w-full"
