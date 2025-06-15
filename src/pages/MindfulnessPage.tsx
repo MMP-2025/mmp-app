@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Timer, Heart, BookmarkPlus, BookmarkCheck } from 'lucide-react';
 import { toast } from 'sonner';
+import MindfulnessExerciseCard from '@/components/mindfulness/MindfulnessExerciseCard';
+import MindfulnessExerciseSession from '@/components/mindfulness/MindfulnessExerciseSession';
+import MindfulnessBenefits from '@/components/mindfulness/MindfulnessBenefits';
+import MindfulnessEmptyState from '@/components/mindfulness/MindfulnessEmptyState';
 
 // Sample mindfulness exercises - in a real app, these would come from your database
 const mindfulnessExercises = [{
@@ -84,7 +86,8 @@ const MindfulnessPage = () => {
     return sorted;
   };
 
-  return <div className="space-y-6 max-w-4xl mx-auto">
+  return (
+    <div className="space-y-6 max-w-4xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold mb-2">Mindfulness Exercises</h1>
         <p className="text-muted-foreground">Practice being present in the moment</p>
@@ -108,102 +111,37 @@ const MindfulnessPage = () => {
         </Button>
       </div>
       
-      {selectedExercise ? <Card className="p-6 bg-mental-blue/20">
-          <h2 className="text-2xl font-semibold mb-2">{selectedExercise.title}</h2>
-          <p className="text-sm text-muted-foreground mb-6">
-            <Timer className="inline-block mr-1 h-4 w-4" /> {selectedExercise.duration}
-          </p>
-          
-          <div className="mb-8">
-            <div className="w-full bg-mental-gray/30 h-2 rounded-full mb-4">
-              <div className="bg-mental-blue h-2 rounded-full transition-all duration-500" style={{
-            width: `${(activeStep + 1) / selectedExercise.steps.length * 100}%`
-          }}></div>
-            </div>
-            
-            <p className="text-xl mb-8">{selectedExercise.steps[activeStep]}</p>
-            
-            <Button onClick={nextStep} className="w-full bg-mental-green hover:bg-mental-green/80">
-              {activeStep === selectedExercise.steps.length - 1 ? 'Complete Exercise' : 'Next Step'}
-            </Button>
-          </div>
-        </Card> : <>
+      {selectedExercise ? (
+        <MindfulnessExerciseSession
+          exercise={selectedExercise}
+          activeStep={activeStep}
+          onNextStep={nextStep}
+        />
+      ) : (
+        <>
           {currentView === 'saved' && savedExercises.length === 0 ? (
-            <Card className="p-8 bg-mental-peach/20 text-center">
-              <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-mental-peach" />
-              <h3 className="text-xl font-semibold mb-2">No Saved Exercises</h3>
-              <p className="text-muted-foreground mb-4">
-                You haven't saved any exercises yet. Browse all exercises and save your favorites!
-              </p>
-              <Button 
-                onClick={() => setCurrentView('all')} 
-                className="bg-mental-blue hover:bg-mental-blue/80"
-              >
-                Browse All Exercises
-              </Button>
-            </Card>
+            <MindfulnessEmptyState onBrowseAll={() => setCurrentView('all')} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {getDisplayedExercises().map(exercise => <Card key={exercise.id} className="p-6 bg-mental-green">
-                  <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-semibold">{exercise.title}</h2>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleSaved(exercise.id)}
-                        className="p-1"
-                      >
-                        {savedExercises.includes(exercise.id) ? (
-                          <BookmarkCheck className="h-6 w-6 text-blue-600" />
-                        ) : (
-                          <BookmarkPlus className="h-6 w-6 text-gray-400" />
-                        )}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleFavorite(exercise.id)}
-                        className="p-1"
-                      >
-                        <Heart 
-                          className={`h-6 w-6 ${
-                            favorites.includes(exercise.id) 
-                              ? 'fill-red-500 text-red-500' 
-                              : 'text-gray-400'
-                          }`} 
-                        />
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="flex items-center text-sm text-muted-foreground mb-4">
-                    <Timer className="mr-1 h-4 w-4" /> 
-                    <span>{exercise.duration}</span>
-                  </div>
-                  <p className="mb-4 font-normal text-neutral-500">{exercise.description}</p>
-                  <Button onClick={() => startExercise(exercise)} className="w-full bg-mental-blue hover:bg-mental-blue/80">
-                    Start Exercise
-                  </Button>
-                </Card>)}
+              {getDisplayedExercises().map(exercise => (
+                <MindfulnessExerciseCard
+                  key={exercise.id}
+                  exercise={exercise}
+                  isFavorite={favorites.includes(exercise.id)}
+                  isSaved={savedExercises.includes(exercise.id)}
+                  onStart={startExercise}
+                  onToggleFavorite={toggleFavorite}
+                  onToggleSaved={toggleSaved}
+                />
+              ))}
             </div>
           )}
-        </>}
+        </>
+      )}
       
-      <Card className="p-6 bg-mental-peach/20">
-        <div className="flex items-center gap-2 mb-4">
-          <Heart className="h-5 w-5 text-mental-peach" />
-          <h2 className="text-xl font-semibold">Benefits of Mindfulness</h2>
-        </div>
-        <ul className="space-y-2 list-disc list-inside">
-          <li>Reduces stress and anxiety</li>
-          <li>Improves focus and attention</li>
-          <li>Enhances emotional regulation</li>
-          <li>Promotes better sleep</li>
-          <li>Boosts immune system function</li>
-          <li>Increases self-awareness and compassion</li>
-        </ul>
-      </Card>
-    </div>;
+      <MindfulnessBenefits />
+    </div>
+  );
 };
 
 export default MindfulnessPage;
