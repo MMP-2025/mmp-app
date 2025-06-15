@@ -1,26 +1,17 @@
+
 import React, { lazy, Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Upload } from 'lucide-react';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorBoundary } from '@/components/provider/ErrorBoundary';
 
-// Lazy load components for better performance
-const EnhancedQuoteForm = lazy(() => import('@/components/provider/EnhancedQuoteForm'));
-const MemoizedQuoteList = lazy(() => import('@/components/provider/MemoizedQuoteList'));
-const JournalPromptForm = lazy(() => import('@/components/provider/JournalPromptForm'));
-const JournalPromptList = lazy(() => import('@/components/provider/JournalPromptList'));
-const QuestionForm = lazy(() => import('@/components/provider/QuestionForm'));
-const QuestionList = lazy(() => import('@/components/provider/QuestionList'));
-const ToolkitForm = lazy(() => import('@/components/provider/ToolkitForm'));
-const ToolkitList = lazy(() => import('@/components/provider/ToolkitList'));
-const ReminderForm = lazy(() => import('@/components/provider/ReminderForm'));
-const ReminderList = lazy(() => import('@/components/provider/ReminderList'));
-const GratitudeForm = lazy(() => import('@/components/provider/GratitudeForm'));
-const GratitudeList = lazy(() => import('@/components/provider/GratitudeList'));
-const MindfulnessForm = lazy(() => import('@/components/provider/MindfulnessForm'));
-const MindfulnessList = lazy(() => import('@/components/provider/MindfulnessList'));
-const BulkImportModal = lazy(() => import('@/components/provider/BulkImportModal'));
+// Lazy load tab components
+const QuotesTab = lazy(() => import('@/components/provider/tabs/QuotesTab'));
+const JournalPromptsTab = lazy(() => import('@/components/provider/tabs/JournalPromptsTab'));
+const QuestionsTab = lazy(() => import('@/components/provider/tabs/QuestionsTab'));
+const ToolkitTab = lazy(() => import('@/components/provider/tabs/ToolkitTab'));
+const RemindersTab = lazy(() => import('@/components/provider/tabs/RemindersTab'));
+const GratitudeTab = lazy(() => import('@/components/provider/tabs/GratitudeTab'));
+const MindfulnessTab = lazy(() => import('@/components/provider/tabs/MindfulnessTab'));
 
 // Import custom hooks
 import { useProviderData } from '@/hooks/useProviderData';
@@ -86,182 +77,45 @@ const ProviderDashboard = () => {
             <TabsTrigger value="mindfulness">Mindfulness</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="quotes" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Suspense fallback={<LoadingFallback />}>
-                  <EnhancedQuoteForm 
-                    newQuote={data.newQuote} 
-                    setNewQuote={data.setNewQuote} 
-                    onAddQuote={handlers.handleAddQuote}
-                    isLoading={handlers.isLoading}
-                  />
-                </Suspense>
-              </div>
-              <Suspense fallback={<LoadingFallback />}>
-                <BulkImportModal type="quotes" onImport={handlers.handleBulkImportQuotes}>
-                  <Button variant="outline" className="h-fit">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Bulk Import
-                  </Button>
-                </BulkImportModal>
-              </Suspense>
-            </div>
+          <TabsContent value="quotes">
             <Suspense fallback={<LoadingFallback />}>
-              <MemoizedQuoteList quotes={data.quotes} onDeleteQuote={handlers.handleDeleteQuote} />
+              <QuotesTab data={data} handlers={handlers} />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="prompts" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Suspense fallback={<LoadingFallback />}>
-                  <JournalPromptForm 
-                    newPrompt={data.newPrompt} 
-                    setNewPrompt={data.setNewPrompt} 
-                    onAddPrompt={handlers.handleAddPrompt} 
-                  />
-                </Suspense>
-              </div>
-              <Suspense fallback={<LoadingFallback />}>
-                <BulkImportModal type="journalPrompts" onImport={handlers.handleBulkImportPrompts}>
-                  <Button variant="outline" className="h-fit">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Bulk Import
-                  </Button>
-                </BulkImportModal>
-              </Suspense>
-            </div>
+          <TabsContent value="prompts">
             <Suspense fallback={<LoadingFallback />}>
-              <JournalPromptList journalPrompts={data.journalPrompts} onDeletePrompt={handlers.handleDeletePrompt} />
+              <JournalPromptsTab data={data} handlers={handlers} />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="questions" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Suspense fallback={<LoadingFallback />}>
-                  <QuestionForm 
-                    newQuestion={data.newQuestion} 
-                    setNewQuestion={data.setNewQuestion} 
-                    onAddQuestion={handlers.handleAddQuestion} 
-                  />
-                </Suspense>
-              </div>
-              <Suspense fallback={<LoadingFallback />}>
-                <BulkImportModal type="questions" onImport={handlers.handleBulkImportQuestions}>
-                  <Button variant="outline" className="h-fit">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Bulk Import
-                  </Button>
-                </BulkImportModal>
-              </Suspense>
-            </div>
-            <Suspense fallback={<LoadingFallback />}>
-              <QuestionList questions={data.questions} onDeleteQuestion={handlers.handleDeleteQuestion} />
+          <TabsContent value="questions">
+             <Suspense fallback={<LoadingFallback />}>
+              <QuestionsTab data={data} handlers={handlers} />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="toolkit" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Suspense fallback={<LoadingFallback />}>
-                  <ToolkitForm 
-                    newToolkitItem={data.newToolkitItem} 
-                    setNewToolkitItem={data.setNewToolkitItem} 
-                    onAddToolkitItem={handlers.handleAddToolkitItem} 
-                  />
-                </Suspense>
-              </div>
-              <Suspense fallback={<LoadingFallback />}>
-                <BulkImportModal type="toolkitItems" onImport={handlers.handleBulkImportToolkitItems}>
-                  <Button variant="outline" className="h-fit">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Bulk Import
-                  </Button>
-                </BulkImportModal>
-              </Suspense>
-            </div>
+          <TabsContent value="toolkit">
             <Suspense fallback={<LoadingFallback />}>
-              <ToolkitList toolkitItems={data.toolkitItems} onDeleteToolkitItem={handlers.handleDeleteToolkitItem} />
+              <ToolkitTab data={data} handlers={handlers} />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="reminders" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Suspense fallback={<LoadingFallback />}>
-                  <ReminderForm 
-                    newReminder={data.newReminder} 
-                    setNewReminder={data.setNewReminder} 
-                    onAddReminder={handlers.handleAddReminder} 
-                  />
-                </Suspense>
-              </div>
-              <Suspense fallback={<LoadingFallback />}>
-                <BulkImportModal type="reminders" onImport={handlers.handleBulkImportReminders}>
-                  <Button variant="outline" className="h-fit">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Bulk Import
-                  </Button>
-                </BulkImportModal>
-              </Suspense>
-            </div>
-            <Suspense fallback={<LoadingFallback />}>
-              <ReminderList reminders={data.reminders} onDeleteReminder={handlers.handleDeleteReminder} />
+          <TabsContent value="reminders">
+             <Suspense fallback={<LoadingFallback />}>
+              <RemindersTab data={data} handlers={handlers} />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="gratitude" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Suspense fallback={<LoadingFallback />}>
-                  <GratitudeForm 
-                    newGratitudePrompt={data.newGratitudePrompt} 
-                    setNewGratitudePrompt={data.setNewGratitudePrompt} 
-                    onAddGratitudePrompt={handlers.handleAddGratitudePrompt} 
-                  />
-                </Suspense>
-              </div>
-              <Suspense fallback={<LoadingFallback />}>
-                <BulkImportModal type="gratitudePrompts" onImport={handlers.handleBulkImportGratitudePrompts}>
-                  <Button variant="outline" className="h-fit">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Bulk Import
-                  </Button>
-                </BulkImportModal>
-              </Suspense>
-            </div>
+          <TabsContent value="gratitude">
             <Suspense fallback={<LoadingFallback />}>
-              <GratitudeList gratitudePrompts={data.gratitudePrompts} onDeleteGratitudePrompt={handlers.handleDeleteGratitudePrompt} />
+              <GratitudeTab data={data} handlers={handlers} />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="mindfulness" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Suspense fallback={<LoadingFallback />}>
-                  <MindfulnessForm 
-                    newMindfulnessPrompt={data.newMindfulnessPrompt}
-                    setNewMindfulnessPrompt={data.setNewMindfulnessPrompt}
-                    onAddMindfulnessPrompt={handlers.handleAddMindfulnessPrompt}
-                  />
-                </Suspense>
-              </div>
-              <Suspense fallback={<LoadingFallback />}>
-                <BulkImportModal type="mindfulnessPrompts" onImport={handlers.handleBulkImportMindfulnessPrompts}>
-                  <Button variant="outline" className="h-fit">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Bulk Import
-                  </Button>
-                </BulkImportModal>
-              </Suspense>
-            </div>
+          <TabsContent value="mindfulness">
             <Suspense fallback={<LoadingFallback />}>
-              <MindfulnessList 
-                mindfulnessPrompts={data.mindfulnessPrompts} 
-                onDeleteMindfulnessPrompt={handlers.handleDeleteMindfulnessPrompt} 
-              />
+              <MindfulnessTab data={data} handlers={handlers} />
             </Suspense>
           </TabsContent>
         </Tabs>
