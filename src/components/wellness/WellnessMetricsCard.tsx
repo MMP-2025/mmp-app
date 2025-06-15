@@ -1,16 +1,8 @@
-
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
-
-interface WellnessMetric {
-  name: string;
-  value: number;
-  weight: number;
-  trend: 'up' | 'down' | 'stable';
-  suggestion: string;
-}
+import { WellnessMetric } from '@/types/wellness';
 
 interface WellnessMetricsCardProps {
   metrics: WellnessMetric[];

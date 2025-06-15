@@ -9,23 +9,8 @@ import { WellnessScoreDisplay } from './WellnessScoreDisplay';
 import { WellnessMetricsCard } from './WellnessMetricsCard';
 import { WellnessScoreHistory } from './WellnessScoreHistory';
 import { WellnessInsights } from './WellnessInsights';
-import { WellnessScoreCalculator } from './WellnessScoreCalculator';
-
-interface WellnessMetric {
-  name: string;
-  value: number;
-  weight: number;
-  trend: 'up' | 'down' | 'stable';
-  suggestion: string;
-}
-
-interface WellnessScore {
-  overall: number;
-  metrics: WellnessMetric[];
-  calculatedAt: string;
-  improvements: string[];
-  strengths: string[];
-}
+import { WellnessScoreCalculator } from '@/services/wellness/wellnessScoreCalculator';
+import { WellnessScore } from '@/types/wellness';
 
 interface ScoreHistory {
   date: string;
