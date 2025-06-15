@@ -24,6 +24,13 @@ import HabitTracker from '@/components/habits/HabitTracker';
 import WeatherCorrelation from '@/components/mood/WeatherCorrelation';
 import TriggerPatternRecognition from '@/components/mood/TriggerPatternRecognition';
 
+interface WeatherData {
+  condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'windy';
+  temperature: number;
+  humidity: number;
+  location: string;
+}
+
 interface MoodEntry {
   id: string;
   mood: string;
@@ -33,7 +40,7 @@ interface MoodEntry {
   date: string;
   factors: string[];
   location?: string;
-  weather?: string;
+  weather?: WeatherData;
   sleepHours?: number;
   exercise?: boolean;
 }

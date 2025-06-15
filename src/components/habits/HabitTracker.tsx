@@ -154,7 +154,7 @@ const HabitTracker: React.FC<HabitTrackerProps> = ({ onHabitUpdate }) => {
             <Checkbox
               id="exercise-completed"
               checked={exerciseCompleted}
-              onCheckedChange={setExerciseCompleted}
+              onCheckedChange={(checked) => setExerciseCompleted(checked === true)}
             />
             <Label htmlFor="exercise-completed" style={{color: '#737373'}}>
               Completed today's exercise
@@ -185,7 +185,7 @@ const HabitTracker: React.FC<HabitTrackerProps> = ({ onHabitUpdate }) => {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={med.taken}
-                    onCheckedChange={() => toggleMedication(index)}
+                    onCheckedChange={(checked) => toggleMedication(index)}
                   />
                   <span style={{color: '#737373'}}>{med.name}</span>
                   {med.taken && med.time && (
@@ -226,7 +226,7 @@ const HabitTracker: React.FC<HabitTrackerProps> = ({ onHabitUpdate }) => {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={habit.completed}
-                    onCheckedChange={() => toggleCustomHabit(index)}
+                    onCheckedChange={(checked) => toggleCustomHabit(index)}
                   />
                   <span style={{color: '#737373'}}>{habit.name}</span>
                 </div>
