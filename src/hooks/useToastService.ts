@@ -28,10 +28,19 @@ export const useToastService = () => {
     });
   };
 
+  const showWarning = (title: string, description?: string) => {
+    toast({
+      title,
+      description,
+      variant: "destructive"
+    });
+  };
+
   return {
     showSuccess,
     showError,
     showInfo,
+    showWarning,
     toast // Keep raw toast available for custom usage
   };
 };
