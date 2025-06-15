@@ -1,8 +1,11 @@
 
 import React, { useMemo } from 'react';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import MoodAnalyticsStats from './analytics/MoodAnalyticsStats';
+import MoodTrendChart from './analytics/MoodTrendChart';
+import MoodDistributionChart from './analytics/MoodDistributionChart';
+import TopFactorsDisplay from './analytics/TopFactorsDisplay';
+import IntensityByMoodChart from './analytics/IntensityByMoodChart';
 
 interface MoodEntry {
   id: string;
@@ -110,115 +113,23 @@ const MoodAnalytics = ({ moodHistory }: MoodAnalyticsProps) => {
     );
   }
 
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
-
   return (
     <div className="space-y-6">
-      {/* Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="p-4 bg-white/90">
-          <div className="text-center">
-            <div className="text-2xl font-bold" style={{color: '#737373'}}>{analytics.totalEntries}</div>
-            <div className="text-sm" style={{color: '#737373'}}>Total Entries</div>
-          </div>
-        </Card>
-        <Card className="p-4 bg-white/90">
-          <div className="text-center">
-            <div className="text-2xl font-bold" style={{color: '#737373'}}>{analytics.currentStreak}</div>
-            <div className="text-sm" style={{color: '#737373'}}>Day Streak</div>
-          </div>
-        </Card>
-        <Card className="p-4 bg-white/90">
-          <div className="text-center">
-            <div className="text-2xl font-bold" style={{color: '#737373'}}>{analytics.avgIntensity}</div>
-            <div className="text-sm" style={{color: '#737373'}}>Avg Intensity</div>
-          </div>
-        </Card>
-        <Card className="p-4 bg-white/90">
-          <div className="text-center">
-            <div className="text-2xl font-bold" style={{color: '#737373'}}>
-              {analytics.topFactors[0]?.factor || 'N/A'}
-            </div>
-            <div className="text-sm" style={{color: '#737373'}}>Top Factor</div>
-          </div>
-        </Card>
-      </div>
+      <MoodAnalyticsStats
+        totalEntries={analytics.totalEntries}
+        currentStreak={analytics.currentStreak}
+        avgIntensity={analytics.avgIntensity}
+        topFactor={analytics.topFactors[0]?.factor || 'N/A'}
+      />
 
-      {/* Weekly Trend */}
-      <Card className="p-6 bg-white/90">
-        <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>7-Day Mood Trend</h3>
-        <ResponsiveContainer width="100%" height={250}>
-          <LineChart data={analytics.weeklyTrend}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis domain={[0, 10]} />
-            <Tooltip />
-            <Line type="monotone" dataKey="intensity" stroke="#8884d8" strokeWidth={2} />
-          </LineChart>
-        </ResponsiveContainer>
-      </Card>
+      <MoodTrendChart weeklyTrend={analytics.weeklyTrend} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Mood Distribution */}
-        <Card className="p-6 bg-white/90">
-          <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Mood Distribution</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={analytics.moodDistribution}
-                dataKey="count"
-                nameKey="mood"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                label
-              >
-                {analytics.moodDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
-
-        {/* Top Factors */}
-        <Card className="p-6 bg-white/90">
-          <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Most Common Factors</h3>
-          <div className="space-y-3">
-            {analytics.topFactors.map((factor, index) => (
-              <div key={factor.factor} className="flex items-center justify-between">
-                <Badge variant="outline">{factor.factor}</Badge>
-                <div className="flex items-center gap-2">
-                  <div 
-                    className="h-2 bg-mental-peach rounded"
-                    style={{
-                      width: `${(factor.count / analytics.topFactors[0].count) * 100}px`,
-                      minWidth: '20px'
-                    }}
-                  />
-                  <span className="text-sm font-medium" style={{color: '#737373'}}>{factor.count}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+        <MoodDistributionChart moodDistribution={analytics.moodDistribution} />
+        <TopFactorsDisplay topFactors={analytics.topFactors} />
       </div>
 
-      {/* Average Intensity by Mood */}
-      <Card className="p-6 bg-white/90">
-        <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Average Intensity by Mood</h3>
-        <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={analytics.avgIntensityByMood}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="mood" />
-            <YAxis domain={[0, 10]} />
-            <Tooltip />
-            <Bar dataKey="avgIntensity" fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
-      </Card>
+      <IntensityByMoodChart avgIntensityByMood={analytics.avgIntensityByMood} />
     </div>
   );
 };
