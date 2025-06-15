@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { toast } from "@/components/ui/sonner";
-import { Heart, Check } from 'lucide-react';
+import { Heart, Check, BookmarkPlus, BookmarkCheck } from 'lucide-react';
 
 // Sample gratitude exercises - in a real app, these would come from your database
 const gratitudeExercises = [{
@@ -23,6 +24,7 @@ const gratitudeExercises = [{
   description: "Create a collection of moments, people, and things you're grateful for.",
   instructions: "Each day, write down one thing you're grateful for on a small piece of paper. Add it to your virtual gratitude jar. When you're feeling down, you can look back at these notes."
 }];
+
 const GratitudePage = () => {
   const [selectedExercise, setSelectedExercise] = useState<typeof gratitudeExercises[0] | null>(null);
   const [gratitudeEntries, setGratitudeEntries] = useState<{
@@ -34,11 +36,35 @@ const GratitudePage = () => {
   const [threeGoodThings, setThreeGoodThings] = useState(['', '', '']);
   const [letterRecipient, setLetterRecipient] = useState('');
   const [letterContent, setLetterContent] = useState('');
+  const [savedExercises, setSavedExercises] = useState<number[]>([]);
+  const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
+
   const handleThreeGoodThingsChange = (index: number, value: string) => {
     const updated = [...threeGoodThings];
     updated[index] = value;
     setThreeGoodThings(updated);
   };
+
+  const toggleSaved = (exerciseId: number) => {
+    setSavedExercises(prev => {
+      const isCurrentlySaved = prev.includes(exerciseId);
+      if (isCurrentlySaved) {
+        toast.success('Exercise removed from saved');
+        return prev.filter(id => id !== exerciseId);
+      } else {
+        toast.success('Exercise saved!');
+        return [...prev, exerciseId];
+      }
+    });
+  };
+
+  const getDisplayedExercises = () => {
+    if (currentView === 'saved') {
+      return gratitudeExercises.filter(exercise => savedExercises.includes(exercise.id));
+    }
+    return gratitudeExercises;
+  };
+
   const saveGratitude = () => {
     let content = '';
     if (selectedExercise?.id === 1) {
@@ -82,6 +108,7 @@ const GratitudePage = () => {
     setSelectedExercise(null);
     toast.success("Gratitude practice saved");
   };
+
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -89,6 +116,7 @@ const GratitudePage = () => {
       day: 'numeric'
     }).format(date);
   };
+
   const renderExerciseForm = () => {
     if (!selectedExercise) return null;
     switch (selectedExercise.id) {
@@ -129,10 +157,29 @@ const GratitudePage = () => {
           </div>;
     }
   };
+
   return <div className="space-y-6 max-w-4xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Gratitude Practices</h1>
         <p className="text-[#7e868b]">Cultivate appreciation for life's blessings</p>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="flex gap-2 mb-6">
+        <Button
+          variant={currentView === 'all' ? 'default' : 'outline'}
+          onClick={() => setCurrentView('all')}
+          className="bg-mental-peach hover:bg-mental-peach/80"
+        >
+          All Practices
+        </Button>
+        <Button
+          variant={currentView === 'saved' ? 'default' : 'outline'}
+          onClick={() => setCurrentView('saved')}
+          className="bg-mental-green hover:bg-mental-green/80"
+        >
+          Saved Practices ({savedExercises.length})
+        </Button>
       </div>
       
       {selectedExercise ? <Card className="p-6 bg-mental-peach/20">
@@ -149,18 +196,50 @@ const GratitudePage = () => {
               Cancel
             </Button>
           </div>
-        </Card> : <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {gratitudeExercises.map(exercise => <Card key={exercise.id} className="p-6">
-              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#7e868b]">
-                <Heart className="h-5 w-5 text-mental-peach" />
-                {exercise.title}
-              </h2>
-              <p className="mb-4 text-[#7e868b]">{exercise.description}</p>
-              <Button onClick={() => setSelectedExercise(exercise)} className="w-full bg-mental-peach hover:bg-mental-peach/80">
-                Start Practice
+        </Card> : <>
+          {currentView === 'saved' && savedExercises.length === 0 ? (
+            <Card className="p-8 bg-mental-peach/20 text-center">
+              <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-mental-peach" />
+              <h3 className="text-xl font-semibold mb-2 text-[#7e868b]">No Saved Practices</h3>
+              <p className="text-[#7e868b] mb-4">
+                You haven't saved any practices yet. Browse all practices and save your favorites!
+              </p>
+              <Button 
+                onClick={() => setCurrentView('all')} 
+                className="bg-mental-peach hover:bg-mental-peach/80"
+              >
+                Browse All Practices
               </Button>
-            </Card>)}
-        </div>}
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {getDisplayedExercises().map(exercise => <Card key={exercise.id} className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h2 className="text-xl font-semibold flex items-center gap-2 text-[#7e868b]">
+                      <Heart className="h-5 w-5 text-mental-peach" />
+                      {exercise.title}
+                    </h2>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleSaved(exercise.id)}
+                      className="p-1"
+                    >
+                      {savedExercises.includes(exercise.id) ? (
+                        <BookmarkCheck className="h-6 w-6 text-blue-600" />
+                      ) : (
+                        <BookmarkPlus className="h-6 w-6 text-gray-400" />
+                      )}
+                    </Button>
+                  </div>
+                  <p className="mb-4 text-[#7e868b]">{exercise.description}</p>
+                  <Button onClick={() => setSelectedExercise(exercise)} className="w-full bg-mental-peach hover:bg-mental-peach/80">
+                    Start Practice
+                  </Button>
+                </Card>)}
+            </div>
+          )}
+        </>}
       
       <Card className="p-6">
         <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Your Gratitude Collection</h2>
@@ -177,4 +256,5 @@ const GratitudePage = () => {
       </Card>
     </div>;
 };
+
 export default GratitudePage;

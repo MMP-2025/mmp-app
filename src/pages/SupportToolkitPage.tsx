@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { BookOpen, FileText, Download, Search, Filter } from 'lucide-react';
+import { BookOpen, FileText, Download, Search, Filter, BookmarkPlus, BookmarkCheck } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface Resource {
   id: string;
@@ -17,6 +18,8 @@ interface Resource {
 const SupportToolkitPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [savedResources, setSavedResources] = useState<string[]>([]);
+  const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
 
   // Pre-populated resources for patients
   const resources: Resource[] = [
@@ -78,12 +81,33 @@ const SupportToolkitPage = () => {
     }
   ];
 
-  const filteredResources = resources.filter(resource => {
-    const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resource.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const toggleSaved = (resourceId: string) => {
+    setSavedResources(prev => {
+      const isCurrentlySaved = prev.includes(resourceId);
+      if (isCurrentlySaved) {
+        toast.success('Resource removed from saved');
+        return prev.filter(id => id !== resourceId);
+      } else {
+        toast.success('Resource saved!');
+        return [...prev, resourceId];
+      }
+    });
+  };
+
+  const getDisplayedResources = () => {
+    let filtered = resources;
+    
+    if (currentView === 'saved') {
+      filtered = resources.filter(resource => savedResources.includes(resource.id));
+    }
+    
+    return filtered.filter(resource => {
+      const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           resource.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  };
 
   const categoryColors = {
     worksheet: 'bg-blue-100 text-blue-800',
@@ -99,11 +123,31 @@ const SupportToolkitPage = () => {
     alert(`Downloading ${resource.title}... (This would trigger a real download in production)`);
   };
 
+  const filteredResources = getDisplayedResources();
+
   return (
     <div className="container mx-auto p-6 space-y-6 ml-16">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Resource Library</h1>
         <p className="text-[#7e868b]">Access helpful mental health resources, worksheets, and guides to support your wellbeing journey.</p>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="flex gap-2 mb-6">
+        <Button
+          variant={currentView === 'all' ? 'default' : 'outline'}
+          onClick={() => setCurrentView('all')}
+          className="bg-mental-blue hover:bg-mental-blue/80"
+        >
+          All Resources
+        </Button>
+        <Button
+          variant={currentView === 'saved' ? 'default' : 'outline'}
+          onClick={() => setCurrentView('saved')}
+          className="bg-mental-green hover:bg-mental-green/80"
+        >
+          Saved Resources ({savedResources.length})
+        </Button>
       </div>
 
       {/* Search and Filter Section */}
@@ -156,7 +200,19 @@ const SupportToolkitPage = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {filteredResources.length === 0 ? (
+          {currentView === 'saved' && savedResources.length === 0 ? (
+            <div className="text-center py-8">
+              <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+              <h3 className="text-xl font-semibold mb-2 text-[#7e868b]">No Saved Resources</h3>
+              <p className="text-gray-500 mb-4">You haven't saved any resources yet. Browse all resources and save your favorites!</p>
+              <Button 
+                onClick={() => setCurrentView('all')} 
+                className="bg-mental-blue hover:bg-mental-blue/80"
+              >
+                Browse All Resources
+              </Button>
+            </div>
+          ) : filteredResources.length === 0 ? (
             <div className="text-center py-8">
               <FileText className="h-12 w-12 mx-auto mb-4 text-gray-300" />
               <p className="text-gray-500">No resources found matching your criteria</p>
@@ -168,9 +224,23 @@ const SupportToolkitPage = () => {
                 <div key={resource.id} className="p-4 border rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className="flex items-start justify-between mb-3">
                     <FileText className="h-6 w-6 text-blue-500 flex-shrink-0 mt-1" />
-                    <span className={`px-2 py-1 rounded-full text-xs ${categoryColors[resource.category]} ml-2`}>
-                      {resource.category}
-                    </span>
+                    <div className="flex gap-2 ml-2">
+                      <span className={`px-2 py-1 rounded-full text-xs ${categoryColors[resource.category]}`}>
+                        {resource.category}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleSaved(resource.id)}
+                        className="p-1"
+                      >
+                        {savedResources.includes(resource.id) ? (
+                          <BookmarkCheck className="h-5 w-5 text-blue-600" />
+                        ) : (
+                          <BookmarkPlus className="h-5 w-5 text-gray-400" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
                   
                   <div className="mb-3">
