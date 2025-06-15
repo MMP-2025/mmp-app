@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -133,7 +132,7 @@ const CommunityChallenges = () => {
         'Reflect on connection quality'
       ]
     }
-  ];
+  ]);
 
   const categories = [
     { value: 'all', label: 'All Challenges' },
