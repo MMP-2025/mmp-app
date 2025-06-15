@@ -1,10 +1,13 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { BookOpen, FileText, Download, Search, Filter, BookmarkPlus, BookmarkCheck } from 'lucide-react';
+import { BookOpen, FileText, Download, Search, Filter, BookmarkPlus, BookmarkCheck, Brain } from 'lucide-react';
 import { toast } from 'sonner';
+import CBTModules from '@/components/therapy/CBTModules';
+import CopingSkillsLibrary from '@/components/therapy/CopingSkillsLibrary';
+import ExposureTherapyTracker from '@/components/therapy/ExposureTherapyTracker';
+import ProgressPhotography from '@/components/photography/ProgressPhotography';
 
 interface Resource {
   id: string;
@@ -264,6 +267,24 @@ const SupportToolkitPage = () => {
               ))}
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      {/* Therapeutic Tools */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+            <Brain className="h-5 w-5" />
+            Therapeutic Tools & Exercises
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-8">
+            <CBTModules />
+            <ExposureTherapyTracker />
+            <CopingSkillsLibrary />
+            <ProgressPhotography />
+          </div>
         </CardContent>
       </Card>
 

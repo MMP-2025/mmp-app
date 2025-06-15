@@ -1,9 +1,7 @@
-
 import React from 'react';
 import TrackingTabContent from './tabs/TrackingTabContent';
 import AnalyticsTabContent from './tabs/AnalyticsTabContent';
 import AdvancedTabContent from './tabs/AdvancedTabContent';
-import TherapyTabContent from './tabs/TherapyTabContent';
 
 interface WeatherData {
   condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'windy';
@@ -76,8 +74,6 @@ const MoodTrackerContent: React.FC<MoodTrackerContentProps> = ({
         moodHistory={moodHistory} 
         userBehavior={userBehavior} 
       />
-
-      <TherapyTabContent />
     </>
   );
 };

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Target, Calendar, TrendingUp, BarChart3, Brain, Activity, Cloud, Camera, Heart } from 'lucide-react';
+import { Target, Calendar, TrendingUp, BarChart3, Brain, Activity, Cloud } from 'lucide-react';
 
 interface MoodTrackerTabsProps {
   currentTab: string;
@@ -46,18 +46,6 @@ const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({ currentTab, onTabChan
       <TabsTrigger value="environment" className="flex items-center gap-2">
         <Cloud className="h-4 w-4" />
         Environment
-      </TabsTrigger>
-      <TabsTrigger value="photography" className="flex items-center gap-2">
-        <Camera className="h-4 w-4" />
-        Photography
-      </TabsTrigger>
-      <TabsTrigger value="cbt" className="flex items-center gap-2">
-        <Brain className="h-4 w-4" />
-        CBT
-      </TabsTrigger>
-      <TabsTrigger value="coping" className="flex items-center gap-2">
-        <Heart className="h-4 w-4" />
-        Coping Skills
       </TabsTrigger>
     </TabsList>
   );
