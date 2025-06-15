@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone, User, Users, Menu, Settings, Wrench } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
@@ -51,7 +50,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, [isCl]);
+  }, [isClicked]);
 
   return (
     <div className="flex min-h-screen">
