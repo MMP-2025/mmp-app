@@ -1,0 +1,25 @@
+
+import { useState } from 'react';
+import { Reminder } from '@/types/provider';
+
+export const useReminderData = () => {
+  const [reminders, setReminders] = useState<Reminder[]>([]);
+  const [newReminder, setNewReminder] = useState<{
+    title: string;
+    message: string;
+    frequency: Reminder['frequency'];
+    category: string;
+  }>({
+    title: '',
+    message: '',
+    frequency: 'daily',
+    category: ''
+  });
+
+  return {
+    reminders,
+    setReminders,
+    newReminder,
+    setNewReminder
+  };
+};
