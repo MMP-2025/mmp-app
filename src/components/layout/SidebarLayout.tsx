@@ -4,7 +4,6 @@ import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phon
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import UserProfile from './UserProfile';
 
 interface SidebarLayoutProps {
@@ -13,7 +12,6 @@ interface SidebarLayoutProps {
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   const location = useLocation();
-  const { isProvider } = useAuth();
   const [isClicked, setIsClicked] = useState(false);
 
   const menuItems = [
@@ -28,17 +26,13 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     { icon: Pencil, label: 'Gratitude', path: '/gratitude' },
     { icon: Wrench, label: 'Support Toolkit', path: '/support-toolkit' },
     { icon: Users, label: 'Community', path: '/community' },
-    { icon: Phone, label: 'Crisis Resources', path: '/crisis' }
-  ];
-
-  // Add Provider Dashboard link only for providers
-  if (isProvider) {
-    menuItems.push({
+    { icon: Phone, label: 'Crisis Resources', path: '/crisis' },
+    {
       icon: Settings,
       label: 'Provider Dashboard',
       path: '/provider-dashboard'
-    });
-  }
+    }
+  ];
 
   // Auto-hide after 3 seconds when not interacting
   useEffect(() => {
@@ -123,3 +117,4 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     </div>
   );
 }
+
