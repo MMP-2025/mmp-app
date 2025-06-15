@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -7,13 +7,32 @@ import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
+
+interface MoodEntry {
+  id: string;
+  mood: string;
+  note: string;
+  timestamp: number;
+  date: string;
+}
 
 const MoodTrackerPage = () => {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [moodNote, setMoodNote] = useState('');
+  const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
+  const { trackMoodEntry, trackAction } = useAnalytics();
+
+  useEffect(() => {
+    // Load mood history from storage
+    const savedMoods = StorageManager.load<MoodEntry[]>(STORAGE_KEYS.MOOD_ENTRIES, []);
+    setMoodHistory(savedMoods);
+  }, []);
 
   const handleMoodSelection = (moodName: string) => {
     setSelectedMood(moodName);
+    trackAction('mood_selected', { mood: moodName });
   };
 
   const handleSaveMood = () => {
@@ -22,10 +41,44 @@ const MoodTrackerPage = () => {
       return;
     }
 
-    // Here you would typically save to your data store
+    const newEntry: MoodEntry = {
+      id: `mood_${Date.now()}`,
+      mood: selectedMood,
+      note: moodNote,
+      timestamp: Date.now(),
+      date: new Date().toISOString().split('T')[0]
+    };
+
+    const updatedHistory = [newEntry, ...moodHistory];
+    setMoodHistory(updatedHistory);
+    StorageManager.save(STORAGE_KEYS.MOOD_ENTRIES, updatedHistory);
+
+    // Track analytics
+    trackMoodEntry(selectedMood, moodNote);
+    
     toast.success('Mood entry saved successfully!');
     setSelectedMood(null);
     setMoodNote('');
+  };
+
+  const formatDate = (timestamp: number) => {
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(timestamp));
+  };
+
+  const getMoodIcon = (mood: string) => {
+    switch (mood) {
+      case 'Ecstatic': return Laugh;
+      case 'Happy': return Smile;
+      case 'Neutral': return Meh;
+      case 'Sad': return Frown;
+      case 'Angry': return Angry;
+      default: return Meh;
+    }
   };
 
   return (
@@ -98,7 +151,29 @@ const MoodTrackerPage = () => {
           
           <Card className="p-6 bg-white/90">
             <h2 className="text-xl font-semibold mb-4" style={{color: '#737373'}}>Your Mood History</h2>
-            <p style={{color: '#737373'}}>Mood visualization will appear here</p>
+            {moodHistory.length === 0 ? (
+              <p style={{color: '#737373'}}>Your mood entries will appear here</p>
+            ) : (
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {moodHistory.slice(0, 10).map(entry => {
+                  const MoodIcon = getMoodIcon(entry.mood);
+                  return (
+                    <div key={entry.id} className="flex items-start gap-3 p-3 bg-mental-peach/20 rounded-md">
+                      <MoodIcon className="h-6 w-6 mt-1" style={{color: '#737373'}} />
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="font-medium" style={{color: '#737373'}}>{entry.mood}</span>
+                          <span className="text-sm" style={{color: '#737373'}}>{formatDate(entry.timestamp)}</span>
+                        </div>
+                        {entry.note && (
+                          <p className="text-sm" style={{color: '#737373'}}>{entry.note}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </Card>
         </div>
       </SidebarLayout>

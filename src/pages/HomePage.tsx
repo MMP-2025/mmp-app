@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from "@/components/ui/sonner";
 import { Link } from 'react-router-dom';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { usePersonalization } from '@/contexts/PersonalizationContext';
+import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const quotes = [{
   text: "You don't have to control your thoughts. You just have to stop letting them control you.",
@@ -44,6 +48,8 @@ const HomePage = () => {
   const todaysQuote = getRandomItem(quotes);
   const todaysQuestion = getRandomItem(questions);
   const [response, setResponse] = useState('');
+  const { trackAction } = useAnalytics();
+  const { preferences, getRecommendations } = usePersonalization();
 
   const handleSubmitResponse = () => {
     if (!response.trim()) {
@@ -51,11 +57,18 @@ const HomePage = () => {
       return;
     }
 
-    // In a real app, this would save to a database
+    // Track analytics
+    trackAction('daily_question_answered', { 
+      question: todaysQuestion, 
+      responseLength: response.length 
+    });
+
     toast.success("Your response has been recorded");
     console.log("Response submitted:", response);
     setResponse('');
   };
+
+  const recommendations = getRecommendations();
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
@@ -63,65 +76,93 @@ const HomePage = () => {
         <h1 className="text-3xl font-bold text-center mb-2 text-[#7e868b]">Welcome to Making Meaning Psychology</h1>
         <p className="text-center text-base font-normal text-[#7e868b]">Your daily companion for mental wellbeing</p>
       </div>
-      
-      {/* Question of the day */}
-      <Card className="p-6 bg-mental-blue/20">
-        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Question of the Day</h2>
-        <p className="text-lg mb-4 text-[#7e868b]">{todaysQuestion}</p>
-        
-        <div className="space-y-4">
-          <Input 
-            placeholder="Write your response..." 
-            value={response} 
-            onChange={e => setResponse(e.target.value)} 
-            className="bg-white" 
-          />
-          <Button 
-            onClick={handleSubmitResponse} 
-            className="w-full bg-mental-green hover:bg-mental-green/80"
-          >
-            Submit Response
-          </Button>
-        </div>
-      </Card>
-      
-      {/* Quick access and mood tracker */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="p-6 bg-mental-gray">
-          <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">Quick Access</h2>
-          <div className="grid grid-cols-2 gap-2">
-            <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
-              <Link to="/journal">My Journal</Link>
-            </Button>
-            <Button asChild className="bg-mental-green hover:bg-mental-green/80 w-full text-left justify-start">
-              <Link to="/mood">Mood Check-in</Link>
-            </Button>
-            <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
-              <Link to="/mindfulness">Mindfulness</Link>
-            </Button>
-            <Button asChild className="bg-mental-beige hover:bg-mental-beige/80 w-full text-left justify-start">
-              <Link to="/planner">Today's Plan</Link>
-            </Button>
+
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="overview">Daily Overview</TabsTrigger>
+          <TabsTrigger value="progress">Your Progress</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-8">
+          {/* Personalized Recommendations */}
+          {recommendations.length > 0 && (
+            <Card className="p-6 bg-mental-blue/10">
+              <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Personalized Recommendations</h2>
+              <div className="space-y-2">
+                {recommendations.map((rec, index) => (
+                  <p key={index} className="text-[#7e868b] flex items-center">
+                    <span className="w-2 h-2 bg-mental-blue rounded-full mr-2"></span>
+                    {rec}
+                  </p>
+                ))}
+              </div>
+            </Card>
+          )}
+          
+          {/* Question of the day */}
+          <Card className="p-6 bg-mental-blue/20">
+            <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Question of the Day</h2>
+            <p className="text-lg mb-4 text-[#7e868b]">{todaysQuestion}</p>
+            
+            <div className="space-y-4">
+              <Input 
+                placeholder="Write your response..." 
+                value={response} 
+                onChange={e => setResponse(e.target.value)} 
+                className="bg-white" 
+              />
+              <Button 
+                onClick={handleSubmitResponse} 
+                className="w-full bg-mental-green hover:bg-mental-green/80"
+              >
+                Submit Response
+              </Button>
+            </div>
+          </Card>
+          
+          {/* Quick access and mood tracker */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="p-6 bg-mental-gray">
+              <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">Quick Access</h2>
+              <div className="grid grid-cols-2 gap-2">
+                <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 w-full text-left justify-start">
+                  <Link to="/journal">My Journal</Link>
+                </Button>
+                <Button asChild className="bg-mental-green hover:bg-mental-green/80 w-full text-left justify-start">
+                  <Link to="/mood">Mood Check-in</Link>
+                </Button>
+                <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 w-full text-left justify-start">
+                  <Link to="/mindfulness">Mindfulness</Link>
+                </Button>
+                <Button asChild className="bg-mental-beige hover:bg-mental-beige/80 w-full text-left justify-start">
+                  <Link to="/planner">Today's Plan</Link>
+                </Button>
+              </div>
+            </Card>
+            
+            <Card className="p-6 bg-mental-green/20">
+              <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">How are you feeling?</h2>
+              <p className="mb-4 text-[#7e868b]">Take a moment to check in with yourself.</p>
+              <Button asChild className="w-full bg-mental-blue hover:bg-mental-blue/80">
+                <Link to="/mood">Track My Mood</Link>
+              </Button>
+            </Card>
           </div>
-        </Card>
-        
-        <Card className="p-6 bg-mental-green/20">
-          <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">How are you feeling?</h2>
-          <p className="mb-4 text-[#7e868b]">Take a moment to check in with yourself.</p>
-          <Button asChild className="w-full bg-mental-blue hover:bg-mental-blue/80">
-            <Link to="/mood">Track My Mood</Link>
-          </Button>
-        </Card>
-      </div>
-      
-      {/* Quote of the day */}
-      <Card className="p-6 bg-mental-peach/20">
-        <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Quote of the Day</h2>
-        <blockquote className="italic text-lg text-[#7e868b]">
-          "{todaysQuote.text}"
-        </blockquote>
-        <p className="text-right mt-2 text-[#7e868b]">— {todaysQuote.author}</p>
-      </Card>
+          
+          {/* Quote of the day */}
+          <Card className="p-6 bg-mental-peach/20">
+            <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Quote of the Day</h2>
+            <blockquote className="italic text-lg text-[#7e868b]">
+              "{todaysQuote.text}"
+            </blockquote>
+            <p className="text-right mt-2 text-[#7e868b]">— {todaysQuote.author}</p>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="progress">
+          <AnalyticsDashboard />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

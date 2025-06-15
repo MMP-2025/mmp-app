@@ -1,10 +1,20 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from "@/components/ui/sonner";
 import { Edit, Quote, MessageSquare, BookmarkPlus, BookmarkCheck } from "lucide-react";
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
+
+interface JournalEntry {
+  id: number;
+  content: string;
+  date: Date;
+  hasPrompt: boolean;
+  prompt?: string;
+  wordCount: number;
+}
 
 // Sample journal prompts - in a real app, these would come from your content management system
 const journalPrompts = ["What are three things you're grateful for today?", "Describe a challenge you're facing and three potential ways to overcome it.", "What would you tell your younger self if you could send a message back in time?", "Write about something that made you smile today.", "What are your top priorities right now and why?", "Describe your ideal day. What would you do? How would you feel?", "What's something you're proud of that you haven't given yourself credit for?", "What boundaries do you need to set or maintain in your life?", "Describe a recent accomplishment and what you learned from it.", "What self-care activities help you feel most restored?", "Write about an emotion you've been experiencing lately and explore its roots."];
@@ -12,26 +22,42 @@ const journalPrompts = ["What are three things you're grateful for today?", "Des
 const JournalPage = () => {
   const [journalContent, setJournalContent] = useState('');
   const [currentPrompt, setCurrentPrompt] = useState('');
-  const [journalEntries, setJournalEntries] = useState<{
-    id: number;
-    content: string;
-    date: Date;
-    hasPrompt: boolean;
-    prompt?: string;
-  }[]>([]);
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
+  const { trackJournalEntry, trackAction } = useAnalytics();
+
+  useEffect(() => {
+    // Load data from storage
+    const savedEntries = StorageManager.load<JournalEntry[]>(STORAGE_KEYS.JOURNAL_ENTRIES, []);
+    const savedPromptsData = StorageManager.load<string[]>(STORAGE_KEYS.SAVED_PROMPTS, []);
+    
+    // Convert date strings back to Date objects
+    const entriesWithDates = savedEntries.map(entry => ({
+      ...entry,
+      date: new Date(entry.date)
+    }));
+    
+    setJournalEntries(entriesWithDates);
+    setSavedPrompts(savedPromptsData);
+  }, []);
 
   const toggleSavedPrompt = (prompt: string) => {
     setSavedPrompts(prev => {
       const isCurrentlySaved = prev.includes(prompt);
+      let newSavedPrompts;
+      
       if (isCurrentlySaved) {
         toast.success('Prompt removed from saved');
-        return prev.filter(p => p !== prompt);
+        newSavedPrompts = prev.filter(p => p !== prompt);
       } else {
         toast.success('Prompt saved!');
-        return [...prev, prompt];
+        newSavedPrompts = [...prev, prompt];
       }
+      
+      StorageManager.save(STORAGE_KEYS.SAVED_PROMPTS, newSavedPrompts);
+      trackAction('prompt_saved', { prompt, action: isCurrentlySaved ? 'removed' : 'added' });
+      return newSavedPrompts;
     });
   };
 
@@ -51,12 +77,14 @@ const JournalPage = () => {
     const randomIndex = Math.floor(Math.random() * displayedPrompts.length);
     setCurrentPrompt(displayedPrompts[randomIndex]);
     setJournalContent(''); // Clear any existing content
+    trackAction('random_prompt_selected', { prompt: displayedPrompts[randomIndex] });
     toast.info("New prompt loaded. Happy writing!");
   };
 
   const startFreeWriting = () => {
     setCurrentPrompt('');
     setJournalContent(''); // Clear any existing content
+    trackAction('free_writing_started');
     toast.info("Ready for free writing. Express yourself!");
   };
 
@@ -65,14 +93,24 @@ const JournalPage = () => {
       toast.warning("Please write something before saving");
       return;
     }
-    const newEntry = {
+    
+    const wordCount = journalContent.trim().split(/\s+/).length;
+    const newEntry: JournalEntry = {
       id: Date.now(),
       content: journalContent,
       date: new Date(),
       hasPrompt: !!currentPrompt,
-      prompt: currentPrompt || undefined
+      prompt: currentPrompt || undefined,
+      wordCount
     };
-    setJournalEntries(prev => [newEntry, ...prev]);
+    
+    const updatedEntries = [newEntry, ...journalEntries];
+    setJournalEntries(updatedEntries);
+    StorageManager.save(STORAGE_KEYS.JOURNAL_ENTRIES, updatedEntries);
+    
+    // Track analytics
+    trackJournalEntry(!!currentPrompt, wordCount);
+    
     setJournalContent('');
     setCurrentPrompt('');
     toast.success("Journal entry saved");
@@ -213,10 +251,13 @@ const JournalPage = () => {
             {journalEntries.map(entry => <div key={entry.id} className="border border-mental-gray/20 rounded-md p-4">
                 <div className="flex justify-between items-center mb-2">
                   <p className="text-sm text-[#7e868b]">{formatDate(entry.date)}</p>
-                  {entry.hasPrompt && <div className="flex items-center gap-1 text-xs text-mental-blue bg-mental-blue/10 px-2 py-1 rounded-full">
-                      <MessageSquare className="h-3 w-3 text-[#7e868b]" />
-                      <span>Prompted</span>
-                    </div>}
+                  <div className="flex items-center gap-2">
+                    {entry.hasPrompt && <div className="flex items-center gap-1 text-xs text-mental-blue bg-mental-blue/10 px-2 py-1 rounded-full">
+                        <MessageSquare className="h-3 w-3 text-[#7e868b]" />
+                        <span>Prompted</span>
+                      </div>}
+                    <span className="text-xs text-[#7e868b]">{entry.wordCount} words</span>
+                  </div>
                 </div>
                 
                 {entry.hasPrompt && entry.prompt && <p className="text-sm italic mb-2 text-[#7e868b]">
