@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useToastService } from '@/hooks/useToastService';
 import { Link } from 'react-router-dom';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { usePersonalization } from '@/contexts/PersonalizationContext';
+import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -49,7 +49,7 @@ const HomePage = () => {
   const todaysQuestion = getRandomItem(questions);
   const [response, setResponse] = useState('');
   const { trackAction } = useAnalytics();
-  const { preferences, getRecommendations } = usePersonalization();
+  const { getRecommendations } = useUserPreferences();
   const { showSuccess, showWarning } = useToastService();
 
   const handleSubmitResponse = () => {
