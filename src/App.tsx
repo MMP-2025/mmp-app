@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -31,6 +30,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CommunityPage from "./pages/CommunityPage";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
+import PersonalizationPage from "./pages/PersonalizationPage";
 
 const queryClient = new QueryClient();
 
@@ -142,6 +142,9 @@ const AppContent = () => {
                     </SidebarLayout>
                   </div>
                 </ProtectedRoute>
+              } />
+              <Route path="/personalization" element={
+                <PersonalizationPage />
               } />
               <Route path="*" element={<NotFound />} />
             </Routes>
