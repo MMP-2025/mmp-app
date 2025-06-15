@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,6 +15,7 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import MoodAnalytics from '@/components/mood/MoodAnalytics';
 import MoodFactors from '@/components/mood/MoodFactors';
+import MoodCorrelationTracker from '@/components/mood/MoodCorrelationTracker';
 
 interface MoodEntry {
   id: string;
@@ -27,6 +27,8 @@ interface MoodEntry {
   factors: string[];
   location?: string;
   weather?: string;
+  sleepHours?: number;
+  exercise?: boolean;
 }
 
 const MoodTrackerPage = () => {
@@ -76,7 +78,9 @@ const MoodTrackerPage = () => {
       note: moodNote,
       timestamp: Date.now(),
       date: new Date().toISOString().split('T')[0],
-      factors: selectedFactors
+      factors: selectedFactors,
+      sleepHours: Math.floor(Math.random() * 4) + 6, // Simulated for demo - in real app, this would be user input
+      exercise: selectedFactors.includes('Exercise')
     };
 
     const updatedHistory = [newEntry, ...moodHistory];
@@ -155,7 +159,7 @@ const MoodTrackerPage = () => {
           </div>
           
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="track" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
                 Track Mood
@@ -167,6 +171,10 @@ const MoodTrackerPage = () => {
               <TabsTrigger value="analytics" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 Analytics
+              </TabsTrigger>
+              <TabsTrigger value="correlations" className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                Correlations
               </TabsTrigger>
             </TabsList>
 
@@ -297,6 +305,10 @@ const MoodTrackerPage = () => {
 
             <TabsContent value="analytics">
               <MoodAnalytics moodHistory={moodHistory} />
+            </TabsContent>
+
+            <TabsContent value="correlations">
+              <MoodCorrelationTracker moodHistory={moodHistory} />
             </TabsContent>
           </Tabs>
         </div>
