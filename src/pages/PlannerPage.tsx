@@ -97,7 +97,7 @@ const PlannerPage = () => {
               <Button onClick={handleAddEvent} size="sm" style={{
               backgroundColor: '#737373',
               color: 'white'
-            }} className="w-full hover:opacity-90 bg-mental-gray">
+            }} className="w-full hover:opacity-90 bg-mental-gray text-mental-gray">
                 <Plus className="mr-2 h-4 w-4" /> Add Event
               </Button>
             </div>
