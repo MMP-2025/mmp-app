@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Card } from '@/components/ui/card';
+import AnalyticsMetricsRow from './AnalyticsMetricsRow';
 
 interface MoodAnalyticsStatsProps {
   totalEntries: number;
@@ -15,36 +15,14 @@ const MoodAnalyticsStats: React.FC<MoodAnalyticsStatsProps> = ({
   avgIntensity,
   topFactor
 }) => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <Card className="p-4 bg-white/90">
-        <div className="text-center">
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{totalEntries}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Total Entries</div>
-        </div>
-      </Card>
-      <Card className="p-4 bg-white/90">
-        <div className="text-center">
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{currentStreak}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Day Streak</div>
-        </div>
-      </Card>
-      <Card className="p-4 bg-white/90">
-        <div className="text-center">
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{avgIntensity}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Avg Intensity</div>
-        </div>
-      </Card>
-      <Card className="p-4 bg-white/90">
-        <div className="text-center">
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>
-            {topFactor || 'N/A'}
-          </div>
-          <div className="text-sm" style={{color: '#737373'}}>Top Factor</div>
-        </div>
-      </Card>
-    </div>
-  );
+  const metrics = [
+    { value: totalEntries, label: 'Total Entries' },
+    { value: currentStreak, label: 'Day Streak' },
+    { value: avgIntensity, label: 'Avg Intensity' },
+    { value: topFactor || 'N/A', label: 'Top Factor' }
+  ];
+
+  return <AnalyticsMetricsRow metrics={metrics} />;
 };
 
 export default MoodAnalyticsStats;
