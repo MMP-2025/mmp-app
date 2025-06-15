@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone, User, Users, Menu, Settings, Wrench } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
@@ -64,8 +65,13 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         <Menu className="h-5 w-5" />
       </Button>
 
-      {/* User Profile in top right */}
-      <div className="fixed top-4 right-4 z-50">
+      {/* User Profile and Home Button in top right */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-4">
+        <Link to="/" aria-label="Go to Home page">
+            <Button variant="ghost" size="icon" className="bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90 text-neutral-500">
+                <Home className="h-5 w-5" />
+            </Button>
+        </Link>
         <UserProfile />
       </div>
 
