@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Bell, Quote, TrendingUp, Target, Clock, Lightbulb } from 'lucide-react';
-import { personalizationEngine, PersonalizedContent, AdaptiveReminder } from '@/utils/personalizationEngine';
+import { personalizationEngine } from '@/utils/personalizationEngine';
+import { PersonalizedContent, AdaptiveReminder } from '@/types/personalization';
 import { Link } from 'react-router-dom';
 
 const PersonalizedDashboard = () => {
