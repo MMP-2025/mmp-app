@@ -13,6 +13,14 @@ const AnalyticsDashboard: React.FC = () => {
   
   const metrics = getUserMetrics();
 
+  const themeColors = {
+    blue: '#B6D1D9',
+    green: '#AEC29B',
+    beige: '#E5C7B5',
+    peach: '#FADCD6',
+    gray: '#CCC6C6'
+  };
+
   // Mock data for charts - in a real app, this would come from your analytics
   const moodTrendData = [
     { date: '2024-01-01', mood: 4 },
@@ -25,11 +33,11 @@ const AnalyticsDashboard: React.FC = () => {
   ];
 
   const featureUsageData = [
-    { name: 'Journal', value: 35, color: '#8b5cf6' },
-    { name: 'Mood Tracker', value: 25, color: '#10b981' },
-    { name: 'Mindfulness', value: 20, color: '#f59e0b' },
-    { name: 'Gratitude', value: 15, color: '#ef4444' },
-    { name: 'Other', value: 5, color: '#6b7280' }
+    { name: 'Journal', value: 35, color: themeColors.blue },
+    { name: 'Mood Tracker', value: 25, color: themeColors.green },
+    { name: 'Mindfulness', value: 20, color: themeColors.beige },
+    { name: 'Gratitude', value: 15, color: themeColors.peach },
+    { name: 'Other', value: 5, color: themeColors.gray }
   ];
 
   const weeklyActivityData = [
@@ -112,7 +120,7 @@ const AnalyticsDashboard: React.FC = () => {
                 <XAxis dataKey="date" />
                 <YAxis domain={[1, 5]} />
                 <Tooltip />
-                <Line type="monotone" dataKey="mood" stroke="#8b5cf6" strokeWidth={2} />
+                <Line type="monotone" dataKey="mood" stroke={themeColors.blue} strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
           </Card>
@@ -127,7 +135,7 @@ const AnalyticsDashboard: React.FC = () => {
                 <XAxis dataKey="day" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="activities" fill="#10b981" />
+                <Bar dataKey="activities" fill={themeColors.green} />
               </BarChart>
             </ResponsiveContainer>
           </Card>

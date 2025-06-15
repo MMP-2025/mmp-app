@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Lightbulb } from 'lucide-react';
 
 interface MoodEntry {
   id: string;
@@ -69,22 +69,25 @@ const EarlyWarningSystem: React.FC<EarlyWarningSystemProps> = ({ moodHistory }) 
   }
 
   return (
-    <Card className="p-6 bg-red-50 border-red-200">
+    <Card className="p-6 bg-destructive/10 border-destructive/20">
       <div className="flex items-center gap-2 mb-4">
-        <AlertTriangle className="h-5 w-5 text-red-600" />
-        <h3 className="text-lg font-semibold text-red-800">Early Warning System</h3>
+        <AlertTriangle className="h-5 w-5 text-destructive" />
+        <h3 className="text-lg font-semibold text-destructive">Early Warning System</h3>
       </div>
       <div className="space-y-3">
         {earlyWarnings.map((warning, index) => (
-          <div key={index} className="p-3 bg-white/80 rounded-md border border-red-200">
+          <div key={index} className="p-3 bg-white/80 rounded-md border border-destructive/20">
             <div className="flex items-center justify-between mb-2">
-              <h4 className="font-medium text-red-800">{warning.type}</h4>
+              <h4 className="font-medium text-destructive">{warning.type}</h4>
               <Badge variant={warning.severity === 'high' ? 'destructive' : 'outline'}>
                 {warning.severity} priority
               </Badge>
             </div>
-            <p className="text-sm text-red-700 mb-2">{warning.message}</p>
-            <p className="text-xs font-medium text-red-800">💡 {warning.action}</p>
+            <p className="text-sm text-destructive mb-2">{warning.message}</p>
+            <p className="flex items-center text-xs font-medium text-destructive">
+              <Lightbulb className="h-4 w-4 mr-1.5 text-mental-blue" />
+              {warning.action}
+            </p>
           </div>
         ))}
       </div>

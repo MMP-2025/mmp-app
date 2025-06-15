@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -10,19 +11,19 @@ interface WellnessMetricsCardProps {
 
 export const WellnessMetricsCard: React.FC<WellnessMetricsCardProps> = ({ metrics }) => {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 80) return 'text-mental-green';
+    if (score >= 60) return 'text-mental-beige';
+    return 'text-destructive';
   };
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'up':
-        return <TrendingUp className="h-4 w-4 text-green-500" />;
+        return <TrendingUp className="h-4 w-4 text-mental-green" />;
       case 'down':
-        return <TrendingDown className="h-4 w-4 text-red-500" />;
+        return <TrendingDown className="h-4 w-4 text-destructive" />;
       default:
-        return <BarChart3 className="h-4 w-4 text-gray-500" />;
+        return <BarChart3 className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -41,7 +42,7 @@ export const WellnessMetricsCard: React.FC<WellnessMetricsCardProps> = ({ metric
                 </Badge>
               </div>
               <Progress value={metric.value} className="mb-2" />
-              <p className="text-xs text-gray-600">{metric.suggestion}</p>
+              <p className="text-xs text-muted-foreground">{metric.suggestion}</p>
             </div>
             <div className={`text-xl font-bold ml-4 ${getScoreColor(metric.value)}`}>
               {metric.value}
