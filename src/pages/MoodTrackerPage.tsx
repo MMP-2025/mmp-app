@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target, Brain } from 'lucide-react';
+import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target, Brain, BarChart3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
@@ -19,6 +19,7 @@ import MoodCorrelationTracker from '@/components/mood/MoodCorrelationTracker';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import AIInsights from '@/components/personalization/AIInsights';
 import MoodPredictionSystem from '@/components/mood/MoodPredictionSystem';
+import AdvancedAnalytics from '@/components/mood/AdvancedAnalytics';
 
 interface MoodEntry {
   id: string;
@@ -172,7 +173,7 @@ const MoodTrackerPage = () => {
           </div>
           
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-7">
               <TabsTrigger value="track" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
                 Track Mood
@@ -184,6 +185,10 @@ const MoodTrackerPage = () => {
               <TabsTrigger value="analytics" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 Analytics
+              </TabsTrigger>
+              <TabsTrigger value="advanced" className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
+                Advanced
               </TabsTrigger>
               <TabsTrigger value="correlations" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
@@ -326,6 +331,10 @@ const MoodTrackerPage = () => {
 
             <TabsContent value="analytics">
               <MoodAnalytics moodHistory={moodHistory} />
+            </TabsContent>
+
+            <TabsContent value="advanced">
+              <AdvancedAnalytics />
             </TabsContent>
 
             <TabsContent value="correlations">

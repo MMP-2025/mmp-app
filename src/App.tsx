@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +12,8 @@ import AccessibilityToolbar from "@/components/accessibility/AccessibilityToolba
 import VoiceControl from "@/components/accessibility/VoiceControl";
 import LoginForm from "@/components/auth/LoginForm";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import AdvancedAnalytics from './components/analytics/AdvancedAnalytics';
+import { registerSW } from './utils/serviceWorker';
 
 import HomePage from "./pages/HomePage";
 import MoodTrackerPage from "./pages/MoodTrackerPage";
@@ -33,6 +34,11 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();
+
+  React.useEffect(() => {
+    // Register service worker for PWA functionality
+    registerSW();
+  }, []);
 
   if (!isAuthenticated) {
     return <LoginForm />;
