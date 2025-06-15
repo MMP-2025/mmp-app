@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone, FolderOpen, User, Users, Menu, Settings } from 'lucide-react';
+import { Book, Calendar, Clock, FileText, Home, Smile, Pencil, Timer, Bell, Phone, User, Users, Menu, Settings, Toolbox } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import UserProfile from './UserProfile';
+
 interface SidebarLayoutProps {
   children: React.ReactNode;
 }
@@ -54,7 +55,7 @@ export function SidebarLayout({
     label: 'Gratitude',
     path: '/gratitude'
   }, {
-    icon: FolderOpen,
+    icon: Toolbox,
     label: 'Support Toolkit',
     path: '/support-toolkit'
   }, {
