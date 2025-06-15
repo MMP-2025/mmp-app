@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -55,10 +54,10 @@ const PersonalizedDashboard = () => {
           <div className="flex items-start gap-3">
             <Quote className="h-6 w-6 mt-1 text-mental-blue" />
             <div className="flex-1">
-              <blockquote className="text-lg font-medium mb-2" style={{color: '#737373'}}>
+              <blockquote className="text-lg font-medium mb-2 text-neutral-500">
                 "{personalizedQuote.quote}"
               </blockquote>
-              <cite className="text-sm" style={{color: '#737373'}}>
+              <cite className="text-sm text-neutral-500">
                 — {personalizedQuote.author}
               </cite>
               <div className="flex items-center gap-2 mt-3">
@@ -79,7 +78,7 @@ const PersonalizedDashboard = () => {
         <Card className="p-6 bg-white/90">
           <div className="flex items-center gap-2 mb-4">
             <Lightbulb className="h-5 w-5 text-yellow-500" />
-            <h3 className="text-lg font-semibold" style={{color: '#737373'}}>
+            <h3 className="text-lg font-semibold text-neutral-500">
               Personalized Recommendations
             </h3>
           </div>
@@ -92,13 +91,13 @@ const PersonalizedDashboard = () => {
                     {typeof IconComponent === 'string' ? (
                       <span className="text-xl">{IconComponent}</span>
                     ) : (
-                      <IconComponent className="h-5 w-5" style={{color: '#737373'}} />
+                      <IconComponent className="h-5 w-5 text-neutral-500" />
                     )}
                     <div>
-                      <div className="font-medium" style={{color: '#737373'}}>
+                      <div className="font-medium text-neutral-500">
                         {rec.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                       </div>
-                      <div className="text-sm" style={{color: '#737373'}}>
+                      <div className="text-sm text-neutral-500">
                         {rec.reason}
                       </div>
                     </div>
@@ -119,7 +118,7 @@ const PersonalizedDashboard = () => {
       <Card className="p-6 bg-white/90">
         <div className="flex items-center gap-2 mb-4">
           <Bell className="h-5 w-5 text-mental-blue" />
-          <h3 className="text-lg font-semibold" style={{color: '#737373'}}>
+          <h3 className="text-lg font-semibold text-neutral-500">
             Smart Reminders
           </h3>
         </div>
@@ -127,12 +126,12 @@ const PersonalizedDashboard = () => {
           {adaptiveReminders.slice(0, 2).map(reminder => (
             <div key={reminder.id} className="flex items-center justify-between p-3 bg-mental-green/20 rounded-md">
               <div className="flex items-center gap-3">
-                <Clock className="h-4 w-4" style={{color: '#737373'}} />
+                <Clock className="h-4 w-4 text-neutral-500" />
                 <div>
-                  <div className="font-medium" style={{color: '#737373'}}>
+                  <div className="font-medium text-neutral-500">
                     {reminder.optimalTime}
                   </div>
-                  <div className="text-sm" style={{color: '#737373'}}>
+                  <div className="text-sm text-neutral-500">
                     {reminder.message}
                   </div>
                 </div>
@@ -153,7 +152,7 @@ const PersonalizedDashboard = () => {
       {/* User Insights */}
       {userBehavior && (
         <Card className="p-6 bg-white/90">
-          <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>
+          <h3 className="text-lg font-semibold mb-4 text-neutral-500">
             Your Mental Health Journey
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -161,23 +160,23 @@ const PersonalizedDashboard = () => {
               <div className="text-2xl font-bold text-mental-blue">
                 {userBehavior.streakDays}
               </div>
-              <div className="text-sm" style={{color: '#737373'}}>Day Streak</div>
+              <div className="text-sm text-neutral-500">Day Streak</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-mental-green">
                 {userBehavior.mostUsedFeatures.length}
               </div>
-              <div className="text-sm" style={{color: '#737373'}}>Features Used</div>
+              <div className="text-sm text-neutral-500">Features Used</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-mental-peach">
                 {userBehavior.engagementLevel}
               </div>
-              <div className="text-sm" style={{color: '#737373'}}>Engagement</div>
+              <div className="text-sm text-neutral-500">Engagement</div>
             </div>
           </div>
           <div className="mt-4">
-            <div className="text-sm mb-2" style={{color: '#737373'}}>
+            <div className="text-sm mb-2 text-neutral-500">
               Most active time: <Badge variant="outline">{userBehavior.preferredTimeOfDay}</Badge>
             </div>
             {userBehavior.mostUsedFeatures.length > 0 && (

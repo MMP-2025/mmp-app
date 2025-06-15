@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -138,14 +137,14 @@ const MoodTriggersAndCoping: React.FC<MoodTriggersAndCopingProps> = ({
   return (
     <div className="space-y-6">
       <Card className="p-6 bg-mental-peach">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: '#737373' }}>
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-neutral-500">
           <AlertTriangle className="h-5 w-5" />
           Identified Triggers
         </h3>
         
         {identifiedTriggers.length > 0 ? (
           <div className="space-y-2">
-            <p className="text-sm mb-3" style={{ color: '#737373' }}>
+            <p className="text-sm mb-3 text-neutral-500">
               Based on your mood history, these factors often correlate with lower mood:
             </p>
             <div className="flex flex-wrap gap-2">
@@ -162,14 +161,14 @@ const MoodTriggersAndCoping: React.FC<MoodTriggersAndCopingProps> = ({
             </div>
           </div>
         ) : (
-          <p className="text-sm" style={{ color: '#737373' }}>
+          <p className="text-sm text-neutral-500">
             Track your mood for a few more entries to identify potential triggers.
           </p>
         )}
       </Card>
 
       <Card className="p-6 bg-mental-green">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: '#737373' }}>
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-neutral-500">
           <Heart className="h-5 w-5" />
           Personalized Coping Strategies
         </h3>
@@ -177,7 +176,7 @@ const MoodTriggersAndCoping: React.FC<MoodTriggersAndCopingProps> = ({
         <div className="space-y-4">
           {copingStrategies.map(({ trigger, strategies }) => (
             <div key={trigger} className="space-y-2">
-              <h4 className="font-medium flex items-center gap-2" style={{ color: '#737373' }}>
+              <h4 className="font-medium flex items-center gap-2 text-neutral-500">
                 {getTriggerIcon(trigger)}
                 {trigger}
               </h4>
@@ -185,8 +184,7 @@ const MoodTriggersAndCoping: React.FC<MoodTriggersAndCopingProps> = ({
                 {strategies.map((strategy, index) => (
                   <div 
                     key={index} 
-                    className="text-sm p-2 bg-white/50 rounded border-l-2 border-green-400"
-                    style={{ color: '#737373' }}
+                    className="text-sm p-2 bg-white/50 rounded border-l-2 border-green-400 text-neutral-500"
                   >
                     {strategy}
                   </div>

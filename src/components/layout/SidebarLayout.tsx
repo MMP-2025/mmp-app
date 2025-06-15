@@ -59,8 +59,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         variant="ghost" 
         size="icon" 
         onClick={() => setIsClicked(true)} 
-        className="fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90" 
-        style={{ color: '#737373' }}
+        className="fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-md hover:bg-white/90 text-neutral-500"
       >
         <Menu className="h-5 w-5" />
       </Button>
@@ -77,11 +76,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       >
         <Sidebar className="border-r border-mental-gray/20 h-full">
           <SidebarHeader className="p-4 bg-[#fadcd6]">
-            <h1 className="font-bold text-center" style={{ color: '#737373' }}>Making Meaning Psychology</h1>
+            <h1 className="font-bold text-center text-neutral-500">Making Meaning Psychology</h1>
           </SidebarHeader>
           <SidebarContent className="bg-[#fadcd6]">
             <SidebarGroup>
-              <SidebarGroupLabel style={{ color: '#737373' }}>Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel className="text-neutral-500">Navigation</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {menuItems.map(item => (
@@ -89,10 +88,9 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                       <SidebarMenuButton asChild>
                         <Link 
                           to={item.path} 
-                          className={`flex items-center gap-2 ${
+                          className={`flex items-center gap-2 text-neutral-500 ${
                             location.pathname === item.path ? 'font-medium' : ''
                           }`} 
-                          style={{ color: '#737373' }}
                           onClick={() => setIsClicked(false)}
                         >
                           <item.icon className="h-5 w-5" />
@@ -106,7 +104,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
             </SidebarGroup>
           </SidebarContent>
           <SidebarFooter className="p-4 text-xs text-center bg-[#fadcd6]">
-            <p style={{ color: '#737373' }}>© 2025 Making Meaning Psychology</p>
+            <p className="text-neutral-500">© 2025 Making Meaning Psychology</p>
           </SidebarFooter>
         </Sidebar>
       </div>

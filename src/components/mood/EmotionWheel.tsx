@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -59,10 +58,10 @@ const EmotionWheel: React.FC<EmotionWheelProps> = ({ onEmotionSelect, selectedEm
 
   return (
     <Card className="p-6 bg-mental-blue">
-      <h3 className="text-lg font-semibold mb-4" style={{ color: '#737373' }}>
+      <h3 className="text-lg font-semibold mb-4 text-neutral-500">
         Emotion Wheel
       </h3>
-      <p className="text-sm mb-4" style={{ color: '#737373' }}>
+      <p className="text-sm mb-4 text-neutral-500">
         Select an emotion that best describes how you're feeling
       </p>
       
@@ -94,9 +93,8 @@ const EmotionWheel: React.FC<EmotionWheelProps> = ({ onEmotionSelect, selectedEm
                   className={`w-full text-xs p-1 rounded transition-all ${
                     selectedEmotion === secondaryEmotion
                       ? 'bg-blue-100 text-blue-800'
-                      : 'hover:bg-gray-100'
+                      : 'hover:bg-gray-100 text-neutral-500'
                   }`}
-                  style={{ color: selectedEmotion === secondaryEmotion ? '#1e40af' : '#737373' }}
                 >
                   {secondaryEmotion}
                 </button>
@@ -107,7 +105,7 @@ const EmotionWheel: React.FC<EmotionWheelProps> = ({ onEmotionSelect, selectedEm
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium" style={{ color: '#737373' }}>
+        <label className="text-sm font-medium text-neutral-500">
           Intensity Level: {selectedIntensity}/10
         </label>
         <input
