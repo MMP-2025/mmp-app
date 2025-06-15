@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { Card } from '@/components/ui/card';
 import CorrelationInsights from './correlation/CorrelationInsights';
 import ExerciseCorrelationChart from './correlation/ExerciseCorrelationChart';
 import SleepCorrelationChart from './correlation/SleepCorrelationChart';
 import FactorAnalysisDisplay from './correlation/FactorAnalysisDisplay';
+import EmptyCorrelationState from './correlation/EmptyCorrelationState';
 
 interface MoodEntry {
   id: string;
@@ -25,12 +25,7 @@ interface MoodCorrelationTrackerProps {
 
 const MoodCorrelationTracker: React.FC<MoodCorrelationTrackerProps> = ({ moodHistory }) => {
   if (moodHistory.length === 0) {
-    return (
-      <Card className="p-6 bg-white/90">
-        <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Mood Correlations</h3>
-        <p style={{color: '#737373'}}>Track more mood entries to see correlations with sleep, exercise, and activities.</p>
-      </Card>
-    );
+    return <EmptyCorrelationState />;
   }
 
   return (

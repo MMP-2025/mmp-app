@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Brain } from 'lucide-react';
 import EarlyWarningSystem from './prediction/EarlyWarningSystem';
-import PredictionCard from './prediction/PredictionCard';
+import PredictionHeader from './prediction/PredictionHeader';
+import PredictionsList from './prediction/PredictionsList';
 import PredictionExplanation from './prediction/PredictionExplanation';
 import { usePredictionAnalytics } from './prediction/PredictionAnalytics';
 
@@ -46,23 +46,8 @@ const MoodPredictionSystem: React.FC<MoodPredictionSystemProps> = ({ moodHistory
       <EarlyWarningSystem moodHistory={moodHistory} />
 
       <Card className="p-6 bg-white/90">
-        <div className="flex items-center gap-2 mb-4">
-          <Brain className="h-5 w-5 text-mental-blue" />
-          <h3 className="text-lg font-semibold" style={{color: '#737373'}}>AI Mood Predictions</h3>
-          <Badge variant="outline" className="text-xs">Powered by pattern analysis</Badge>
-        </div>
-        
-        {predictions.length === 0 ? (
-          <p style={{color: '#737373'}}>
-            No strong patterns detected yet. Continue tracking to improve prediction accuracy.
-          </p>
-        ) : (
-          <div className="space-y-4">
-            {predictions.map((prediction, index) => (
-              <PredictionCard key={index} prediction={prediction} />
-            ))}
-          </div>
-        )}
+        <PredictionHeader />
+        <PredictionsList predictions={predictions} />
       </Card>
 
       <PredictionExplanation />

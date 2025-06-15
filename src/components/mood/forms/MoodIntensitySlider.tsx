@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
+import IntensityLabel from './IntensityLabel';
+import IntensityScale from './IntensityScale';
 
 interface MoodIntensitySliderProps {
   intensity: number[];
@@ -14,9 +15,7 @@ const MoodIntensitySlider: React.FC<MoodIntensitySliderProps> = ({
 }) => {
   return (
     <div>
-      <Label className="text-lg font-medium mb-3 block" style={{color: '#737373'}}>
-        Intensity Level: {intensity[0]}/10
-      </Label>
+      <IntensityLabel intensity={intensity[0]} />
       <Slider
         value={intensity}
         onValueChange={onIntensityChange}
@@ -25,10 +24,7 @@ const MoodIntensitySlider: React.FC<MoodIntensitySliderProps> = ({
         step={1}
         className="w-full"
       />
-      <div className="flex justify-between text-sm mt-2" style={{color: '#737373'}}>
-        <span>Low</span>
-        <span>High</span>
-      </div>
+      <IntensityScale />
     </div>
   );
 };

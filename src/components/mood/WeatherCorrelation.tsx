@@ -1,9 +1,8 @@
 
 import React from 'react';
 import { useWeatherCorrelation } from '@/hooks/useWeatherCorrelation';
-import WeatherForm from './weather/WeatherForm';
-import WeatherCorrelationChart from './weather/WeatherCorrelationChart';
-import WeatherAnalysisDisplay from './weather/WeatherAnalysisDisplay';
+import WeatherFormContainer from './weather/WeatherFormContainer';
+import WeatherCorrelationDisplay from './weather/WeatherCorrelationDisplay';
 
 interface WeatherData {
   condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'windy';
@@ -34,20 +33,16 @@ const WeatherCorrelation: React.FC<WeatherCorrelationProps> = ({ moodHistory = [
 
   return (
     <div className="space-y-6">
-      <WeatherForm
+      <WeatherFormContainer
         currentWeather={currentWeather}
         setCurrentWeather={setCurrentWeather}
         onSave={saveWeatherData}
       />
 
-      {correlations && correlations.length > 0 ? (
-        <WeatherCorrelationChart correlations={correlations} />
-      ) : (
-        <WeatherAnalysisDisplay 
-          correlations={correlations} 
-          dataCount={correlationData.length} 
-        />
-      )}
+      <WeatherCorrelationDisplay
+        correlations={correlations}
+        dataCount={correlationData.length}
+      />
     </div>
   );
 };
