@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -159,12 +158,12 @@ const WellnessScore: React.FC = () => {
     };
   };
 
-  const calculateMoodScore = (moodEntries: any[]) => {
+  const calculateMoodScore = (moodEntries: any[]): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
     const recentEntries = moodEntries.slice(0, 7); // Last 7 entries
     if (recentEntries.length === 0) {
       return {
         value: 50,
-        trend: 'stable' as const,
+        trend: 'stable',
         suggestion: 'Start tracking your mood daily to build awareness'
       };
     }
@@ -181,9 +180,13 @@ const WellnessScore: React.FC = () => {
     });
 
     const average = moodValues.reduce((a, b) => a + b, 0) / moodValues.length;
-    const trend = moodValues.length > 3 ? 
-      (moodValues.slice(0, 3).reduce((a, b) => a + b, 0) / 3) > 
-      (moodValues.slice(-3).reduce((a, b) => a + b, 0) / 3) ? 'up' : 'down' : 'stable';
+    
+    let trend: 'up' | 'down' | 'stable' = 'stable';
+    if (moodValues.length > 3) {
+      const recentAvg = moodValues.slice(0, 3).reduce((a, b) => a + b, 0) / 3;
+      const olderAvg = moodValues.slice(-3).reduce((a, b) => a + b, 0) / 3;
+      trend = recentAvg > olderAvg ? 'up' : recentAvg < olderAvg ? 'down' : 'stable';
+    }
 
     return {
       value: Math.round(average),
@@ -194,7 +197,7 @@ const WellnessScore: React.FC = () => {
     };
   };
 
-  const calculateConsistencyScore = (moodEntries: any[]) => {
+  const calculateConsistencyScore = (moodEntries: any[]): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const date = new Date();
       date.setDate(date.getDate() - i);
@@ -207,20 +210,22 @@ const WellnessScore: React.FC = () => {
 
     const percentage = (trackedDays / 7) * 100;
 
+    const trend: 'up' | 'down' | 'stable' = percentage > 70 ? 'up' : percentage > 40 ? 'stable' : 'down';
+
     return {
       value: Math.round(percentage),
-      trend: percentage > 70 ? 'up' : percentage > 40 ? 'stable' : 'down' as const,
+      trend,
       suggestion: percentage < 50 ? 
         'Try setting daily reminders to track your mood consistently' :
         'Excellent consistency in mood tracking!'
     };
   };
 
-  const calculateEngagementScore = (userBehavior: any) => {
+  const calculateEngagementScore = (userBehavior: any): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
     if (!userBehavior) {
       return {
         value: 30,
-        trend: 'stable' as const,
+        trend: 'stable',
         suggestion: 'Explore different app features to enhance your wellness journey'
       };
     }
@@ -234,16 +239,18 @@ const WellnessScore: React.FC = () => {
     
     score += Math.min(featureUsage * 5, 20); // Bonus for feature diversity
 
+    const trend: 'up' | 'down' | 'stable' = featureUsage > 3 ? 'up' : 'stable';
+
     return {
       value: Math.min(score, 100),
-      trend: featureUsage > 3 ? 'up' : 'stable' as const,
+      trend,
       suggestion: score < 60 ? 
         'Try exploring journaling, mindfulness, or gratitude features' :
         'Great engagement with the app features!'
     };
   };
 
-  const calculateMindfulnessScore = (mindfulnessProgress: any) => {
+  const calculateMindfulnessScore = (mindfulnessProgress: any): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
     const sessions = mindfulnessProgress.sessions || [];
     const recentSessions = sessions.filter((session: any) => {
       const sessionDate = new Date(session.date);
@@ -254,16 +261,18 @@ const WellnessScore: React.FC = () => {
 
     const score = Math.min(recentSessions.length * 20, 100);
 
+    const trend: 'up' | 'down' | 'stable' = recentSessions.length > 2 ? 'up' : recentSessions.length > 0 ? 'stable' : 'down';
+
     return {
       value: score,
-      trend: recentSessions.length > 2 ? 'up' : recentSessions.length > 0 ? 'stable' : 'down' as const,
+      trend,
       suggestion: score < 40 ? 
         'Regular mindfulness practice can significantly improve wellbeing' :
         'Wonderful mindfulness practice! Keep up the great work'
     };
   };
 
-  const calculateJournalingScore = (journalEntries: any[]) => {
+  const calculateJournalingScore = (journalEntries: any[]): { value: number; trend: 'up' | 'down' | 'stable'; suggestion: string } => {
     const recentEntries = journalEntries.filter((entry: any) => {
       const entryDate = new Date(entry.date);
       const weekAgo = new Date();
@@ -273,9 +282,11 @@ const WellnessScore: React.FC = () => {
 
     const score = Math.min(recentEntries.length * 25, 100);
 
+    const trend: 'up' | 'down' | 'stable' = recentEntries.length > 2 ? 'up' : recentEntries.length > 0 ? 'stable' : 'down';
+
     return {
       value: score,
-      trend: recentEntries.length > 2 ? 'up' : recentEntries.length > 0 ? 'stable' : 'down' as const,
+      trend,
       suggestion: score < 50 ? 
         'Journaling helps process emotions and track progress' :
         'Excellent self-reflection through journaling!'
