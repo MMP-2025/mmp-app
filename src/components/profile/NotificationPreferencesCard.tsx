@@ -13,7 +13,7 @@ interface NotificationSettings {
 
 interface NotificationPreferencesCardProps {
   notifications: NotificationSettings;
-  onNotificationChange: (field: string, value: boolean) => void;
+  onNotificationChange: (field: keyof NotificationSettings, value: boolean) => void;
 }
 
 const NotificationPreferencesCard = ({ notifications, onNotificationChange }: NotificationPreferencesCardProps) => {
@@ -42,7 +42,7 @@ const NotificationPreferencesCard = ({ notifications, onNotificationChange }: No
             <Button
               variant={notifications[key as keyof NotificationSettings] ? "default" : "outline"}
               size="sm"
-              onClick={() => onNotificationChange(key, !notifications[key as keyof NotificationSettings])}
+              onClick={() => onNotificationChange(key as keyof NotificationSettings, !notifications[key as keyof NotificationSettings])}
             >
               {notifications[key as keyof NotificationSettings] ? 'Enabled' : 'Disabled'}
             </Button>

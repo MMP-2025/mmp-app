@@ -5,17 +5,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { User } from 'lucide-react';
 
-interface ProfileData {
+interface PersonalInfoData {
   username: string;
   email: string;
 }
 
 interface PersonalInfoCardProps {
-  profile: ProfileData;
-  onInputChange: (field: string, value: string) => void;
+  personalInfo: PersonalInfoData;
+  onPersonalInfoChange: (field: keyof PersonalInfoData, value: string) => void;
 }
 
-const PersonalInfoCard = ({ profile, onInputChange }: PersonalInfoCardProps) => {
+const PersonalInfoCard = ({ personalInfo, onPersonalInfoChange }: PersonalInfoCardProps) => {
   return (
     <Card className="bg-mental-gray">
       <CardHeader>
@@ -30,8 +30,8 @@ const PersonalInfoCard = ({ profile, onInputChange }: PersonalInfoCardProps) => 
             <Label htmlFor="username">Username</Label>
             <Input
               id="username"
-              value={profile.username}
-              onChange={(e) => onInputChange('username', e.target.value)}
+              value={personalInfo.username}
+              onChange={(e) => onPersonalInfoChange('username', e.target.value)}
               placeholder="Enter your username"
               className="bg-mental-gray border-[#737373]"
             />
@@ -41,8 +41,8 @@ const PersonalInfoCard = ({ profile, onInputChange }: PersonalInfoCardProps) => 
             <Input
               id="email"
               type="email"
-              value={profile.email}
-              onChange={(e) => onInputChange('email', e.target.value)}
+              value={personalInfo.email}
+              onChange={(e) => onPersonalInfoChange('email', e.target.value)}
               placeholder="your.email@example.com"
               className="bg-mental-gray border-[#737373]"
             />
