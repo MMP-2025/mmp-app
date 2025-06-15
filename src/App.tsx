@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { PersonalizationProvider } from "@/contexts/PersonalizationContext";
+import { UserPreferencesProvider } from "@/contexts/UserPreferencesContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import AccessibilityToolbar from "@/components/accessibility/AccessibilityToolbar";
 import VoiceControl from "@/components/accessibility/VoiceControl";
@@ -47,7 +47,7 @@ const AppContent = () => {
   }
 
   return (
-    <PersonalizationProvider>
+    <UserPreferencesProvider>
       <AccessibilityProvider>
         <SidebarProvider>
           <Toaster />
@@ -127,7 +127,7 @@ const AppContent = () => {
           </div>
         </SidebarProvider>
       </AccessibilityProvider>
-    </PersonalizationProvider>
+    </UserPreferencesProvider>
   );
 };
 

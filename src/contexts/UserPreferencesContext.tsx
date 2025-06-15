@@ -15,7 +15,7 @@ export interface UserPreferences {
   mindfulnessGoalMinutes: number;
 }
 
-export interface PersonalizationContextType {
+export interface UserPreferencesContextType {
   preferences: UserPreferences;
   updatePreference: <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => void;
   resetPreferences: () => void;
@@ -35,9 +35,9 @@ const defaultPreferences: UserPreferences = {
   mindfulnessGoalMinutes: 10
 };
 
-const PersonalizationContext = createContext<PersonalizationContextType | undefined>(undefined);
+const UserPreferencesContext = createContext<UserPreferencesContextType | undefined>(undefined);
 
-export const PersonalizationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const UserPreferencesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [preferences, setPreferences] = useState<UserPreferences>(defaultPreferences);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export const PersonalizationProvider: React.FC<{ children: ReactNode }> = ({ chi
     return recommendations;
   };
 
-  const contextValue: PersonalizationContextType = {
+  const contextValue: UserPreferencesContextType = {
     preferences,
     updatePreference,
     resetPreferences,
@@ -90,16 +90,16 @@ export const PersonalizationProvider: React.FC<{ children: ReactNode }> = ({ chi
   };
 
   return (
-    <PersonalizationContext.Provider value={contextValue}>
+    <UserPreferencesContext.Provider value={contextValue}>
       {children}
-    </PersonalizationContext.Provider>
+    </UserPreferencesContext.Provider>
   );
 };
 
-export const usePersonalization = (): PersonalizationContextType => {
-  const context = useContext(PersonalizationContext);
+export const useUserPreferences = (): UserPreferencesContextType => {
+  const context = useContext(UserPreferencesContext);
   if (!context) {
-    throw new Error('usePersonalization must be used within a PersonalizationProvider');
+    throw new Error('useUserPreferences must be used within a UserPreferencesProvider');
   }
   return context;
 };
