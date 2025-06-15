@@ -1,20 +1,35 @@
-
 import { StorageManager } from '@/utils/storage';
 import { UserProgress } from '@/types/achievements';
 
+const getDaysDifference = (dateStr1: string, dateStr2: string): number => {
+  const date1 = new Date(dateStr1);
+  const date2 = new Date(dateStr2);
+  const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+  return Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24));
+};
+
 export const calculateCurrentStreak = (): number => {
-  const moodEntries = StorageManager.load('mood_entries', []);
+  const moodEntries = StorageManager.load<{ date: string }[]>('mood_entries', []);
   if (moodEntries.length === 0) return 0;
 
-  let streak = 0;
-  const today = new Date();
-  const sortedEntries = moodEntries.sort((a: any, b: any) => b.timestamp - a.timestamp);
+  const uniqueDates = [...new Set(moodEntries.map(entry => entry.date))].sort().reverse();
+  
+  if (uniqueDates.length === 0) return 0;
 
-  for (let i = 0; i < sortedEntries.length; i++) {
-    const entryDate = new Date(sortedEntries[i].date);
-    const diffDays = Math.floor((today.getTime() - entryDate.getTime()) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === i) {
+  const today = new Date().toISOString().split('T')[0];
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+  const latestDate = uniqueDates[0];
+
+  if (latestDate !== today && latestDate !== yesterday) {
+    return 0;
+  }
+
+  let streak = 1;
+  for (let i = 0; i < uniqueDates.length - 1; i++) {
+    const diff = getDaysDifference(uniqueDates[i + 1], uniqueDates[i]);
+    if (diff === 1) {
       streak++;
     } else {
       break;
@@ -25,7 +40,27 @@ export const calculateCurrentStreak = (): number => {
 };
 
 export const calculateLongestStreak = (): number => {
-  return calculateCurrentStreak();
+  const moodEntries = StorageManager.load<{ date: string }[]>('mood_entries', []);
+  if (moodEntries.length === 0) return 0;
+
+  const uniqueDates = [...new Set(moodEntries.map(entry => entry.date))].sort();
+
+  if (uniqueDates.length < 2) return uniqueDates.length;
+
+  let longestStreak = 1;
+  let currentStreak = 1;
+
+  for (let i = 1; i < uniqueDates.length; i++) {
+    const diff = getDaysDifference(uniqueDates[i - 1], uniqueDates[i]);
+    if (diff === 1) {
+      currentStreak++;
+    } else {
+      longestStreak = Math.max(longestStreak, currentStreak);
+      currentStreak = 1;
+    }
+  }
+
+  return Math.max(longestStreak, currentStreak);
 };
 
 export const calculateTotalDays = (): number => {
