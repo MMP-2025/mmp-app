@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -122,8 +123,9 @@ const SupportToolkitPage = () => {
   const handleDownload = (resource: Resource) => {
     // In a real app, this would trigger an actual download
     console.log(`Downloading ${resource.title}`);
-    // For now, just show a placeholder message
-    alert(`Downloading ${resource.title}... (This would trigger a real download in production)`);
+    toast.info(`Downloading: ${resource.title}`, {
+      description: 'This is a placeholder for a real file download.'
+    });
   };
 
   const filteredResources = getDisplayedResources();
