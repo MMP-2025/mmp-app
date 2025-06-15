@@ -19,9 +19,9 @@ interface TriggerPatternCardProps {
 const TriggerPatternCard: React.FC<TriggerPatternCardProps> = ({ trigger }) => {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'high': return 'text-red-600 bg-red-50 border-red-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'low': return 'text-green-600 bg-green-50 border-green-200';
+      case 'high': return 'text-destructive bg-destructive/10 border-destructive/20';
+      case 'medium': return 'text-orange-800 bg-orange-100 border-orange-200';
+      case 'low': return 'text-secondary bg-secondary/10 border-secondary/20';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
   };
@@ -63,7 +63,7 @@ const TriggerPatternCard: React.FC<TriggerPatternCardProps> = ({ trigger }) => {
           <SeverityIcon className="h-5 w-5" />
           <h5 className="font-medium">{trigger.trigger}</h5>
         </div>
-        <Badge variant="outline" className={`text-xs ${trigger.severity === 'high' ? 'border-red-500' : trigger.severity === 'medium' ? 'border-yellow-500' : 'border-green-500'}`}>
+        <Badge variant="outline" className={`text-xs ${trigger.severity === 'high' ? 'border-destructive' : trigger.severity === 'medium' ? 'border-orange-500' : 'border-secondary'}`}>
           {trigger.severity} priority
         </Badge>
       </div>
@@ -85,7 +85,7 @@ const TriggerPatternCard: React.FC<TriggerPatternCardProps> = ({ trigger }) => {
       
       <div className="bg-white/50 p-3 rounded text-sm">
         <div className="flex items-start gap-2">
-          <Lightbulb className="h-4 w-4 mt-0.5 text-yellow-600" />
+          <Lightbulb className="h-4 w-4 mt-0.5 text-mental-blue" />
           <p><strong>Recommendation:</strong> {getRecommendation(trigger.trigger)}</p>
         </div>
       </div>
