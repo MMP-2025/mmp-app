@@ -1,74 +1,26 @@
+
 import { useToastService } from '@/hooks/useToastService';
-import { useQuoteData } from './useQuoteData';
-import { useJournalPromptData } from './useJournalPromptData';
-import { useResourceData } from './useResourceData';
-import { useQuestionData } from './useQuestionData';
-import { useToolkitData } from './useToolkitData';
-import { useReminderData } from './useReminderData';
-import { useGratitudeData } from './useGratitudeData';
-import { useMindfulnessData } from './useMindfulnessData';
+import { useContentData } from './useContentData';
+import { useWellnessData } from './useWellnessData';
+import { useToolsData } from './useToolsData';
 
 export const useProviderData = () => {
   const toastService = useToastService();
-  
-  const quoteData = useQuoteData();
-  const journalPromptData = useJournalPromptData();
-  const resourceData = useResourceData();
-  const questionData = useQuestionData();
-  const toolkitData = useToolkitData();
-  const reminderData = useReminderData();
-  const gratitudeData = useGratitudeData();
-  const mindfulnessData = useMindfulnessData();
+  const contentData = useContentData();
+  const wellnessData = useWellnessData();
+  const toolsData = useToolsData();
 
   return {
-    // Quote data
-    quotes: quoteData.quotes,
-    setQuotes: quoteData.setQuotes,
-    newQuote: quoteData.newQuote,
-    setNewQuote: quoteData.setNewQuote,
+    // Content data (quotes, prompts, resources, questions)
+    ...contentData,
     
-    // Journal prompt data
-    journalPrompts: journalPromptData.journalPrompts,
-    setJournalPrompts: journalPromptData.setJournalPrompts,
-    newPrompt: journalPromptData.newPrompt,
-    setNewPrompt: journalPromptData.setNewPrompt,
+    // Wellness data (gratitude, mindfulness)
+    ...wellnessData,
     
-    // Resource data
-    resources: resourceData.resources,
-    setResources: resourceData.setResources,
-    newResource: resourceData.newResource,
-    setNewResource: resourceData.setNewResource,
+    // Tools data (toolkit, reminders)
+    ...toolsData,
     
-    // Question data
-    questions: questionData.questions,
-    setQuestions: questionData.setQuestions,
-    newQuestion: questionData.newQuestion,
-    setNewQuestion: questionData.setNewQuestion,
-    
-    // Toolkit data
-    toolkitItems: toolkitData.toolkitItems,
-    setToolkitItems: toolkitData.setToolkitItems,
-    newToolkitItem: toolkitData.newToolkitItem,
-    setNewToolkitItem: toolkitData.setNewToolkitItem,
-    
-    // Reminder data
-    reminders: reminderData.reminders,
-    setReminders: reminderData.setReminders,
-    newReminder: reminderData.newReminder,
-    setNewReminder: reminderData.setNewReminder,
-    
-    // Gratitude data
-    gratitudePrompts: gratitudeData.gratitudePrompts,
-    setGratitudePrompts: gratitudeData.setGratitudePrompts,
-    newGratitudePrompt: gratitudeData.newGratitudePrompt,
-    setNewGratitudePrompt: gratitudeData.setNewGratitudePrompt,
-    
-    // Mindfulness data
-    mindfulnessPrompts: mindfulnessData.mindfulnessPrompts,
-    setMindfulnessPrompts: mindfulnessData.setMindfulnessPrompts,
-    newMindfulnessPrompt: mindfulnessData.newMindfulnessPrompt,
-    setNewMindfulnessPrompt: mindfulnessData.setNewMindfulnessPrompt,
-    
+    // Toast services
     toast: toastService.toast,
     showSuccess: toastService.showSuccess,
     showError: toastService.showError,
