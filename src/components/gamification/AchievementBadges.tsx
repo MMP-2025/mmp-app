@@ -260,7 +260,7 @@ const AchievementBadges: React.FC = () => {
     <div className="space-y-6">
       <Card className="p-6 bg-white/90">
         <div className="flex items-center gap-2 mb-4">
-          <Trophy className="h-5 w-5" style={{color: '#737373'}} />
+          <Trophy className="h-5 w-5" color="#737373" />
           <h3 className="text-xl font-semibold" style={{color: '#737373'}}>Achievement Badges</h3>
         </div>
         
