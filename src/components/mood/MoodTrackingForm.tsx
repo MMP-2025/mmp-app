@@ -1,11 +1,12 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import MoodFormHeader from './forms/MoodFormHeader';
 import MoodSelector from './MoodSelector';
 import MoodIntensitySlider from './forms/MoodIntensitySlider';
 import MoodNoteInput from './forms/MoodNoteInput';
 import MoodFactors from './MoodFactors';
+import SaveMoodButton from './forms/SaveMoodButton';
 
 interface MoodTrackingFormProps {
   selectedMood: string | null;
@@ -34,9 +35,7 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
 }) => {
   return (
     <Card className="p-6 bg-white/90">
-      <h2 className="text-2xl font-bold mb-6" style={{color: '#737373'}}>
-        How are you feeling today?
-      </h2>
+      <MoodFormHeader />
       
       <div className="space-y-6">
         <MoodSelector 
@@ -62,9 +61,7 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
               onNoteChange={onNoteChange}
             />
             
-            <Button onClick={onSaveMood} className="w-full" size="lg">
-              Save Mood Entry
-            </Button>
+            <SaveMoodButton onSaveMood={onSaveMood} />
           </>
         )}
       </div>

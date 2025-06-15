@@ -3,11 +3,12 @@ import React from 'react';
 import PredictionCard from './PredictionCard';
 
 interface Prediction {
-  // Add prediction interface based on actual usage
-  id?: string;
-  type?: string;
-  confidence?: number;
-  description?: string;
+  type: 'risk' | 'improvement' | 'maintenance';
+  confidence: number;
+  timeframe: string;
+  factors: string[];
+  recommendation: string;
+  description: string;
 }
 
 interface PredictionsListProps {
