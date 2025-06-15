@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target, Brain, BarChart3 } from 'lucide-react';
+import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target, Brain, BarChart3, Activity, Cloud } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
@@ -20,6 +20,9 @@ import { usePersonalization } from '@/hooks/usePersonalization';
 import AIInsights from '@/components/personalization/AIInsights';
 import MoodPredictionSystem from '@/components/mood/MoodPredictionSystem';
 import AdvancedAnalytics from '@/components/analytics/AdvancedAnalytics';
+import HabitTracker from '@/components/habits/HabitTracker';
+import WeatherCorrelation from '@/components/mood/WeatherCorrelation';
+import TriggerPatternRecognition from '@/components/mood/TriggerPatternRecognition';
 
 interface MoodEntry {
   id: string;
@@ -173,7 +176,7 @@ const MoodTrackerPage = () => {
           </div>
           
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-7">
+            <TabsList className="grid w-full grid-cols-9">
               <TabsTrigger value="track" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
                 Track Mood
@@ -201,6 +204,14 @@ const MoodTrackerPage = () => {
               <TabsTrigger value="predictions" className="flex items-center gap-2">
                 <Brain className="h-4 w-4" />
                 Predictions
+              </TabsTrigger>
+              <TabsTrigger value="habits" className="flex items-center gap-2">
+                <Activity className="h-4 w-4" />
+                Habits
+              </TabsTrigger>
+              <TabsTrigger value="environment" className="flex items-center gap-2">
+                <Cloud className="h-4 w-4" />
+                Environment
               </TabsTrigger>
             </TabsList>
 
@@ -347,6 +358,17 @@ const MoodTrackerPage = () => {
 
             <TabsContent value="predictions">
               <MoodPredictionSystem moodHistory={moodHistory} />
+            </TabsContent>
+
+            <TabsContent value="habits">
+              <HabitTracker />
+            </TabsContent>
+
+            <TabsContent value="environment">
+              <div className="space-y-6">
+                <WeatherCorrelation moodHistory={moodHistory} />
+                <TriggerPatternRecognition moodHistory={moodHistory} />
+              </div>
             </TabsContent>
           </Tabs>
         </div>
