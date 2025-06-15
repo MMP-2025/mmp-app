@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target } from 'lucide-react';
+import { Smile, Meh, Frown, Angry, Laugh, ArrowLeft, TrendingUp, Calendar, Download, Target, Brain } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
@@ -18,6 +18,7 @@ import MoodFactors from '@/components/mood/MoodFactors';
 import MoodCorrelationTracker from '@/components/mood/MoodCorrelationTracker';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import AIInsights from '@/components/personalization/AIInsights';
+import MoodPredictionSystem from '@/components/mood/MoodPredictionSystem';
 
 interface MoodEntry {
   id: string;
@@ -49,14 +50,19 @@ const MoodTrackerPage = () => {
     'Stress', 'Relaxation', 'Entertainment', 'Food', 'Travel'
   ];
 
+  // Use useCallback to memoize the function and prevent unnecessary re-renders
+  const trackFeatureUsageCallback = useCallback(() => {
+    trackFeatureUsage('mood-tracker');
+  }, [trackFeatureUsage]);
+
   useEffect(() => {
     // Load mood history from storage
     const savedMoods = StorageManager.load<MoodEntry[]>(STORAGE_KEYS.MOOD_ENTRIES, []);
     setMoodHistory(savedMoods);
     
-    // Track feature usage
-    trackFeatureUsage('mood-tracker');
-  }, [trackFeatureUsage]);
+    // Track feature usage - using callback to prevent infinite loop
+    trackFeatureUsageCallback();
+  }, [trackFeatureUsageCallback]);
 
   const handleMoodSelection = (moodName: string) => {
     setSelectedMood(moodName);
@@ -166,7 +172,7 @@ const MoodTrackerPage = () => {
           </div>
           
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="track" className="flex items-center gap-2">
                 <Target className="h-4 w-4" />
                 Track Mood
@@ -184,8 +190,12 @@ const MoodTrackerPage = () => {
                 Correlations
               </TabsTrigger>
               <TabsTrigger value="insights" className="flex items-center gap-2">
-                <TrendingUp className="h-4 w-4" />
+                <Brain className="h-4 w-4" />
                 AI Insights
+              </TabsTrigger>
+              <TabsTrigger value="predictions" className="flex items-center gap-2">
+                <Brain className="h-4 w-4" />
+                Predictions
               </TabsTrigger>
             </TabsList>
 
@@ -324,6 +334,10 @@ const MoodTrackerPage = () => {
 
             <TabsContent value="insights">
               <AIInsights moodHistory={moodHistory} userBehavior={userBehavior} />
+            </TabsContent>
+
+            <TabsContent value="predictions">
+              <MoodPredictionSystem moodHistory={moodHistory} />
             </TabsContent>
           </Tabs>
         </div>
