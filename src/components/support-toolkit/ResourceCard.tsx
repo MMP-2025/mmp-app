@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { FileText, Download, BookmarkPlus, BookmarkCheck } from 'lucide-react';
@@ -58,10 +57,9 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, isSaved, onToggle
       </div>
       
       <Button
-        variant="secondary"
         size="sm"
         onClick={() => handleDownload(resource)}
-        className="w-full"
+        className="w-full bg-mental-blue hover:bg-mental-blue/80"
       >
         <Download className="h-4 w-4 mr-2" />
         Download
