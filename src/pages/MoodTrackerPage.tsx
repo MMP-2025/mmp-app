@@ -25,6 +25,18 @@ const MoodTrackerPage = () => {
     moodNote,
     setMoodNote,
     selectedFactors,
+    sleepHours,
+    setSleepHours,
+    exerciseMinutes,
+    setExerciseMinutes,
+    cycleTracking,
+    setCycleTracking,
+    cycleDay,
+    setCycleDay,
+    weather,
+    setWeather,
+    location,
+    setLocation,
     resetForm,
     handleFactorToggle
   } = useMoodForm();
@@ -62,8 +74,8 @@ const MoodTrackerPage = () => {
       timestamp: Date.now(),
       date: new Date().toISOString().split('T')[0],
       factors: selectedFactors,
-      sleepHours: Math.floor(Math.random() * 4) + 6,
-      exercise: selectedFactors.includes('Exercise')
+      sleepHours: sleepHours[0],
+      exercise: exerciseMinutes[0] > 0
     };
 
     saveMoodEntry(newEntry);
@@ -91,6 +103,18 @@ const MoodTrackerPage = () => {
               moodHistory={moodHistory}
               moodFactors={moodFactors}
               userBehavior={userBehavior}
+              sleepHours={sleepHours}
+              setSleepHours={setSleepHours}
+              exerciseMinutes={exerciseMinutes}
+              setExerciseMinutes={setExerciseMinutes}
+              cycleTracking={cycleTracking}
+              setCycleTracking={setCycleTracking}
+              cycleDay={cycleDay}
+              setCycleDay={setCycleDay}
+              weather={weather}
+              setWeather={setWeather}
+              location={location}
+              setLocation={setLocation}
               onMoodSelection={handleMoodSelection}
               onIntensityChange={setMoodIntensity}
               onNoteChange={setMoodNote}

@@ -9,6 +9,18 @@ interface TrackingTabContentProps {
   moodNote: string;
   selectedFactors: string[];
   moodFactors: string[];
+  sleepHours: number[];
+  setSleepHours: (hours: number[]) => void;
+  exerciseMinutes: number[];
+  setExerciseMinutes: (minutes: number[]) => void;
+  cycleTracking: boolean;
+  setCycleTracking: (enabled: boolean) => void;
+  cycleDay: number[];
+  setCycleDay: (day: number[]) => void;
+  weather: string;
+  setWeather: (weather: string) => void;
+  location: string;
+  setLocation: (location: string) => void;
   onMoodSelection: (mood: string) => void;
   onIntensityChange: (intensity: number[]) => void;
   onNoteChange: (note: string) => void;
@@ -22,6 +34,18 @@ const TrackingTabContent: React.FC<TrackingTabContentProps> = ({
   moodNote,
   selectedFactors,
   moodFactors,
+  sleepHours,
+  setSleepHours,
+  exerciseMinutes,
+  setExerciseMinutes,
+  cycleTracking,
+  setCycleTracking,
+  cycleDay,
+  setCycleDay,
+  weather,
+  setWeather,
+  location,
+  setLocation,
   onMoodSelection,
   onIntensityChange,
   onNoteChange,
@@ -36,6 +60,18 @@ const TrackingTabContent: React.FC<TrackingTabContentProps> = ({
         moodNote={moodNote}
         selectedFactors={selectedFactors}
         moodFactors={moodFactors}
+        sleepHours={sleepHours}
+        setSleepHours={setSleepHours}
+        exerciseMinutes={exerciseMinutes}
+        setExerciseMinutes={setExerciseMinutes}
+        cycleTracking={cycleTracking}
+        setCycleTracking={setCycleTracking}
+        cycleDay={cycleDay}
+        setCycleDay={setCycleDay}
+        weather={weather}
+        setWeather={setWeather}
+        location={location}
+        setLocation={setLocation}
         onMoodSelection={onMoodSelection}
         onIntensityChange={onIntensityChange}
         onNoteChange={onNoteChange}

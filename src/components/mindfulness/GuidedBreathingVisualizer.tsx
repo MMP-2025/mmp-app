@@ -1,88 +1,83 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useBreathingCycle, BreathingTechniqueKey } from '@/hooks/useBreathingCycle';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Play, Pause, RotateCcw } from 'lucide-react';
+import { useBreathingCycle } from '@/hooks/useBreathingCycle';
+import { breathingTechniques } from '@/data/breathingTechniques';
 import BreathingVisualizerCircle from './BreathingVisualizerCircle';
-import BreathingControls from './BreathingControls';
-import { techniques } from '@/data/breathingTechniques';
 
-interface GuidedBreathingVisualizerProps {
-  onComplete?: (durationInMinutes: number) => void;
-  defaultTechnique?: BreathingTechniqueKey;
-  cycleGoal?: number;
-}
+const GuidedBreathingVisualizer: React.FC = () => {
+  const [selectedTechnique, setSelectedTechnique] = useState(breathingTechniques[0]);
+  const { phase, isActive, startCycle, pauseCycle, resetCycle } = useBreathingCycle(selectedTechnique.timing);
 
-const formatTime = (seconds: number) => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
-};
-
-const techniqueDisplayNames: Record<BreathingTechniqueKey, string> = {
-  '4-7-8': '4-7-8 (Relaxing)',
-  '4-4-4-4': 'Box Breathing',
-  '6-2-6-2': 'Calming',
-  'simple': 'Simple (Beginner)',
-};
-
-const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
-  onComplete,
-  defaultTechnique = '4-4-4-4',
-  cycleGoal = 10,
-}) => {
-  const {
-    isActive,
-    phase,
-    cycleCount,
-    totalTime,
-    technique,
-    actions,
-  } = useBreathingCycle({ onComplete, defaultTechnique, cycleGoal });
-
-  const handleStartPause = () => {
-    if (isActive) {
-      actions.pause();
-    } else {
-      actions.start();
+  const handleTechniqueChange = (techniqueId: string) => {
+    const technique = breathingTechniques.find(t => t.id === techniqueId);
+    if (technique) {
+      setSelectedTechnique(technique);
+      resetCycle();
     }
   };
 
   return (
-    <Card className="p-8 bg-mental-beige text-center">
-      <h3 className="text-xl font-semibold mb-6 text-[#737373]">
-        Guided Breathing Visualizer
-      </h3>
-      
-      <BreathingVisualizerCircle phase={phase} />
-
-      <div className="mb-6">
-        <div className="flex justify-around text-sm text-[#737373]">
-          <span>Cycle: {cycleCount} / {cycleGoal}</span>
-          <span>Time: {formatTime(totalTime)}</span>
+    <Card className="p-6 bg-mental-green">
+      <div className="text-center mb-6">
+        <h3 className="text-2xl font-semibold mb-4" style={{color: '#737373'}}>
+          Guided Breathing Visualizer
+        </h3>
+        
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2" style={{color: '#737373'}}>
+            Choose Technique:
+          </label>
+          <Select value={selectedTechnique.id} onValueChange={handleTechniqueChange}>
+            <SelectTrigger className="w-full max-w-xs mx-auto">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {breathingTechniques.map(technique => (
+                <SelectItem key={technique.id} value={technique.id}>
+                  {technique.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <div className="mb-4">
+          <p className="text-sm mb-2" style={{color: '#737373'}}>
+            {selectedTechnique.description}
+          </p>
+          <p className="text-xs" style={{color: '#737373'}}>
+            {selectedTechnique.instructions}
+          </p>
         </div>
       </div>
 
-      <BreathingControls
-        isActive={isActive}
-        onStartPause={handleStartPause}
-        onReset={actions.reset}
-      />
-
-      <div className="mt-6 space-y-3">
-        <p className="text-sm font-medium text-[#737373]">Choose a technique:</p>
-        <div className="flex justify-center flex-wrap gap-2">
-          {Object.keys(techniques).map((key) => (
-            <Button
-              key={key}
-              variant={technique === key ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => actions.setTechnique(key as BreathingTechniqueKey)}
-            >
-              {techniqueDisplayNames[key as BreathingTechniqueKey]}
-            </Button>
-          ))}
-        </div>
+      <div className="mb-6">
+        <BreathingVisualizerCircle phase={phase} />
+      </div>
+      
+      <div className="flex justify-center gap-4">
+        <Button
+          onClick={isActive ? pauseCycle : startCycle}
+          size="lg"
+          className="flex items-center gap-2 bg-mental-blue hover:bg-mental-blue/80"
+        >
+          {isActive ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          {isActive ? 'Pause' : 'Start'}
+        </Button>
+        
+        <Button
+          onClick={resetCycle}
+          variant="outline"
+          size="lg"
+          className="flex items-center gap-2"
+        >
+          <RotateCcw className="h-4 w-4" />
+          Reset
+        </Button>
       </div>
     </Card>
   );
