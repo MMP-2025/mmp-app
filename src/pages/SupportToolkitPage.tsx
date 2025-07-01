@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Brain, Target, Heart, Camera } from 'lucide-react';
 
 import { resources } from '@/data/resources';
-import { Resource } from '@/types/resource';
 
 import ToolkitNav from '@/components/support-toolkit/ToolkitNav';
 import ResourceFilter from '@/components/support-toolkit/ResourceFilter';
@@ -72,95 +71,81 @@ const SupportToolkitPage = () => {
         setSelectedCategory={setSelectedCategory}
       />
 
-      {/* Available Resources Section */}
+      {/* Comprehensive Support Toolkit Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-[#7e868b]">
             <BookOpen className="h-5 w-5" />
-            Available Resources ({filteredResources.length})
+            Comprehensive Support Toolkit
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          {currentView === 'saved' && savedResources.length === 0 ? (
-            <div className="text-center py-8">
-              <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-              <h3 className="text-xl font-semibold mb-2 text-[#7e868b]">No Saved Resources</h3>
-              <p className="text-gray-500 mb-4">You haven't saved any resources yet. Browse all resources and save your favorites!</p>
-            </div>
-          ) : filteredResources.length === 0 ? (
-            <div className="text-center py-8">
-              <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-              <p className="text-gray-500">No resources found matching your criteria</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredResources.map(resource => (
-                <ResourceCard
-                  key={resource.id}
-                  resource={resource}
-                  isSaved={savedResources.includes(resource.id)}
-                  onToggleSave={toggleSaved}
-                />
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Therapeutic Tools & Exercises Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <Brain className="h-5 w-5" />
-            Therapeutic Tools & Exercises
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-foreground">CBT Modules</h3>
-              <CBTModules />
-            </div>
+        <CardContent className="space-y-8">
+          {/* Available Resources */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+              <BookOpen className="h-5 w-5" />
+              Available Resources ({filteredResources.length})
+            </h3>
+            {currentView === 'saved' && savedResources.length === 0 ? (
+              <div className="text-center py-8">
+                <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                <h4 className="text-lg font-semibold mb-2 text-[#7e868b]">No Saved Resources</h4>
+                <p className="text-gray-500 mb-4">You haven't saved any resources yet. Browse all resources and save your favorites!</p>
+              </div>
+            ) : filteredResources.length === 0 ? (
+              <div className="text-center py-8">
+                <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                <p className="text-gray-500">No resources found matching your criteria</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredResources.map(resource => (
+                  <ResourceCard
+                    key={resource.id}
+                    resource={resource}
+                    isSaved={savedResources.includes(resource.id)}
+                    onToggleSave={toggleSaved}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Exposure Therapy Tracker */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <Target className="h-5 w-5" />
-            Exposure Therapy Tracker
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ExposureTherapyTracker />
-        </CardContent>
-      </Card>
+          {/* Therapeutic Tools & Exercises */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+              <Brain className="h-5 w-5" />
+              Therapeutic Tools & Exercises
+            </h3>
+            <CBTModules />
+          </div>
 
-      {/* Coping Skills Library */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <Heart className="h-5 w-5" />
-            Coping Skills Library
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <CopingSkillsLibrary />
-        </CardContent>
-      </Card>
+          {/* Exposure Therapy Tracker */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+              <Target className="h-5 w-5" />
+              Exposure Therapy Tracker
+            </h3>
+            <ExposureTherapyTracker />
+          </div>
 
-      {/* Progress Photography */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <Camera className="h-5 w-5" />
-            Progress Photography
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ProgressPhotography />
+          {/* Coping Skills Library */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+              <Heart className="h-5 w-5" />
+              Coping Skills Library
+            </h3>
+            <CopingSkillsLibrary />
+          </div>
+
+          {/* Progress Photography */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+              <Camera className="h-5 w-5" />
+              Progress Photography
+            </h3>
+            <ProgressPhotography />
+          </div>
         </CardContent>
       </Card>
 

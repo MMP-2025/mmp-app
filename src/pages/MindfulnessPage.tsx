@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -6,6 +7,7 @@ import AudioMeditation from '@/components/mindfulness/AudioMeditation';
 import GuidedBreathingVisualizer from '@/components/mindfulness/GuidedBreathingVisualizer';
 import BodyScanVisualization from '@/components/mindfulness/BodyScanVisualization';
 import MindfulnessProgressTracker from '@/components/mindfulness/MindfulnessProgressTracker';
+import AIGeneratedAudios from '@/components/mindfulness/AIGeneratedAudios';
 import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import MindfulnessExercises from '@/components/mindfulness/MindfulnessExercises';
@@ -56,7 +58,7 @@ const MindfulnessPage = () => {
         </div>
 
         <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="exercises" className="flex items-center gap-2">
               <Brain className="h-4 w-4" />
               Exercises
@@ -64,6 +66,10 @@ const MindfulnessPage = () => {
             <TabsTrigger value="audio" className="flex items-center gap-2">
               <Headphones className="h-4 w-4" />
               Audio Guided
+            </TabsTrigger>
+            <TabsTrigger value="ai-audio" className="flex items-center gap-2">
+              <Headphones className="h-4 w-4" />
+              AI Audios
             </TabsTrigger>
             <TabsTrigger value="breathing" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
@@ -100,6 +106,12 @@ const MindfulnessPage = () => {
                 onComplete={() => handleSessionComplete('body_scan', 12)}
               />
             </div>
+          </TabsContent>
+
+          <TabsContent value="ai-audio" className="space-y-6">
+            <AIGeneratedAudios 
+              onComplete={(audioId, duration) => handleSessionComplete('meditation', duration)}
+            />
           </TabsContent>
 
           <TabsContent value="breathing" className="space-y-6">

@@ -36,8 +36,8 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
 
   return (
     <Card className="p-6 bg-mental-green">
-      <div className="text-center mb-6">
-        <h3 className="text-2xl font-semibold mb-4" style={{color: '#737373'}}>
+      <div className="text-center mb-8">
+        <h3 className="text-2xl font-semibold mb-6" style={{color: '#737373'}}>
           Guided Breathing Visualizer
         </h3>
         
@@ -69,7 +69,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
         </div>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-8">
         <BreathingVisualizerCircle phase={phase} />
       </div>
       

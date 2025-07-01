@@ -51,4 +51,19 @@
   .bg-white, .bg-transparent, [style*="background: white"], [style*="background-color: white"] {
     background-color: rgb(var(--mental-gray)) !important;
   }
+
+  /* Fix sidebar icon overlap with text */
+  .sidebar-layout {
+    padding-left: 6rem;
+  }
+
+  /* Ensure sidebar icons don't overlap content */
+  .fixed.left-0.top-0.z-50 {
+    width: 5rem;
+  }
+
+  /* Add proper spacing for page content */
+  .container.mx-auto.p-6.ml-16 {
+    margin-left: 6rem;
+  }
 }
