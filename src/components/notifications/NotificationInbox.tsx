@@ -138,10 +138,10 @@ const NotificationInbox: React.FC = () => {
                           <h4 className={`font-medium ${notification.readAt ? 'text-gray-600' : 'text-[#737373] font-semibold'}`}>
                             {notification.title}
                           </h4>
-                          <Badge className={getTypeColor(notification.type)} size="sm">
+                          <Badge className={getTypeColor(notification.type)}>
                             {notification.type}
                           </Badge>
-                          <Badge className={getPriorityColor(notification.priority)} size="sm">
+                          <Badge className={getPriorityColor(notification.priority)}>
                             {notification.priority}
                           </Badge>
                         </div>
