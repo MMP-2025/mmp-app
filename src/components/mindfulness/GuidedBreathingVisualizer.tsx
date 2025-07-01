@@ -8,15 +8,29 @@ import { useBreathingCycle } from '@/hooks/useBreathingCycle';
 import { breathingTechniques } from '@/data/breathingTechniques';
 import BreathingVisualizerCircle from './BreathingVisualizerCircle';
 
-const GuidedBreathingVisualizer: React.FC = () => {
+interface GuidedBreathingVisualizerProps {
+  defaultTechnique?: string;
+  cycleGoal?: number;
+  onComplete?: (durationInMinutes: number) => void;
+}
+
+const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
+  defaultTechnique = '4-4-4-4',
+  cycleGoal = 10,
+  onComplete
+}) => {
   const [selectedTechnique, setSelectedTechnique] = useState(breathingTechniques[0]);
-  const { phase, isActive, startCycle, pauseCycle, resetCycle } = useBreathingCycle(selectedTechnique.timing);
+  const { phase, isActive, actions } = useBreathingCycle({
+    defaultTechnique: defaultTechnique as any,
+    cycleGoal,
+    onComplete
+  });
 
   const handleTechniqueChange = (techniqueId: string) => {
     const technique = breathingTechniques.find(t => t.id === techniqueId);
     if (technique) {
       setSelectedTechnique(technique);
-      resetCycle();
+      actions.reset();
     }
   };
 
@@ -61,7 +75,7 @@ const GuidedBreathingVisualizer: React.FC = () => {
       
       <div className="flex justify-center gap-4">
         <Button
-          onClick={isActive ? pauseCycle : startCycle}
+          onClick={isActive ? actions.pause : actions.start}
           size="lg"
           className="flex items-center gap-2 bg-mental-blue hover:bg-mental-blue/80"
         >
@@ -70,7 +84,7 @@ const GuidedBreathingVisualizer: React.FC = () => {
         </Button>
         
         <Button
-          onClick={resetCycle}
+          onClick={actions.reset}
           variant="outline"
           size="lg"
           className="flex items-center gap-2"

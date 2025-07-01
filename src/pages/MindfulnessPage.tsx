@@ -103,11 +103,7 @@ const MindfulnessPage = () => {
           </TabsContent>
 
           <TabsContent value="breathing" className="space-y-6">
-            <GuidedBreathingVisualizer
-              defaultTechnique="4-4-4-4"
-              cycleGoal={12}
-              onComplete={(durationInMinutes) => handleSessionComplete('breathing', durationInMinutes)}
-            />
+            <GuidedBreathingVisualizer />
           </TabsContent>
 
           <TabsContent value="progress" className="space-y-6">

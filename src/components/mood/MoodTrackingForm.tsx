@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import EmotionSelector from './EmotionSelector';
 import IntensitySlider from './IntensitySlider';
-import MoodNoteInput from './MoodNoteInput';
+import MoodNoteInput from './forms/MoodNoteInput';
 import MoodFactors from './MoodFactors';
 import HabitTrackers from './HabitTrackers';
 import EnvironmentTracker from './EnvironmentTracker';
@@ -61,25 +61,25 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
   return (
     <div className="space-y-6">
       <EmotionSelector 
-        selectedMood={selectedMood} 
-        onMoodSelection={onMoodSelection} 
+        selectedEmotion={selectedMood} 
+        onEmotionSelect={onMoodSelection} 
       />
       
       {selectedMood && (
         <>
           <IntensitySlider 
-            moodIntensity={moodIntensity} 
-            onIntensityChange={onIntensityChange} 
+            intensity={moodIntensity[0]} 
+            onIntensityChange={(intensity) => onIntensityChange([intensity])} 
           />
           
           <MoodNoteInput 
-            moodNote={moodNote} 
+            note={moodNote} 
             onNoteChange={onNoteChange} 
           />
           
           <MoodFactors 
             selectedFactors={selectedFactors}
-            moodFactors={moodFactors}
+            factors={moodFactors}
             onFactorToggle={onFactorToggle}
           />
 
