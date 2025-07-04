@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Brain, Headphones, Activity } from 'lucide-react';
+import { Brain, Headphones, Activity, Sparkles } from 'lucide-react';
 import AudioMeditation from '@/components/mindfulness/AudioMeditation';
 import GuidedBreathingVisualizer from '@/components/mindfulness/GuidedBreathingVisualizer';
 import BodyScanVisualization from '@/components/mindfulness/BodyScanVisualization';
@@ -65,11 +65,11 @@ const MindfulnessPage = () => {
             </TabsTrigger>
             <TabsTrigger value="audio" className="flex items-center gap-2">
               <Headphones className="h-4 w-4" />
-              Audio Guided
+              Pre-recorded
             </TabsTrigger>
             <TabsTrigger value="ai-audio" className="flex items-center gap-2">
-              <Headphones className="h-4 w-4" />
-              AI Audios
+              <Sparkles className="h-4 w-4" />
+              AI Generated
             </TabsTrigger>
             <TabsTrigger value="breathing" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
@@ -86,6 +86,10 @@ const MindfulnessPage = () => {
           </TabsContent>
 
           <TabsContent value="audio" className="space-y-6">
+            <div className="mb-4 p-4 bg-blue-50 rounded-lg border">
+              <h3 className="font-semibold text-blue-900 mb-2">Pre-recorded Audio Sessions</h3>
+              <p className="text-sm text-blue-700">These are professionally crafted meditation sessions with consistent, high-quality audio guidance.</p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <AudioMeditation
                 title="Morning Meditation"
@@ -109,6 +113,10 @@ const MindfulnessPage = () => {
           </TabsContent>
 
           <TabsContent value="ai-audio" className="space-y-6">
+            <div className="mb-4 p-4 bg-purple-50 rounded-lg border">
+              <h3 className="font-semibold text-purple-900 mb-2">AI Generated Audio Sessions</h3>
+              <p className="text-sm text-purple-700">Personalized meditation sessions created by AI based on your preferences and current needs. Each session is unique and tailored to you.</p>
+            </div>
             <AIGeneratedAudios 
               onComplete={(audioId, duration) => handleSessionComplete('meditation', duration)}
             />

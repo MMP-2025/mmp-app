@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Target } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { WellnessScoreDisplay } from './WellnessScoreDisplay';
 import { WellnessMetricsCard } from './WellnessMetricsCard';
 import { WellnessScoreHistory } from './WellnessScoreHistory';
@@ -19,31 +19,27 @@ const WellnessScore: React.FC = () => {
     saveScoreToHistory 
   });
 
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-mental-green';
-    if (score >= 60) return 'text-mental-beige';
-    return 'text-destructive';
-  };
+  const getScoreColor = (score: number) => 'text-mental-green';
 
   return (
     <div className="space-y-6">
       <Card className="p-6 bg-white/90">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-neutral-500" />
-            <h3 className="text-xl font-semibold text-neutral-500">Wellness Score</h3>
+            <Star className="h-5 w-5 text-mental-green" />
+            <h3 className="text-xl font-semibold text-neutral-500">Wellness Points</h3>
           </div>
           <Button 
             onClick={calculateWellnessScore} 
             disabled={isCalculating}
             size="sm"
           >
-            {isCalculating ? 'Calculating...' : 'Refresh Score'}
+            {isCalculating ? 'Calculating...' : 'Update Points'}
           </Button>
         </div>
         
         <p className="mb-6 text-neutral-500">
-          Your daily wellness score based on mood patterns, consistency, and engagement
+          Earn points for your wellness activities and track your positive habits
         </p>
 
         {currentScore && (
@@ -79,13 +75,13 @@ const WellnessScore: React.FC = () => {
 
         {!currentScore && !isCalculating && (
           <div className="text-center py-8">
-            <Target className="h-12 w-12 mx-auto mb-4 opacity-50 text-neutral-500" />
-            <h4 className="text-lg font-semibold mb-2 text-neutral-500">Calculate Your Wellness Score</h4>
+            <Star className="h-12 w-12 mx-auto mb-4 text-mental-green" />
+            <h4 className="text-lg font-semibold mb-2 text-neutral-500">Start Earning Wellness Points</h4>
             <p className="mb-4 text-neutral-500">
-              Get insights into your mental health patterns and receive personalized recommendations
+              Track your mental health activities and earn points for your progress
             </p>
             <Button onClick={calculateWellnessScore}>
-              Calculate Score
+              Calculate My Points
             </Button>
           </div>
         )}
@@ -93,9 +89,9 @@ const WellnessScore: React.FC = () => {
         {isCalculating && (
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-mental-green mx-auto mb-4"></div>
-            <h4 className="text-lg font-semibold mb-2 text-neutral-500">Analyzing Your Wellness Data</h4>
+            <h4 className="text-lg font-semibold mb-2 text-neutral-500">Calculating Your Wellness Points</h4>
             <p className="text-neutral-500">
-              Processing your mood patterns, consistency, and engagement metrics...
+              Reviewing your activities and awarding points for your progress...
             </p>
           </div>
         )}

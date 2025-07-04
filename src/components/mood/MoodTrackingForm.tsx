@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import EmotionSelector from './EmotionSelector';
+import FeelingsWheel from './FeelingsWheel';
 import IntensitySlider from './IntensitySlider';
 import MoodNoteInput from './forms/MoodNoteInput';
 import MoodFactors from './MoodFactors';
@@ -60,7 +60,7 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
 }) => {
   return (
     <div className="space-y-6">
-      <EmotionSelector 
+      <FeelingsWheel 
         selectedEmotion={selectedMood} 
         onEmotionSelect={onMoodSelection} 
       />

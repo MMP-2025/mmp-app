@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -6,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CalendarIcon, Plus, Clock, ArrowLeft } from 'lucide-react';
+import { CalendarIcon, Plus, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { DailySchedule } from '@/components/planner/DailySchedule';
@@ -14,7 +15,6 @@ import { WeeklyView } from '@/components/planner/WeeklyView';
 import { MonthlyView } from '@/components/planner/MonthlyView';
 import { YearlyView } from '@/components/planner/YearlyView';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
 
 const PlannerPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -45,17 +45,9 @@ const PlannerPage = () => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      <div className="flex items-center gap-4">
-        <Button asChild variant="outline" size="sm">
-          <Link to="/" className="flex items-center gap-2 text-neutral-500">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Link>
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold mb-2 text-neutral-500">Planner</h1>
-          <p className="text-neutral-500">Organize your schedule and plan your activities</p>
-        </div>
+      <div>
+        <h1 className="text-3xl font-bold mb-2 text-neutral-500">Planner</h1>
+        <p className="text-neutral-500">Organize your schedule and plan your activities</p>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

@@ -35,23 +35,23 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
   };
 
   return (
-    <Card className="p-6 bg-mental-green">
+    <Card className="p-6 bg-white border shadow-lg">
       <div className="text-center mb-8">
         <h3 className="text-2xl font-semibold mb-6" style={{color: '#737373'}}>
           Guided Breathing Visualizer
         </h3>
         
-        <div className="mb-6">
+        <div className="mb-6 bg-mental-peach p-4 rounded-lg">
           <label className="block text-sm font-medium mb-2" style={{color: '#737373'}}>
             Choose Technique:
           </label>
           <Select value={selectedTechnique.id} onValueChange={handleTechniqueChange}>
-            <SelectTrigger className="w-full max-w-xs mx-auto">
+            <SelectTrigger className="w-full max-w-xs mx-auto bg-white border-2">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white border-2 shadow-lg z-50">
               {breathingTechniques.map(technique => (
-                <SelectItem key={technique.id} value={technique.id}>
+                <SelectItem key={technique.id} value={technique.id} className="bg-white hover:bg-gray-100">
                   {technique.name}
                 </SelectItem>
               ))}
@@ -59,7 +59,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
           </Select>
         </div>
         
-        <div className="mb-4">
+        <div className="mb-4 bg-mental-blue/10 p-4 rounded-lg">
           <p className="text-sm mb-2" style={{color: '#737373'}}>
             {selectedTechnique.description}
           </p>

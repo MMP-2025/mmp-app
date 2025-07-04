@@ -54,26 +54,28 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
   return (
     <div className="flex min-h-screen">
-      {/* Menu trigger and Home button - always visible in top-left */}
+      {/* Menu trigger and Home button - positioned to not block content */}
       <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
         <Button 
           variant="ghost" 
           size="icon" 
           onClick={() => setIsClicked(true)} 
-          className="bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground"
+          className="bg-background/95 backdrop-blur-sm shadow-lg hover:bg-background text-foreground border"
         >
           <Menu className="h-5 w-5" />
         </Button>
         <Link to="/" aria-label="Go to Home page">
-          <Button variant="ghost" size="icon" className="bg-background/80 backdrop-blur-sm shadow-md hover:bg-background/90 text-foreground">
+          <Button variant="ghost" size="icon" className="bg-background/95 backdrop-blur-sm shadow-lg hover:bg-background text-foreground border">
               <Home className="h-5 w-5" />
           </Button>
         </Link>
       </div>
 
-      {/* User Profile in top right */}
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-4">
-        <UserProfile />
+      {/* User Profile in top right - positioned to not block content */}
+      <div className="fixed top-4 right-4 z-50">
+        <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
+          <UserProfile />
+        </div>
       </div>
 
       <div 
@@ -116,7 +118,8 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         </Sidebar>
       </div>
 
-      <main className={`flex-1 p-4 md:p-6 transition-all duration-300 ${
+      {/* Main content with proper padding to avoid overlap */}
+      <main className={`flex-1 transition-all duration-300 pt-20 px-4 pb-4 md:px-6 md:pb-6 ${
         isClicked ? 'ml-64' : 'ml-0'
       }`}>
         {children}
