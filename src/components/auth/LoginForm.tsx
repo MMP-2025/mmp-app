@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff } from 'lucide-react';
+import InvitationValidation from './InvitationValidation';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,11 @@ const LoginForm = () => {
   const [role, setRole] = useState<UserRole>('patient');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showInvitationValidation, setShowInvitationValidation] = useState(false);
+  const [validatedInvitation, setValidatedInvitation] = useState<{
+    token: string;
+    email: string;
+  } | null>(null);
   const { login, register, loginAsGuest, loading } = useAuth();
   const { toast } = useToast();
 
@@ -50,9 +56,22 @@ const LoginForm = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // If registering as patient, show invitation validation first
+    if (role === 'patient' && !validatedInvitation) {
+      setShowInvitationValidation(true);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      await register(email, password, name, role);
+      await register(
+        validatedInvitation ? validatedInvitation.email : email, 
+        password, 
+        name, 
+        role,
+        validatedInvitation?.token
+      );
       toast({
         title: "Registration successful",
         description: "Please check your email to verify your account."
@@ -68,10 +87,27 @@ const LoginForm = () => {
     }
   };
 
+  const handleValidInvitation = (token: string, invitationEmail: string) => {
+    setValidatedInvitation({ token, email: invitationEmail });
+    setEmail(invitationEmail);
+    setShowInvitationValidation(false);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mental-blue"></div>
+      </div>
+    );
+  }
+
+  if (showInvitationValidation) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
+        <InvitationValidation
+          onValidInvitation={handleValidInvitation}
+          onBack={() => setShowInvitationValidation(false)}
+        />
       </div>
     );
   }
@@ -172,6 +208,36 @@ const LoginForm = () => {
             <TabsContent value="register">
               <form onSubmit={handleRegister} className="space-y-4">
                 <div>
+                  <Label htmlFor="register-role">Role</Label>
+                  <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
+                    <SelectTrigger className="bg-mental-gray">
+                      <SelectValue placeholder="Select your role" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-mental-gray">
+                      <SelectItem value="patient">Patient</SelectItem>
+                      <SelectItem value="provider">Provider</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {role === 'patient' && validatedInvitation && (
+                  <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+                    <p className="text-sm text-green-700">
+                      ✓ Invitation validated for: {validatedInvitation.email}
+                    </p>
+                  </div>
+                )}
+
+                {role === 'patient' && !validatedInvitation && (
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+                    <p className="text-sm text-blue-700">
+                      Patient registration requires an invitation from a provider. 
+                      Click "Create Account" to enter your invitation token.
+                    </p>
+                  </div>
+                )}
+
+                <div>
                   <Label htmlFor="register-name">Full Name</Label>
                   <Input 
                     id="register-name" 
@@ -193,7 +259,8 @@ const LoginForm = () => {
                     onChange={e => setEmail(e.target.value)} 
                     required 
                     placeholder="Enter your email" 
-                    className="bg-mental-gray" 
+                    className="bg-mental-gray"
+                    disabled={role === 'patient' && validatedInvitation}
                   />
                 </div>
                 
@@ -224,19 +291,6 @@ const LoginForm = () => {
                       )}
                     </Button>
                   </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="register-role">Role</Label>
-                  <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
-                    <SelectTrigger className="bg-mental-gray">
-                      <SelectValue placeholder="Select your role" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-mental-gray">
-                      <SelectItem value="patient">Patient</SelectItem>
-                      <SelectItem value="provider">Provider</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
 
                 <Button 

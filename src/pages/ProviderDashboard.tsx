@@ -1,8 +1,8 @@
-
 import React, { lazy, Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorBoundary } from '@/components/provider/ErrorBoundary';
+import PatientInvitations from '@/components/provider/PatientInvitations';
 
 // Lazy load tab components
 const QuotesTab = lazy(() => import('@/components/provider/tabs/QuotesTab'));
@@ -61,10 +61,15 @@ const ProviderDashboard = () => {
       <div className="container mx-auto p-6 space-y-6 ml-16">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Provider Dashboard</h1>
-          <p className="text-[#7e868b]">Manage quotes, journal prompts, questions, toolkit items, reminders, gratitude prompts, mindfulness prompts, and push notifications for your app content.</p>
+          <p className="text-[#7e868b]">Manage quotes, journal prompts, questions, toolkit items, reminders, gratitude prompts, mindfulness prompts, push notifications, and patient invitations.</p>
           <div className="mt-2 text-xs text-gray-500">
             Keyboard shortcuts: Alt+1 (Quotes), Alt+2 (Prompts), Ctrl+S (Save), Ctrl+Shift+Q (Focus quote input)
           </div>
+        </div>
+
+        {/* Patient Invitations Section */}
+        <div className="mb-6">
+          <PatientInvitations />
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">

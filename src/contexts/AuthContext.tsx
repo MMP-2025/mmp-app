@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User as SupabaseUser } from '@supabase/supabase-js';
@@ -15,7 +14,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string, role: UserRole) => Promise<void>;
+  register: (email: string, password: string, name: string, role: UserRole, invitationToken?: string) => Promise<void>;
   loginAsGuest: () => void;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
@@ -23,6 +22,8 @@ interface AuthContextType {
   isPatient: boolean;
   isGuest: boolean;
   loading: boolean;
+  validateInvitation: (token: string) => Promise<{ valid: boolean; email?: string; providerName?: string }>;
+  sendPatientInvitation: (patientEmail: string, patientName: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -115,9 +116,87 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (email: string, password: string, name: string, role: UserRole) => {
+  const validateInvitation = async (token: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('patient_invitations')
+        .select(`
+          *,
+          provider:profiles!patient_invitations_provider_id_fkey(name)
+        `)
+        .eq('token', token)
+        .eq('status', 'pending')
+        .gt('expires_at', new Date().toISOString())
+        .single();
+
+      if (error || !data) {
+        return { valid: false };
+      }
+
+      return {
+        valid: true,
+        email: data.patient_email,
+        providerName: data.provider.name
+      };
+    } catch (error) {
+      console.error('Error validating invitation:', error);
+      return { valid: false };
+    }
+  };
+
+  const sendPatientInvitation = async (patientEmail: string, patientName: string) => {
+    if (!user || user.role !== 'provider') {
+      throw new Error('Only providers can send invitations');
+    }
+
+    try {
+      // Generate a unique token
+      const token = crypto.randomUUID();
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 7); // Expires in 7 days
+
+      const { error } = await supabase
+        .from('patient_invitations')
+        .insert([
+          {
+            provider_id: user.id,
+            patient_email: patientEmail,
+            patient_name: patientName,
+            token,
+            expires_at: expiresAt.toISOString(),
+            status: 'pending'
+          }
+        ]);
+
+      if (error) throw error;
+
+      // In a real app, you would send an email here with the invitation link
+      console.log(`Invitation sent to ${patientEmail} with token: ${token}`);
+    } catch (error) {
+      console.error('Error sending invitation:', error);
+      throw error;
+    }
+  };
+
+  const register = async (email: string, password: string, name: string, role: UserRole, invitationToken?: string) => {
     setLoading(true);
     try {
+      // If registering as a patient, validate the invitation token
+      if (role === 'patient') {
+        if (!invitationToken) {
+          throw new Error('Invitation token is required for patient registration');
+        }
+
+        const invitationResult = await validateInvitation(invitationToken);
+        if (!invitationResult.valid) {
+          throw new Error('Invalid or expired invitation token');
+        }
+
+        if (invitationResult.email !== email) {
+          throw new Error('Email does not match the invitation');
+        }
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -147,6 +226,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (profileError) {
           console.error('Error creating profile:', profileError);
           throw new Error('Failed to create user profile');
+        }
+
+        // If patient registration with invitation, mark invitation as used
+        if (role === 'patient' && invitationToken) {
+          await supabase
+            .from('patient_invitations')
+            .update({
+              status: 'used',
+              used_at: new Date().toISOString(),
+              patient_id: data.user.id
+            })
+            .eq('token', invitationToken);
         }
       }
     } catch (error) {
@@ -203,7 +294,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isProvider: user?.role === 'provider',
     isPatient: user?.role === 'patient',
     isGuest: user?.role === 'guest',
-    loading
+    loading,
+    validateInvitation,
+    sendPatientInvitation
   };
 
   return (
