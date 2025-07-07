@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,11 @@ import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff } from 'lucide-react';
 import InvitationValidation from './InvitationValidation';
 
+interface ValidatedInvitation {
+  token: string;
+  email: string;
+}
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,10 +23,7 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showInvitationValidation, setShowInvitationValidation] = useState(false);
-  const [validatedInvitation, setValidatedInvitation] = useState<{
-    token: string;
-    email: string;
-  } | null>(null);
+  const [validatedInvitation, setValidatedInvitation] = useState<ValidatedInvitation | null>(null);
   const { login, register, loginAsGuest, loading } = useAuth();
   const { toast } = useToast();
 
@@ -260,7 +261,7 @@ const LoginForm = () => {
                     required 
                     placeholder="Enter your email" 
                     className="bg-mental-gray"
-                    disabled={role === 'patient' && validatedInvitation}
+                    disabled={role === 'patient' && !!validatedInvitation}
                   />
                 </div>
                 
