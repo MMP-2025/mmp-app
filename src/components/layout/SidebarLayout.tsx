@@ -63,11 +63,13 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   return (
     <div className="flex min-h-screen">
       {/* Menu trigger and Home button - positioned to not block content */}
-      <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
+      <div className={`fixed top-4 z-50 flex items-center gap-2 transition-all duration-300 ${
+        isClicked ? 'left-72' : 'left-4'
+      }`}>
         <Button 
           variant="ghost" 
           size="icon" 
-          onClick={() => setIsClicked(true)} 
+          onClick={() => setIsClicked(!isClicked)} 
           className="bg-background/95 backdrop-blur-sm shadow-lg hover:bg-background text-foreground border"
         >
           <Menu className="h-5 w-5" />
