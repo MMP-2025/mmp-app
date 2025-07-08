@@ -31,11 +31,12 @@ import CommunityPage from "./pages/CommunityPage";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import NotFound from "./pages/NotFound";
 import PersonalizationPage from "./pages/PersonalizationPage";
+import GuestUpgradePrompt from "./components/auth/GuestUpgradePrompt";
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isGuest } = useAuth();
 
   React.useEffect(() => {
     // Register service worker for PWA functionality
@@ -97,21 +98,67 @@ const AppContent = () => {
                   <TimerPage />
                 </PageWrapper>
               } />
-              <Route path="/support-toolkit" element={
-                <PageWrapper backgroundColor="bg-mental-beige">
-                  <SupportToolkitPage />
-                </PageWrapper>
-              } />
-              <Route path="/profile" element={
-                <PageWrapper backgroundColor="bg-mental-gray">
-                  <ProfilePage />
-                </PageWrapper>
-              } />
-              <Route path="/community" element={
-                <PageWrapper backgroundColor="bg-mental-blue">
-                  <CommunityPage />
-                </PageWrapper>
-              } />
+              {!isGuest ? (
+                <>
+                  <Route path="/support-toolkit" element={
+                    <PageWrapper backgroundColor="bg-mental-beige">
+                      <SupportToolkitPage />
+                    </PageWrapper>
+                  } />
+                  <Route path="/profile" element={
+                    <PageWrapper backgroundColor="bg-mental-gray">
+                      <ProfilePage />
+                    </PageWrapper>
+                  } />
+                  <Route path="/community" element={
+                    <PageWrapper backgroundColor="bg-mental-blue">
+                      <CommunityPage />
+                    </PageWrapper>
+                  } />
+                </>
+              ) : (
+                <>
+                  <Route path="/support-toolkit" element={
+                    <GuestUpgradePrompt 
+                      featureName="Support Toolkit"
+                      description="Access professional therapeutic tools and resources"
+                      features={[
+                        "Comprehensive therapy resources library",
+                        "CBT modules and exercises", 
+                        "Coping skills development tools",
+                        "Professional guidance materials",
+                        "Crisis intervention resources"
+                      ]}
+                    />
+                  } />
+                  <Route path="/profile" element={
+                    <GuestUpgradePrompt 
+                      featureName="Personal Profile"
+                      description="Create and manage your personalized wellness profile"
+                      features={[
+                        "Save your preferences and settings",
+                        "Track your progress over time",
+                        "Personalized recommendations",
+                        "Custom reminders and goals",
+                        "Data backup and synchronization"
+                      ]}
+                    />
+                  } />
+                  <Route path="/community" element={
+                    <GuestUpgradePrompt 
+                      featureName="Community Features"
+                      description="Connect with others on their wellness journey"
+                      features={[
+                        "Join supportive community groups",
+                        "Share experiences safely and anonymously",
+                        "Participate in wellness challenges",
+                        "Access peer support networks",
+                        "Connect with mental health professionals"
+                      ]}
+                    />
+                  } />
+                </>
+              )}
               <Route path="/provider-dashboard" element={
                 <ProtectedRoute requiredRole="provider">
                   <PageWrapper backgroundColor="bg-mental-gray">

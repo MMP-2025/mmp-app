@@ -13,12 +13,11 @@ interface SidebarLayoutProps {
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   const location = useLocation();
-  const { isProvider } = useAuth();
+  const { isProvider, isGuest } = useAuth();
   const [isClicked, setIsClicked] = useState(false);
 
-  const menuItems = [
+  const baseMenuItems = [
     { icon: Home, label: 'Home', path: '/' },
-    { icon: User, label: 'Profile', path: '/profile' },
     { icon: Smile, label: 'Mood Tracker', path: '/mood' },
     { icon: FileText, label: 'Journal', path: '/journal' },
     { icon: Calendar, label: 'Planner', path: '/planner' },
@@ -26,10 +25,19 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     { icon: Timer, label: 'Timer', path: '/timer' },
     { icon: Book, label: 'Mindfulness', path: '/mindfulness' },
     { icon: Pencil, label: 'Gratitude', path: '/gratitude' },
-    { icon: Wrench, label: 'Support Toolkit', path: '/support-toolkit' },
-    { icon: Users, label: 'Community', path: '/community' },
     { icon: Phone, label: 'Crisis Resources', path: '/crisis' },
   ];
+
+  const guestRestrictedItems = [
+    { icon: User, label: 'Profile', path: '/profile' },
+    { icon: Wrench, label: 'Support Toolkit', path: '/support-toolkit' },
+    { icon: Users, label: 'Community', path: '/community' },
+  ];
+
+  // Build menu items based on user type
+  const menuItems = isGuest 
+    ? baseMenuItems 
+    : [...baseMenuItems, ...guestRestrictedItems];
 
   if (isProvider) {
     menuItems.push({

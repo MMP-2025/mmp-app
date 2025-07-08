@@ -12,6 +12,7 @@ import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import MindfulnessExercises from '@/components/mindfulness/MindfulnessExercises';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Sample mindfulness exercises - in a real app, these would come from your database
 interface MindfulnessSession {
@@ -26,6 +27,7 @@ const MindfulnessPage = () => {
   const [currentTab, setCurrentTab] = useState('exercises');
   const [sessions, setSessions] = useState<MindfulnessSession[]>([]);
   const { trackMindfulnessSession } = useAnalytics();
+  const { isGuest } = useAuth();
 
   React.useEffect(() => {
     const savedSessions = StorageManager.load<MindfulnessSession[]>(STORAGE_KEYS.MINDFULNESS_PROGRESS, []);
@@ -58,7 +60,7 @@ const MindfulnessPage = () => {
         </div>
 
         <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className={`grid w-full ${isGuest ? 'grid-cols-3' : 'grid-cols-5'}`}>
             <TabsTrigger value="exercises" className="flex items-center gap-2">
               <Brain className="h-4 w-4" />
               Exercises
@@ -67,19 +69,31 @@ const MindfulnessPage = () => {
               <Headphones className="h-4 w-4" />
               Pre-recorded
             </TabsTrigger>
-            <TabsTrigger value="ai-audio" className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4" />
-              AI Generated
-            </TabsTrigger>
             <TabsTrigger value="breathing" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
               Breathing
             </TabsTrigger>
-            <TabsTrigger value="progress" className="flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              Progress
-            </TabsTrigger>
+            {!isGuest && (
+              <>
+                <TabsTrigger value="ai-audio" className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" />
+                  AI Generated
+                </TabsTrigger>
+                <TabsTrigger value="progress" className="flex items-center gap-2">
+                  <Activity className="h-4 w-4" />
+                  Progress
+                </TabsTrigger>
+              </>
+            )}
           </TabsList>
+
+          {isGuest && (
+            <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+              <p className="text-sm text-purple-700">
+                🎯 <strong>Want more?</strong> Create an account to unlock AI-generated meditations and progress tracking!
+              </p>
+            </div>
+          )}
 
           <TabsContent value="exercises" className="space-y-6">
             <MindfulnessExercises />
