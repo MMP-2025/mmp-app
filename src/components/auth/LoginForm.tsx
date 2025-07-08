@@ -203,6 +203,36 @@ const LoginForm = () => {
                 >
                   {isLoading ? 'Signing in...' : role === 'guest' ? 'Continue as Guest' : 'Sign In'}
                 </Button>
+
+                {role !== 'guest' && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                    <p className="text-xs font-medium text-blue-700 mb-2">Demo Credentials:</p>
+                    <div className="space-y-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEmail('provider@demo.com');
+                          setPassword('demo123');
+                          setRole('provider');
+                        }}
+                        className="block w-full text-left text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1 rounded"
+                      >
+                        Provider: provider@demo.com / demo123
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEmail('patient@demo.com');
+                          setPassword('demo123');
+                          setRole('patient');
+                        }}
+                        className="block w-full text-left text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1 rounded"
+                      >
+                        Patient: patient@demo.com / demo123
+                      </button>
+                    </div>
+                  </div>
+                )}
               </form>
             </TabsContent>
 
