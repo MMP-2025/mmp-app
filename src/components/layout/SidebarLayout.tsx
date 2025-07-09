@@ -64,7 +64,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     <div className="flex min-h-screen">
       {/* Menu trigger and Home button - positioned to not block content */}
       <div className={`fixed top-4 z-50 flex items-center gap-2 transition-all duration-300 ${
-        isClicked ? 'left-80' : 'left-4'
+        isClicked ? 'left-96' : 'left-4'
       }`}>
         <Button 
           variant="ghost" 
