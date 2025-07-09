@@ -62,24 +62,24 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
   return (
     <div className="flex min-h-screen">
-      {/* Menu trigger and Home button - positioned to not block content */}
-      <div className={`fixed top-4 z-50 flex items-center gap-2 transition-all duration-300 ${
-        isClicked ? 'left-[272px]' : 'left-4'
-      }`}>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={() => setIsClicked(!isClicked)} 
-          className="bg-background/95 backdrop-blur-sm shadow-lg hover:bg-background text-foreground border"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
-        <Link to="/" aria-label="Go to Home page">
-          <Button variant="ghost" size="icon" className="bg-background/95 backdrop-blur-sm shadow-lg hover:bg-background text-foreground border">
-              <Home className="h-5 w-5" />
+      {/* Menu trigger and Home button - only show when sidebar is closed */}
+      {!isClicked && (
+        <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setIsClicked(!isClicked)} 
+            className="bg-background/95 backdrop-blur-sm shadow-lg hover:bg-background text-foreground border"
+          >
+            <Menu className="h-5 w-5" />
           </Button>
-        </Link>
-      </div>
+          <Link to="/" aria-label="Go to Home page">
+            <Button variant="ghost" size="icon" className="bg-background/95 backdrop-blur-sm shadow-lg hover:bg-background text-foreground border">
+                <Home className="h-5 w-5" />
+            </Button>
+          </Link>
+        </div>
+      )}
 
       {/* User Profile in top right - positioned to not block content */}
       <div className="fixed top-4 right-4 z-50">
@@ -94,8 +94,16 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         }`}
       >
         <Sidebar className="border-r border-mental-gray/20 h-full">
-          <SidebarHeader className="p-4 bg-sidebar">
+          <SidebarHeader className="p-4 bg-sidebar flex items-center justify-between">
             <h1 className="font-bold text-center text-sidebar-foreground">Making Meaning Psychology</h1>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setIsClicked(false)} 
+              className="text-sidebar-foreground hover:bg-sidebar-accent"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
           </SidebarHeader>
           <SidebarContent className="bg-sidebar">
             <SidebarGroup>
