@@ -6,7 +6,7 @@ import WellnessScore from '@/components/wellness/WellnessScore';
 import PersonalizedRecommendations from '@/components/home/PersonalizedRecommendations';
 import DailyQuestion from '@/components/home/DailyQuestion';
 import QuickAccess from '@/components/home/QuickAccess';
-import MoodCheckIn from '@/components/home/MoodCheckIn';
+import RemindersCheckIn from '@/components/home/RemindersCheckIn';
 import QuoteOfTheDay from '@/components/home/QuoteOfTheDay';
 import { quotes, questions } from '@/data/homePageContent';
 import { getRandomDailyItem } from '@/utils/getRandomDailyItem';
@@ -38,7 +38,7 @@ const HomePage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <QuickAccess />
-            <MoodCheckIn />
+            <RemindersCheckIn />
           </div>
           
           <QuoteOfTheDay quote={todaysQuote} />
