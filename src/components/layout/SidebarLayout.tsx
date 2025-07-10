@@ -1,6 +1,6 @@
 import React from 'react';
 import { Book, Calendar, FileText, Home, Smile, Pencil, Timer, Bell, Phone, User, Users, Settings, Wrench, X } from 'lucide-react';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 import UserProfile from './UserProfile';
@@ -84,25 +84,23 @@ function AppSidebar() {
 
 export function SidebarLayout({ children }: SidebarLayoutProps) {
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <AppSidebar />
+    <div className="min-h-screen flex w-full">
+      <AppSidebar />
 
-        <div className="flex-1 flex flex-col">
-          {/* Header bar with trigger and navigation */}
-          <header className="h-16 flex items-center justify-end bg-background border-b px-4 shrink-0">
-            {/* User Profile in header - only show user profile, sidebar has its own trigger */}
-            <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
-              <UserProfile />
-            </div>
-          </header>
+      <div className="flex-1 flex flex-col">
+        {/* Header bar with trigger and navigation */}
+        <header className="h-16 flex items-center justify-end bg-background border-b px-4 shrink-0">
+          {/* User Profile in header - only show user profile, sidebar has its own trigger */}
+          <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
+            <UserProfile />
+          </div>
+        </header>
 
-          {/* Main content */}
-          <main className="flex-1 px-4 py-6 md:px-6 overflow-auto">
-            {children}
-          </main>
-        </div>
+        {/* Main content */}
+        <main className="flex-1 px-4 py-6 md:px-6 overflow-auto">
+          {children}
+        </main>
       </div>
-    </SidebarProvider>
+    </div>
   );
 }
