@@ -85,29 +85,31 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        {/* Global header with trigger and home button */}
-        <header className="fixed top-0 left-0 right-0 h-16 flex items-center justify-between bg-background/95 backdrop-blur-sm border-b z-50 px-4">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger />
-            <Link to="/" aria-label="Go to Home page">
-              <Button variant="ghost" size="icon">
-                <Home className="h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
-          
-          {/* User Profile in header */}
-          <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
-            <UserProfile />
-          </div>
-        </header>
-
         <AppSidebar />
 
-        {/* Main content with proper padding */}
-        <main className="flex-1 pt-16 px-4 pb-4 md:px-6 md:pb-6">
-          {children}
-        </main>
+        <div className="flex-1 flex flex-col">
+          {/* Header bar with trigger and navigation */}
+          <header className="h-16 flex items-center justify-between bg-background border-b px-4 shrink-0">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger />
+              <Link to="/" aria-label="Go to Home page">
+                <Button variant="ghost" size="icon">
+                  <Home className="h-5 w-5" />
+                </Button>
+              </Link>
+            </div>
+            
+            {/* User Profile in header */}
+            <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
+              <UserProfile />
+            </div>
+          </header>
+
+          {/* Main content */}
+          <main className="flex-1 px-4 py-6 md:px-6 overflow-auto">
+            {children}
+          </main>
+        </div>
       </div>
     </SidebarProvider>
   );
