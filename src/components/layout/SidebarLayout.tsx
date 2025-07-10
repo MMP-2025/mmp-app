@@ -47,8 +47,9 @@ function AppSidebar() {
 
   return (
     <Sidebar className="border-r border-mental-gray/20">
-      <SidebarHeader className="p-4 bg-sidebar">
-        <h1 className="font-bold text-center text-sidebar-foreground">Making Meaning Psychology</h1>
+      <SidebarHeader className="p-4 bg-sidebar flex items-center justify-between">
+        <h1 className="font-bold text-sidebar-foreground">Making Meaning Psychology</h1>
+        <SidebarTrigger className="text-sidebar-foreground hover:bg-sidebar-accent" />
       </SidebarHeader>
       <SidebarContent className="bg-sidebar">
         <SidebarGroup>
@@ -89,17 +90,8 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
         <div className="flex-1 flex flex-col">
           {/* Header bar with trigger and navigation */}
-          <header className="h-16 flex items-center justify-between bg-background border-b px-4 shrink-0">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger />
-              <Link to="/" aria-label="Go to Home page">
-                <Button variant="ghost" size="icon">
-                  <Home className="h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
-            
-            {/* User Profile in header */}
+          <header className="h-16 flex items-center justify-end bg-background border-b px-4 shrink-0">
+            {/* User Profile in header - only show user profile, sidebar has its own trigger */}
             <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
               <UserProfile />
             </div>
