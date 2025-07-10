@@ -10,7 +10,7 @@ const UserProfile = () => {
   if (!user) return null;
 
   return (
-    <div className="flex items-center gap-2 p-2 bg-background/80 rounded-lg">
+    <div className="flex items-center gap-2">
       <div className="flex items-center gap-2">
         <User className="h-4 w-4" />
         <div className="text-sm">
