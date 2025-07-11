@@ -35,13 +35,15 @@ const LoginForm = () => {
         loginAsGuest();
         toast({
           title: "Welcome!",
-          description: "You're now browsing as a guest."
+          description: "You're now browsing as a guest.",
+          className: "bg-white border border-gray-200 text-gray-900"
         });
       } else {
         await login(email, password);
         toast({
           title: "Login successful",
-          description: `Welcome back!`
+          description: `Welcome back!`,
+          className: "bg-white border border-gray-200 text-gray-900"
         });
       }
     } catch (error: any) {

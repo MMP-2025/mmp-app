@@ -4,6 +4,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, Si
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 import UserProfile from './UserProfile';
+import HomeButton from '@/components/ui/home-button';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SidebarLayoutProps {
@@ -49,7 +50,6 @@ function AppSidebar() {
     <Sidebar className="border-r border-mental-gray/20">
       <SidebarHeader className="p-4 bg-sidebar flex items-center justify-between">
         <h1 className="font-bold text-sidebar-foreground">Making Meaning Psychology</h1>
-        <SidebarTrigger className="text-sidebar-foreground hover:bg-sidebar-accent" />
       </SidebarHeader>
       <SidebarContent className="bg-sidebar">
         <SidebarGroup>
@@ -89,8 +89,12 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
       <div className="flex-1 flex flex-col">
         {/* Header bar with trigger and navigation */}
-        <header className="h-16 flex items-center justify-end bg-background border-b px-4 shrink-0">
-          {/* User Profile in header - only show user profile, sidebar has its own trigger */}
+        <header className="h-16 flex items-center justify-between bg-background border-b px-4 shrink-0">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="text-foreground hover:bg-accent" />
+            <HomeButton />
+          </div>
+          {/* User Profile in header */}
           <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
             <UserProfile />
           </div>

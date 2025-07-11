@@ -119,7 +119,7 @@ const RemindersPage = () => {
                             <Label htmlFor={`reminder-${reminder.id}`} className={isCompleted ? 'line-through text-[#7e868b]' : 'text-[#7e868b]'}>
                               {reminder.title}
                             </Label>
-                             <p className="text-sm text-gray-500">{reminder.message}</p>
+                             {reminder.message && <p className="text-sm text-gray-500">{reminder.message}</p>}
                           </div>
                         </div>
                         <Button variant="ghost" size="sm" onClick={() => deleteReminder(reminder.id)} className="text-[#7e868b]">

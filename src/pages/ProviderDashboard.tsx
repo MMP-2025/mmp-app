@@ -58,7 +58,7 @@ const ProviderDashboard = () => {
 
   return (
     <ErrorBoundary>
-      <div className="container mx-auto p-6 space-y-6 ml-16">
+      <div className="container mx-auto p-6 space-y-6">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Provider Dashboard</h1>
           <p className="text-[#7e868b]">Manage quotes, journal prompts, questions, toolkit items, reminders, gratitude prompts, mindfulness prompts, push notifications, and patient invitations.</p>

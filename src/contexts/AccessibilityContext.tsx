@@ -98,6 +98,7 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     // Font size
     root.classList.remove('text-small', 'text-medium', 'text-large', 'text-extra-large');
     root.classList.add(`text-${settings.fontSize}`);
+    root.setAttribute('data-font-size', settings.fontSize);
     
     // Reduced motion
     if (settings.reducedMotion) {

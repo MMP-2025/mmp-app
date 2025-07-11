@@ -40,7 +40,7 @@ const AccessibilityToolbar = () => {
       {/* Accessibility Button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 right-4 z-50 bg-mental-blue hover:bg-mental-blue/80 p-3 rounded-full shadow-lg"
+        className="fixed top-20 right-4 z-40 bg-mental-blue hover:bg-mental-blue/80 p-3 rounded-full shadow-lg"
         aria-label="Open accessibility options"
       >
         <Accessibility className="h-5 w-5" />
@@ -48,7 +48,7 @@ const AccessibilityToolbar = () => {
 
       {/* Accessibility Panel */}
       {isOpen && (
-        <Card className="fixed top-16 right-4 z-50 p-4 w-80 bg-mental-peach shadow-xl">
+        <Card className="fixed top-32 right-4 z-40 p-4 w-80 bg-mental-peach shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold flex items-center gap-2" style={{color: '#737373'}}>
               <Settings className="h-5 w-5" />

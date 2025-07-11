@@ -35,7 +35,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     );
   }
 
-  if (requiredRole && user?.role !== requiredRole) {
+  if (requiredRole && user?.role !== requiredRole && user?.role !== 'guest') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-red-50 p-4">
         <Card className="w-full max-w-md">

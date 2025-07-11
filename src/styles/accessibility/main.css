@@ -35,7 +35,24 @@
     border: 2px solid white !important;
   }
 
-  /* Font size adjustments */
+  /* Font size adjustments using data attributes */
+  [data-font-size="small"] {
+    font-size: 14px;
+  }
+
+  [data-font-size="medium"] {
+    font-size: 16px;
+  }
+
+  [data-font-size="large"] {
+    font-size: 18px;
+  }
+
+  [data-font-size="extra-large"] {
+    font-size: 20px;
+  }
+
+  /* Font size adjustments using classes */
   .text-small {
     font-size: 0.875rem;
   }
