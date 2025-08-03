@@ -5,7 +5,7 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 import { StorageManager, STORAGE_KEYS } from '@/utils/storage';
 import JournalEntryForm from '@/components/journal/JournalEntryForm';
 import JournalEntriesList from '@/components/journal/JournalEntriesList';
-import { SidebarLayout } from '@/components/layout/SidebarLayout';
+
 
 interface JournalEntry {
   id: number;
@@ -109,28 +109,26 @@ const JournalPage = () => {
   };
 
   return (
-    <SidebarLayout>
-      <div className="space-y-6 max-w-4xl mx-auto">
-        <div>
-          <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Journal</h1>
-          <p className="text-[#7e868b]">Express your thoughts and feelings</p>
-        </div>
-        
-        <JournalEntryForm
-          journalContent={journalContent}
-          setJournalContent={setJournalContent}
-          currentPrompt={currentPrompt}
-          setCurrentPrompt={setCurrentPrompt}
-          savedPrompts={savedPrompts}
-          onGetRandomPrompt={getRandomPrompt}
-          onStartFreeWriting={startFreeWriting}
-          onSaveEntry={saveJournalEntry}
-          onToggleSavedPrompt={toggleSavedPrompt}
-        />
-        
-        <JournalEntriesList journalEntries={journalEntries} />
+    <div className="space-y-6 max-w-4xl mx-auto">
+      <div>
+        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Journal</h1>
+        <p className="text-[#7e868b]">Express your thoughts and feelings</p>
       </div>
-    </SidebarLayout>
+      
+      <JournalEntryForm
+        journalContent={journalContent}
+        setJournalContent={setJournalContent}
+        currentPrompt={currentPrompt}
+        setCurrentPrompt={setCurrentPrompt}
+        savedPrompts={savedPrompts}
+        onGetRandomPrompt={getRandomPrompt}
+        onStartFreeWriting={startFreeWriting}
+        onSaveEntry={saveJournalEntry}
+        onToggleSavedPrompt={toggleSavedPrompt}
+      />
+      
+      <JournalEntriesList journalEntries={journalEntries} />
+    </div>
   );
 };
 

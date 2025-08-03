@@ -1,7 +1,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useToastService } from '@/hooks/useToastService';
-import { SidebarLayout } from '@/components/layout/SidebarLayout';
+
 import { gratitudeExercises } from '@/data/gratitudeExercises';
 import GratitudeHeader from '@/components/gratitude/GratitudeHeader';
 import ViewTabs from '@/components/gratitude/ViewTabs';
@@ -104,54 +104,52 @@ const GratitudePage = () => {
   const exercisesToDisplay = getDisplayedExercises();
 
   return (
-    <SidebarLayout>
-      <div className="space-y-6 max-w-4xl mx-auto">
-        <GratitudeHeader />
+    <div className="space-y-6 max-w-4xl mx-auto">
+      <GratitudeHeader />
 
-        <ViewTabs
-          currentView={currentView}
-          setCurrentView={setCurrentView}
-          savedExercisesCount={savedExercises.length}
-          onShuffle={shuffleExercises}
+      <ViewTabs
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        savedExercisesCount={savedExercises.length}
+        onShuffle={shuffleExercises}
+      />
+      
+      {selectedExercise ? (
+        <ExerciseForm
+          selectedExercise={selectedExercise}
+          threeGoodThings={threeGoodThings}
+          handleThreeGoodThingsChange={handleThreeGoodThingsChange}
+          letterRecipient={letterRecipient}
+          setLetterRecipient={setLetterRecipient}
+          letterContent={letterContent}
+          setLetterContent={setLetterContent}
+          gratitudeContent={gratitudeContent}
+          setGratitudeContent={setGratitudeContent}
+          onSave={saveGratitude}
+          onCancel={() => setSelectedExercise(null)}
         />
-        
-        {selectedExercise ? (
-          <ExerciseForm
-            selectedExercise={selectedExercise}
-            threeGoodThings={threeGoodThings}
-            handleThreeGoodThingsChange={handleThreeGoodThingsChange}
-            letterRecipient={letterRecipient}
-            setLetterRecipient={setLetterRecipient}
-            letterContent={letterContent}
-            setLetterContent={setLetterContent}
-            gratitudeContent={gratitudeContent}
-            setGratitudeContent={setGratitudeContent}
-            onSave={saveGratitude}
-            onCancel={() => setSelectedExercise(null)}
-          />
-        ) : (
-          <>
-            {currentView === 'saved' && exercisesToDisplay.length === 0 ? (
-              <EmptySavedPractices onBrowse={() => setCurrentView('all')} />
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {exercisesToDisplay.map(exercise => (
-                  <ExerciseCard
-                    key={exercise.id}
-                    exercise={exercise}
-                    onStartPractice={setSelectedExercise}
-                    onToggleSaved={toggleSaved}
-                    isSaved={savedExercises.includes(exercise.id)}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )}
-        
-        <GratitudeEntriesList entries={gratitudeEntries} />
-      </div>
-    </SidebarLayout>
+      ) : (
+        <>
+          {currentView === 'saved' && exercisesToDisplay.length === 0 ? (
+            <EmptySavedPractices onBrowse={() => setCurrentView('all')} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {exercisesToDisplay.map(exercise => (
+                <ExerciseCard
+                  key={exercise.id}
+                  exercise={exercise}
+                  onStartPractice={setSelectedExercise}
+                  onToggleSaved={toggleSaved}
+                  isSaved={savedExercises.includes(exercise.id)}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      
+      <GratitudeEntriesList entries={gratitudeEntries} />
+    </div>
   );
 };
 
