@@ -130,7 +130,7 @@ const EmergencyResources = () => {
       window.open(`https://${value}`, '_blank');
     }
   };
-  return <Card className="bg-red-50 border-red-200">
+  return <Card className="border-red-200 bg-mental-peach">
       <CardHeader className="bg-red-100">
         <CardTitle className="flex items-center gap-2 text-[#7e868b]">
           <AlertTriangle className="h-5 w-5 text-red-600" />
