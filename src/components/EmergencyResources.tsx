@@ -137,19 +137,19 @@ const EmergencyResources = () => {
           Emergency Resources
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 bg-mental-peach">
         <p className="text-sm text-[#7e868b] font-medium">
           If you're in crisis or need immediate support, please reach out:
         </p>
         
         <div className="space-y-4">
-          {hotlines.map((hotline, index) => <div key={index} className="p-4 bg-white rounded-lg border">
+          {hotlines.map((hotline, index) => <div key={index} className="p-4 rounded-lg border bg-mental-gray">
               <div className="mb-3">
                 <h4 className="font-medium text-[#7e868b] mb-1">{hotline.name}</h4>
                 <p className="text-sm text-[#7e868b]">{hotline.description}</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                {hotline.options.map((option, optionIndex) => <Button key={optionIndex} onClick={() => handleAction(option.type, option.value)} size="sm" className="text-white flex items-center gap-2 text-xs bg-mental-peach">
+                {hotline.options.map((option, optionIndex) => <Button key={optionIndex} onClick={() => handleAction(option.type, option.value)} size="sm" className="flex items-center gap-2 text-xs bg-mental-peach text-black">
                     <option.icon className="h-3 w-3" />
                     {option.value}
                   </Button>)}
