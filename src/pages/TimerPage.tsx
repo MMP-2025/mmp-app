@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Timer, Play, Pause, RotateCcw, Bell, Clock, ArrowLeft } from 'lucide-react';
+import { Timer, Play, Pause, RotateCcw, Bell, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link } from 'react-router-dom';
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 
 const TimerPage = () => {
   // Pomodoro timer
@@ -143,18 +143,11 @@ const TimerPage = () => {
   };
   
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="flex items-center gap-4">
-        <Button asChild variant="outline" size="sm">
-          <Link to="/" className="flex items-center gap-2 text-[#7e868b]">
-            <ArrowLeft className="h-4 w-4 text-[#7e868b]" />
-            Back to Home
-          </Link>
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Timer</h1>
-          <p className="text-[#7e868b]">Track time for productivity and mindfulness</p>
-        </div>
+    <SidebarLayout>
+      <div className="space-y-6 max-w-4xl mx-auto">
+      <div>
+        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Timer</h1>
+        <p className="text-[#7e868b]">Track time for productivity and mindfulness</p>
       </div>
       
       <audio ref={audioRef} src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" />
@@ -348,7 +341,8 @@ const TimerPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </SidebarLayout>
   );
 };
 

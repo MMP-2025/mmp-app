@@ -87,9 +87,8 @@ const MoodTrackerPage = () => {
   };
 
   return (
-    <div className="bg-mental-blue min-h-screen">
-      <SidebarLayout>
-        <div className="space-y-6 max-w-4xl mx-auto">
+    <SidebarLayout>
+      <div className="space-y-6 max-w-4xl mx-auto">
           <MoodTrackerHeader onExportData={exportMoodData} />
           
           <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
@@ -122,9 +121,8 @@ const MoodTrackerPage = () => {
               onSaveMood={handleSaveMood}
             />
           </Tabs>
-        </div>
-      </SidebarLayout>
-    </div>
+      </div>
+    </SidebarLayout>
   );
 };
 

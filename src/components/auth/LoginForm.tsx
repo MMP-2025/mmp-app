@@ -201,7 +201,7 @@ const LoginForm = () => {
                 <Button 
                   type="submit" 
                   disabled={isLoading} 
-                  className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray"
+                  className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray hover:bg-mental-blue hover:text-mental-gray"
                 >
                   {isLoading ? 'Signing in...' : role === 'guest' ? 'Continue as Guest' : 'Sign In'}
                 </Button>
@@ -329,7 +329,7 @@ const LoginForm = () => {
                 <Button 
                   type="submit" 
                   disabled={isLoading} 
-                  className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray"
+                  className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray hover:bg-mental-blue hover:text-mental-gray"
                 >
                   {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>

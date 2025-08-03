@@ -15,6 +15,7 @@ import { WeeklyView } from '@/components/planner/WeeklyView';
 import { MonthlyView } from '@/components/planner/MonthlyView';
 import { YearlyView } from '@/components/planner/YearlyView';
 import { toast } from 'sonner';
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 
 const PlannerPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -44,14 +45,15 @@ const PlannerPage = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+    <SidebarLayout>
+      <div className="space-y-6 max-w-6xl mx-auto">
       <div>
         <h1 className="text-3xl font-bold mb-2 text-neutral-500">Planner</h1>
         <p className="text-neutral-500">Organize your schedule and plan your activities</p>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <Card className="lg:col-span-1 bg-mental-blue">
+        <Card className="lg:col-span-2 bg-mental-blue">
           <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-neutral-500">Calendar & Events</CardTitle>
           </CardHeader>
@@ -62,7 +64,7 @@ const PlannerPage = () => {
                 mode="single" 
                 selected={selectedDate} 
                 onSelect={date => date && setSelectedDate(date)} 
-                className="rounded-md border w-full bg-mental-peach" 
+                className="rounded-md border w-full bg-mental-peach scale-110" 
               />
             </div>
             
@@ -98,7 +100,7 @@ const PlannerPage = () => {
           </CardContent>
         </Card>
         
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-2">
           <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-neutral-500">Schedule Views</CardTitle>
           </CardHeader>
@@ -130,7 +132,8 @@ const PlannerPage = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </SidebarLayout>
   );
 };
 

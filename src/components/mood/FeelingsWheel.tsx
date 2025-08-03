@@ -66,7 +66,7 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
         {categories.map(category => (
           <div key={category}>
             <h4 className="text-sm font-medium mb-2 text-[#737373] capitalize">
-              {category === 'joy' ? 'Positive' : category === 'neutral' ? 'Neutral' : 'Challenging'}
+              {category === 'joy' ? 'Positive' : category === 'neutral' ? 'Neutral' : category === 'sadness' ? 'Sadness' : category === 'anger' ? 'Anger' : category === 'fear' ? 'Fear & Anxiety' : category === 'disgust' ? 'Disgust' : category === 'surprise' ? 'Surprise' : 'Challenging'}
             </h4>
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {emotions

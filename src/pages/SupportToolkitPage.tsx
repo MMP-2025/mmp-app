@@ -14,6 +14,7 @@ import CopingSkillsLibrary from '@/components/therapy/CopingSkillsLibrary';
 import ExposureTherapyTracker from '@/components/therapy/ExposureTherapyTracker';
 import ProgressPhotography from '@/components/photography/ProgressPhotography';
 import HowToUse from '@/components/support-toolkit/HowToUse';
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 
 const SupportToolkitPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,11 +53,12 @@ const SupportToolkitPage = () => {
   const filteredResources = getDisplayedResources();
 
   return (
-    <div className="container mx-auto p-6 space-y-6 ml-16">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Support Toolkit</h1>
-        <p className="text-foreground">Access comprehensive mental health resources, therapeutic tools, and support materials for your wellbeing journey.</p>
-      </div>
+    <SidebarLayout>
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Support Toolkit</h1>
+          <p className="text-foreground">Access comprehensive mental health resources, therapeutic tools, and support materials for your wellbeing journey.</p>
+        </div>
       
       <ToolkitNav 
         currentView={currentView}
@@ -149,8 +151,9 @@ const SupportToolkitPage = () => {
         </CardContent>
       </Card>
 
-      <HowToUse />
-    </div>
+        <HowToUse />
+      </div>
+    </SidebarLayout>
   );
 };
 
