@@ -1,7 +1,5 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { useToastService } from '@/hooks/useToastService';
-
 import { gratitudeExercises } from '@/data/gratitudeExercises';
 import GratitudeHeader from '@/components/gratitude/GratitudeHeader';
 import ViewTabs from '@/components/gratitude/ViewTabs';
@@ -10,7 +8,6 @@ import EmptySavedPractices from '@/components/gratitude/EmptySavedPractices';
 import ExerciseForm from '@/components/gratitude/ExerciseForm';
 import GratitudeEntriesList from '@/components/gratitude/GratitudeEntriesList';
 import { GratitudeExercise, GratitudeEntry } from '@/types/gratitude';
-
 const GratitudePage = () => {
   const [selectedExercise, setSelectedExercise] = useState<GratitudeExercise | null>(null);
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntry[]>([]);
@@ -21,26 +18,24 @@ const GratitudePage = () => {
   const [savedExercises, setSavedExercises] = useState<number[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
   const [displayedExercises, setDisplayedExercises] = useState<GratitudeExercise[]>([]);
-  
-  const { showSuccess, showWarning } = useToastService();
-
+  const {
+    showSuccess,
+    showWarning
+  } = useToastService();
   const shuffleExercises = useCallback(() => {
     const shuffled = [...gratitudeExercises].sort(() => 0.5 - Math.random());
     setDisplayedExercises(shuffled.slice(0, 3));
   }, []);
-
   useEffect(() => {
     if (currentView === 'all') {
       shuffleExercises();
     }
   }, [currentView, shuffleExercises]);
-
   const handleThreeGoodThingsChange = (index: number, value: string) => {
     const updated = [...threeGoodThings];
     updated[index] = value;
     setThreeGoodThings(updated);
   };
-
   const toggleSaved = (exerciseId: number) => {
     setSavedExercises(prev => {
       const isCurrentlySaved = prev.includes(exerciseId);
@@ -53,14 +48,12 @@ const GratitudePage = () => {
       }
     });
   };
-
   const getDisplayedExercises = () => {
     if (currentView === 'saved') {
       return gratitudeExercises.filter(exercise => savedExercises.includes(exercise.id));
     }
     return displayedExercises;
   };
-
   const saveGratitude = () => {
     let content = '';
     if (selectedExercise?.id === 1) {
@@ -88,7 +81,6 @@ const GratitudePage = () => {
       date: new Date()
     };
     setGratitudeEntries(prev => [newEntry, ...prev]);
-
     if (selectedExercise?.id === 1) {
       setThreeGoodThings(['', '', '']);
     } else if (selectedExercise?.id === 2) {
@@ -100,57 +92,19 @@ const GratitudePage = () => {
     setSelectedExercise(null);
     showSuccess("Gratitude practice saved");
   };
-
   const exercisesToDisplay = getDisplayedExercises();
-
-  return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+  return <div className="space-y-6 max-w-4xl mx-auto bg-mental-green">
       <GratitudeHeader />
 
-      <ViewTabs
-        currentView={currentView}
-        setCurrentView={setCurrentView}
-        savedExercisesCount={savedExercises.length}
-        onShuffle={shuffleExercises}
-      />
+      <ViewTabs currentView={currentView} setCurrentView={setCurrentView} savedExercisesCount={savedExercises.length} onShuffle={shuffleExercises} />
       
-      {selectedExercise ? (
-        <ExerciseForm
-          selectedExercise={selectedExercise}
-          threeGoodThings={threeGoodThings}
-          handleThreeGoodThingsChange={handleThreeGoodThingsChange}
-          letterRecipient={letterRecipient}
-          setLetterRecipient={setLetterRecipient}
-          letterContent={letterContent}
-          setLetterContent={setLetterContent}
-          gratitudeContent={gratitudeContent}
-          setGratitudeContent={setGratitudeContent}
-          onSave={saveGratitude}
-          onCancel={() => setSelectedExercise(null)}
-        />
-      ) : (
-        <>
-          {currentView === 'saved' && exercisesToDisplay.length === 0 ? (
-            <EmptySavedPractices onBrowse={() => setCurrentView('all')} />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {exercisesToDisplay.map(exercise => (
-                <ExerciseCard
-                  key={exercise.id}
-                  exercise={exercise}
-                  onStartPractice={setSelectedExercise}
-                  onToggleSaved={toggleSaved}
-                  isSaved={savedExercises.includes(exercise.id)}
-                />
-              ))}
-            </div>
-          )}
-        </>
-      )}
+      {selectedExercise ? <ExerciseForm selectedExercise={selectedExercise} threeGoodThings={threeGoodThings} handleThreeGoodThingsChange={handleThreeGoodThingsChange} letterRecipient={letterRecipient} setLetterRecipient={setLetterRecipient} letterContent={letterContent} setLetterContent={setLetterContent} gratitudeContent={gratitudeContent} setGratitudeContent={setGratitudeContent} onSave={saveGratitude} onCancel={() => setSelectedExercise(null)} /> : <>
+          {currentView === 'saved' && exercisesToDisplay.length === 0 ? <EmptySavedPractices onBrowse={() => setCurrentView('all')} /> : <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {exercisesToDisplay.map(exercise => <ExerciseCard key={exercise.id} exercise={exercise} onStartPractice={setSelectedExercise} onToggleSaved={toggleSaved} isSaved={savedExercises.includes(exercise.id)} />)}
+            </div>}
+        </>}
       
       <GratitudeEntriesList entries={gratitudeEntries} />
-    </div>
-  );
+    </div>;
 };
-
 export default GratitudePage;
