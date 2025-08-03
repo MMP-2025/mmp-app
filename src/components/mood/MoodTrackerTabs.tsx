@@ -1,28 +1,26 @@
-
 import React from 'react';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Target, Calendar, TrendingUp, BarChart3, Brain, Activity, Cloud, Spline, Sparkles } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-
 interface MoodTrackerTabsProps {
   currentTab: string;
   onTabChange: (tab: string) => void;
 }
-
-const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({ currentTab, onTabChange }) => {
-  const { isGuest } = useAuth();
-
+const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({
+  currentTab,
+  onTabChange
+}) => {
+  const {
+    isGuest
+  } = useAuth();
   const guestRestrictedTabs = ['history', 'analytics', 'advanced', 'correlations', 'insights', 'predictions', 'habits', 'environment'];
-
-  return (
-    <TabsList className="flex h-auto w-full flex-wrap justify-start">
+  return <TabsList className="flex h-auto w-full flex-wrap justify-start">
       <TabsTrigger value="track" className="flex items-center gap-2">
         <Target className="h-4 w-4" />
         Track Mood
       </TabsTrigger>
       
-      {!isGuest && (
-        <>
+      {!isGuest && <>
           <TabsTrigger value="history" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             History
@@ -55,18 +53,13 @@ const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({ currentTab, onTabChan
             <Cloud className="h-4 w-4" />
             Environment
           </TabsTrigger>
-        </>
-      )}
+        </>}
       
-      {isGuest && (
-        <div className="ml-4 px-4 py-2 bg-blue-50 border border-blue-200 rounded-md">
+      {isGuest && <div className="ml-4 px-4 py-2 bg-blue-50 border border-blue-200 rounded-md">
           <p className="text-xs text-blue-700">
             📊 Unlock History, Analytics, AI Insights & more by creating an account!
           </p>
-        </div>
-      )}
-    </TabsList>
-  );
+        </div>}
+    </TabsList>;
 };
-
 export default MoodTrackerTabs;

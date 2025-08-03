@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TabsContent } from '@/components/ui/tabs';
 import MoodCorrelationTracker from '../MoodCorrelationTracker';
@@ -9,14 +8,12 @@ import AIInsights from '../../personalization/AIInsights';
 // import AdvancedAnalytics from '../../analytics/AdvancedAnalytics';
 import HabitTracker from '../../habits/HabitTracker';
 import { Card } from '@/components/ui/card';
-
 interface WeatherData {
   condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'windy';
   temperature: number;
   humidity: number;
   location: string;
 }
-
 interface MoodEntry {
   id: string;
   mood: string;
@@ -30,22 +27,23 @@ interface MoodEntry {
   sleepHours?: number;
   exercise?: boolean;
 }
-
 interface AdvancedTabContentProps {
   moodHistory: MoodEntry[];
   userBehavior: any;
 }
-
 const AdvancedTabContent: React.FC<AdvancedTabContentProps> = ({
   moodHistory,
   userBehavior
 }) => {
-  return (
-    <>
+  return <>
       <TabsContent value="advanced">
-        <Card className="p-6 bg-white/90">
-          <h3 className="text-lg font-semibold" style={{color: '#737373'}}>Advanced Analytics</h3>
-          <p style={{color: '#737373'}}>
+        <Card className="p-6 bg-mental-blue">
+          <h3 className="text-lg font-semibold" style={{
+          color: '#737373'
+        }}>Advanced Analytics</h3>
+          <p style={{
+          color: '#737373'
+        }}>
             More advanced analytics are coming soon!
           </p>
         </Card>
@@ -73,8 +71,6 @@ const AdvancedTabContent: React.FC<AdvancedTabContentProps> = ({
           <TriggerPatternRecognition moodHistory={moodHistory} />
         </div>
       </TabsContent>
-    </>
-  );
+    </>;
 };
-
 export default AdvancedTabContent;

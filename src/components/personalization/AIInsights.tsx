@@ -1,16 +1,13 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Brain, TrendingUp, AlertTriangle, CheckCircle, Target } from 'lucide-react';
-
 interface MoodEntry {
   mood: string;
   intensity: number;
   factors: string[];
   timestamp: number;
 }
-
 interface AIInsightsProps {
   moodHistory: MoodEntry[];
   userBehavior?: {
@@ -19,16 +16,16 @@ interface AIInsightsProps {
     preferredTimeOfDay: 'morning' | 'afternoon' | 'evening' | 'night';
   } | null;
 }
-
-const AIInsights: React.FC<AIInsightsProps> = ({ moodHistory, userBehavior }) => {
+const AIInsights: React.FC<AIInsightsProps> = ({
+  moodHistory,
+  userBehavior
+}) => {
   const generateInsights = () => {
     const insights = [];
-
     if (moodHistory.length >= 7) {
       // Mood trend analysis
       const recent7Days = moodHistory.slice(-7);
       const avgIntensity = recent7Days.reduce((sum, entry) => sum + entry.intensity, 0) / recent7Days.length;
-      
       if (avgIntensity >= 7) {
         insights.push({
           type: 'positive',
@@ -62,8 +59,7 @@ const AIInsights: React.FC<AIInsightsProps> = ({ moodHistory, userBehavior }) =>
         });
         return acc;
       }, {} as Record<string, number>);
-
-      const topFactor = Object.entries(factorCounts).sort(([,a], [,b]) => b - a)[0];
+      const topFactor = Object.entries(factorCounts).sort(([, a], [, b]) => b - a)[0];
       if (topFactor && topFactor[1] >= 3) {
         insights.push({
           type: 'insight',
@@ -106,64 +102,69 @@ const AIInsights: React.FC<AIInsightsProps> = ({ moodHistory, userBehavior }) =>
         });
       }
     }
-
     return insights.slice(0, 4); // Return top 4 insights
   };
-
   const insights = generateInsights();
-
   const getInsightColor = (type: string) => {
     switch (type) {
-      case 'positive': return 'text-green-600 bg-green-50 border-green-200';
-      case 'concern': return 'text-red-600 bg-red-50 border-red-200';
-      case 'achievement': return 'text-blue-600 bg-blue-50 border-blue-200';
-      case 'insight': return 'text-purple-600 bg-purple-50 border-purple-200';
-      case 'suggestion': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      case 'positive':
+        return 'text-green-600 bg-green-50 border-green-200';
+      case 'concern':
+        return 'text-red-600 bg-red-50 border-red-200';
+      case 'achievement':
+        return 'text-blue-600 bg-blue-50 border-blue-200';
+      case 'insight':
+        return 'text-purple-600 bg-purple-50 border-purple-200';
+      case 'suggestion':
+        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+      default:
+        return 'text-gray-600 bg-gray-50 border-gray-200';
     }
   };
-
   const getIconColor = (type: string) => {
     switch (type) {
-      case 'positive': return 'text-green-500';
-      case 'concern': return 'text-red-500';
-      case 'achievement': return 'text-blue-500';
-      case 'insight': return 'text-purple-500';
-      case 'suggestion': return 'text-yellow-500';
-      default: return 'text-gray-500';
+      case 'positive':
+        return 'text-green-500';
+      case 'concern':
+        return 'text-red-500';
+      case 'achievement':
+        return 'text-blue-500';
+      case 'insight':
+        return 'text-purple-500';
+      case 'suggestion':
+        return 'text-yellow-500';
+      default:
+        return 'text-gray-500';
     }
   };
-
   if (insights.length === 0) {
-    return (
-      <Card className="p-6 bg-white/90">
+    return <Card className="p-6 bg-white/90">
         <div className="flex items-center gap-2 mb-4">
           <Brain className="h-5 w-5 text-mental-blue" />
-          <h3 className="text-lg font-semibold" style={{color: '#737373'}}>AI Insights</h3>
+          <h3 className="text-lg font-semibold" style={{
+          color: '#737373'
+        }}>AI Insights</h3>
         </div>
-        <p style={{color: '#737373'}}>
+        <p style={{
+        color: '#737373'
+      }}>
           Keep tracking your mood and using the app to unlock personalized insights about your mental health patterns.
         </p>
-      </Card>
-    );
+      </Card>;
   }
-
-  return (
-    <Card className="p-6 bg-white/90">
+  return <Card className="p-6 bg-mental-blue">
       <div className="flex items-center gap-2 mb-6">
         <Brain className="h-5 w-5 text-mental-blue" />
-        <h3 className="text-lg font-semibold" style={{color: '#737373'}}>AI Insights</h3>
+        <h3 className="text-lg font-semibold" style={{
+        color: '#737373'
+      }}>AI Insights</h3>
         <Badge variant="outline" className="text-xs">Powered by your data</Badge>
       </div>
       
       <div className="space-y-4">
         {insights.map((insight, index) => {
-          const IconComponent = insight.icon;
-          return (
-            <div
-              key={index}
-              className={`p-4 rounded-lg border ${getInsightColor(insight.type)}`}
-            >
+        const IconComponent = insight.icon;
+        return <div key={index} className={`p-4 rounded-lg border ${getInsightColor(insight.type)}`}>
               <div className="flex items-start gap-3">
                 <IconComponent className={`h-5 w-5 mt-0.5 ${getIconColor(insight.type)}`} />
                 <div className="flex-1">
@@ -174,12 +175,9 @@ const AIInsights: React.FC<AIInsightsProps> = ({ moodHistory, userBehavior }) =>
                   </p>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            </div>;
+      })}
       </div>
-    </Card>
-  );
+    </Card>;
 };
-
 export default AIInsights;
