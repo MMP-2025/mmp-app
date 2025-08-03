@@ -6,38 +6,68 @@ import { Link, useLocation } from 'react-router-dom';
 import UserProfile from './UserProfile';
 import HomeButton from '@/components/ui/home-button';
 import { useAuth } from '@/contexts/AuthContext';
-
 interface SidebarLayoutProps {
   children: React.ReactNode;
 }
-
 function AppSidebar() {
   const location = useLocation();
-  const { isProvider, isGuest } = useAuth();
-
-  const baseMenuItems = [
-    { icon: Home, label: 'Home', path: '/' },
-    { icon: Smile, label: 'Mood Tracker', path: '/mood' },
-    { icon: FileText, label: 'Journal', path: '/journal' },
-    { icon: Calendar, label: 'Planner', path: '/planner' },
-    { icon: Bell, label: 'Reminders', path: '/reminders' },
-    { icon: Timer, label: 'Timer', path: '/timer' },
-    { icon: Book, label: 'Mindfulness', path: '/mindfulness' },
-    { icon: Pencil, label: 'Gratitude', path: '/gratitude' },
-    { icon: Phone, label: 'Crisis Resources', path: '/crisis' },
-  ];
-
-  const guestRestrictedItems = [
-    { icon: User, label: 'Profile', path: '/profile' },
-    { icon: Wrench, label: 'Support Toolkit', path: '/support-toolkit' },
-    { icon: Users, label: 'Community', path: '/community' },
-  ];
+  const {
+    isProvider,
+    isGuest
+  } = useAuth();
+  const baseMenuItems = [{
+    icon: Home,
+    label: 'Home',
+    path: '/'
+  }, {
+    icon: Smile,
+    label: 'Mood Tracker',
+    path: '/mood'
+  }, {
+    icon: FileText,
+    label: 'Journal',
+    path: '/journal'
+  }, {
+    icon: Calendar,
+    label: 'Planner',
+    path: '/planner'
+  }, {
+    icon: Bell,
+    label: 'Reminders',
+    path: '/reminders'
+  }, {
+    icon: Timer,
+    label: 'Timer',
+    path: '/timer'
+  }, {
+    icon: Book,
+    label: 'Mindfulness',
+    path: '/mindfulness'
+  }, {
+    icon: Pencil,
+    label: 'Gratitude',
+    path: '/gratitude'
+  }, {
+    icon: Phone,
+    label: 'Crisis Resources',
+    path: '/crisis'
+  }];
+  const guestRestrictedItems = [{
+    icon: User,
+    label: 'Profile',
+    path: '/profile'
+  }, {
+    icon: Wrench,
+    label: 'Support Toolkit',
+    path: '/support-toolkit'
+  }, {
+    icon: Users,
+    label: 'Community',
+    path: '/community'
+  }];
 
   // Build menu items based on user type
-  const menuItems = isGuest 
-    ? baseMenuItems 
-    : [...baseMenuItems, ...guestRestrictedItems];
-
+  const menuItems = isGuest ? baseMenuItems : [...baseMenuItems, ...guestRestrictedItems];
   if (isProvider) {
     menuItems.push({
       icon: Settings,
@@ -45,51 +75,41 @@ function AppSidebar() {
       path: '/provider-dashboard'
     });
   }
-
-  return (
-    <Sidebar className="border-r border-mental-gray/20">
-      <SidebarHeader className="p-4 bg-sidebar flex items-center justify-between">
+  return <Sidebar className="border-r border-mental-gray/20">
+      <SidebarHeader className="p-4 flex items-center justify-between bg-mental-peach">
         <h1 className="font-bold text-sidebar-foreground">Making Meaning Psychology</h1>
       </SidebarHeader>
-      <SidebarContent className="bg-sidebar">
+      <SidebarContent className="bg-mental-peach">
         <SidebarGroup>
           <SidebarGroupLabel className="text-sidebar-foreground">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map(item => (
-                <SidebarMenuItem key={item.label}>
+              {menuItems.map(item => <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
-                    <Link 
-                      to={item.path} 
-                      className={`flex items-center gap-2 text-sidebar-foreground ${
-                        location.pathname === item.path ? 'font-medium' : ''
-                      }`}
-                    >
+                    <Link to={item.path} className={`flex items-center gap-2 text-sidebar-foreground ${location.pathname === item.path ? 'font-medium' : ''}`}>
                       <item.icon className="h-5 w-5" />
                       <span>{item.label}</span>
                     </Link>
                   </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                </SidebarMenuItem>)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-4 text-xs text-center bg-sidebar">
+      <SidebarFooter className="p-4 text-xs text-center bg-mental-peach">
         <p className="text-sidebar-foreground">© 2025 Making Meaning Psychology</p>
       </SidebarFooter>
-    </Sidebar>
-  );
+    </Sidebar>;
 }
-
-export function SidebarLayout({ children }: SidebarLayoutProps) {
-  return (
-    <div className="min-h-screen flex w-full">
+export function SidebarLayout({
+  children
+}: SidebarLayoutProps) {
+  return <div className="min-h-screen flex w-full">
       <AppSidebar />
 
       <div className="flex-1 flex flex-col">
         {/* Header bar with trigger and navigation */}
-        <header className="h-16 flex items-center justify-between bg-background border-b px-4 shrink-0">
+        <header className="h-16 flex items-center justify-between border-b px-4 shrink-0 bg-mental-peach">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="text-foreground hover:bg-accent" />
             <HomeButton />
@@ -101,10 +121,9 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         </header>
 
         {/* Main content */}
-        <main className="flex-1 px-4 py-6 md:px-6 overflow-auto">
+        <main className="flex-1 px-4 py-6 md:px-6 overflow-auto bg-mental-blue">
           {children}
         </main>
       </div>
-    </div>
-  );
+    </div>;
 }
