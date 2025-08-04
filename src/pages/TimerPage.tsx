@@ -144,7 +144,7 @@ const TimerPage = () => {
   
   return (
     <SidebarLayout>
-      <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Timer</h1>
         <p className="text-[#7e868b]">Track time for productivity and mindfulness</p>

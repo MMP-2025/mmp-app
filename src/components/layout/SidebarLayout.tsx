@@ -121,8 +121,10 @@ export function SidebarLayout({
         </header>
 
         {/* Main content */}
-        <main className="flex-1 px-4 py-6 md:px-6 overflow-auto bg-mental-peach">
-          {children}
+        <main className="flex-1 p-6 overflow-auto bg-mental-peach">
+          <div className="w-full">
+            {children}
+          </div>
         </main>
       </div>
     </div>;

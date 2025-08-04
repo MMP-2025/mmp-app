@@ -46,7 +46,7 @@ const PlannerPage = () => {
 
   return (
     <SidebarLayout>
-      <div className="space-y-6 max-w-6xl mx-auto">
+      <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold mb-2 text-neutral-500">Planner</h1>
         <p className="text-neutral-500">Organize your schedule and plan your activities</p>
