@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -16,7 +15,6 @@ import { MonthlyView } from '@/components/planner/MonthlyView';
 import { YearlyView } from '@/components/planner/YearlyView';
 import { toast } from 'sonner';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
-
 const PlannerPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [newEventTitle, setNewEventTitle] = useState('');
@@ -27,7 +25,6 @@ const PlannerPage = () => {
     date: Date;
     time: string;
   }>>([]);
-
   const handleAddEvent = () => {
     if (!newEventTitle.trim()) {
       toast.error('Please enter an event title');
@@ -43,9 +40,7 @@ const PlannerPage = () => {
     setNewEventTitle('');
     toast.success('Event added successfully!');
   };
-
-  return (
-    <SidebarLayout>
+  return <SidebarLayout>
       <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold mb-2 text-neutral-500">Planner</h1>
@@ -53,47 +48,28 @@ const PlannerPage = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <Card className="lg:col-span-2 bg-mental-blue">
+        <Card className="lg:col-span-2 bg-mental-peach">
           <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-neutral-500">Calendar & Events</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 bg-mental-blue">
+          <CardContent className="space-y-4 bg-mental-peach">
             <div>
-              <Label className="text-sm font-medium mb-2 block text-neutral-500">Select Date</Label>
-              <Calendar 
-                mode="single" 
-                selected={selectedDate} 
-                onSelect={date => date && setSelectedDate(date)} 
-                className="rounded-md border w-full bg-mental-peach scale-110" 
-              />
+              <Label className="text-sm font-medium mb-2 block text-neutral-500 mx-0 my-[20px]">Select Date</Label>
+              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full bg-mental-peach scale-110" />
             </div>
             
             <div className="space-y-3 pt-4 border-t bg-mental-peach">
               <Label className="text-sm font-medium text-neutral-500">Add New Event</Label>
               <div className="space-y-2">
-                <Input 
-                  placeholder="Event title" 
-                  value={newEventTitle} 
-                  onChange={e => setNewEventTitle(e.target.value)} 
-                  className="text-sm text-neutral-500" 
-                />
+                <Input placeholder="Event title" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="text-sm text-neutral-500" />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-neutral-500" />
-                  <Input 
-                    type="time" 
-                    value={newEventTime} 
-                    onChange={e => setNewEventTime(e.target.value)} 
-                    className="text-sm text-neutral-500" 
-                  />
+                  <Input type="time" value={newEventTime} onChange={e => setNewEventTime(e.target.value)} className="text-sm text-neutral-500" />
                 </div>
               </div>
-              <Button 
-                onClick={handleAddEvent} 
-                size="sm" 
-                className="w-full bg-neutral-300 hover:bg-neutral-400 border border-mental-gray text-neutral-600"
-              >
+              <Button onClick={handleAddEvent} size="sm" className="w-full bg-neutral-300 hover:bg-neutral-400 border border-mental-gray text-neutral-600">
                 <Plus className="mr-2 h-4 w-4" /> Add Event
               </Button>
             </div>
@@ -133,8 +109,6 @@ const PlannerPage = () => {
         </Card>
       </div>
       </div>
-    </SidebarLayout>
-  );
+    </SidebarLayout>;
 };
-
 export default PlannerPage;
