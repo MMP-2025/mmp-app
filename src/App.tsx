@@ -82,21 +82,13 @@ const AppContent = () => {
                   <GratitudePage />
                 </PageWrapper>
               } />
-              <Route path="/planner" element={
-                <PageWrapper backgroundColor="bg-mental-blue">
-                  <PlannerPage />
-                </PageWrapper>
-              } />
+              <Route path="/planner" element={<PlannerPage />} />
               <Route path="/reminders" element={
                 <PageWrapper backgroundColor="bg-mental-peach">
                   <RemindersPage />
                 </PageWrapper>
               } />
-              <Route path="/timer" element={
-                <PageWrapper backgroundColor="bg-mental-green">
-                  <TimerPage />
-                </PageWrapper>
-              } />
+              <Route path="/timer" element={<TimerPage />} />
               {!isGuest ? (
                 <>
                   <Route path="/support-toolkit" element={
