@@ -47,7 +47,7 @@ const PlannerPage = () => {
         <p className="text-neutral-500">Organize your schedule and plan your activities</p>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2 bg-mental-peach">
           <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-neutral-500">Calendar & Events</CardTitle>
@@ -55,7 +55,7 @@ const PlannerPage = () => {
           <CardContent className="space-y-4 bg-mental-peach">
             <div>
               <Label className="text-sm font-medium mb-2 block text-neutral-500 mx-0 my-[20px]">Select Date</Label>
-              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full bg-mental-peach scale-110" />
+              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full bg-mental-peach text-lg [&_.rdp-cell]:h-12 [&_.rdp-cell]:w-12 [&_.rdp-button]:h-11 [&_.rdp-button]:w-11 [&_.rdp-button]:text-base" />
             </div>
             
             <div className="space-y-3 pt-4 border-t bg-mental-peach">
@@ -76,7 +76,7 @@ const PlannerPage = () => {
           </CardContent>
         </Card>
         
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-1">
           <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-neutral-500">Schedule Views</CardTitle>
           </CardHeader>
