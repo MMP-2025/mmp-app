@@ -49,45 +49,48 @@ const PlannerPage = () => {
         <p className="text-neutral-500">Organize your schedule and plan your activities</p>
       </div>
       
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-screen">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-fit">
         {/* Quick Actions Panel */}
         <div className="space-y-6">
           <QuickActionsPanel onAddEvent={() => document.getElementById('add-event-section')?.scrollIntoView({ behavior: 'smooth' })} />
         </div>
 
         {/* Calendar Section */}
-        <Card className="bg-mental-peach">
-          <CardHeader className="bg-mental-peach">
-            <CardTitle className="text-lg text-neutral-500">Calendar & Events</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 bg-mental-peach">
-            <div>
-              <Label className="text-sm font-medium mb-2 block text-neutral-500 mx-0 my-[20px]">Select Date</Label>
-              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full bg-mental-peach scale-110" />
-            </div>
-            
-            <div id="add-event-section" className="space-y-3 pt-4 border-t bg-mental-peach">
-              <Label className="text-sm font-medium text-neutral-500">Add New Event</Label>
-              <div className="space-y-2">
-                <Input placeholder="Event title" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="text-sm text-neutral-500" />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-neutral-500" />
-                  <Input type="time" value={newEventTime} onChange={e => setNewEventTime(e.target.value)} className="text-sm text-neutral-500" />
-                </div>
+        <div className="space-y-4">
+          <Card className="bg-mental-peach">
+            <CardHeader className="bg-mental-peach">
+              <CardTitle className="text-lg text-neutral-500">Calendar</CardTitle>
+            </CardHeader>
+            <CardContent className="bg-mental-peach">
+              <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full bg-mental-peach" />
+            </CardContent>
+          </Card>
+
+          <Card className="bg-mental-peach">
+            <CardHeader className="bg-mental-peach">
+              <CardTitle className="text-lg text-neutral-500">Add Event</CardTitle>
+            </CardHeader>
+            <CardContent id="add-event-section" className="space-y-3 bg-mental-peach">
+              <Input placeholder="Event title" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="text-sm text-neutral-500" />
+              <div className="flex items-center space-x-2">
+                <Clock className="h-4 w-4 text-neutral-500" />
+                <Input type="time" value={newEventTime} onChange={e => setNewEventTime(e.target.value)} className="text-sm text-neutral-500" />
               </div>
               <Button onClick={handleAddEvent} size="sm" className="w-full bg-neutral-300 hover:bg-neutral-400 border border-mental-gray text-neutral-600">
                 <Plus className="mr-2 h-4 w-4" /> Add Event
               </Button>
-            </div>
+            </CardContent>
+          </Card>
 
-            {/* Monthly View Display */}
-            <div className="pt-4 border-t">
+          <Card className="bg-mental-peach">
+            <CardHeader className="bg-mental-peach">
+              <CardTitle className="text-lg text-neutral-500">Monthly View</CardTitle>
+            </CardHeader>
+            <CardContent className="bg-mental-peach">
               <MonthlyView selectedDate={selectedDate} events={events} />
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Time Blocking Assistant */}
         <div className="space-y-6">
