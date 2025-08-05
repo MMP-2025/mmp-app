@@ -49,7 +49,7 @@ const PlannerPage = () => {
         <p className="text-neutral-500">Organize your schedule and plan your activities</p>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-screen">
         {/* Quick Actions Panel */}
         <div className="space-y-6">
           <QuickActionsPanel onAddEvent={() => document.getElementById('add-event-section')?.scrollIntoView({ behavior: 'smooth' })} />
