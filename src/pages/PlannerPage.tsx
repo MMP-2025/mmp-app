@@ -15,6 +15,8 @@ import { MonthlyView } from '@/components/planner/MonthlyView';
 import { YearlyView } from '@/components/planner/YearlyView';
 import { toast } from 'sonner';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
+import { QuickActionsPanel } from '@/components/planner/QuickActionsPanel';
+import { TimeBlockingAssistant } from '@/components/planner/TimeBlockingAssistant';
 const PlannerPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [newEventTitle, setNewEventTitle] = useState('');
@@ -47,8 +49,14 @@ const PlannerPage = () => {
         <p className="text-neutral-500">Organize your schedule and plan your activities</p>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <Card className="lg:col-span-2 bg-mental-peach">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Quick Actions Panel */}
+        <div className="space-y-6">
+          <QuickActionsPanel onAddEvent={() => document.getElementById('add-event-section')?.scrollIntoView({ behavior: 'smooth' })} />
+        </div>
+
+        {/* Calendar Section */}
+        <Card className="bg-mental-peach">
           <CardHeader className="bg-mental-peach">
             <CardTitle className="text-lg text-neutral-500">Calendar & Events</CardTitle>
           </CardHeader>
@@ -58,7 +66,7 @@ const PlannerPage = () => {
               <Calendar mode="single" selected={selectedDate} onSelect={date => date && setSelectedDate(date)} className="rounded-md border w-full bg-mental-peach scale-110" />
             </div>
             
-            <div className="space-y-3 pt-4 border-t bg-mental-peach">
+            <div id="add-event-section" className="space-y-3 pt-4 border-t bg-mental-peach">
               <Label className="text-sm font-medium text-neutral-500">Add New Event</Label>
               <div className="space-y-2">
                 <Input placeholder="Event title" value={newEventTitle} onChange={e => setNewEventTitle(e.target.value)} className="text-sm text-neutral-500" />
@@ -73,40 +81,18 @@ const PlannerPage = () => {
                 <Plus className="mr-2 h-4 w-4" /> Add Event
               </Button>
             </div>
+
+            {/* Monthly View Display */}
+            <div className="pt-4 border-t">
+              <MonthlyView selectedDate={selectedDate} events={events} />
+            </div>
           </CardContent>
         </Card>
-        
-        <Card className="lg:col-span-2">
-          <CardHeader className="bg-mental-peach">
-            <CardTitle className="text-lg text-neutral-500">Schedule Views</CardTitle>
-          </CardHeader>
-          <CardContent className="bg-mental-peach">
-            <Tabs defaultValue="day" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 bg-mental-gray">
-                <TabsTrigger value="day" className="text-neutral-500">Day</TabsTrigger>
-                <TabsTrigger value="week" className="text-neutral-500">Week</TabsTrigger>
-                <TabsTrigger value="month" className="text-neutral-500">Month</TabsTrigger>
-                <TabsTrigger value="year" className="text-neutral-500">Year</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="day" className="mt-4">
-                <DailySchedule selectedDate={selectedDate} events={events.filter(event => event.date.toDateString() === selectedDate.toDateString())} />
-              </TabsContent>
-              
-              <TabsContent value="week" className="mt-4">
-                <WeeklyView selectedDate={selectedDate} events={events} />
-              </TabsContent>
-              
-              <TabsContent value="month" className="mt-4">
-                <MonthlyView selectedDate={selectedDate} events={events} />
-              </TabsContent>
-              
-              <TabsContent value="year" className="mt-4">
-                <YearlyView selectedDate={selectedDate} events={events} />
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+
+        {/* Time Blocking Assistant */}
+        <div className="space-y-6">
+          <TimeBlockingAssistant />
+        </div>
       </div>
       </div>
     </SidebarLayout>;
