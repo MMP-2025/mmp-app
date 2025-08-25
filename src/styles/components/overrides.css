@@ -33,9 +33,9 @@
     border: 1px solid #737373 !important;
   }
 
-  /* Replace white/transparent backgrounds */
-  * {
-    color: #737373 !important;
+  /* Ensure proper text colors */
+  .text-white {
+    color: hsl(var(--foreground)) !important;
   }
 
   input, textarea, select {
@@ -43,7 +43,12 @@
     border-color: #737373 !important;
   }
 
-  .bg-white, .bg-transparent, [style*="background: white"], [style*="background-color: white"] {
-    background-color: rgb(var(--mental-gray)) !important;
+  /* Use design system backgrounds */
+  .bg-white {
+    background-color: hsl(var(--card)) !important;
+  }
+  
+  .bg-transparent {
+    background-color: transparent !important;
   }
 }
