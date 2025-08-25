@@ -22,7 +22,7 @@ const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, de
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-            <Crown className="h-8 w-8 text-white" />
+            <Crown className="h-8 w-8 text-primary-foreground" />
           </div>
           <CardTitle className="text-3xl font-bold text-gray-900">
             Unlock {featureName}
@@ -40,7 +40,7 @@ const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, de
             <div className="grid gap-3">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
                   <span className="text-gray-700">{feature}</span>
                 </div>
               ))}
@@ -51,7 +51,7 @@ const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, de
             <div className="flex flex-col gap-3">
               <Button 
                 onClick={handleCreateAccount}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-3"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3"
               >
                 Create Patient Account - It's Free!
               </Button>

@@ -48,7 +48,29 @@
     background-color: hsl(var(--card)) !important;
   }
   
+  .bg-white\/90 {
+    background-color: hsl(var(--card) / 0.9) !important;
+  }
+  
   .bg-transparent {
     background-color: transparent !important;
+  }
+  
+  /* Fix text colors */
+  .text-white {
+    color: hsl(var(--primary-foreground)) !important;
+  }
+  
+  /* Fix button colors */
+  .bg-red-500 {
+    background-color: hsl(var(--destructive)) !important;
+  }
+  
+  .bg-red-600 {
+    background-color: hsl(var(--destructive) / 0.9) !important;
+  }
+  
+  .bg-blue-500 {
+    background-color: hsl(var(--primary)) !important;
   }
 }

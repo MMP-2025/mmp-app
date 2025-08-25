@@ -374,7 +374,7 @@ const CrisisPlanCreator = () => {
         </div>
       </Card>
 
-      <Button onClick={saveCrisisPlan} className="w-full bg-red-600 hover:bg-red-700 text-white">
+      <Button onClick={saveCrisisPlan} className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground">
         Save Crisis Plan
       </Button>
     </div>

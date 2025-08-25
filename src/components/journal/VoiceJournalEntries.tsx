@@ -294,7 +294,8 @@ const VoiceJournalEntries: React.FC = () => {
                 <div className="text-center">
                   <Button
                     onClick={startRecording}
-                    className="bg-red-500 hover:bg-red-600 text-white rounded-full w-16 h-16 mb-2"
+                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-full w-16 h-16 mb-2"
+                    aria-label="Start recording voice journal entry"
                   >
                     <Mic className="h-6 w-6" />
                   </Button>
@@ -306,7 +307,8 @@ const VoiceJournalEntries: React.FC = () => {
                 <div className="text-center">
                   <Button
                     onClick={stopRecording}
-                    className="bg-red-500 hover:bg-red-600 text-white rounded-full w-16 h-16 mb-2 animate-pulse"
+                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-full w-16 h-16 mb-2 animate-pulse"
+                    aria-label="Stop recording voice journal entry"
                   >
                     <MicOff className="h-6 w-6" />
                   </Button>
