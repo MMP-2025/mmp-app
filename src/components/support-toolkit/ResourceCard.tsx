@@ -22,10 +22,16 @@ const categoryColors: {
   default: 'bg-muted text-muted-foreground'
 };
 const handleDownload = (resource: Resource) => {
-  console.log(`Downloading ${resource.title}`);
-  toast.info(`Downloading: ${resource.title}`, {
-    description: 'This is a placeholder for a real file download.'
-  });
+  if (resource.downloadUrl) {
+    const a = document.createElement('a');
+    a.href = resource.downloadUrl;
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } else {
+    toast.info('No attachment available for this resource yet.');
+  }
 };
 const ResourceCard: React.FC<ResourceCardProps> = ({
   resource,
@@ -33,7 +39,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   onToggleSave
 }) => {
   const categoryStyle = categoryColors[resource.category] || categoryColors.default;
-  return <div className="p-4 border rounded-lg transition-colors bg-mental-gray">
+  return <div className="p-4 border rounded-lg transition-colors bg-card">
       <div className="flex items-start justify-between mb-3">
         <FileText className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
         <div className="flex gap-2 ml-2">
@@ -47,16 +53,16 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
       </div>
       
       <div className="mb-3">
-        <h4 className="font-medium text-[#7e868b] mb-2">{resource.title}</h4>
-        <p className="text-sm text-gray-600 mb-2">{resource.description}</p>
+        <h4 className="font-medium text-foreground mb-2">{resource.title}</h4>
+        <p className="text-sm text-muted-foreground mb-2">{resource.description}</p>
         <span className={`inline-block px-2 py-1 rounded-full text-xs ${categoryStyle}`}>
           {resource.type}
         </span>
       </div>
       
-      <Button size="sm" onClick={() => handleDownload(resource)} className="w-full bg-mental-blue hover:bg-mental-blue/80">
+      <Button size="sm" onClick={() => handleDownload(resource)} className="w-full bg-primary text-primary-foreground hover:opacity-90" disabled={!resource.downloadUrl}>
         <Download className="h-4 w-4 mr-2" />
-        Download
+        {resource.downloadUrl ? 'Download' : 'No Attachment'}
       </Button>
     </div>;
 };

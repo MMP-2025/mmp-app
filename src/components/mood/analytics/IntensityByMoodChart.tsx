@@ -14,7 +14,7 @@ interface IntensityByMoodChartProps {
 
 const IntensityByMoodChart: React.FC<IntensityByMoodChartProps> = ({ avgIntensityByMood }) => {
   return (
-    <Card className="p-6 bg-white/90">
+    <Card className="p-6 bg-card">
       <h3 className="text-lg font-semibold mb-4 text-foreground">Average Intensity by Mood</h3>
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={avgIntensityByMood}>
@@ -22,7 +22,7 @@ const IntensityByMoodChart: React.FC<IntensityByMoodChartProps> = ({ avgIntensit
           <XAxis dataKey="mood" />
           <YAxis domain={[0, 10]} />
           <Tooltip />
-          <Bar dataKey="avgIntensity" fill="#AEC29B" />
+          <Bar dataKey="avgIntensity" fill="hsl(var(--accent))" />
         </BarChart>
       </ResponsiveContainer>
     </Card>

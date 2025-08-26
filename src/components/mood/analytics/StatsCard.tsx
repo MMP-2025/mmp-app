@@ -9,10 +9,10 @@ interface StatsCardProps {
 
 const StatsCard: React.FC<StatsCardProps> = ({ value, label }) => {
   return (
-    <Card className="p-4 bg-white/90">
+    <Card className="p-4 bg-card">
       <div className="text-center">
-        <div className="text-2xl font-bold" style={{color: '#737373'}}>{value}</div>
-        <div className="text-sm" style={{color: '#737373'}}>{label}</div>
+        <div className="text-2xl font-bold text-foreground">{value}</div>
+        <div className="text-sm text-muted-foreground">{label}</div>
       </div>
     </Card>
   );
