@@ -89,13 +89,13 @@ const AppContent = () => {
                 </PageWrapper>
               } />
               <Route path="/timer" element={<TimerPage />} />
+              <Route path="/support-toolkit" element={
+                <PageWrapper backgroundColor="bg-mental-beige">
+                  <SupportToolkitPage />
+                </PageWrapper>
+              } />
               {!isGuest ? (
                 <>
-                  <Route path="/support-toolkit" element={
-                    <PageWrapper backgroundColor="bg-mental-beige">
-                      <SupportToolkitPage />
-                    </PageWrapper>
-                  } />
                   <Route path="/profile" element={
                     <PageWrapper backgroundColor="bg-mental-gray">
                       <ProfilePage />
@@ -109,19 +109,6 @@ const AppContent = () => {
                 </>
               ) : (
                 <>
-                  <Route path="/support-toolkit" element={
-                    <GuestUpgradePrompt 
-                      featureName="Support Toolkit"
-                      description="Access professional therapeutic tools and resources"
-                      features={[
-                        "Comprehensive therapy resources library",
-                        "CBT modules and exercises", 
-                        "Coping skills development tools",
-                        "Professional guidance materials",
-                        "Crisis intervention resources"
-                      ]}
-                    />
-                  } />
                   <Route path="/profile" element={
                     <GuestUpgradePrompt 
                       featureName="Personal Profile"
