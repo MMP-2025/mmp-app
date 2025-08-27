@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Volume2 } from 'lucide-react';
+import { Play, Pause, Volume2, Clock } from 'lucide-react';
 import { mindfulnessAudios } from '@/data/mindfulnessAudios';
+import { useAnalytics } from '@/hooks/useAnalytics';
 interface AIGeneratedAudiosProps {
   onComplete?: (audioId: string, duration: number) => void;
 }
@@ -10,7 +11,24 @@ const AIGeneratedAudios: React.FC<AIGeneratedAudiosProps> = ({
   onComplete
 }) => {
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [audioDurations, setAudioDurations] = useState<Record<string, number>>({});
+  const { trackMindfulnessSession } = useAnalytics();
   const audioRefs = useRef<Record<string, HTMLAudioElement | null>>({});
+
+  useEffect(() => {
+    // Load actual durations from audio files
+    mindfulnessAudios.forEach(audio => {
+      if (audio.audioUrl) {
+        const audioElement = new Audio(audio.audioUrl);
+        audioElement.addEventListener('loadedmetadata', () => {
+          setAudioDurations(prev => ({
+            ...prev,
+            [audio.id]: Math.floor(audioElement.duration) || audio.duration
+          }));
+        });
+      }
+    });
+  }, []);
   const handlePlayPause = async (audioId: string) => {
     const current = audioRefs.current[audioId];
 
@@ -57,8 +75,9 @@ const AIGeneratedAudios: React.FC<AIGeneratedAudiosProps> = ({
                   {audio.category}
                 </span>
               </div>
-              <div className="text-sm font-medium text-muted-foreground">
-                {formatDuration(audio.duration)}
+              <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                {formatDuration(audioDurations[audio.id] || audio.duration)}
               </div>
             </div>
           </CardHeader>
@@ -68,8 +87,10 @@ const AIGeneratedAudios: React.FC<AIGeneratedAudiosProps> = ({
               src={audio.audioUrl}
               preload="none"
               onEnded={() => {
+                const duration = audioDurations[audio.id] || audio.duration;
+                trackMindfulnessSession(audio.title, Math.floor(duration));
                 setPlayingAudio(null);
-                onComplete?.(audio.id, Math.floor(audio.duration));
+                onComplete?.(audio.id, Math.floor(duration));
               }}
             />
           )}

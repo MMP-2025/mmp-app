@@ -46,11 +46,22 @@ export const useAnalytics = () => {
     });
   };
 
+  const trackResourceDownload = (resourceId: string, resourceTitle: string, category: string) => {
+    analytics.track('user_action', {
+      action: 'resource_download',
+      resourceId,
+      resourceTitle,
+      category,
+      timestamp: Date.now()
+    });
+  };
+
   return {
     trackAction,
     trackMoodEntry,
     trackJournalEntry,
     trackMindfulnessSession,
+    trackResourceDownload,
     getUserMetrics: analytics.getUserMetrics.bind(analytics)
   };
 };
