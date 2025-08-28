@@ -8,29 +8,26 @@ import { Timer, Play, Pause, RotateCcw, Bell, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
-
 const TimerPage = () => {
   // Pomodoro timer
   const [pomodoroMinutes, setPomodoroMinutes] = useState(25);
   const [pomodoroSeconds, setPomodoroSeconds] = useState(0);
   const [isPomodoroPaused, setIsPomodoroPaused] = useState(true);
-  
+
   // Countdown timer
   const [countdownMinutes, setCountdownMinutes] = useState<number>(5);
   const [countdownSeconds, setCountdownSeconds] = useState<number>(0);
   const [countdownTotalSeconds, setCountdownTotalSeconds] = useState<number>(300);
   const [isCountdownPaused, setIsCountdownPaused] = useState(true);
-  
+
   // Stopwatch
   const [stopwatchTime, setStopwatchTime] = useState(0);
   const [isStopwatchPaused, setIsStopwatchPaused] = useState(true);
-  
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  
+
   // Pomodoro timer logic
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    
     if (!isPomodoroPaused) {
       interval = setInterval(() => {
         if (pomodoroSeconds === 0) {
@@ -50,14 +47,12 @@ const TimerPage = () => {
         }
       }, 1000);
     }
-    
     return () => clearInterval(interval);
   }, [isPomodoroPaused, pomodoroMinutes, pomodoroSeconds]);
-  
+
   // Countdown timer logic
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    
     if (!isCountdownPaused) {
       interval = setInterval(() => {
         if (countdownTotalSeconds <= 1) {
@@ -79,30 +74,27 @@ const TimerPage = () => {
         }
       }, 1000);
     }
-    
     return () => clearInterval(interval);
   }, [isCountdownPaused, countdownTotalSeconds]);
-  
+
   // Stopwatch logic
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    
     if (!isStopwatchPaused) {
       interval = setInterval(() => {
         setStopwatchTime(prev => prev + 1);
       }, 1000);
     }
-    
     return () => clearInterval(interval);
   }, [isStopwatchPaused]);
-  
+
   // Reset pomodoro timer
   const resetPomodoro = () => {
     setPomodoroMinutes(25);
     setPomodoroSeconds(0);
     setIsPomodoroPaused(true);
   };
-  
+
   // Reset countdown timer
   const resetCountdown = () => {
     setCountdownMinutes(5);
@@ -110,7 +102,7 @@ const TimerPage = () => {
     setCountdownTotalSeconds(300);
     setIsCountdownPaused(true);
   };
-  
+
   // Set custom countdown time
   const setCustomCountdown = (mins: number) => {
     setCountdownMinutes(mins);
@@ -118,32 +110,27 @@ const TimerPage = () => {
     setCountdownTotalSeconds(mins * 60);
     setIsCountdownPaused(true);
   };
-  
+
   // Reset stopwatch
   const resetStopwatch = () => {
     setStopwatchTime(0);
     setIsStopwatchPaused(true);
   };
-  
+
   // Format time functions
   const formatTime = (minutes: number, seconds: number) => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
-  
   const formatStopwatchTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const minutes = Math.floor(totalSeconds % 3600 / 60);
     const seconds = totalSeconds % 60;
-    
     if (hours > 0) {
       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
-    
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
-  
-  return (
-    <SidebarLayout>
+  return <SidebarLayout>
       <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Timer</h1>
@@ -179,16 +166,8 @@ const TimerPage = () => {
               </div>
               
               <div className="flex justify-center gap-4 mt-6">
-                <Button
-                  variant={isPomodoroPaused ? "default" : "outline"}
-                  onClick={() => setIsPomodoroPaused(!isPomodoroPaused)}
-                  className="text-[#7e868b]"
-                >
-                  {isPomodoroPaused ? (
-                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></>
-                  ) : (
-                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>
-                  )}
+                <Button variant={isPomodoroPaused ? "default" : "outline"} onClick={() => setIsPomodoroPaused(!isPomodoroPaused)} className="text-[#7e868b]">
+                  {isPomodoroPaused ? <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></> : <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>}
                 </Button>
                 <Button variant="outline" onClick={resetPomodoro} className="text-[#7e868b]">
                   <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
@@ -223,79 +202,41 @@ const TimerPage = () => {
               </div>
               
               <div className="grid grid-cols-6 gap-2 mt-6">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCustomCountdown(1)}
-                  className="text-sm text-[#7e868b]"
-                >
+                <Button variant="outline" onClick={() => setCustomCountdown(1)} className="text-sm text-[#7e868b]">
                   1m
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCustomCountdown(5)}
-                  className="text-sm text-[#7e868b]"
-                >
+                <Button variant="outline" onClick={() => setCustomCountdown(5)} className="text-sm text-[#7e868b]">
                   5m
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCustomCountdown(10)}
-                  className="text-sm text-[#7e868b]"
-                >
+                <Button variant="outline" onClick={() => setCustomCountdown(10)} className="text-sm text-[#7e868b]">
                   10m
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCustomCountdown(15)}
-                  className="text-sm text-[#7e868b]"
-                >
+                <Button variant="outline" onClick={() => setCustomCountdown(15)} className="text-sm text-[#7e868b]">
                   15m
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCustomCountdown(30)}
-                  className="text-sm text-[#7e868b]"
-                >
+                <Button variant="outline" onClick={() => setCustomCountdown(30)} className="text-sm text-[#7e868b]">
                   30m
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCustomCountdown(60)}
-                  className="text-sm text-[#7e868b]"
-                >
+                <Button variant="outline" onClick={() => setCustomCountdown(60)} className="text-sm text-[#7e868b]">
                   1h
                 </Button>
               </div>
               
               <div className="space-y-2 mt-4">
                 <Label className="text-[#7e868b]">Custom Time (minutes):</Label>
-                <div className="flex items-center gap-2">
-                  <Slider
-                    value={[countdownMinutes]}
-                    min={1}
-                    max={120}
-                    step={1}
-                    onValueChange={(value) => {
-                      if (isCountdownPaused) {
-                        setCustomCountdown(value[0]);
-                      }
-                    }}
-                  />
+                <div className="flex items-center gap-2 bg-transparent">
+                  <Slider value={[countdownMinutes]} min={1} max={120} step={1} onValueChange={value => {
+                    if (isCountdownPaused) {
+                      setCustomCountdown(value[0]);
+                    }
+                  }} />
                   <span className="min-w-[50px] text-center text-[#7e868b]">{countdownMinutes}m</span>
                 </div>
               </div>
               
               <div className="flex justify-center gap-4 mt-6">
-                <Button
-                  variant={isCountdownPaused ? "default" : "outline"}
-                  onClick={() => setIsCountdownPaused(!isCountdownPaused)}
-                  className="text-[#7e868b]"
-                >
-                  {isCountdownPaused ? (
-                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></>
-                  ) : (
-                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>
-                  )}
+                <Button variant={isCountdownPaused ? "default" : "outline"} onClick={() => setIsCountdownPaused(!isCountdownPaused)} className="text-[#7e868b]">
+                  {isCountdownPaused ? <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></> : <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>}
                 </Button>
                 <Button variant="outline" onClick={resetCountdown} className="text-[#7e868b]">
                   <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
@@ -322,16 +263,8 @@ const TimerPage = () => {
               </div>
               
               <div className="flex justify-center gap-4 mt-6">
-                <Button
-                  variant={isStopwatchPaused ? "default" : "outline"}
-                  onClick={() => setIsStopwatchPaused(!isStopwatchPaused)}
-                  className="text-[#7e868b]"
-                >
-                  {isStopwatchPaused ? (
-                    <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></>
-                  ) : (
-                    <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>
-                  )}
+                <Button variant={isStopwatchPaused ? "default" : "outline"} onClick={() => setIsStopwatchPaused(!isStopwatchPaused)} className="text-[#7e868b]">
+                  {isStopwatchPaused ? <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></> : <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>}
                 </Button>
                 <Button variant="outline" onClick={resetStopwatch} className="text-[#7e868b]">
                   <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
@@ -342,8 +275,6 @@ const TimerPage = () => {
         </TabsContent>
       </Tabs>
       </div>
-    </SidebarLayout>
-  );
+    </SidebarLayout>;
 };
-
 export default TimerPage;
