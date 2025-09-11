@@ -73,18 +73,16 @@ const ProviderDashboard = () => {
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">
-          <div className="overflow-x-auto">
-            <TabsList className="grid w-max grid-cols-8 bg-mental-blue min-w-full">
-              <TabsTrigger value="quotes" className="text-xs sm:text-sm whitespace-nowrap">Quotes</TabsTrigger>
-              <TabsTrigger value="prompts" className="text-xs sm:text-sm whitespace-nowrap">Journal Prompts</TabsTrigger>
-              <TabsTrigger value="questions" className="text-xs sm:text-sm whitespace-nowrap">Questions</TabsTrigger>
-              <TabsTrigger value="toolkit" className="text-xs sm:text-sm whitespace-nowrap">Toolkit</TabsTrigger>
-              <TabsTrigger value="reminders" className="text-xs sm:text-sm whitespace-nowrap">Reminders</TabsTrigger>
-              <TabsTrigger value="gratitude" className="text-xs sm:text-sm whitespace-nowrap">Gratitude</TabsTrigger>
-              <TabsTrigger value="mindfulness" className="text-xs sm:text-sm whitespace-nowrap">Mindfulness</TabsTrigger>
-              <TabsTrigger value="notifications" className="text-xs sm:text-sm whitespace-nowrap">Push Notifications</TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="grid w-full grid-cols-8 bg-mental-blue">
+            <TabsTrigger value="quotes">Quotes</TabsTrigger>
+            <TabsTrigger value="prompts">Journal Prompts</TabsTrigger>
+            <TabsTrigger value="questions">Questions</TabsTrigger>
+            <TabsTrigger value="toolkit">Toolkit</TabsTrigger>
+            <TabsTrigger value="reminders">Reminders</TabsTrigger>
+            <TabsTrigger value="gratitude">Gratitude</TabsTrigger>
+            <TabsTrigger value="mindfulness">Mindfulness</TabsTrigger>
+            <TabsTrigger value="notifications">Push Notifications</TabsTrigger>
+          </TabsList>
 
           <TabsContent value="quotes">
             <Suspense fallback={<LoadingFallback />}>

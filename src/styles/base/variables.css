@@ -46,16 +46,6 @@
     --mental-blue: 182, 209, 217; /* #B6D1D9 */
     --mental-beige: 229, 199, 181; /* #E5C7B5 */
     --mental-green: 174, 194, 155; /* #AEC29B */
-
-    /* Page-specific brand colors */
-    --page-home: 10 78% 91%; /* mental-peach */
-    --page-mood: 194 32% 78%; /* mental-blue */
-    --page-journal: 22 48% 80%; /* mental-beige */ 
-    --page-mindfulness: 91 24% 68%; /* mental-green */
-    --page-planner: 0 6% 79%; /* mental-gray */
-    --page-reminders: 91 24% 68%; /* mental-green */
-    --page-support: 22 48% 80%; /* mental-beige */
-    --page-timer: 194 32% 78%; /* mental-blue */
   }
 
   .dark {
