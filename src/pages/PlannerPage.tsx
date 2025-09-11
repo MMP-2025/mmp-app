@@ -20,15 +20,15 @@ const PlannerPage = () => {
         <p className="text-neutral-500">Organize your schedule and plan your activities</p>
       </div>
       
-      <div className="w-full max-w-none overflow-visible">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 min-w-0 w-full">
+      <div className="w-full overflow-x-auto">
+        <div className="flex gap-4 lg:gap-6 min-w-max lg:min-w-0 lg:grid lg:grid-cols-3">
           {/* Quick Actions Panel */}
-          <div className="min-w-0 flex-shrink-0 space-y-6">
+          <div className="flex-shrink-0 w-80 lg:w-auto space-y-6">
             <QuickActionsPanel onAddEvent={() => {}} />
           </div>
 
           {/* Monthly View Section */}
-          <div className="min-w-0 flex-shrink-0">
+          <div className="flex-shrink-0 w-80 lg:w-auto">
             <Card className="bg-mental-peach">
               <CardHeader className="bg-mental-peach">
                 <CardTitle className="text-lg text-neutral-500">Monthly View</CardTitle>
@@ -40,7 +40,7 @@ const PlannerPage = () => {
           </div>
 
           {/* Time Blocking Assistant */}
-          <div className="min-w-0 flex-shrink-0 space-y-6">
+          <div className="flex-shrink-0 w-80 lg:w-auto space-y-6">
             <TimeBlockingAssistant />
           </div>
         </div>

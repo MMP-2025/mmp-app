@@ -199,6 +199,16 @@ const TimerPage = () => {
                 <div className="text-6xl font-bold font-mono text-[#7e868b]">
                   {formatTime(countdownMinutes, countdownSeconds)}
                 </div>
+                <div className="mt-4 w-full bg-mental-gray/30 rounded-full h-3">
+                  <div 
+                    className="bg-mental-blue h-3 rounded-full transition-all duration-1000 ease-linear"
+                    style={{ 
+                      width: countdownTotalSeconds > 0 
+                        ? `${((countdownMinutes * 60 + countdownSeconds) / (countdownMinutes * 60 + countdownSeconds || 1)) * 100}%` 
+                        : '0%' 
+                    }}
+                  />
+                </div>
               </div>
               
               <div className="grid grid-cols-6 gap-2 mt-6">

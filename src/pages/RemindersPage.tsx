@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Plus, Bell, Award, Check } from 'lucide-react';
+import { Plus, Bell, Award, Check, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { Progress } from '@/components/ui/progress';
+import { commonReminders } from '@/data/commonReminders';
 
 import { useProviderData } from '@/hooks/useProviderData';
 import { useProviderHandlers } from '@/hooks/useProviderHandlers';
@@ -92,11 +93,33 @@ const RemindersPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="bg-mental-green">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 mb-4">
                 <Input placeholder="Enter your reminder" value={newReminderText} onChange={e => setNewReminderText(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAddReminder()} />
                 <Button onClick={handleAddReminder} className="text-mental-green bg-mental-green">
                   <Plus className="h-4 w-4 text-[#7e868b]" />
                 </Button>
+              </div>
+              <div className="border-t pt-4">
+                <h3 className="text-sm font-medium text-[#7e868b] mb-2 flex items-center">
+                  <Zap className="h-4 w-4 mr-1" />
+                  Quick Add Common Reminders
+                </h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {commonReminders.slice(0, 6).map((reminder, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setNewReminderText(reminder.title);
+                        setTimeout(() => handleAddReminder(), 0);
+                      }}
+                      className="text-xs h-8"
+                    >
+                      {reminder.title}
+                    </Button>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>

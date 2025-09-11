@@ -57,7 +57,7 @@ const AppContent = () => {
           <div className="w-full min-h-screen">
             <Routes>
               <Route path="/" element={
-                <PageWrapper backgroundColor="bg-mental-peach">
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-home))]">
                   <HomePage />
                 </PageWrapper>
               } />
@@ -66,14 +66,18 @@ const AppContent = () => {
                   <CrisisResourcesPage />
                 </PageWrapper>
               } />
-              <Route path="/mood" element={<MoodTrackerPage />} />
+              <Route path="/mood" element={
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-mood))]">
+                  <MoodTrackerPage />
+                </PageWrapper>
+              } />
               <Route path="/journal" element={
-                <PageWrapper backgroundColor="bg-mental-green">
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-journal))]">
                   <JournalPage />
                 </PageWrapper>
               } />
               <Route path="/mindfulness" element={
-                <PageWrapper backgroundColor="bg-mental-beige">
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-mindfulness))]">
                   <MindfulnessPage />
                 </PageWrapper>
               } />
@@ -82,15 +86,23 @@ const AppContent = () => {
                   <GratitudePage />
                 </PageWrapper>
               } />
-              <Route path="/planner" element={<PlannerPage />} />
+              <Route path="/planner" element={
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-planner))]">
+                  <PlannerPage />
+                </PageWrapper>
+              } />
               <Route path="/reminders" element={
-                <PageWrapper backgroundColor="bg-mental-peach">
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-reminders))]">
                   <RemindersPage />
                 </PageWrapper>
               } />
-              <Route path="/timer" element={<TimerPage />} />
+              <Route path="/timer" element={
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-timer))]">
+                  <TimerPage />
+                </PageWrapper>
+              } />
               <Route path="/support-toolkit" element={
-                <PageWrapper backgroundColor="bg-mental-beige">
+                <PageWrapper backgroundColor="bg-[hsl(var(--page-support))]">
                   <SupportToolkitPage />
                 </PageWrapper>
               } />

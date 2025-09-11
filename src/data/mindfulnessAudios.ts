@@ -15,7 +15,7 @@ export const mindfulnessAudios: MindfulnessAudio[] = [
     duration: 300,
     description: 'A gentle breathing exercise to center yourself and reduce stress',
     category: 'breathing',
-    audioUrl: '/audios/meditation-sample.mp3'
+    audioUrl: '/audios/peaceful-mind.mp3'
   },
   {
     id: 'body-scan-meditation',
@@ -31,7 +31,7 @@ export const mindfulnessAudios: MindfulnessAudio[] = [
     duration: 600,
     description: 'Begin your day with intention and peaceful awareness',
     category: 'meditation',
-    audioUrl: '/audios/meditation-sample.mp3'
+    audioUrl: '/audios/peaceful-mind.mp3'
   },
   {
     id: 'anxiety-relief',
@@ -47,7 +47,7 @@ export const mindfulnessAudios: MindfulnessAudio[] = [
     duration: 1080,
     description: 'Gentle guidance to prepare your mind and body for restful sleep',
     category: 'sleep',
-    audioUrl: '/audios/meditation-sample.mp3'
+    audioUrl: '/audios/peaceful-mind.mp3'
   },
   {
     id: 'stress-release',
@@ -63,7 +63,7 @@ export const mindfulnessAudios: MindfulnessAudio[] = [
     duration: 540,
     description: 'Cultivate compassion for yourself and others',
     category: 'meditation',
-    audioUrl: '/audios/meditation-sample.mp3'
+    audioUrl: '/audios/peaceful-mind.mp3'
   },
   {
     id: 'focus-concentration',
