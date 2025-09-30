@@ -5,8 +5,21 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Plus, X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { z } from 'zod';
 
-export const TimeBlockingAssistant = () => {
+const timeBlockSchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(100, "Title must be less than 100 characters"),
+  startTime: z.string().min(1, "Start time is required"),
+  endTime: z.string().min(1, "End time is required")
+});
+
+interface TimeBlockingAssistantProps {
+  onAddTimeBlock?: (block: { title: string; startTime: string; endTime: string }) => void;
+}
+
+export const TimeBlockingAssistant = ({ onAddTimeBlock }: TimeBlockingAssistantProps) => {
+  const { toast } = useToast();
   const [timeBlocks, setTimeBlocks] = useState([
     { id: '1', title: 'Deep Work', startTime: '09:00', endTime: '11:00', color: 'bg-blue-100 text-blue-800' },
     { id: '2', title: 'Meetings', startTime: '14:00', endTime: '16:00', color: 'bg-green-100 text-green-800' },
@@ -16,18 +29,48 @@ export const TimeBlockingAssistant = () => {
   const [newBlockEnd, setNewBlockEnd] = useState('');
 
   const addTimeBlock = () => {
-    if (newBlockTitle && newBlockStart && newBlockEnd) {
-      const newBlock = {
-        id: Date.now().toString(),
+    try {
+      const validated = timeBlockSchema.parse({
         title: newBlockTitle,
         startTime: newBlockStart,
-        endTime: newBlockEnd,
+        endTime: newBlockEnd
+      });
+
+      const newBlock = {
+        id: Date.now().toString(),
+        title: validated.title,
+        startTime: validated.startTime,
+        endTime: validated.endTime,
         color: 'bg-purple-100 text-purple-800'
       };
+      
       setTimeBlocks([...timeBlocks, newBlock]);
+      
+      // Also add to parent events if callback provided
+      if (onAddTimeBlock) {
+        onAddTimeBlock({
+          title: validated.title,
+          startTime: validated.startTime,
+          endTime: validated.endTime
+        });
+      }
+      
+      toast({
+        title: "Time block added",
+        description: "Your time block has been added successfully"
+      });
+      
       setNewBlockTitle('');
       setNewBlockStart('');
       setNewBlockEnd('');
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Validation error",
+          description: error.errors[0].message,
+          variant: "destructive"
+        });
+      }
     }
   };
 

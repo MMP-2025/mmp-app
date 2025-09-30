@@ -44,6 +44,16 @@ const PlannerPage = () => {
     }]);
   };
 
+  const handleAddTimeBlock = (block: { title: string; startTime: string; endTime: string }) => {
+    setEvents(prev => [...prev, {
+      id: crypto.randomUUID(),
+      title: block.title,
+      date: new Date(),
+      time: block.startTime,
+      type: 'event'
+    }]);
+  };
+
   return <SidebarLayout>
       <div className="space-y-6">
       <div>
@@ -76,7 +86,7 @@ const PlannerPage = () => {
 
           {/* Time Blocking Assistant */}
           <div className="min-w-0 flex-shrink-0">
-            <TimeBlockingAssistant />
+            <TimeBlockingAssistant onAddTimeBlock={handleAddTimeBlock} />
           </div>
         </div>
       </div>
