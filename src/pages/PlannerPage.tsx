@@ -11,7 +11,38 @@ const PlannerPage = () => {
     title: string;
     date: Date;
     time: string;
+    type?: 'event' | 'meeting' | 'reminder';
+    duration?: string;
+    participants?: string;
+    message?: string;
   }>>([]);
+
+  const handleAddEvent = (event: { title: string; date: Date; time: string }) => {
+    setEvents(prev => [...prev, {
+      id: crypto.randomUUID(),
+      ...event,
+      type: 'event'
+    }]);
+  };
+
+  const handleScheduleMeeting = (meeting: { title: string; date: Date; time: string; duration: string; participants: string }) => {
+    setEvents(prev => [...prev, {
+      id: crypto.randomUUID(),
+      ...meeting,
+      type: 'meeting'
+    }]);
+  };
+
+  const handleSetReminder = (reminder: { title: string; message: string; date: Date; time: string }) => {
+    setEvents(prev => [...prev, {
+      id: crypto.randomUUID(),
+      title: reminder.title,
+      date: reminder.date,
+      time: reminder.time,
+      message: reminder.message,
+      type: 'reminder'
+    }]);
+  };
 
   return <SidebarLayout>
       <div className="space-y-6">
@@ -24,7 +55,11 @@ const PlannerPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-w-0 w-full">
           {/* Quick Actions Panel */}
           <div className="min-w-0 flex-shrink-0">
-            <QuickActionsPanel onAddEvent={() => {}} />
+            <QuickActionsPanel 
+              onAddEvent={handleAddEvent}
+              onScheduleMeeting={handleScheduleMeeting}
+              onSetReminder={handleSetReminder}
+            />
           </div>
 
           {/* Monthly View Section */}
