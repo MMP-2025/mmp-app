@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { GratitudeExercise } from '@/types/gratitude';
+import { SuccessAnimation } from '@/components/common/SuccessAnimation';
 
 interface ExerciseFormProps {
   selectedExercise: GratitudeExercise;
@@ -33,6 +34,13 @@ const ExerciseForm: React.FC<ExerciseFormProps> = ({
   onSave,
   onCancel,
 }) => {
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleSave = () => {
+    onSave();
+    setShowSuccess(true);
+  };
+
   const renderFormContent = () => {
     switch (selectedExercise.id) {
       case 1: // Three Good Things
@@ -71,21 +79,29 @@ const ExerciseForm: React.FC<ExerciseFormProps> = ({
   };
 
   return (
-    <Card className="p-6 bg-mental-peach/20">
-      <h2 className="text-2xl font-semibold mb-2 text-[#7e868b]">{selectedExercise.title}</h2>
-      <p className="mb-6 text-[#7e868b]">{selectedExercise.instructions}</p>
-      
-      {renderFormContent()}
-      
-      <div className="mt-6 flex gap-3">
-        <Button onClick={onSave} className="flex-1 bg-mental-green hover:bg-mental-green/80">
-          Save Practice
-        </Button>
-        <Button onClick={onCancel} variant="outline" className="bg-mental-green">
-          Cancel
-        </Button>
-      </div>
-    </Card>
+    <>
+      {showSuccess && (
+        <SuccessAnimation 
+          message="Gratitude practice saved! 🙏"
+          onComplete={() => setShowSuccess(false)}
+        />
+      )}
+      <Card className="p-6 bg-mental-peach/20">
+        <h2 className="text-2xl font-semibold mb-2 text-[#7e868b]">{selectedExercise.title}</h2>
+        <p className="mb-6 text-[#7e868b]">{selectedExercise.instructions}</p>
+        
+        {renderFormContent()}
+        
+        <div className="mt-6 flex gap-3">
+          <Button onClick={handleSave} className="flex-1 bg-mental-green hover:bg-mental-green/80 hover-scale">
+            Save Practice
+          </Button>
+          <Button onClick={onCancel} variant="outline" className="bg-mental-green">
+            Cancel
+          </Button>
+        </div>
+      </Card>
+    </>
   );
 };
 

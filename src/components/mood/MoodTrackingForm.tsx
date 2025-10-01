@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import FeelingsWheel from './FeelingsWheel';
@@ -8,6 +8,7 @@ import MoodNoteInput from './forms/MoodNoteInput';
 import MoodFactors from './MoodFactors';
 import HabitTrackers from './HabitTrackers';
 import EnvironmentTracker from './EnvironmentTracker';
+import { SuccessAnimation } from '@/components/common/SuccessAnimation';
 
 interface MoodTrackingFormProps {
   selectedMood: string | null;
@@ -58,7 +59,21 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
   onFactorToggle,
   onSaveMood
 }) => {
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleSave = () => {
+    onSaveMood();
+    setShowSuccess(true);
+  };
+
   return (
+    <>
+      {showSuccess && (
+        <SuccessAnimation 
+          message="Mood logged! 💙"
+          onComplete={() => setShowSuccess(false)}
+        />
+      )}
     <div className="space-y-6">
       <FeelingsWheel 
         selectedEmotion={selectedMood} 
@@ -103,8 +118,8 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
           
           <Card className="p-6 bg-white/90">
             <Button 
-              onClick={onSaveMood} 
-              className="w-full bg-mental-blue hover:bg-mental-blue/80"
+              onClick={handleSave} 
+              className="w-full bg-mental-blue hover:bg-mental-blue/80 hover-scale"
               size="lg"
             >
               Save Mood Entry
@@ -113,6 +128,7 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
         </>
       )}
     </div>
+    </>
   );
 };
 

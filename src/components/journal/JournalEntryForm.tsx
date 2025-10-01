@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Edit, Quote, BookmarkPlus, BookmarkCheck } from "lucide-react";
+import { SuccessAnimation } from '@/components/common/SuccessAnimation';
 
 interface JournalEntryFormProps {
   journalContent: string;
@@ -27,7 +28,21 @@ const JournalEntryForm: React.FC<JournalEntryFormProps> = ({
   onSaveEntry,
   onToggleSavedPrompt
 }) => {
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleSave = () => {
+    onSaveEntry();
+    setShowSuccess(true);
+  };
+
   return (
+    <>
+      {showSuccess && (
+        <SuccessAnimation 
+          message="Journal entry saved! 📝"
+          onComplete={() => setShowSuccess(false)}
+        />
+      )}
     <Card className="p-6 bg-mental-beige/20">
       <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">New Entry</h2>
       <div className="flex flex-wrap gap-3 mb-4">
@@ -68,10 +83,11 @@ const JournalEntryForm: React.FC<JournalEntryFormProps> = ({
         className="min-h-[200px] mb-4" 
       />
       
-      <Button onClick={onSaveEntry} className="w-full bg-mental-green hover:bg-mental-green/80">
+      <Button onClick={handleSave} className="w-full bg-mental-green hover:bg-mental-green/80 hover-scale">
         Save Journal Entry
       </Button>
     </Card>
+    </>
   );
 };
 
