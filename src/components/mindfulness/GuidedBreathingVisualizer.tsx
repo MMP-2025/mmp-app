@@ -20,6 +20,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
   const {
     phase,
     isActive,
+    currentPhaseDuration,
     actions
   } = useBreathingCycle({
     defaultTechnique: defaultTechnique as any,
@@ -74,7 +75,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
       </div>
 
       <div className="mb-8">
-        <BreathingVisualizerCircle phase={phase} />
+        <BreathingVisualizerCircle phase={phase} phaseDuration={currentPhaseDuration} />
       </div>
       
       <div className="flex justify-center gap-4">

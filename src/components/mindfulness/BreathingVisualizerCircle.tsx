@@ -5,6 +5,7 @@ type Phase = 'inhale' | 'hold' | 'exhale' | 'pause';
 
 interface BreathingVisualizerCircleProps {
   phase: Phase;
+  phaseDuration: number;
 }
 
 const getCircleTransform = (phase: Phase) => {
@@ -50,14 +51,18 @@ const getPhaseColor = (phase: Phase) => {
   }
 };
 
-const BreathingVisualizerCircle: React.FC<BreathingVisualizerCircleProps> = ({ phase }) => {
+const BreathingVisualizerCircle: React.FC<BreathingVisualizerCircleProps> = ({ phase, phaseDuration }) => {
   return (
     <div className="flex justify-center mb-8">
       <div className="relative h-32 w-32">
         <div className="absolute inset-0 flex items-center justify-center">
           <div
-            className={`w-full h-full rounded-full transition-transform duration-1000 ease-in-out ${getPhaseColor(phase)}`}
-            style={{ transform: getCircleTransform(phase), filter: 'blur(0.5px)' }}
+            className={`w-full h-full rounded-full transition-transform ease-in-out ${getPhaseColor(phase)}`}
+            style={{ 
+              transform: getCircleTransform(phase), 
+              filter: 'blur(0.5px)',
+              transitionDuration: `${phaseDuration}s`
+            }}
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center z-10">

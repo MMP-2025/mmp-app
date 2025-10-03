@@ -26,6 +26,16 @@ export const useBreathingCycle = ({
 
   const currentTechnique = techniques[technique];
 
+  const getCurrentPhaseDuration = () => {
+    switch (phase) {
+      case 'inhale': return currentTechnique.inhale;
+      case 'hold': return currentTechnique.hold;
+      case 'exhale': return currentTechnique.exhale;
+      case 'pause': return currentTechnique.pause;
+      default: return 4;
+    }
+  };
+
   const stopBreathingCycle = () => {
     if (phaseTimeoutRef.current) {
       clearTimeout(phaseTimeoutRef.current);
@@ -146,6 +156,7 @@ export const useBreathingCycle = ({
     totalTime,
     technique,
     currentTechnique,
+    currentPhaseDuration: getCurrentPhaseDuration(),
     actions: {
       start: handleStart,
       pause: handlePause,
