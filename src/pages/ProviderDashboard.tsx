@@ -13,6 +13,8 @@ const RemindersTab = lazy(() => import('@/components/provider/tabs/RemindersTab'
 const GratitudeTab = lazy(() => import('@/components/provider/tabs/GratitudeTab'));
 const MindfulnessTab = lazy(() => import('@/components/provider/tabs/MindfulnessTab'));
 const NotificationsTab = lazy(() => import('@/components/provider/tabs/NotificationsTab'));
+const AudiosTab = lazy(() => import('@/components/provider/tabs/AudiosTab'));
+const ResourcesTab = lazy(() => import('@/components/provider/tabs/ResourcesTab'));
 
 // Import custom hooks
 import { useProviderData } from '@/hooks/useProviderData';
@@ -61,7 +63,7 @@ const ProviderDashboard = () => {
       <div className="container mx-auto p-6 space-y-6">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Provider Dashboard</h1>
-          <p className="text-[#7e868b]">Manage quotes, journal prompts, questions, toolkit items, reminders, gratitude prompts, mindfulness prompts, push notifications, and patient invitations.</p>
+          <p className="text-[#7e868b]">Manage all content including quotes, prompts, resources, audio files, and patient invitations.</p>
           <div className="mt-2 text-xs text-gray-500">
             Keyboard shortcuts: Alt+1 (Quotes), Alt+2 (Prompts), Ctrl+S (Save), Ctrl+Shift+Q (Focus quote input)
           </div>
@@ -73,15 +75,17 @@ const ProviderDashboard = () => {
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8 bg-mental-blue">
+          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10 bg-mental-blue">
             <TabsTrigger value="quotes">Quotes</TabsTrigger>
-            <TabsTrigger value="prompts">Journal Prompts</TabsTrigger>
+            <TabsTrigger value="prompts">Prompts</TabsTrigger>
             <TabsTrigger value="questions">Questions</TabsTrigger>
             <TabsTrigger value="toolkit">Toolkit</TabsTrigger>
             <TabsTrigger value="reminders">Reminders</TabsTrigger>
             <TabsTrigger value="gratitude">Gratitude</TabsTrigger>
             <TabsTrigger value="mindfulness">Mindfulness</TabsTrigger>
-            <TabsTrigger value="notifications">Push Notifications</TabsTrigger>
+            <TabsTrigger value="audios">Audios</TabsTrigger>
+            <TabsTrigger value="resources">Resources</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
           </TabsList>
 
           <TabsContent value="quotes">
@@ -123,6 +127,18 @@ const ProviderDashboard = () => {
           <TabsContent value="mindfulness">
             <Suspense fallback={<LoadingFallback />}>
               <MindfulnessTab data={data} handlers={handlers} />
+            </Suspense>
+          </TabsContent>
+
+          <TabsContent value="audios">
+            <Suspense fallback={<LoadingFallback />}>
+              <AudiosTab />
+            </Suspense>
+          </TabsContent>
+
+          <TabsContent value="resources">
+            <Suspense fallback={<LoadingFallback />}>
+              <ResourcesTab />
             </Suspense>
           </TabsContent>
 
