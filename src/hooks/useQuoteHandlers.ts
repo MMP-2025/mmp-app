@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { Quote } from '@/types/provider';
 import { quoteSchema } from '@/schemas/providerValidation';
 import { VALIDATION_MESSAGES } from '@/constants/provider';
@@ -27,31 +28,50 @@ export const useQuoteHandlers = ({
     setIsLoading(true);
     try {
       const validatedQuote = quoteSchema.parse(newQuote);
+      const { data: { user } } = await supabase.auth.getUser();
       
-      const quote: Quote = {
-        id: Date.now().toString(),
-        text: validatedQuote.text,
-        author: validatedQuote.author || 'Anonymous',
-        category: validatedQuote.category || 'General'
-      };
-      
-      setQuotes(prev => [...prev, quote]);
+      const { data, error } = await supabase
+        .from('quotes')
+        .insert({
+          text: validatedQuote.text,
+          author: validatedQuote.author || 'Anonymous',
+          category: validatedQuote.category || 'General',
+          provider_id: user?.id
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setQuotes(prev => [...prev, data]);
       setNewQuote({ text: '', author: '', category: '' });
       showSuccess("Quote added", "The inspirational quote has been added to the database.");
     } catch (error: any) {
       if (error.errors) {
         showError("Validation Error", error.errors[0].message);
       } else {
-        showError("Error", "Failed to add quote");
+        showError("Error", "Failed to add quote. Make sure you have provider role.");
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDeleteQuote = (id: string) => {
-    setQuotes(prev => prev.filter(q => q.id !== id));
-    showSuccess("Quote deleted", "The quote has been removed.");
+  const handleDeleteQuote = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('quotes')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setQuotes(prev => prev.filter(q => q.id !== id));
+      showSuccess("Quote deleted", "The quote has been removed.");
+    } catch (error) {
+      console.error('Error deleting quote:', error);
+      showError("Error", "Failed to delete quote.");
+    }
   };
 
   const handleBulkImportQuotes = async (items: any[]) => {
@@ -62,18 +82,27 @@ export const useQuoteHandlers = ({
         return;
       }
       
-      const validatedItems: Quote[] = items.map(item => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const quotesToInsert = items.map(item => {
         const validated = quoteSchema.parse(item);
         return {
-          id: Date.now().toString() + Math.random(),
           text: validated.text,
           author: validated.author || 'Anonymous',
-          category: validated.category || 'General'
+          category: validated.category || 'General',
+          provider_id: user?.id
         };
       });
-      
-      setQuotes(prev => [...prev, ...validatedItems]);
-      showSuccess("Bulk import successful", `${validatedItems.length} quotes have been imported.`);
+
+      const { data, error } = await supabase
+        .from('quotes')
+        .insert(quotesToInsert)
+        .select();
+
+      if (error) throw error;
+
+      setQuotes(prev => [...prev, ...(data || [])]);
+      showSuccess("Bulk import successful", `${items.length} quotes have been imported.`);
     } catch (error: any) {
       showError("Import Error", "Some items failed validation and were not imported");
     } finally {

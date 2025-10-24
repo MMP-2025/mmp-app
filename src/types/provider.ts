@@ -3,6 +3,10 @@ export interface Quote {
   text: string;
   author: string;
   category: string;
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export type JournalPromptDifficulty = 'beginner' | 'intermediate' | 'advanced';
@@ -12,6 +16,10 @@ export interface JournalPrompt {
   prompt: string;
   category: string;
   difficulty: JournalPromptDifficulty;
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Resource {
@@ -25,8 +33,12 @@ export interface Resource {
 export interface Question {
   id: string;
   question: string;
-  category: string;
+  category?: string;
   type: 'reflection' | 'assessment' | 'screening';
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface ToolkitItem {
@@ -52,6 +64,10 @@ export interface GratitudePrompt {
   prompt: string;
   category: string;
   difficulty: 'simple' | 'moderate' | 'deep';
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface MindfulnessPrompt {

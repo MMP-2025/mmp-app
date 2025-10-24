@@ -1,55 +1,69 @@
 
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useAnalytics } from '@/hooks/useAnalytics';
-import { useToastService } from '@/hooks/useToastService';
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { HelpCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { questions as fallbackQuestions } from "@/data/homePageContent";
 
-interface DailyQuestionProps {
-  question: string;
-}
+const DailyQuestion = () => {
+  const [question, setQuestion] = useState(fallbackQuestions[0]);
+  const [loading, setLoading] = useState(true);
 
-const DailyQuestion: React.FC<DailyQuestionProps> = ({ question }) => {
-  const [response, setResponse] = useState('');
-  const { trackAction } = useAnalytics();
-  const { showSuccess, showWarning } = useToastService();
+  useEffect(() => {
+    const fetchRandomQuestion = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('questions')
+          .select('*')
+          .eq('is_active', true);
 
-  const handleSubmitResponse = () => {
-    if (!response.trim()) {
-      showWarning("Please write a response before submitting");
-      return;
-    }
+        if (error) throw error;
 
-    trackAction('daily_question_answered', {
-      question: question,
-      responseLength: response.length
-    });
+        if (data && data.length > 0) {
+          const today = new Date().toDateString();
+          const seed = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          const index = seed % data.length;
+          setQuestion(data[index].question);
+        }
+      } catch (error) {
+        console.error('Error fetching question:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    showSuccess("Your response has been recorded");
-    console.log("Response submitted:", response);
-    setResponse('');
-  };
+    fetchRandomQuestion();
+  }, []);
+
+  if (loading) {
+    return (
+      <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4 animate-pulse">
+            <div className="rounded-full bg-primary/10 p-3 h-14 w-14" />
+            <div className="flex-1 space-y-2">
+              <div className="h-4 bg-primary/10 rounded w-32" />
+              <div className="h-3 bg-primary/10 rounded w-full" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <Card className="p-6 bg-mental-blue/20">
-      <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Question of the Day</h2>
-      <p className="text-lg mb-4 text-[#7e868b]">{question}</p>
-      
-      <div className="space-y-4">
-        <Input 
-          placeholder="Write your response..." 
-          value={response} 
-          onChange={e => setResponse(e.target.value)} 
-          className="bg-white" 
-        />
-        <Button 
-          onClick={handleSubmitResponse} 
-          className="w-full bg-mental-green hover:bg-mental-green/80"
-        >
-          Submit Response
-        </Button>
-      </div>
+    <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+      <CardContent className="p-6">
+        <div className="flex items-start gap-4">
+          <div className="rounded-full bg-primary/10 p-3">
+            <HelpCircle className="h-6 w-6 text-primary" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold mb-2 text-foreground">Daily Question</h3>
+            <p className="text-muted-foreground">{question}</p>
+          </div>
+        </div>
+      </CardContent>
     </Card>
   );
 };
