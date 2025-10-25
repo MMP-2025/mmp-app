@@ -25,19 +25,14 @@ const ReminderList: React.FC<ReminderListProps> = ({
             {reminders.map(reminder => <div key={reminder.id} className="p-4 border rounded-lg bg-gray-50">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h4 className="font-medium text-[#7e868b] mb-1">{reminder.title}</h4>
                     <p className="text-sm text-gray-700 mb-2">{reminder.message}</p>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">
-                        {reminder.category}
-                      </span>
                       <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">
                         {reminder.frequency}
                       </span>
-                      {reminder.targetUser &&
                       <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                          To: {reminder.targetUser}
-                        </span>}
+                        {reminder.time}
+                      </span>
                     </div>
                   </div>
                   <Button variant="outline" size="sm" onClick={() => onDeleteReminder(reminder.id)} className="text-red-600">

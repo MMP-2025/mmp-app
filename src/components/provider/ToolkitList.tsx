@@ -2,14 +2,8 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Wrench, Trash2 } from 'lucide-react';
-interface ToolkitItem {
-  id: string;
-  title: string;
-  description: string;
-  instructions: string;
-  category: string;
-  duration: string;
-}
+import { ToolkitItem } from '@/types/provider';
+
 interface ToolkitListProps {
   toolkitItems: ToolkitItem[];
   onDeleteToolkitItem: (id: string) => void;
@@ -37,9 +31,6 @@ const ToolkitList: React.FC<ToolkitListProps> = ({
                       <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
                         {item.category}
                       </span>
-                      {item.duration && <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                          {item.duration}
-                        </span>}
                     </div>
                   </div>
                   <Button variant="outline" size="sm" onClick={() => onDeleteToolkitItem(item.id)} className="text-red-600">

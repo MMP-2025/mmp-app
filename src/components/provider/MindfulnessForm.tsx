@@ -6,12 +6,12 @@ interface MindfulnessFormProps {
   newMindfulnessPrompt: {
     prompt: string;
     category: string;
-    duration: string;
+    duration: number;
   };
   setNewMindfulnessPrompt: React.Dispatch<React.SetStateAction<{
     prompt: string;
     category: string;
-    duration: string;
+    duration: number;
   }>>;
   onAddMindfulnessPrompt: () => void;
 }
@@ -47,13 +47,14 @@ const MindfulnessForm: React.FC<MindfulnessFormProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-neutral-500 mb-1">Duration</label>
+            <label className="block text-sm font-medium text-neutral-500 mb-1">Duration (minutes)</label>
             <input
-              type="text"
+              type="number"
               value={newMindfulnessPrompt.duration}
-              onChange={(e) => setNewMindfulnessPrompt({...newMindfulnessPrompt, duration: e.target.value})}
+              onChange={(e) => setNewMindfulnessPrompt({...newMindfulnessPrompt, duration: parseInt(e.target.value) || 5})}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-mental-blue focus:border-transparent"
-              placeholder="e.g., 5 minutes"
+              placeholder="e.g., 5"
+              min="1"
             />
           </div>
         </div>

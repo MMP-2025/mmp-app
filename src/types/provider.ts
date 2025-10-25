@@ -26,8 +26,12 @@ export interface Resource {
   id: string;
   title: string;
   description: string;
-  content: string;
-  category: string;
+  url: string;
+  file_type: string;
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Question {
@@ -47,16 +51,21 @@ export interface ToolkitItem {
   description: string;
   instructions: string;
   category: string;
-  duration: string;
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Reminder {
   id: string;
-  title: string;
   message: string;
   frequency: 'daily' | 'weekly' | 'monthly';
-  category: string;
-  targetUser?: string;
+  time: string;
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface GratitudePrompt {
@@ -74,5 +83,9 @@ export interface MindfulnessPrompt {
   id: string;
   prompt: string;
   category: string;
-  duration: string;
+  duration: number;
+  provider_id?: string | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }

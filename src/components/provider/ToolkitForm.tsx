@@ -10,14 +10,12 @@ interface ToolkitFormProps {
     description: string;
     instructions: string;
     category: string;
-    duration: string;
   };
   setNewToolkitItem: React.Dispatch<React.SetStateAction<{
     title: string;
     description: string;
     instructions: string;
     category: string;
-    duration: string;
   }>>;
   onAddToolkitItem: () => void;
 }
@@ -46,16 +44,10 @@ const ToolkitForm: React.FC<ToolkitFormProps> = ({
         ...prev,
         instructions: e.target.value
       }))} rows={4} />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input placeholder="Category (e.g., Breathing, Grounding)" value={newToolkitItem.category} onChange={e => setNewToolkitItem(prev => ({
+        <Input placeholder="Category (e.g., Breathing, Grounding)" value={newToolkitItem.category} onChange={e => setNewToolkitItem(prev => ({
           ...prev,
           category: e.target.value
         }))} />
-          <Input placeholder="Duration (e.g., 5 minutes)" value={newToolkitItem.duration} onChange={e => setNewToolkitItem(prev => ({
-          ...prev,
-          duration: e.target.value
-        }))} />
-        </div>
         <Button onClick={onAddToolkitItem} className="text-mental-gray bg-mental-gray">Add Toolkit Item</Button>
       </CardContent>
     </Card>;

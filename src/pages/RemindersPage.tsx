@@ -25,9 +25,7 @@ const RemindersPage = () => {
   const [rewardPoints, setRewardPoints] = useState(0);
 
   const userReminders = useMemo(() => {
-    return data.reminders.filter(r => 
-      !r.targetUser || r.targetUser === '' || r.targetUser === CURRENT_USER_ID
-    );
+    return data.reminders;
   }, [data.reminders]);
 
   const handleAddReminder = () => {
@@ -38,11 +36,9 @@ const RemindersPage = () => {
     
     // Use the shared `newReminder` state structure
     data.setNewReminder({
-      title: newReminderText,
-      message: 'User-created reminder', // Default message for simple user reminders
+      message: newReminderText,
       frequency: 'daily',
-      category: 'Personal',
-      targetUser: CURRENT_USER_ID // Set the target user
+      time: '09:00'
     });
 
     // Use a timeout to ensure state is updated before calling the handler
@@ -116,9 +112,9 @@ const RemindersPage = () => {
                         <Checkbox id={`reminder-${reminder.id}`} checked={isCompleted} onCheckedChange={() => toggleCompleted(reminder.id)} />
                         <div>
                           <Label htmlFor={`reminder-${reminder.id}`} className={isCompleted ? 'line-through text-[#7e868b]' : 'text-[#7e868b]'}>
-                            {reminder.title}
+                            {reminder.message}
                           </Label>
-                           {reminder.message && <p className="text-sm text-gray-500">{reminder.message}</p>}
+                          <p className="text-sm text-gray-500">{reminder.frequency} at {reminder.time}</p>
                         </div>
                       </div>
                       <Button variant="ghost" size="sm" onClick={() => deleteReminder(reminder.id)} className="text-[#7e868b]">
