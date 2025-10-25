@@ -10,12 +10,7 @@ import RemindersCheckIn from '@/components/home/RemindersCheckIn';
 import QuoteOfTheDay from '@/components/home/QuoteOfTheDay';
 import { ProgressTracker } from '@/components/progress/ProgressTracker';
 import { useProgressStats } from '@/hooks/useProgressStats';
-import { quotes, questions } from '@/data/homePageContent';
-import { getRandomDailyItem } from '@/utils/getRandomDailyItem';
-
 const HomePage = () => {
-  const todaysQuote = getRandomDailyItem(quotes);
-  const todaysQuestion = getRandomDailyItem(questions);
   const { getRecommendations } = useUserPreferences();
 
   const recommendations = getRecommendations();
@@ -41,14 +36,14 @@ const HomePage = () => {
         <TabsContent value="overview" className="space-y-8">
           <PersonalizedRecommendations recommendations={recommendations} />
           
-          <DailyQuestion question={todaysQuestion} />
+          <DailyQuestion />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <QuickAccess />
             <RemindersCheckIn />
           </div>
           
-          <QuoteOfTheDay quote={todaysQuote} />
+          <QuoteOfTheDay />
         </TabsContent>
 
         <TabsContent value="progress" className="space-y-6">

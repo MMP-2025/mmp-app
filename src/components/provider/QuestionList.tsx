@@ -5,7 +5,7 @@ import { HelpCircle, Trash2 } from 'lucide-react';
 interface Question {
   id: string;
   question: string;
-  category: string;
+  category?: string;
   type: 'reflection' | 'assessment' | 'screening';
 }
 interface QuestionListProps {
@@ -30,9 +30,11 @@ const QuestionList: React.FC<QuestionListProps> = ({
                   <div className="flex-1">
                     <p className="text-[#7e868b] mb-2">{question.question}</p>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                        {question.category}
-                      </span>
+                      {question.category && (
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                          {question.category}
+                        </span>
+                      )}
                       <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
                         {question.type}
                       </span>
