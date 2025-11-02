@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { quotes as fallbackQuotes } from "@/data/homePageContent";
 
 const QuoteOfTheDay = () => {
-  const [quote, setQuote] = useState(fallbackQuotes[0]);
+  const [quote, setQuote] = useState<{ text: string; author: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,9 +24,12 @@ const QuoteOfTheDay = () => {
           const seed = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
           const index = seed % data.length;
           setQuote({ text: data[index].text, author: data[index].author });
+        } else {
+          setQuote(null);
         }
       } catch (error) {
         console.error('Error fetching quote:', error);
+        setQuote(null);
       } finally {
         setLoading(false);
       }
@@ -45,6 +48,26 @@ const QuoteOfTheDay = () => {
               <div className="h-4 bg-primary/10 rounded w-32" />
               <div className="h-3 bg-primary/10 rounded w-full" />
               <div className="h-3 bg-primary/10 rounded w-24" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!quote) {
+    return (
+      <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            <div className="rounded-full bg-primary/10 p-3">
+              <Quote className="h-6 w-6 text-primary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold mb-2 text-foreground">Quote of the Day</h3>
+              <p className="text-sm text-muted-foreground">
+                Your provider will add inspiring quotes soon. Check back later!
+              </p>
             </div>
           </div>
         </CardContent>
