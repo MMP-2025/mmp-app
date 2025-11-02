@@ -74,7 +74,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
         </div>
       </div>
 
-      <div className="mb-8">
+      <div className="mb-16">
         <BreathingVisualizerCircle phase={phase} phaseDuration={currentPhaseDuration} />
       </div>
       

@@ -95,11 +95,34 @@ export const parseJSONData = (jsonText: string, type: ImportType) => {
 
 export const parseCSVData = (csvText: string, type: ImportType) => {
   const lines = csvText.split('\n').filter(line => line.trim());
-  const headers = lines[0].split(',').map(h => h.trim());
+  
+  // Parse CSV properly handling quoted values
+  const parseCSVLine = (line: string): string[] => {
+    const values: string[] = [];
+    let current = '';
+    let insideQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      
+      if (char === '"') {
+        insideQuotes = !insideQuotes;
+      } else if (char === ',' && !insideQuotes) {
+        values.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    values.push(current.trim());
+    return values;
+  };
+  
+  const headers = parseCSVLine(lines[0]);
   const rows = lines.slice(1);
   
   return rows.map((row, index) => {
-    const values = row.split(',').map(v => v.trim());
+    const values = parseCSVLine(row);
     const item: any = { id: Date.now().toString() + index };
     
     headers.forEach((header, i) => {
