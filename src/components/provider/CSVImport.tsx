@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Download, Upload } from 'lucide-react';
 import { parseCSVData, generateCSVTemplate } from '@/utils/importUtils';
 import { ImportType } from './BulkImportModal';
-
+import { useToastService } from '@/hooks/useToastService';
 interface CSVImportProps {
   type: ImportType;
   onImport: (items: any[]) => void;
@@ -15,25 +15,44 @@ interface CSVImportProps {
 
 const CSVImport: React.FC<CSVImportProps> = ({ type, onImport }) => {
   const [file, setFile] = useState<File | null>(null);
+  const { showError, showSuccess } = useToastService();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile && selectedFile.type === 'text/csv') {
+    if (!selectedFile) return;
+    const isCSVByType = [
+      'text/csv',
+      'application/vnd.ms-excel',
+      'application/csv',
+      'text/plain'
+    ].includes(selectedFile.type);
+    const isCSVByName = /\.csv$/i.test(selectedFile.name);
+
+    if (isCSVByType || isCSVByName) {
       setFile(selectedFile);
+    } else {
+      setFile(null);
+      showError('Invalid file type', 'Please upload a .csv file.');
     }
   };
 
-  const handleImport = async () => {
-    if (!file) return;
-    
-    try {
-      const text = await file.text();
-      const items = parseCSVData(text, type);
-      onImport(items);
-    } catch (error) {
-      console.error('CSV Import error:', error);
-    }
-  };
+const handleImport = async () => {
+  if (!file) {
+    const message = 'Please choose a CSV file to import.';
+    showError('No file selected', message);
+    return;
+  }
+  
+  try {
+    const text = await file.text();
+    const items = parseCSVData(text, type);
+    onImport(items);
+    showSuccess('CSV imported', `${items.length} items imported successfully.`);
+  } catch (error) {
+    console.error('CSV Import error:', error);
+    showError('CSV import failed', 'Please check your file format and try again.');
+  }
+};
 
   const downloadTemplate = () => {
     const template = generateCSVTemplate(type);
@@ -63,7 +82,7 @@ const CSVImport: React.FC<CSVImportProps> = ({ type, onImport }) => {
           <Input
             id="csvFile"
             type="file"
-            accept=".csv"
+            accept=".csv,text/csv"
             onChange={handleFileChange}
             className="mt-1"
           />
