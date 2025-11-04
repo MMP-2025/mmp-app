@@ -14,6 +14,8 @@ import LoginForm from "@/components/auth/LoginForm";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { registerSW } from './utils/serviceWorker';
 import PageWrapper from "@/components/PageWrapper";
+import OnboardingFlow from "@/components/onboarding/OnboardingFlow";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 import HomePage from "./pages/HomePage";
 import MoodTrackerPage from "./pages/MoodTrackerPage";
@@ -36,6 +38,7 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const { isAuthenticated, isGuest } = useAuth();
+  const { shouldShowOnboarding } = useOnboarding();
 
   React.useEffect(() => {
     // Register service worker for PWA functionality
@@ -44,6 +47,10 @@ const AppContent = () => {
 
   if (!isAuthenticated) {
     return <LoginForm />;
+  }
+
+  if (shouldShowOnboarding) {
+    return <OnboardingFlow />;
   }
 
   return (
