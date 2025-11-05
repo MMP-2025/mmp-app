@@ -14,6 +14,208 @@ export type Database = {
   }
   public: {
     Tables: {
+      cbt_sessions: {
+        Row: {
+          alternative_thoughts: string | null
+          behaviors: string | null
+          created_at: string
+          date: string
+          emotions: string | null
+          id: string
+          module_type: string
+          notes: string | null
+          outcome: string | null
+          situation: string | null
+          thoughts: string | null
+          user_id: string
+        }
+        Insert: {
+          alternative_thoughts?: string | null
+          behaviors?: string | null
+          created_at?: string
+          date?: string
+          emotions?: string | null
+          id?: string
+          module_type: string
+          notes?: string | null
+          outcome?: string | null
+          situation?: string | null
+          thoughts?: string | null
+          user_id: string
+        }
+        Update: {
+          alternative_thoughts?: string | null
+          behaviors?: string | null
+          created_at?: string
+          date?: string
+          emotions?: string | null
+          id?: string
+          module_type?: string
+          notes?: string | null
+          outcome?: string | null
+          situation?: string | null
+          thoughts?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      crisis_plans: {
+        Row: {
+          coping_strategies: string[] | null
+          created_at: string
+          emergency_contacts: Json | null
+          id: string
+          professional_contacts: Json | null
+          reasons_to_live: string[] | null
+          safe_environment: string | null
+          support_contacts: Json | null
+          updated_at: string
+          user_id: string
+          warning_signs: string[] | null
+        }
+        Insert: {
+          coping_strategies?: string[] | null
+          created_at?: string
+          emergency_contacts?: Json | null
+          id?: string
+          professional_contacts?: Json | null
+          reasons_to_live?: string[] | null
+          safe_environment?: string | null
+          support_contacts?: Json | null
+          updated_at?: string
+          user_id: string
+          warning_signs?: string[] | null
+        }
+        Update: {
+          coping_strategies?: string[] | null
+          created_at?: string
+          emergency_contacts?: Json | null
+          id?: string
+          professional_contacts?: Json | null
+          reasons_to_live?: string[] | null
+          safe_environment?: string | null
+          support_contacts?: Json | null
+          updated_at?: string
+          user_id?: string
+          warning_signs?: string[] | null
+        }
+        Relationships: []
+      }
+      goal_milestones: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string
+          goal_id: string
+          id: string
+          title: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          goal_id: string
+          id?: string
+          title: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          goal_id?: string
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goal_milestones_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      goals: {
+        Row: {
+          category: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          id: string
+          progress: number | null
+          status: string
+          target_date: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          progress?: number | null
+          status?: string
+          target_date?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          progress?: number | null
+          status?: string
+          target_date?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      gratitude_entries: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          date: string
+          id: string
+          prompt_id: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string
+          date?: string
+          id?: string
+          prompt_id?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          date?: string
+          id?: string
+          prompt_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gratitude_entries_prompt_id_fkey"
+            columns: ["prompt_id"]
+            isOneToOne: false
+            referencedRelation: "gratitude_prompts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gratitude_prompts: {
         Row: {
           category: string
@@ -51,6 +253,92 @@ export type Database = {
             columns: ["provider_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      habit_logs: {
+        Row: {
+          completed: boolean
+          created_at: string
+          date: string
+          habit_name: string
+          id: string
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          date?: string
+          habit_name: string
+          id?: string
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          date?: string
+          habit_name?: string
+          id?: string
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      journal_entries: {
+        Row: {
+          audio_url: string | null
+          content: string
+          created_at: string
+          duration: number | null
+          id: string
+          is_voice_entry: boolean | null
+          mood: string | null
+          prompt_id: string | null
+          tags: string[] | null
+          title: string
+          transcript: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audio_url?: string | null
+          content: string
+          created_at?: string
+          duration?: number | null
+          id?: string
+          is_voice_entry?: boolean | null
+          mood?: string | null
+          prompt_id?: string | null
+          tags?: string[] | null
+          title: string
+          transcript?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audio_url?: string | null
+          content?: string
+          created_at?: string
+          duration?: number | null
+          id?: string
+          is_voice_entry?: boolean | null
+          mood?: string | null
+          prompt_id?: string | null
+          tags?: string[] | null
+          title?: string
+          transcript?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_entries_prompt_id_fkey"
+            columns: ["prompt_id"]
+            isOneToOne: false
+            referencedRelation: "journal_prompts"
             referencedColumns: ["id"]
           },
         ]
@@ -137,6 +425,104 @@ export type Database = {
           },
         ]
       }
+      mindfulness_sessions: {
+        Row: {
+          completed_at: string
+          date: string
+          duration: number
+          exercise_id: string | null
+          id: string
+          notes: string | null
+          quality: string | null
+          session_type: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          date?: string
+          duration: number
+          exercise_id?: string | null
+          id?: string
+          notes?: string | null
+          quality?: string | null
+          session_type: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          date?: string
+          duration?: number
+          exercise_id?: string | null
+          id?: string
+          notes?: string | null
+          quality?: string | null
+          session_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mindfulness_sessions_exercise_id_fkey"
+            columns: ["exercise_id"]
+            isOneToOne: false
+            referencedRelation: "mindfulness_exercises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mood_entries: {
+        Row: {
+          created_at: string
+          date: string
+          exercise: boolean | null
+          factors: string[] | null
+          id: string
+          intensity: number
+          location: string | null
+          mood: string
+          note: string | null
+          sleep_hours: number | null
+          user_id: string
+          weather_condition: string | null
+          weather_humidity: number | null
+          weather_location: string | null
+          weather_temperature: number | null
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          exercise?: boolean | null
+          factors?: string[] | null
+          id?: string
+          intensity: number
+          location?: string | null
+          mood: string
+          note?: string | null
+          sleep_hours?: number | null
+          user_id: string
+          weather_condition?: string | null
+          weather_humidity?: number | null
+          weather_location?: string | null
+          weather_temperature?: number | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          exercise?: boolean | null
+          factors?: string[] | null
+          id?: string
+          intensity?: number
+          location?: string | null
+          mood?: string
+          note?: string | null
+          sleep_hours?: number | null
+          user_id?: string
+          weather_condition?: string | null
+          weather_humidity?: number | null
+          weather_location?: string | null
+          weather_temperature?: number | null
+        }
+        Relationships: []
+      }
       patient_invitations: {
         Row: {
           created_at: string
@@ -190,6 +576,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      patient_provider_relationships: {
+        Row: {
+          created_at: string
+          id: string
+          patient_id: string
+          provider_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          patient_id: string
+          provider_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          patient_id?: string
+          provider_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -490,6 +903,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_patients_provider: {
+        Args: { _patient_id: string; _provider_id: string }
         Returns: boolean
       }
     }
