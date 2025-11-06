@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToastService } from '@/hooks/useToastService';
 import { useGratitudeEntries } from '@/hooks/useGratitudeEntries';
 import { gratitudeExercises } from '@/data/gratitudeExercises';
@@ -8,6 +9,7 @@ import ExerciseCard from '@/components/gratitude/ExerciseCard';
 import EmptySavedPractices from '@/components/gratitude/EmptySavedPractices';
 import ExerciseForm from '@/components/gratitude/ExerciseForm';
 import GratitudeEntriesList from '@/components/gratitude/GratitudeEntriesList';
+import GuestSavePrompt from '@/components/auth/GuestSavePrompt';
 import { GratitudeExercise } from '@/types/gratitude';
 const GratitudePage = () => {
   const [selectedExercise, setSelectedExercise] = useState<GratitudeExercise | null>(null);
@@ -18,7 +20,9 @@ const GratitudePage = () => {
   const [savedExercises, setSavedExercises] = useState<number[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
   const [displayedExercises, setDisplayedExercises] = useState<GratitudeExercise[]>([]);
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
+  const { isGuest } = useAuth();
   const { gratitudeEntries, saveGratitudeEntry } = useGratitudeEntries();
   const { showSuccess, showWarning } = useToastService();
   const shuffleExercises = useCallback(() => {
@@ -74,6 +78,11 @@ const GratitudePage = () => {
       }
       content = gratitudeContent;
     }
+
+    if (isGuest) {
+      setShowGuestPrompt(true);
+      return;
+    }
     
     try {
       await saveGratitudeEntry(content, 'General');
@@ -88,8 +97,8 @@ const GratitudePage = () => {
       }
       setSelectedExercise(null);
       showSuccess("Gratitude practice saved");
-    } catch (error) {
-      showWarning("Failed to save gratitude entry");
+    } catch (error: any) {
+      showWarning(error.message || "Failed to save gratitude entry");
     }
   };
   const exercisesToDisplay = getDisplayedExercises();
@@ -105,6 +114,12 @@ const GratitudePage = () => {
         </>}
       
       <GratitudeEntriesList entries={gratitudeEntries} />
+      
+      <GuestSavePrompt 
+        isOpen={showGuestPrompt}
+        onClose={() => setShowGuestPrompt(false)}
+        featureName="gratitude entries"
+      />
     </div>;
 };
 export default GratitudePage;

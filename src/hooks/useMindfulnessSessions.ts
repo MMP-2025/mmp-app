@@ -59,7 +59,9 @@ export const useMindfulnessSessions = () => {
     quality?: 'poor' | 'good' | 'excellent',
     notes?: string
   ) => {
-    if (!user) return;
+    if (!user) {
+      throw new Error('You must be logged in to save mindfulness sessions');
+    }
 
     try {
       const { data, error } = await supabase

@@ -53,7 +53,9 @@ export const useGratitudeEntries = () => {
     content: string,
     category?: string
   ) => {
-    if (!user) return;
+    if (!user) {
+      throw new Error('You must be logged in to save gratitude entries');
+    }
 
     try {
       const { data, error } = await supabase

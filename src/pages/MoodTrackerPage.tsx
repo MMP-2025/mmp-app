@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { Tabs } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
+import { useAuth } from '@/contexts/AuthContext';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { usePersonalization } from '@/hooks/usePersonalization';
 import { useMoodEntries } from '@/hooks/useMoodEntries';
@@ -10,9 +11,13 @@ import { useMoodForm } from '@/hooks/useMoodForm';
 import MoodTrackerHeader from '@/components/mood/MoodTrackerHeader';
 import MoodTrackerTabs from '@/components/mood/MoodTrackerTabs';
 import MoodTrackerContent from '@/components/mood/MoodTrackerContent';
+import GuestSavePrompt from '@/components/auth/GuestSavePrompt';
 
 const MoodTrackerPage = () => {
   const [currentTab, setCurrentTab] = useState('track');
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
+  
+  const { isGuest } = useAuth();
   const { trackMoodEntry, trackAction } = useAnalytics();
   const { trackFeatureUsage, trackMoodEntry: trackMoodEntryPersonalized, userBehavior } = usePersonalization();
   
@@ -60,14 +65,18 @@ const MoodTrackerPage = () => {
     trackAction('mood_selected', { mood: moodName });
   };
 
-  const handleSaveMood = () => {
+  const handleSaveMood = async () => {
     if (!selectedMood) {
       toast.error('Please select a mood first');
       return;
     }
 
+    if (isGuest) {
+      setShowGuestPrompt(true);
+      return;
+    }
+
     const newEntry = {
-      id: `mood_${Date.now()}`,
       mood: selectedMood,
       intensity: moodIntensity[0],
       note: moodNote,
@@ -78,12 +87,16 @@ const MoodTrackerPage = () => {
       exercise: exerciseMinutes[0] > 0
     };
 
-    saveMoodEntry(newEntry);
-    trackMoodEntry(selectedMood, moodNote);
-    trackMoodEntryPersonalized(selectedMood, selectedFactors);
-    
-    toast.success('Mood entry saved successfully!');
-    resetForm();
+    try {
+      await saveMoodEntry(newEntry);
+      trackMoodEntry(selectedMood, moodNote);
+      trackMoodEntryPersonalized(selectedMood, selectedFactors);
+      
+      toast.success('Mood entry saved successfully!');
+      resetForm();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to save mood entry');
+    }
   };
 
   return (
@@ -122,6 +135,12 @@ const MoodTrackerPage = () => {
             />
           </Tabs>
       </div>
+      
+      <GuestSavePrompt 
+        isOpen={showGuestPrompt}
+        onClose={() => setShowGuestPrompt(false)}
+        featureName="mood entries"
+      />
     </SidebarLayout>
   );
 };

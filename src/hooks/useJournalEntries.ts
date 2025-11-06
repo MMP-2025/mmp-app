@@ -57,7 +57,9 @@ export const useJournalEntries = () => {
     content: string,
     prompt?: string
   ) => {
-    if (!user) return;
+    if (!user) {
+      throw new Error('You must be logged in to save journal entries');
+    }
 
     try {
       const wordCount = content.trim().split(/\s+/).length;

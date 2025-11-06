@@ -76,7 +76,9 @@ export const useMoodEntries = () => {
   }, [user]);
 
   const saveMoodEntry = useCallback(async (entry: Omit<MoodEntry, 'id'>) => {
-    if (!user) return;
+    if (!user) {
+      throw new Error('You must be logged in to save mood entries');
+    }
 
     try {
       const { data, error } = await supabase

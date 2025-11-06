@@ -1,18 +1,22 @@
 
 import React, { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToastService } from '@/hooks/useToastService';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useJournalEntries } from '@/hooks/useJournalEntries';
 import { useJournalPromptData } from '@/hooks/useJournalPromptData';
 import JournalEntryForm from '@/components/journal/JournalEntryForm';
 import JournalEntriesList from '@/components/journal/JournalEntriesList';
+import GuestSavePrompt from '@/components/auth/GuestSavePrompt';
 
 
 const JournalPage = () => {
   const [journalContent, setJournalContent] = useState('');
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
+  const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
+  const { isGuest } = useAuth();
   const { journalEntries, saveJournalEntry: saveEntry } = useJournalEntries();
   const { journalPrompts } = useJournalPromptData();
   const { trackJournalEntry, trackAction } = useAnalytics();
@@ -59,6 +63,11 @@ const JournalPage = () => {
       showWarning("Please write something before saving");
       return;
     }
+
+    if (isGuest) {
+      setShowGuestPrompt(true);
+      return;
+    }
     
     try {
       const wordCount = journalContent.trim().split(/\s+/).length;
@@ -68,8 +77,8 @@ const JournalPage = () => {
       setJournalContent('');
       setCurrentPrompt('');
       showSuccess("Journal entry saved");
-    } catch (error) {
-      showWarning("Failed to save journal entry");
+    } catch (error: any) {
+      showWarning(error.message || "Failed to save journal entry");
     }
   };
 
@@ -93,6 +102,12 @@ const JournalPage = () => {
       />
       
       <JournalEntriesList journalEntries={journalEntries} />
+      
+      <GuestSavePrompt 
+        isOpen={showGuestPrompt}
+        onClose={() => setShowGuestPrompt(false)}
+        featureName="journal entries"
+      />
     </div>
   );
 };
