@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { MessageSquare } from "lucide-react";
 
 interface JournalEntry {
-  id: number;
+  id: string;
   content: string;
   date: Date;
   hasPrompt: boolean;

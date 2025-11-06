@@ -7,7 +7,8 @@ export type GratitudeExercise = {
 };
 
 export type GratitudeEntry = {
-  id: number;
+  id: string;
   content: string;
   date: Date;
+  category?: string;
 };

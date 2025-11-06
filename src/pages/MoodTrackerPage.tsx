@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { usePersonalization } from '@/hooks/usePersonalization';
-import { useMoodData } from '@/hooks/useMoodData';
+import { useMoodEntries } from '@/hooks/useMoodEntries';
 import { useMoodForm } from '@/hooks/useMoodForm';
 import MoodTrackerHeader from '@/components/mood/MoodTrackerHeader';
 import MoodTrackerTabs from '@/components/mood/MoodTrackerTabs';
@@ -16,7 +16,7 @@ const MoodTrackerPage = () => {
   const { trackMoodEntry, trackAction } = useAnalytics();
   const { trackFeatureUsage, trackMoodEntry: trackMoodEntryPersonalized, userBehavior } = usePersonalization();
   
-  const { moodHistory, saveMoodEntry, exportMoodData } = useMoodData();
+  const { moodHistory, saveMoodEntry, exportMoodData, loading } = useMoodEntries();
   const {
     selectedMood,
     setSelectedMood,

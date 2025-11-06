@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useToastService } from '@/hooks/useToastService';
+import { useGratitudeEntries } from '@/hooks/useGratitudeEntries';
 import { gratitudeExercises } from '@/data/gratitudeExercises';
 import GratitudeHeader from '@/components/gratitude/GratitudeHeader';
 import ViewTabs from '@/components/gratitude/ViewTabs';
@@ -7,10 +8,9 @@ import ExerciseCard from '@/components/gratitude/ExerciseCard';
 import EmptySavedPractices from '@/components/gratitude/EmptySavedPractices';
 import ExerciseForm from '@/components/gratitude/ExerciseForm';
 import GratitudeEntriesList from '@/components/gratitude/GratitudeEntriesList';
-import { GratitudeExercise, GratitudeEntry } from '@/types/gratitude';
+import { GratitudeExercise } from '@/types/gratitude';
 const GratitudePage = () => {
   const [selectedExercise, setSelectedExercise] = useState<GratitudeExercise | null>(null);
-  const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntry[]>([]);
   const [gratitudeContent, setGratitudeContent] = useState('');
   const [threeGoodThings, setThreeGoodThings] = useState(['', '', '']);
   const [letterRecipient, setLetterRecipient] = useState('');
@@ -18,10 +18,9 @@ const GratitudePage = () => {
   const [savedExercises, setSavedExercises] = useState<number[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
   const [displayedExercises, setDisplayedExercises] = useState<GratitudeExercise[]>([]);
-  const {
-    showSuccess,
-    showWarning
-  } = useToastService();
+  
+  const { gratitudeEntries, saveGratitudeEntry } = useGratitudeEntries();
+  const { showSuccess, showWarning } = useToastService();
   const shuffleExercises = useCallback(() => {
     const shuffled = [...gratitudeExercises].sort(() => 0.5 - Math.random());
     setDisplayedExercises(shuffled.slice(0, 3));
@@ -54,7 +53,7 @@ const GratitudePage = () => {
     }
     return displayedExercises;
   };
-  const saveGratitude = () => {
+  const saveGratitude = async () => {
     let content = '';
     if (selectedExercise?.id === 1) {
       if (threeGoodThings.filter(thing => thing.trim()).length < 3) {
@@ -75,22 +74,23 @@ const GratitudePage = () => {
       }
       content = gratitudeContent;
     }
-    const newEntry = {
-      id: Date.now(),
-      content,
-      date: new Date()
-    };
-    setGratitudeEntries(prev => [newEntry, ...prev]);
-    if (selectedExercise?.id === 1) {
-      setThreeGoodThings(['', '', '']);
-    } else if (selectedExercise?.id === 2) {
-      setLetterRecipient('');
-      setLetterContent('');
-    } else {
-      setGratitudeContent('');
+    
+    try {
+      await saveGratitudeEntry(content, 'General');
+      
+      if (selectedExercise?.id === 1) {
+        setThreeGoodThings(['', '', '']);
+      } else if (selectedExercise?.id === 2) {
+        setLetterRecipient('');
+        setLetterContent('');
+      } else {
+        setGratitudeContent('');
+      }
+      setSelectedExercise(null);
+      showSuccess("Gratitude practice saved");
+    } catch (error) {
+      showWarning("Failed to save gratitude entry");
     }
-    setSelectedExercise(null);
-    showSuccess("Gratitude practice saved");
   };
   const exercisesToDisplay = getDisplayedExercises();
   return <div className="space-y-6 max-w-4xl mx-auto bg-mental-green">
