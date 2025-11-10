@@ -15,7 +15,7 @@ const CBTModules: React.FC = () => {
   } = useCBTSessions();
   const [currentModule, setCurrentModule] = useState<any>(null);
   const getCompletedModules = () => {
-    return sessions.filter(session => session.completed).length;
+    return sessions.filter(session => session.module_type).length;
   };
   return <div className="space-y-6">
       <Card className="p-6 bg-mental-gray">

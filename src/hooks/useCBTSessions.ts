@@ -1,18 +1,21 @@
-
-import { useState, useEffect } from 'react';
-import { StorageManager } from '@/utils/storage';
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 interface CBTSession {
   id: string;
+  user_id: string;
   date: string;
-  module: string;
-  thought: string;
-  emotion: string;
-  evidence: string;
-  alternativeThought: string;
-  newEmotion: string;
-  completed: boolean;
-  timestamp: number;
+  module_type: string;
+  situation?: string;
+  thoughts?: string;
+  emotions?: string;
+  behaviors?: string;
+  alternative_thoughts?: string;
+  outcome?: string;
+  notes?: string;
+  created_at: string;
 }
 
 interface CBTModule {
@@ -23,7 +26,9 @@ interface CBTModule {
 }
 
 export const useCBTSessions = () => {
+  const { user } = useAuth();
   const [sessions, setSessions] = useState<CBTSession[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const modules: CBTModule[] = [
     {
@@ -53,19 +58,61 @@ export const useCBTSessions = () => {
   ];
 
   useEffect(() => {
-    const savedSessions = StorageManager.load<CBTSession[]>('cbt_sessions', []);
-    setSessions(savedSessions);
-  }, []);
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
-  const addSession = (session: CBTSession) => {
-    const updatedSessions = [session, ...sessions];
-    setSessions(updatedSessions);
-    StorageManager.save('cbt_sessions', updatedSessions);
-  };
+    const fetchSessions = async () => {
+      const { data, error } = await supabase
+        .from('cbt_sessions')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching CBT sessions:', error);
+        toast.error('Failed to load CBT sessions');
+      } else {
+        setSessions(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchSessions();
+  }, [user]);
+
+  const addSession = useCallback(async (sessionData: Omit<CBTSession, 'id' | 'user_id' | 'created_at'>) => {
+    if (!user) {
+      toast.error('Please sign in to save CBT sessions');
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('cbt_sessions')
+      .insert({
+        user_id: user.id,
+        ...sessionData
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error saving CBT session:', error);
+      toast.error('Failed to save CBT session');
+      return;
+    }
+
+    if (data) {
+      setSessions(prev => [data, ...prev]);
+      toast.success('CBT session saved successfully');
+    }
+  }, [user]);
 
   return {
     sessions,
     modules,
-    addSession
+    addSession,
+    loading
   };
 };

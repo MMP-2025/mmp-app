@@ -101,6 +101,86 @@ export type Database = {
         }
         Relationships: []
       }
+      exposure_goals: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          difficulty_level: number | null
+          goal: string
+          id: string
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          difficulty_level?: number | null
+          goal: string
+          id?: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          difficulty_level?: number | null
+          goal?: string
+          id?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      exposure_sessions: {
+        Row: {
+          anxiety_after: number
+          anxiety_before: number
+          created_at: string
+          date: string
+          duration: number | null
+          goal_id: string | null
+          id: string
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          anxiety_after: number
+          anxiety_before: number
+          created_at?: string
+          date?: string
+          duration?: number | null
+          goal_id?: string | null
+          id?: string
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          anxiety_after?: number
+          anxiety_before?: number
+          created_at?: string
+          date?: string
+          duration?: number | null
+          goal_id?: string | null
+          id?: string
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exposure_sessions_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "exposure_goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       goal_milestones: {
         Row: {
           completed: boolean | null
@@ -631,6 +711,39 @@ export type Database = {
         }
         Relationships: []
       }
+      progress_photos: {
+        Row: {
+          caption: string | null
+          category: string | null
+          created_at: string
+          date: string
+          id: string
+          photo_url: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          caption?: string | null
+          category?: string | null
+          created_at?: string
+          date?: string
+          id?: string
+          photo_url: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          caption?: string | null
+          category?: string | null
+          created_at?: string
+          date?: string
+          id?: string
+          photo_url?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       questions: {
         Row: {
           created_at: string
@@ -889,6 +1002,33 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wellness_score_history: {
+        Row: {
+          breakdown: Json | null
+          created_at: string
+          date: string
+          id: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          breakdown?: Json | null
+          created_at?: string
+          date?: string
+          id?: string
+          score: number
+          user_id: string
+        }
+        Update: {
+          breakdown?: Json | null
+          created_at?: string
+          date?: string
+          id?: string
+          score?: number
           user_id?: string
         }
         Relationships: []

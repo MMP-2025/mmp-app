@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { Textarea } from '@/components/ui/textarea';
 import { Brain, ArrowRight, CheckCircle } from 'lucide-react';
-import { CBTStepForm } from './CBTStepForm';
 import { toast } from 'sonner';
 
 interface CBTModule {
@@ -14,36 +13,39 @@ interface CBTModule {
   steps: string[];
 }
 
-interface CBTSession {
-  id: string;
+interface CBTSessionData {
   date: string;
-  module: string;
-  thought: string;
-  emotion: string;
-  evidence: string;
-  alternativeThought: string;
-  newEmotion: string;
-  completed: boolean;
-  timestamp: number;
+  module_type: string;
+  situation?: string;
+  thoughts?: string;
+  emotions?: string;
+  behaviors?: string;
+  alternative_thoughts?: string;
+  outcome?: string;
+  notes?: string;
 }
 
 interface CBTSessionWizardProps {
   module: CBTModule;
-  onComplete: (session: CBTSession) => void;
+  onComplete: (session: CBTSessionData) => Promise<void>;
   onCancel: () => void;
 }
 
 export const CBTSessionWizard: React.FC<CBTSessionWizardProps> = ({ module, onComplete, onCancel }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [sessionData, setSessionData] = useState<Partial<CBTSession>>({
-    id: `cbt_${Date.now()}`,
+  const [sessionData, setSessionData] = useState<CBTSessionData>({
     date: new Date().toISOString().split('T')[0],
-    module: module.title,
-    timestamp: Date.now(),
-    completed: false
+    module_type: module.id,
+    situation: '',
+    thoughts: '',
+    emotions: '',
+    behaviors: '',
+    alternative_thoughts: '',
+    outcome: '',
+    notes: ''
   });
 
-  const updateSessionField = (field: keyof CBTSession, value: string) => {
+  const updateField = (field: keyof CBTSessionData, value: string) => {
     setSessionData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -55,23 +57,68 @@ export const CBTSessionWizard: React.FC<CBTSessionWizardProps> = ({ module, onCo
     }
   };
 
-  const completeSession = () => {
-    if (!sessionData.thought || !sessionData.emotion || !sessionData.evidence || 
-        !sessionData.alternativeThought || !sessionData.newEmotion) {
-      toast.error('Please complete all fields before finishing');
+  const completeSession = async () => {
+    if (!sessionData.thoughts || !sessionData.emotions || !sessionData.alternative_thoughts) {
+      toast.error('Please complete all required fields before finishing');
       return;
     }
 
-    const completedSession: CBTSession = {
-      ...sessionData as CBTSession,
-      completed: true
-    };
-
-    onComplete(completedSession);
-    toast.success('CBT session completed! Great work on challenging your thoughts.');
+    await onComplete(sessionData);
   };
 
   const progress = ((currentStep + 1) / module.steps.length) * 100;
+
+  const renderStepInput = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <Textarea
+            placeholder="Describe the situation or thought..."
+            value={sessionData.situation || ''}
+            onChange={(e) => updateField('situation', e.target.value)}
+            rows={4}
+          />
+        );
+      case 1:
+        return (
+          <Textarea
+            placeholder="What thoughts came to mind?"
+            value={sessionData.thoughts || ''}
+            onChange={(e) => updateField('thoughts', e.target.value)}
+            rows={4}
+          />
+        );
+      case 2:
+        return (
+          <Textarea
+            placeholder="What emotions did you feel?"
+            value={sessionData.emotions || ''}
+            onChange={(e) => updateField('emotions', e.target.value)}
+            rows={4}
+          />
+        );
+      case 3:
+        return (
+          <Textarea
+            placeholder="What alternative perspective could you consider?"
+            value={sessionData.alternative_thoughts || ''}
+            onChange={(e) => updateField('alternative_thoughts', e.target.value)}
+            rows={4}
+          />
+        );
+      case 4:
+        return (
+          <Textarea
+            placeholder="How do you feel now with this new perspective?"
+            value={sessionData.outcome || ''}
+            onChange={(e) => updateField('outcome', e.target.value)}
+            rows={4}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <Card className="p-6 bg-white/90">
@@ -85,11 +132,7 @@ export const CBTSessionWizard: React.FC<CBTSessionWizardProps> = ({ module, onCo
       <Progress value={progress} className="mb-4" />
       <p className="mb-4" style={{color: '#737373'}}>{module.steps[currentStep]}</p>
 
-      <CBTStepForm 
-        step={currentStep}
-        sessionData={sessionData}
-        onUpdateField={updateSessionField}
-      />
+      {renderStepInput()}
 
       <div className="flex justify-between mt-6">
         <Button variant="outline" onClick={onCancel}>
