@@ -10,13 +10,25 @@ import { WellnessScoreHistory } from './WellnessScoreHistory';
 import { WellnessInsights } from './WellnessInsights';
 import { useWellnessScoreHistory } from '@/hooks/useWellnessScoreHistory';
 import { useWellnessScoreCalculator } from '@/hooks/useWellnessScoreCalculator';
+import { useMoodEntries } from '@/hooks/useMoodEntries';
+import { useJournalEntries } from '@/hooks/useJournalEntries';
+import { useGratitudeEntries } from '@/hooks/useGratitudeEntries';
+import { useMindfulnessSessions } from '@/hooks/useMindfulnessSessions';
 
 const WellnessScore: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month'>('week');
   
   const { scoreHistory, saveScoreToHistory } = useWellnessScoreHistory();
+  const { moodHistory } = useMoodEntries();
+  const { journalEntries } = useJournalEntries();
+  const { gratitudeEntries } = useGratitudeEntries();
+  const { sessions: mindfulnessSessions } = useMindfulnessSessions();
+  
   const { currentScore, isCalculating, calculateWellnessScore } = useWellnessScoreCalculator({ 
-    saveScoreToHistory 
+    saveScoreToHistory,
+    moodEntries: moodHistory,
+    journalEntries,
+    mindfulnessSessions
   });
 
   const getScoreColor = (score: number) => 'text-mental-green';

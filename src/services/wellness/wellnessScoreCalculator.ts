@@ -1,5 +1,4 @@
 
-import { StorageManager } from '@/utils/storage';
 import { WellnessMetric, WellnessScore } from '@/types/wellness';
 import { calculateMoodScore } from './moodScore';
 import { calculateConsistencyScore } from './consistencyScore';
@@ -7,18 +6,22 @@ import { calculateEngagementScore } from './engagementScore';
 import { calculateMindfulnessScore } from './mindfulnessScore';
 import { calculateJournalingScore } from './journalingScore';
 
+interface WellnessCalculationData {
+  moodEntries: any[];
+  journalEntries: any[];
+  mindfulnessSessions: any[];
+  userBehavior: any;
+}
+
 export const WellnessScoreCalculator = {
-  performWellnessCalculation(): WellnessScore {
-    const moodEntries = StorageManager.load('mood_entries', []);
-    const journalEntries = StorageManager.load('journal_entries', []);
-    const mindfulnessProgress = StorageManager.load('mindfulness_progress', { sessions: [] });
-    const userBehavior = StorageManager.load('user_behavior', null);
+  performWellnessCalculation(data: WellnessCalculationData): WellnessScore {
+    const { moodEntries, journalEntries, mindfulnessSessions, userBehavior } = data;
 
     // Calculate individual metrics
     const moodScore = calculateMoodScore(moodEntries);
     const consistencyScore = calculateConsistencyScore(moodEntries);
     const engagementScore = calculateEngagementScore(userBehavior);
-    const mindfulnessScore = calculateMindfulnessScore(mindfulnessProgress);
+    const mindfulnessScore = calculateMindfulnessScore({ sessions: mindfulnessSessions });
     const journalingScore = calculateJournalingScore(journalEntries);
 
     const metrics: WellnessMetric[] = [
