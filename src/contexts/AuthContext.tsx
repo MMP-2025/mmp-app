@@ -238,6 +238,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           throw new Error('Failed to create user profile');
         }
 
+        // Sync role to user_roles table for RLS policies
+        const appRole = role === 'provider' ? 'provider' : role === 'patient' ? 'patient' : 'guest';
+        const { error: roleError } = await supabase
+          .from('user_roles')
+          .insert([
+            {
+              user_id: data.user.id,
+              role: appRole
+            }
+          ]);
+
+        if (roleError) {
+          console.error('Error creating user role:', roleError);
+        }
+
         // If patient registration with invitation, mark invitation as used
         if (role === 'patient' && invitationToken) {
           await supabase

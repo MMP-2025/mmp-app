@@ -32,7 +32,7 @@ export const AddEventDialog = ({ trigger, onAddEvent }: AddEventDialogProps) => 
       
       onAddEvent({
         title: validated.title,
-        date: new Date(validated.date),
+        date: new Date(validated.date + 'T00:00:00'),
         time: validated.time
       });
       

@@ -43,14 +43,14 @@ const JournalPromptBrowser: React.FC<JournalPromptBrowserProps> = ({
         <Button
           variant={currentView === 'all' ? 'default' : 'outline'}
           onClick={() => setCurrentView('all')}
-          className="bg-mental-blue hover:bg-mental-blue/80"
+          className={currentView === 'all' ? 'bg-mental-blue hover:bg-mental-blue/80' : ''}
         >
           All Prompts
         </Button>
         <Button
           variant={currentView === 'saved' ? 'default' : 'outline'}
           onClick={() => setCurrentView('saved')}
-          className="bg-mental-green hover:bg-mental-green/80"
+          className={currentView === 'saved' ? 'bg-mental-green hover:bg-mental-green/80' : ''}
         >
           Saved Prompts ({savedPrompts.length})
         </Button>

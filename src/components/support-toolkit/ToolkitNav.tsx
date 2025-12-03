@@ -11,10 +11,18 @@ const ToolkitNav: React.FC<ToolkitNavProps> = ({
   savedResourcesCount
 }) => {
   return <div className="flex gap-2 mb-6">
-      <Button variant={currentView === 'all' ? 'default' : 'outline'} onClick={() => setCurrentView('all')} className="bg-mental-blue hover:bg-mental-blue/80">
+      <Button 
+        variant={currentView === 'all' ? 'default' : 'outline'} 
+        onClick={() => setCurrentView('all')} 
+        className={currentView === 'all' ? 'bg-mental-blue hover:bg-mental-blue/80' : ''}
+      >
         All Resources
       </Button>
-      <Button variant={currentView === 'saved' ? 'default' : 'outline'} onClick={() => setCurrentView('saved')} className="bg-mental-blue">
+      <Button 
+        variant={currentView === 'saved' ? 'default' : 'outline'} 
+        onClick={() => setCurrentView('saved')} 
+        className={currentView === 'saved' ? 'bg-mental-blue hover:bg-mental-blue/80' : ''}
+      >
         Saved Resources ({savedResourcesCount})
       </Button>
     </div>;

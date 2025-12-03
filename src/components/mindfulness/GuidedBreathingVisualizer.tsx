@@ -31,6 +31,7 @@ const GuidedBreathingVisualizer: React.FC<GuidedBreathingVisualizerProps> = ({
     const technique = breathingTechniques.find(t => t.id === techniqueId);
     if (technique) {
       setSelectedTechnique(technique);
+      actions.setTechnique(techniqueId as any);
       actions.reset();
     }
   };
