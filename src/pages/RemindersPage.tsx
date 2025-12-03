@@ -1,51 +1,37 @@
-
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Plus, Bell, Award, Check } from 'lucide-react';
+import { Plus, Bell, Award, Check, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Progress } from '@/components/ui/progress';
 
-import { useProviderData } from '@/hooks/useProviderData';
-import { useProviderHandlers } from '@/hooks/useProviderHandlers';
-
-// Mock current user ID until auth is implemented
-const CURRENT_USER_ID = 'user123';
+import { useUserReminders } from '@/hooks/useUserReminders';
+import { useAuth } from '@/contexts/AuthContext';
 
 const RemindersPage = () => {
-  // Using shared state and handlers
-  const data = useProviderData();
-  const handlers = useProviderHandlers(data);
+  const { user, isGuest } = useAuth();
+  const { reminders, loading, addReminder, deleteReminder } = useUserReminders();
 
   const [newReminderText, setNewReminderText] = useState('');
   const [completedReminders, setCompletedReminders] = useState<Set<string>>(new Set());
   const [rewardPoints, setRewardPoints] = useState(0);
 
-  const userReminders = useMemo(() => {
-    return data.reminders;
-  }, [data.reminders]);
-
-  const handleAddReminder = () => {
+  const handleAddReminder = async () => {
     if (!newReminderText.trim()) {
       toast.error('Please enter a reminder');
       return;
     }
-    
-    // Use the shared `newReminder` state structure
-    data.setNewReminder({
-      message: newReminderText,
-      frequency: 'daily',
-      time: '09:00'
-    });
 
-    // Use a timeout to ensure state is updated before calling the handler
-    setTimeout(() => {
-      handlers.handleAddReminder();
-      setNewReminderText('');
-    }, 0);
+    if (isGuest) {
+      toast.error('Please log in to save reminders');
+      return;
+    }
+    
+    await addReminder(newReminderText);
+    setNewReminderText('');
   };
 
   const toggleCompleted = (id: string) => {
@@ -64,8 +50,8 @@ const RemindersPage = () => {
     setCompletedReminders(newCompletedSet);
   };
 
-  const deleteReminder = (id: string) => {
-    handlers.handleDeleteReminder(id);
+  const handleDeleteReminder = async (id: string) => {
+    await deleteReminder(id);
   };
 
   const rewardLevel = Math.floor(rewardPoints / 50);
@@ -102,27 +88,37 @@ const RemindersPage = () => {
               <CardTitle className="text-[#7e868b]">Your Reminders</CardTitle>
             </CardHeader>
             <CardContent className="bg-mental-green">
-              {userReminders.length === 0 ? <div className="text-center py-6 text-[#7e868b]">
+              {loading ? (
+                <div className="text-center py-6">
+                  <Loader2 className="h-6 w-6 mx-auto animate-spin text-mental-blue" />
+                </div>
+              ) : reminders.length === 0 ? (
+                <div className="text-center py-6 text-[#7e868b]">
                   No reminders yet. Add one above!
-                </div> : <div className="space-y-2">
-                  {userReminders.map(reminder => {
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {reminders.map(reminder => {
                     const isCompleted = completedReminders.has(reminder.id);
-                    return (<div key={reminder.id} className={`flex items-center justify-between p-3 rounded-md ${isCompleted ? 'bg-mental-green/20' : 'bg-mental-peach/20'}`}>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id={`reminder-${reminder.id}`} checked={isCompleted} onCheckedChange={() => toggleCompleted(reminder.id)} />
-                        <div>
-                          <Label htmlFor={`reminder-${reminder.id}`} className={isCompleted ? 'line-through text-[#7e868b]' : 'text-[#7e868b]'}>
-                            {reminder.message}
-                          </Label>
-                          <p className="text-sm text-gray-500">{reminder.frequency} at {reminder.time}</p>
+                    return (
+                      <div key={reminder.id} className={`flex items-center justify-between p-3 rounded-md ${isCompleted ? 'bg-mental-green/20' : 'bg-mental-peach/20'}`}>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id={`reminder-${reminder.id}`} checked={isCompleted} onCheckedChange={() => toggleCompleted(reminder.id)} />
+                          <div>
+                            <Label htmlFor={`reminder-${reminder.id}`} className={isCompleted ? 'line-through text-[#7e868b]' : 'text-[#7e868b]'}>
+                              {reminder.message}
+                            </Label>
+                            <p className="text-sm text-gray-500">{reminder.frequency} at {reminder.time}</p>
+                          </div>
                         </div>
+                        <Button variant="ghost" size="sm" onClick={() => handleDeleteReminder(reminder.id)} className="text-[#7e868b]">
+                          Remove
+                        </Button>
                       </div>
-                      <Button variant="ghost" size="sm" onClick={() => deleteReminder(reminder.id)} className="text-[#7e868b]">
-                        Remove
-                      </Button>
-                    </div>)
+                    );
                   })}
-                </div>}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

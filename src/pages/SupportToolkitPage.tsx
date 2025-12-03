@@ -1,10 +1,10 @@
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Brain, Target, Heart, Camera } from 'lucide-react';
+import { BookOpen, Brain, Target, Heart, Camera, Loader2 } from 'lucide-react';
 
-import { resources } from '@/data/resources';
+import { useResourceData } from '@/hooks/useResourceData';
+import { Resource } from '@/types/resource';
 
 import ToolkitNav from '@/components/support-toolkit/ToolkitNav';
 import ResourceFilter from '@/components/support-toolkit/ResourceFilter';
@@ -15,12 +15,45 @@ import ExposureTherapyTracker from '@/components/therapy/ExposureTherapyTracker'
 import ProgressPhotography from '@/components/photography/ProgressPhotography';
 import HowToUse from '@/components/support-toolkit/HowToUse';
 
+// Map file_type to category and type
+const mapFileTypeToCategory = (fileType: string): Resource['category'] => {
+  const mapping: Record<string, Resource['category']> = {
+    'pdf': 'guide',
+    'worksheet': 'worksheet',
+    'template': 'template',
+    'reference': 'reference'
+  };
+  return mapping[fileType.toLowerCase()] || 'guide';
+};
+
+const mapFileTypeToType = (fileType: string): Resource['type'] => {
+  const mapping: Record<string, Resource['type']> = {
+    'pdf': 'PDF',
+    'worksheet': 'Worksheet',
+    'template': 'Guide',
+    'reference': 'Article'
+  };
+  return mapping[fileType.toLowerCase()] || 'PDF';
+};
 
 const SupportToolkitPage = () => {
+  const { resources: dbResources, loading } = useResourceData();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [savedResources, setSavedResources] = useState<string[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
+
+  // Transform Supabase resources to match ResourceCard expected format
+  const resources: Resource[] = useMemo(() => {
+    return dbResources.map(r => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      category: mapFileTypeToCategory(r.file_type),
+      type: mapFileTypeToType(r.file_type),
+      downloadUrl: r.url
+    }));
+  }, [dbResources]);
 
   const toggleSaved = (resourceId: string) => {
     setSavedResources(prev => {
@@ -87,7 +120,12 @@ const SupportToolkitPage = () => {
               <BookOpen className="h-5 w-5" />
               Available Resources ({filteredResources.length})
             </h3>
-            {currentView === 'saved' && savedResources.length === 0 ? (
+            {loading ? (
+              <div className="text-center py-8">
+                <Loader2 className="h-8 w-8 mx-auto mb-4 animate-spin text-mental-blue" />
+                <p className="text-gray-500">Loading resources...</p>
+              </div>
+            ) : currentView === 'saved' && savedResources.length === 0 ? (
               <div className="text-center py-8">
                 <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                 <h4 className="text-lg font-semibold mb-2 text-[#7e868b]">No Saved Resources</h4>
