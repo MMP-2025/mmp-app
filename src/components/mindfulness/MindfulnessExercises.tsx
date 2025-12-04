@@ -56,10 +56,10 @@ const MindfulnessExercises: React.FC = () => {
   return <div className="space-y-6">
             {/* Navigation Tabs */}
             <div className="flex gap-2">
-                <Button variant={currentView === 'all' ? 'default' : 'outline'} onClick={() => setCurrentView('all')} className="bg-mental-gray">
+                <Button variant={currentView === 'all' ? 'default' : 'outline'} onClick={() => setCurrentView('all')} className={currentView === 'all' ? 'bg-mental-gray' : ''}>
                     All Exercises
                 </Button>
-                <Button variant={currentView === 'saved' ? 'default' : 'outline'} onClick={() => setCurrentView('saved')} className="bg-mental-gray">
+                <Button variant={currentView === 'saved' ? 'default' : 'outline'} onClick={() => setCurrentView('saved')} className={currentView === 'saved' ? 'bg-mental-gray' : ''}>
                     Saved Exercises ({savedExercises.length})
                 </Button>
             </div>

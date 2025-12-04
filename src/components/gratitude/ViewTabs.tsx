@@ -14,10 +14,10 @@ const ViewTabs: React.FC<ViewTabsProps> = ({
   onShuffle
 }) => {
   return <div className="flex gap-2 mb-6">
-      <Button variant={currentView === 'all' ? 'default' : 'outline'} onClick={() => setCurrentView('all')} className="bg-mental-green">
+      <Button variant={currentView === 'all' ? 'default' : 'outline'} onClick={() => setCurrentView('all')} className={currentView === 'all' ? 'bg-mental-green hover:bg-mental-green/80' : ''}>
         All Practices
       </Button>
-      <Button variant={currentView === 'saved' ? 'default' : 'outline'} onClick={() => setCurrentView('saved')} className="bg-mental-green hover:bg-mental-green/80">
+      <Button variant={currentView === 'saved' ? 'default' : 'outline'} onClick={() => setCurrentView('saved')} className={currentView === 'saved' ? 'bg-mental-green hover:bg-mental-green/80' : ''}>
         Saved Practices ({savedExercisesCount})
       </Button>
       {currentView === 'all' && <Button variant="outline" onClick={onShuffle}>
