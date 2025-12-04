@@ -144,7 +144,7 @@ const CommunityChallenges = () => {
       {/* Category Filter */}
       <Card className="p-4 bg-mental-gray">
         <div className="flex gap-2 flex-wrap">
-          {categories.map(category => <Button key={category.value} variant={selectedCategory === category.value ? 'default' : 'outline'} size="sm" onClick={() => setSelectedCategory(category.value)} className="text-xs">
+          {categories.map(category => <Button key={category.value} variant={selectedCategory === category.value ? 'default' : 'outline'} size="sm" onClick={() => setSelectedCategory(category.value)} className={`text-xs ${selectedCategory === category.value ? 'bg-mental-blue hover:bg-mental-blue/80' : ''}`}>
               {category.label}
             </Button>)}
         </div>
