@@ -104,14 +104,14 @@ const LoginForm = () => {
       </div>;
   }
   return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="bg-mental-gray">
-          <CardTitle className="text-2xl text-center text-[#7e868b]">
+      <Card className="w-full max-w-md shadow-lg border-0">
+        <CardHeader className="bg-white/80 rounded-t-lg">
+          <CardTitle className="text-2xl text-center text-mental-blue font-semibold">
             Making Meaning Psychology
           </CardTitle>
-          <p className="text-center text-mental-peach">Welcome to your mental wellness journey</p>
+          <p className="text-center text-gray-600">Welcome to your mental wellness journey</p>
         </CardHeader>
-        <CardContent className="bg-mental-gray">
+        <CardContent className="bg-white/80 rounded-b-lg pt-4">
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Sign In</TabsTrigger>
@@ -120,13 +120,13 @@ const LoginForm = () => {
             
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
-                <div className="bg-mental-gray">
+                <div>
                   <Label htmlFor="role">Role</Label>
                   <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
-                    <SelectTrigger className="bg-mental-gray">
+                    <SelectTrigger className="bg-white">
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
-                    <SelectContent className="bg-mental-gray">
+                    <SelectContent className="bg-white">
                       <SelectItem value="patient">Patient</SelectItem>
                       <SelectItem value="provider">Provider</SelectItem>
                       <SelectItem value="guest">Guest</SelectItem>
@@ -137,13 +137,13 @@ const LoginForm = () => {
                 {role !== 'guest' && <>
                     <div>
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-mental-gray" />
+                      <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-white" />
                     </div>
                     
                     <div>
                       <Label htmlFor="password">Password</Label>
                       <div className="relative">
-                        <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Enter your password" className="bg-mental-gray pr-10" />
+                        <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Enter your password" className="bg-white pr-10" />
                         <Button type="button" variant="ghost" size="sm" className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent" onClick={() => setShowPassword(!showPassword)}>
                           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </Button>
@@ -151,29 +151,29 @@ const LoginForm = () => {
                     </div>
                   </>}
 
-                {role === 'guest' && <div className="text-center p-4 bg-mental-blue rounded-md">
-                    <p className="text-[#737373]">No login required for guest access</p>
+                {role === 'guest' && <div className="text-center p-4 bg-mental-green/20 rounded-md border border-mental-green/30">
+                    <p className="text-gray-600">No login required for guest access</p>
                   </div>}
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-normal text-base text-slate-700 bg-mental-peach">
+                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base text-white bg-mental-blue hover:bg-mental-blue/90">
                   {isLoading ? 'Signing in...' : role === 'guest' ? 'Continue as Guest' : 'Sign In'}
                 </Button>
 
-                {role !== 'guest' && <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                    <p className="text-xs font-medium text-blue-700 mb-2">Demo Credentials:</p>
+                {role !== 'guest' && <div className="mt-4 p-3 bg-mental-green/10 border border-mental-green/30 rounded-md">
+                    <p className="text-xs font-medium text-gray-700 mb-2">Demo Credentials:</p>
                     <div className="space-y-1">
                       <button type="button" onClick={() => {
                     setEmail('provider@demo.com');
                     setPassword('demo123');
                     setRole('provider');
-                  }} className="block w-full text-left text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1 rounded">
+                  }} className="block w-full text-left text-xs text-mental-blue hover:text-mental-blue/80 hover:bg-mental-green/20 p-1 rounded">
                         Provider: provider@demo.com / demo123
                       </button>
                       <button type="button" onClick={() => {
                     setEmail('patient@demo.com');
                     setPassword('demo123');
                     setRole('patient');
-                  }} className="block w-full text-left text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-100 p-1 rounded">
+                  }} className="block w-full text-left text-xs text-mental-blue hover:text-mental-blue/80 hover:bg-mental-green/20 p-1 rounded">
                         Patient: patient@demo.com / demo123
                       </button>
                     </div>
@@ -186,10 +186,10 @@ const LoginForm = () => {
                 <div>
                   <Label htmlFor="register-role">Role</Label>
                   <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
-                    <SelectTrigger className="bg-mental-gray">
+                    <SelectTrigger className="bg-white">
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
-                    <SelectContent className="bg-mental-gray">
+                    <SelectContent className="bg-white">
                       <SelectItem value="patient">Patient</SelectItem>
                       <SelectItem value="provider">Provider</SelectItem>
                     </SelectContent>
@@ -211,25 +211,25 @@ const LoginForm = () => {
 
                 <div>
                   <Label htmlFor="register-name">Full Name</Label>
-                  <Input id="register-name" type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="Enter your full name" className="bg-mental-gray" />
+                  <Input id="register-name" type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="Enter your full name" className="bg-white" />
                 </div>
 
                 <div>
                   <Label htmlFor="register-email">Email</Label>
-                  <Input id="register-email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-mental-gray" disabled={role === 'patient' && !!validatedInvitation} />
+                  <Input id="register-email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-white" disabled={role === 'patient' && !!validatedInvitation} />
                 </div>
                 
                 <div>
                   <Label htmlFor="register-password">Password</Label>
                   <div className="relative">
-                    <Input id="register-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Create a password (min 6 characters)" className="bg-mental-gray pr-10" minLength={6} />
+                    <Input id="register-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Create a password (min 6 characters)" className="bg-white pr-10" minLength={6} />
                     <Button type="button" variant="ghost" size="sm" className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent" onClick={() => setShowPassword(!showPassword)}>
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray hover:bg-mental-blue hover:text-mental-gray">
+                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-mental-blue text-white hover:bg-mental-blue/90">
                   {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </form>
