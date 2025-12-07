@@ -45,7 +45,9 @@ const handleImport = async () => {
   
   try {
     const text = await file.text();
+    console.log('CSV raw text:', text);
     const items = parseCSVData(text, type);
+    console.log('Parsed CSV items:', JSON.stringify(items, null, 2));
     onImport(items);
     showSuccess('CSV imported', `${items.length} items imported successfully.`);
   } catch (error) {
