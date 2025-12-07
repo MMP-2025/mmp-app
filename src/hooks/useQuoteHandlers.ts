@@ -82,16 +82,23 @@ export const useQuoteHandlers = ({
         return;
       }
       
+      console.log('Raw items received:', JSON.stringify(items, null, 2));
+      
       const { data: { user } } = await supabase.auth.getUser();
       
-      const quotesToInsert = items.map(item => {
-        // Handle both validated and raw CSV data
-        const text = item.text?.trim();
-        const author = item.author?.trim() || 'Anonymous';
-        const category = item.category?.trim() || 'General';
+      const quotesToInsert = items.map((item, index) => {
+        console.log(`Item ${index} keys:`, Object.keys(item));
+        console.log(`Item ${index}:`, item);
+        
+        // Handle both 'text' and 'Text' (case insensitive)
+        const text = (item.text || item.Text || item.TEXT || '').trim();
+        const author = (item.author || item.Author || item.AUTHOR || 'Anonymous').trim();
+        const category = (item.category || item.Category || item.CATEGORY || 'General').trim();
+        
+        console.log(`Parsed - text: "${text}", author: "${author}", category: "${category}"`);
         
         if (!text) {
-          throw new Error('Quote text is required');
+          throw new Error(`Quote text is required (item ${index + 1}). Keys found: ${Object.keys(item).join(', ')}`);
         }
         
         return {
