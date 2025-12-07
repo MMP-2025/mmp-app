@@ -227,7 +227,7 @@ export const generateCSVTemplate = (type: ImportType) => {
       return 'prompt,category,difficulty\n"Three things you\'re grateful for","Daily","simple"';
     
     case 'mindfulnessPrompts':
-      return 'prompt,category,duration\n"Focus on your breath","Breathing","5 minutes"';
+      return 'prompt,category,duration\n"Focus on your breath","Breathing","5"';
     
     default:
       return '';

@@ -76,12 +76,23 @@ export const useMindfulnessHandlers = ({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      const exercisesToInsert = items.map(item => ({
-        prompt: item.prompt,
-        category: item.category || 'General',
-        duration: item.duration || 5,
-        provider_id: user?.id
-      }));
+      const exercisesToInsert = items.map(item => {
+        // Parse duration - handle both number and string formats like "5" or "5 minutes"
+        let duration = 5;
+        if (typeof item.duration === 'number') {
+          duration = item.duration;
+        } else if (typeof item.duration === 'string') {
+          const parsed = parseInt(item.duration.replace(/\D/g, ''), 10);
+          duration = isNaN(parsed) ? 5 : parsed;
+        }
+        
+        return {
+          prompt: item.prompt,
+          category: item.category || 'General',
+          duration,
+          provider_id: user?.id
+        };
+      });
 
       const { data, error } = await supabase
         .from('mindfulness_exercises')

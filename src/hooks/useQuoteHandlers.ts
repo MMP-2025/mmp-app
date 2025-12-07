@@ -85,11 +85,19 @@ export const useQuoteHandlers = ({
       const { data: { user } } = await supabase.auth.getUser();
       
       const quotesToInsert = items.map(item => {
-        const validated = quoteSchema.parse(item);
+        // Handle both validated and raw CSV data
+        const text = item.text?.trim();
+        const author = item.author?.trim() || 'Anonymous';
+        const category = item.category?.trim() || 'General';
+        
+        if (!text) {
+          throw new Error('Quote text is required');
+        }
+        
         return {
-          text: validated.text,
-          author: validated.author || 'Anonymous',
-          category: validated.category || 'General',
+          text,
+          author,
+          category,
           provider_id: user?.id
         };
       });
@@ -104,7 +112,8 @@ export const useQuoteHandlers = ({
       setQuotes(prev => [...prev, ...(data || [])]);
       showSuccess("Bulk import successful", `${items.length} quotes have been imported.`);
     } catch (error: any) {
-      showError("Import Error", "Some items failed validation and were not imported");
+      console.error('Error importing quotes:', error);
+      showError("Import Error", error.message || "Some items failed validation and were not imported");
     } finally {
       setIsLoading(false);
     }
