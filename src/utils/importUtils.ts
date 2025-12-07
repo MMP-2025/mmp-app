@@ -94,7 +94,14 @@ export const parseJSONData = (jsonText: string, type: ImportType) => {
 };
 
 export const parseCSVData = (csvText: string, type: ImportType) => {
-  const lines = csvText.split('\n').filter(line => line.trim());
+  // Remove BOM if present and normalize line endings
+  let cleanText = csvText.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  
+  console.log('Clean CSV text (first 500 chars):', cleanText.substring(0, 500));
+  
+  const lines = cleanText.split('\n').filter(line => line.trim());
+  
+  console.log('CSV lines:', lines);
   
   if (lines.length < 2) {
     throw new Error('CSV must have a header row and at least one data row');
@@ -125,11 +132,18 @@ export const parseCSVData = (csvText: string, type: ImportType) => {
   };
   
   // Parse headers and normalize them (lowercase, trim, remove quotes)
-  const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
+  const rawHeaders = parseCSVLine(lines[0]);
+  console.log('Raw headers:', rawHeaders);
+  
+  const headers = rawHeaders.map(h => h.toLowerCase().trim());
+  console.log('Normalized headers:', headers);
+  
   const rows = lines.slice(1);
   
   return rows.map((row, index) => {
     const values = parseCSVLine(row);
+    console.log(`Row ${index} values:`, values);
+    
     const item: any = { id: Date.now().toString() + index };
     
     headers.forEach((header, i) => {
