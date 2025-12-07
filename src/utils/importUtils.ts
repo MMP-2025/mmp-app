@@ -97,11 +97,7 @@ export const parseCSVData = (csvText: string, type: ImportType) => {
   // Remove BOM if present and normalize line endings
   let cleanText = csvText.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   
-  console.log('Clean CSV text (first 500 chars):', cleanText.substring(0, 500));
-  
   const lines = cleanText.split('\n').filter(line => line.trim());
-  
-  console.log('CSV lines:', lines);
   
   if (lines.length < 2) {
     throw new Error('CSV must have a header row and at least one data row');
@@ -131,19 +127,41 @@ export const parseCSVData = (csvText: string, type: ImportType) => {
     return values;
   };
   
-  // Parse headers and normalize them (lowercase, trim, remove quotes)
-  const rawHeaders = parseCSVLine(lines[0]);
-  console.log('Raw headers:', rawHeaders);
+  // Expected headers for each type
+  const expectedHeaders: Record<string, string[]> = {
+    quotes: ['text', 'author', 'category'],
+    journalPrompts: ['prompt', 'category', 'difficulty'],
+    questions: ['question', 'category', 'type'],
+    toolkitItems: ['title', 'description', 'instructions', 'category', 'duration'],
+    reminders: ['title', 'message', 'frequency', 'category'],
+    gratitudePrompts: ['prompt', 'category', 'difficulty'],
+    mindfulnessPrompts: ['prompt', 'category', 'duration']
+  };
   
-  const headers = rawHeaders.map(h => h.toLowerCase().trim());
-  console.log('Normalized headers:', headers);
+  // Find the header row by looking for expected column names
+  let headerRowIndex = 0;
+  const expected = expectedHeaders[type] || [];
   
-  const rows = lines.slice(1);
+  for (let i = 0; i < Math.min(lines.length, 5); i++) {
+    const rowValues = parseCSVLine(lines[i]).map(v => v.toLowerCase().trim());
+    // Check if this row contains expected headers
+    const matchCount = expected.filter(h => rowValues.includes(h)).length;
+    if (matchCount >= 2) { // At least 2 expected headers found
+      headerRowIndex = i;
+      break;
+    }
+  }
+  
+  // Parse headers and normalize them (lowercase, trim)
+  const headers = parseCSVLine(lines[headerRowIndex]).map(h => h.toLowerCase().trim());
+  const rows = lines.slice(headerRowIndex + 1);
+  
+  if (rows.length === 0) {
+    throw new Error('No data rows found after header row');
+  }
   
   return rows.map((row, index) => {
     const values = parseCSVLine(row);
-    console.log(`Row ${index} values:`, values);
-    
     const item: any = { id: Date.now().toString() + index };
     
     headers.forEach((header, i) => {
