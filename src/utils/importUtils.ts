@@ -96,6 +96,10 @@ export const parseJSONData = (jsonText: string, type: ImportType) => {
 export const parseCSVData = (csvText: string, type: ImportType) => {
   const lines = csvText.split('\n').filter(line => line.trim());
   
+  if (lines.length < 2) {
+    throw new Error('CSV must have a header row and at least one data row');
+  }
+  
   // Parse CSV properly handling quoted values
   const parseCSVLine = (line: string): string[] => {
     const values: string[] = [];
@@ -108,17 +112,20 @@ export const parseCSVData = (csvText: string, type: ImportType) => {
       if (char === '"') {
         insideQuotes = !insideQuotes;
       } else if (char === ',' && !insideQuotes) {
-        values.push(current.trim());
+        // Remove surrounding quotes and trim
+        values.push(current.trim().replace(/^"|"$/g, ''));
         current = '';
       } else {
         current += char;
       }
     }
-    values.push(current.trim());
+    // Push the last value, removing quotes
+    values.push(current.trim().replace(/^"|"$/g, ''));
     return values;
   };
   
-  const headers = parseCSVLine(lines[0]);
+  // Parse headers and normalize them (lowercase, trim, remove quotes)
+  const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
   const rows = lines.slice(1);
   
   return rows.map((row, index) => {
@@ -126,7 +133,9 @@ export const parseCSVData = (csvText: string, type: ImportType) => {
     const item: any = { id: Date.now().toString() + index };
     
     headers.forEach((header, i) => {
-      item[header] = values[i] || '';
+      if (header) {
+        item[header] = values[i] || '';
+      }
     });
     
     return item;
