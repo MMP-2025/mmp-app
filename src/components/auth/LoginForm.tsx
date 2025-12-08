@@ -113,9 +113,9 @@ const LoginForm = () => {
         </CardHeader>
         <CardContent className="bg-white/80 rounded-b-lg pt-4">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Sign In</TabsTrigger>
-              <TabsTrigger value="register">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-mental-peach/50">
+              <TabsTrigger value="login" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
+              <TabsTrigger value="register" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Sign Up</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
@@ -159,21 +159,21 @@ const LoginForm = () => {
                   {isLoading ? 'Signing in...' : role === 'guest' ? 'Continue as Guest' : 'Sign In'}
                 </Button>
 
-                {role !== 'guest' && <div className="mt-4 p-3 bg-mental-green/10 border border-mental-green/30 rounded-md">
-                    <p className="text-xs font-medium text-gray-700 mb-2">Demo Credentials:</p>
+                {role !== 'guest' && <div className="mt-4 p-3 bg-mental-peach/40 border border-mental-peach rounded-md">
+                    <p className="text-xs font-semibold text-gray-800 mb-2">Demo Credentials:</p>
                     <div className="space-y-1">
                       <button type="button" onClick={() => {
                     setEmail('provider@demo.com');
                     setPassword('demo123');
                     setRole('provider');
-                  }} className="block w-full text-left text-xs text-mental-blue hover:text-mental-blue/80 hover:bg-mental-green/20 p-1 rounded">
+                  }} className="block w-full text-left text-xs text-gray-700 font-medium hover:text-mental-blue hover:bg-mental-peach/60 p-1.5 rounded transition-colors">
                         Provider: provider@demo.com / demo123
                       </button>
                       <button type="button" onClick={() => {
                     setEmail('patient@demo.com');
                     setPassword('demo123');
                     setRole('patient');
-                  }} className="block w-full text-left text-xs text-mental-blue hover:text-mental-blue/80 hover:bg-mental-green/20 p-1 rounded">
+                  }} className="block w-full text-left text-xs text-gray-700 font-medium hover:text-mental-blue hover:bg-mental-peach/60 p-1.5 rounded transition-colors">
                         Patient: patient@demo.com / demo123
                       </button>
                     </div>
