@@ -14,50 +14,52 @@ const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({
     isGuest
   } = useAuth();
   const guestRestrictedTabs = ['history', 'analytics', 'advanced', 'correlations', 'insights', 'predictions', 'habits', 'environment'];
-  return <TabsList className="flex h-auto w-full flex-wrap justify-start">
-      <TabsTrigger value="track" className="flex items-center gap-2">
+  const tabTriggerClass = "flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all";
+
+  return <TabsList className="flex h-auto w-full flex-wrap justify-start bg-mental-peach/50">
+      <TabsTrigger value="track" className={tabTriggerClass}>
         <Target className="h-4 w-4" />
         Track Mood
       </TabsTrigger>
       
       {!isGuest && <>
-          <TabsTrigger value="history" className="flex items-center gap-2">
+          <TabsTrigger value="history" className={tabTriggerClass}>
             <Calendar className="h-4 w-4" />
             History
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="flex items-center gap-2">
+          <TabsTrigger value="analytics" className={tabTriggerClass}>
             <TrendingUp className="h-4 w-4" />
             Analytics
           </TabsTrigger>
-          <TabsTrigger value="advanced" className="flex items-center gap-2">
+          <TabsTrigger value="advanced" className={tabTriggerClass}>
             <BarChart3 className="h-4 w-4" />
             Advanced
           </TabsTrigger>
-          <TabsTrigger value="correlations" className="flex items-center gap-2">
+          <TabsTrigger value="correlations" className={tabTriggerClass}>
             <Spline className="h-4 w-4" />
             Correlations
           </TabsTrigger>
-          <TabsTrigger value="insights" className="flex items-center gap-2">
+          <TabsTrigger value="insights" className={tabTriggerClass}>
             <Brain className="h-4 w-4" />
             AI Insights
           </TabsTrigger>
-          <TabsTrigger value="predictions" className="flex items-center gap-2">
+          <TabsTrigger value="predictions" className={tabTriggerClass}>
             <Sparkles className="h-4 w-4" />
             Predictions
           </TabsTrigger>
-          <TabsTrigger value="habits" className="flex items-center gap-2">
+          <TabsTrigger value="habits" className={tabTriggerClass}>
             <Activity className="h-4 w-4" />
             Habits
           </TabsTrigger>
-          <TabsTrigger value="environment" className="flex items-center gap-2">
+          <TabsTrigger value="environment" className={tabTriggerClass}>
             <Cloud className="h-4 w-4" />
             Environment
           </TabsTrigger>
         </>}
       
-      {isGuest && <div className="ml-4 px-4 py-2 bg-blue-50 border border-blue-200 rounded-md">
-          <p className="text-xs text-blue-700">
-            📊 Unlock History, Analytics, AI Insights & more by creating an account!
+      {isGuest && <div className="ml-4 px-4 py-2 bg-mental-peach/30 border border-mental-peach rounded-md">
+          <p className="text-xs text-gray-700">
+            📊 Unlock History, Analytics, AI Insights & more by scheduling a consultation!
           </p>
         </div>}
     </TabsList>;

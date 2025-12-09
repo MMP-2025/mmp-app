@@ -102,7 +102,7 @@ const GratitudePage = () => {
     }
   };
   const exercisesToDisplay = getDisplayedExercises();
-  return <div className="space-y-6 max-w-4xl mx-auto bg-mental-green">
+  return <div className="space-y-6 max-w-4xl mx-auto">
       <GratitudeHeader />
 
       <ViewTabs currentView={currentView} setCurrentView={setCurrentView} savedExercisesCount={savedExercises.length} onShuffle={shuffleExercises} />

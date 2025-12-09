@@ -85,8 +85,8 @@ const JournalPage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Journal</h1>
-        <p className="text-[#7e868b]">Express your thoughts and feelings</p>
+        <h1 className="text-3xl font-bold mb-2 text-muted-foreground">Journal</h1>
+        <p className="text-muted-foreground">Express your thoughts and feelings</p>
       </div>
       
       <JournalEntryForm
