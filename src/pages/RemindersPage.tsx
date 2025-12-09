@@ -60,8 +60,8 @@ const RemindersPage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Reminders</h1>
-        <p className="text-[#7e868b]">Keep track of your tasks and earn rewards</p>
+        <h1 className="text-3xl font-bold mb-2 text-muted-foreground">Reminders</h1>
+        <p className="text-muted-foreground">Keep track of your tasks and earn rewards</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -76,7 +76,7 @@ const RemindersPage = () => {
             <CardContent className="bg-mental-green">
               <div className="flex items-center space-x-2">
                 <Input placeholder="Enter your reminder" value={newReminderText} onChange={e => setNewReminderText(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAddReminder()} />
-                <Button onClick={handleAddReminder} className="text-mental-green bg-mental-green">
+                <Button onClick={handleAddReminder} className="bg-mental-blue hover:bg-mental-blue/80 text-gray-800">
                   <Plus className="h-4 w-4 text-[#7e868b]" />
                 </Button>
               </div>

@@ -55,8 +55,8 @@ const ProfilePage = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#737373] mb-2">User Profile</h1>
-        <p className="text-[#737373]">
+        <h1 className="text-3xl font-bold text-muted-foreground mb-2">User Profile</h1>
+        <p className="text-muted-foreground">
           Manage your personal information and preferences.
         </p>
       </div>
@@ -75,7 +75,7 @@ const ProfilePage = () => {
       <div className="flex justify-end">
         <Button
           onClick={handleSaveProfile}
-          className="flex items-center gap-2 bg-mental-peach text-[#737373] hover:bg-mental-blue"
+          className="flex items-center gap-2 bg-mental-blue hover:bg-mental-blue/80 text-gray-800"
         >
           <Save className="h-4 w-4" />
           Save Profile

@@ -29,21 +29,21 @@ const GuestSavePrompt: React.FC<GuestSavePromptProps> = ({ isOpen, onClose, feat
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent className="sm:max-w-md">
         <AlertDialogHeader>
-          <div className="mx-auto mb-2 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+          <div className="mx-auto mb-2 w-12 h-12 bg-mental-blue rounded-full flex items-center justify-center">
             <Crown className="h-6 w-6 text-white" />
           </div>
           <AlertDialogTitle className="text-center">
-            Create an Account to Save
+            Schedule a Consultation to Save
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center">
-            Sign up for free to save your {featureName} and track your progress over time.
+            Become a patient to save your {featureName} and track your progress over time.
           </AlertDialogDescription>
         </AlertDialogHeader>
         
         <div className="space-y-3 py-4">
-          <div className="bg-blue-50 p-3 rounded-lg">
+          <div className="bg-mental-peach/30 border border-mental-peach p-3 rounded-lg">
             <p className="text-sm text-gray-700">
-              <strong>Why create an account?</strong>
+              <strong>Why become a patient?</strong>
             </p>
             <ul className="text-sm text-gray-600 mt-2 space-y-1 list-disc list-inside">
               <li>Save all your entries and progress</li>
@@ -57,9 +57,9 @@ const GuestSavePrompt: React.FC<GuestSavePromptProps> = ({ isOpen, onClose, feat
         <AlertDialogFooter className="sm:flex-col gap-2">
           <AlertDialogAction
             onClick={handleCreateAccount}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+            className="w-full bg-mental-blue hover:bg-mental-blue/80 text-white"
           >
-            Create Free Account
+            Schedule a Consultation
           </AlertDialogAction>
           <AlertDialogCancel className="w-full mt-2">
             Continue Browsing

@@ -23,14 +23,14 @@ const HomePage = () => {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold text-center mb-2 text-[#7e868b]">Welcome to Making Meaning Psychology</h1>
-        <p className="text-center text-base font-normal text-[#7e868b]">Your daily companion for mental wellbeing</p>
+        <h1 className="text-3xl font-bold text-center mb-2 text-muted-foreground">Welcome to Making Meaning Psychology</h1>
+        <p className="text-center text-base font-normal text-muted-foreground">Your daily companion for mental wellbeing</p>
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="overview">Daily Overview</TabsTrigger>
-          <TabsTrigger value="progress">Your Progress</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 bg-mental-peach/50">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Daily Overview</TabsTrigger>
+          <TabsTrigger value="progress" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Your Progress</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-8">

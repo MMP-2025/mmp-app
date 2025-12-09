@@ -46,29 +46,29 @@ const MindfulnessPage = () => {
   };
   return <div className="space-y-6 max-w-4xl mx-auto">
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-slate-700">Mindfulness & Meditation</h1>
-        <p className="text-slate-700">Practice being present and cultivate awareness</p>
+        <h1 className="text-3xl font-bold mb-2 text-muted-foreground">Mindfulness & Meditation</h1>
+        <p className="text-muted-foreground">Practice being present and cultivate awareness</p>
       </div>
 
       <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-        <TabsList className={`grid w-full ${isGuest ? 'grid-cols-2' : 'grid-cols-3'}`}>
-          <TabsTrigger value="exercises" className="flex items-center gap-2 text-slate-700">
+        <TabsList className={`grid w-full ${isGuest ? 'grid-cols-2' : 'grid-cols-3'} bg-mental-peach/50`}>
+          <TabsTrigger value="exercises" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">
             <Brain className="h-4 w-4" />
             Exercises
           </TabsTrigger>
-          <TabsTrigger value="breathing" className="flex items-center gap-2 text-slate-700">
+          <TabsTrigger value="breathing" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">
             <Activity className="h-4 w-4" />
             Breathing
           </TabsTrigger>
-          {!isGuest && <TabsTrigger value="progress" className="flex items-center gap-2 text-slate-700">
+          {!isGuest && <TabsTrigger value="progress" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">
               <Activity className="h-4 w-4" />
               Progress
             </TabsTrigger>}
         </TabsList>
 
-        {isGuest && <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
-            <p className="text-sm text-purple-700">
-              🎯 <strong>Want more?</strong> Create an account to unlock AI-generated meditations and progress tracking!
+        {isGuest && <div className="mt-4 p-4 bg-mental-peach/30 border border-mental-peach rounded-lg">
+            <p className="text-sm text-gray-700">
+              🎯 <strong>Want more?</strong> Schedule a consultation to unlock progress tracking and personalized features!
             </p>
           </div>}
 

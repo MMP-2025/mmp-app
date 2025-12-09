@@ -57,8 +57,8 @@ const PlannerPage = () => {
   return <SidebarLayout>
       <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-neutral-500">Planner</h1>
-        <p className="text-neutral-500">Organize your schedule and plan your activities</p>
+        <h1 className="text-3xl font-bold mb-2 text-muted-foreground">Planner</h1>
+        <p className="text-muted-foreground">Organize your schedule and plan your activities</p>
       </div>
       
       <div className="w-full max-w-none overflow-visible">
@@ -76,7 +76,7 @@ const PlannerPage = () => {
           <div className="min-w-0 flex-shrink-0">
             <Card className="bg-mental-peach h-fit">
               <CardHeader className="bg-mental-peach">
-                <CardTitle className="text-lg text-neutral-500">Monthly View</CardTitle>
+                <CardTitle className="text-lg text-muted-foreground">Monthly View</CardTitle>
               </CardHeader>
               <CardContent className="bg-mental-peach">
                 <MonthlyView selectedDate={selectedDate} events={events} />

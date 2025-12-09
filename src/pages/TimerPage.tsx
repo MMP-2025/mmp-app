@@ -133,50 +133,50 @@ const TimerPage = () => {
   return <SidebarLayout>
       <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-[#7e868b]">Timer</h1>
-        <p className="text-[#7e868b]">Track time for productivity and mindfulness</p>
+        <h1 className="text-3xl font-bold mb-2 text-muted-foreground">Timer</h1>
+        <p className="text-muted-foreground">Track time for productivity and mindfulness</p>
       </div>
       
       <audio ref={audioRef} src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" />
       
       <Tabs defaultValue="pomodoro" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="pomodoro" className="text-[#7e868b]">Pomodoro</TabsTrigger>
-          <TabsTrigger value="countdown" className="text-[#7e868b]">Countdown</TabsTrigger>
-          <TabsTrigger value="stopwatch" className="text-[#7e868b]">Stopwatch</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 bg-mental-peach/50">
+          <TabsTrigger value="pomodoro" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Pomodoro</TabsTrigger>
+          <TabsTrigger value="countdown" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Countdown</TabsTrigger>
+          <TabsTrigger value="stopwatch" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Stopwatch</TabsTrigger>
         </TabsList>
         
         {/* Pomodoro Timer Tab */}
         <TabsContent value="pomodoro">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center text-[#7e868b]">
-                <Timer className="mr-2 h-5 w-5 text-[#7e868b]" />
+              <CardTitle className="flex items-center text-muted-foreground">
+                <Timer className="mr-2 h-5 w-5" />
                 Pomodoro Timer
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="text-6xl font-bold font-mono text-[#7e868b]">
+                <div className="text-6xl font-bold font-mono text-muted-foreground">
                   {formatTime(pomodoroMinutes, pomodoroSeconds)}
                 </div>
-                <p className="text-[#7e868b] mt-2">
+                <p className="text-muted-foreground mt-2">
                   Focus for 25 minutes, then take a short break
                 </p>
               </div>
               
               <div className="flex justify-center gap-4 mt-6">
-                <Button variant={isPomodoroPaused ? "default" : "outline"} onClick={() => setIsPomodoroPaused(!isPomodoroPaused)} className="text-[#7e868b]">
-                  {isPomodoroPaused ? <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></> : <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>}
+                <Button variant={isPomodoroPaused ? "default" : "outline"} onClick={() => setIsPomodoroPaused(!isPomodoroPaused)}>
+                  {isPomodoroPaused ? <><Play className="mr-2 h-4 w-4" /> Start</> : <><Pause className="mr-2 h-4 w-4" /> Pause</>}
                 </Button>
-                <Button variant="outline" onClick={resetPomodoro} className="text-[#7e868b]">
-                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
+                <Button variant="outline" onClick={resetPomodoro}>
+                  <RotateCcw className="mr-2 h-4 w-4" /> Reset
                 </Button>
               </div>
               
-              <div className="p-4 bg-mental-green/10 rounded-md mt-6">
-                <h3 className="font-medium mb-2 text-[#7e868b]">Pomodoro Technique</h3>
-                <p className="text-sm text-[#7e868b]">
+              <div className="p-4 bg-mental-peach/20 rounded-md mt-6">
+                <h3 className="font-medium mb-2 text-muted-foreground">Pomodoro Technique</h3>
+                <p className="text-sm text-muted-foreground">
                   The Pomodoro Technique is a time management method that uses a timer to break work into intervals, 
                   traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro.
                 </p>
@@ -189,57 +189,45 @@ const TimerPage = () => {
         <TabsContent value="countdown">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center text-[#7e868b]">
-                <Clock className="mr-2 h-5 w-5 text-[#7e868b]" />
+              <CardTitle className="flex items-center text-muted-foreground">
+                <Clock className="mr-2 h-5 w-5" />
                 Countdown Timer
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="text-6xl font-bold font-mono text-[#7e868b]">
+                <div className="text-6xl font-bold font-mono text-muted-foreground">
                   {formatTime(countdownMinutes, countdownSeconds)}
                 </div>
               </div>
               
               <div className="grid grid-cols-6 gap-2 mt-6">
-                <Button variant="outline" onClick={() => setCustomCountdown(1)} className="text-sm text-[#7e868b]">
-                  1m
-                </Button>
-                <Button variant="outline" onClick={() => setCustomCountdown(5)} className="text-sm text-[#7e868b]">
-                  5m
-                </Button>
-                <Button variant="outline" onClick={() => setCustomCountdown(10)} className="text-sm text-[#7e868b]">
-                  10m
-                </Button>
-                <Button variant="outline" onClick={() => setCustomCountdown(15)} className="text-sm text-[#7e868b]">
-                  15m
-                </Button>
-                <Button variant="outline" onClick={() => setCustomCountdown(30)} className="text-sm text-[#7e868b]">
-                  30m
-                </Button>
-                <Button variant="outline" onClick={() => setCustomCountdown(60)} className="text-sm text-[#7e868b]">
-                  1h
-                </Button>
+                <Button variant="outline" onClick={() => setCustomCountdown(1)} className="text-sm">1m</Button>
+                <Button variant="outline" onClick={() => setCustomCountdown(5)} className="text-sm">5m</Button>
+                <Button variant="outline" onClick={() => setCustomCountdown(10)} className="text-sm">10m</Button>
+                <Button variant="outline" onClick={() => setCustomCountdown(15)} className="text-sm">15m</Button>
+                <Button variant="outline" onClick={() => setCustomCountdown(30)} className="text-sm">30m</Button>
+                <Button variant="outline" onClick={() => setCustomCountdown(60)} className="text-sm">1h</Button>
               </div>
               
               <div className="space-y-2 mt-4">
-                <Label className="text-[#7e868b]">Custom Time (minutes):</Label>
+                <Label className="text-muted-foreground">Custom Time (minutes):</Label>
                 <div className="flex items-center gap-2 bg-transparent">
                   <Slider value={[countdownMinutes]} min={1} max={120} step={1} onValueChange={value => {
                     if (isCountdownPaused) {
                       setCustomCountdown(value[0]);
                     }
                   }} />
-                  <span className="min-w-[50px] text-center text-[#7e868b]">{countdownMinutes}m</span>
+                  <span className="min-w-[50px] text-center text-muted-foreground">{countdownMinutes}m</span>
                 </div>
               </div>
               
               <div className="flex justify-center gap-4 mt-6">
-                <Button variant={isCountdownPaused ? "default" : "outline"} onClick={() => setIsCountdownPaused(!isCountdownPaused)} className="text-[#7e868b]">
-                  {isCountdownPaused ? <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></> : <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>}
+                <Button variant={isCountdownPaused ? "default" : "outline"} onClick={() => setIsCountdownPaused(!isCountdownPaused)}>
+                  {isCountdownPaused ? <><Play className="mr-2 h-4 w-4" /> Start</> : <><Pause className="mr-2 h-4 w-4" /> Pause</>}
                 </Button>
-                <Button variant="outline" onClick={resetCountdown} className="text-[#7e868b]">
-                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
+                <Button variant="outline" onClick={resetCountdown}>
+                  <RotateCcw className="mr-2 h-4 w-4" /> Reset
                 </Button>
               </div>
             </CardContent>
@@ -250,24 +238,24 @@ const TimerPage = () => {
         <TabsContent value="stopwatch">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center text-[#7e868b]">
-                <Clock className="mr-2 h-5 w-5 text-[#7e868b]" />
+              <CardTitle className="flex items-center text-muted-foreground">
+                <Clock className="mr-2 h-5 w-5" />
                 Stopwatch
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="text-6xl font-bold font-mono text-[#7e868b]">
+                <div className="text-6xl font-bold font-mono text-muted-foreground">
                   {formatStopwatchTime(stopwatchTime)}
                 </div>
               </div>
               
               <div className="flex justify-center gap-4 mt-6">
-                <Button variant={isStopwatchPaused ? "default" : "outline"} onClick={() => setIsStopwatchPaused(!isStopwatchPaused)} className="text-[#7e868b]">
-                  {isStopwatchPaused ? <><Play className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Start</span></> : <><Pause className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Pause</span></>}
+                <Button variant={isStopwatchPaused ? "default" : "outline"} onClick={() => setIsStopwatchPaused(!isStopwatchPaused)}>
+                  {isStopwatchPaused ? <><Play className="mr-2 h-4 w-4" /> Start</> : <><Pause className="mr-2 h-4 w-4" /> Pause</>}
                 </Button>
-                <Button variant="outline" onClick={resetStopwatch} className="text-[#7e868b]">
-                  <RotateCcw className="mr-2 h-4 w-4 text-[#7e868b]" /> <span className="text-[#7e868b]">Reset</span>
+                <Button variant="outline" onClick={resetStopwatch}>
+                  <RotateCcw className="mr-2 h-4 w-4" /> Reset
                 </Button>
               </div>
             </CardContent>
