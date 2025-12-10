@@ -39,7 +39,7 @@ const WellnessScore: React.FC = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Star className="h-5 w-5 text-mental-green" />
-            <h3 className="text-xl font-semibold text-neutral-500">Wellness Points</h3>
+            <h3 className="text-xl font-semibold text-muted-foreground">Wellness Points</h3>
           </div>
           <Button 
             onClick={calculateWellnessScore} 
@@ -50,7 +50,7 @@ const WellnessScore: React.FC = () => {
           </Button>
         </div>
         
-        <p className="mb-6 text-neutral-500">
+        <p className="mb-6 text-muted-foreground">
           Earn points for your wellness activities and track your positive habits
         </p>
 
@@ -88,8 +88,8 @@ const WellnessScore: React.FC = () => {
         {!currentScore && !isCalculating && (
           <div className="text-center py-8">
             <Star className="h-12 w-12 mx-auto mb-4 text-mental-green" />
-            <h4 className="text-lg font-semibold mb-2 text-neutral-500">Start Earning Wellness Points</h4>
-            <p className="mb-4 text-neutral-500">
+            <h4 className="text-lg font-semibold mb-2 text-muted-foreground">Start Earning Wellness Points</h4>
+            <p className="mb-4 text-muted-foreground">
               Track your mental health activities and earn points for your progress
             </p>
             <Button onClick={calculateWellnessScore}>
@@ -101,8 +101,8 @@ const WellnessScore: React.FC = () => {
         {isCalculating && (
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-mental-green mx-auto mb-4"></div>
-            <h4 className="text-lg font-semibold mb-2 text-neutral-500">Calculating Your Wellness Points</h4>
-            <p className="text-neutral-500">
+            <h4 className="text-lg font-semibold mb-2 text-muted-foreground">Calculating Your Wellness Points</h4>
+            <p className="text-muted-foreground">
               Reviewing your activities and awarding points for your progress...
             </p>
           </div>

@@ -1,115 +1,197 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface FeelingsWheelProps {
   onEmotionSelect: (emotion: string) => void;
   selectedEmotion?: string;
 }
 
-const emotions = [
-  // Joy category - warm, bright colors
-  { name: 'Joyful', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Happy', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Excited', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Grateful', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Content', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Peaceful', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  
-  // Sadness category - cool blues
-  { name: 'Sad', category: 'sadness', color: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' },
-  { name: 'Lonely', category: 'sadness', color: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' },
-  { name: 'Disappointed', category: 'sadness', color: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' },
-  { name: 'Melancholy', category: 'sadness', color: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' },
-  { name: 'Grief', category: 'sadness', color: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' },
-  
-  // Anger category - warm reds
-  { name: 'Angry', category: 'anger', color: 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200' },
-  { name: 'Frustrated', category: 'anger', color: 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200' },
-  { name: 'Irritated', category: 'anger', color: 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200' },
-  { name: 'Annoyed', category: 'anger', color: 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200' },
-  
-  // Fear category - warm oranges
-  { name: 'Anxious', category: 'fear', color: 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-200' },
-  { name: 'Worried', category: 'fear', color: 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-200' },
-  { name: 'Nervous', category: 'fear', color: 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-200' },
-  { name: 'Overwhelmed', category: 'fear', color: 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-200' },
-  { name: 'Stressed', category: 'fear', color: 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-200' },
-  
-  // Surprise category - purples
-  { name: 'Surprised', category: 'surprise', color: 'bg-purple-100 text-purple-800 border-purple-200 hover:bg-purple-200' },
-  { name: 'Confused', category: 'surprise', color: 'bg-purple-100 text-purple-800 border-purple-200 hover:bg-purple-200' },
-  { name: 'Curious', category: 'surprise', color: 'bg-purple-100 text-purple-800 border-purple-200 hover:bg-purple-200' },
-  
-  // Disgust category - yellow-greens
-  { name: 'Disgusted', category: 'disgust', color: 'bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200' },
-  { name: 'Bored', category: 'disgust', color: 'bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200' },
-  
-  // Additional emotions
-  { name: 'Hopeful', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Calm', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Tired', category: 'neutral', color: 'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200' },
-  { name: 'Energetic', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Proud', category: 'joy', color: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200' },
-  { name: 'Ashamed', category: 'sadness', color: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' },
+// Organized emotions by category with colors that match the brand palette
+const wheelData = [
+  {
+    category: 'joy',
+    label: 'Joy',
+    color: 'bg-mental-green',
+    hoverColor: 'hover:bg-mental-green/80',
+    selectedRing: 'ring-mental-green',
+    emotions: ['Joyful', 'Happy', 'Excited', 'Grateful', 'Content', 'Peaceful', 'Hopeful', 'Energetic', 'Proud']
+  },
+  {
+    category: 'calm',
+    label: 'Calm',
+    color: 'bg-mental-blue',
+    hoverColor: 'hover:bg-mental-blue/80',
+    selectedRing: 'ring-mental-blue',
+    emotions: ['Calm', 'Relaxed', 'Serene', 'Balanced']
+  },
+  {
+    category: 'sadness',
+    label: 'Sadness',
+    color: 'bg-blue-300',
+    hoverColor: 'hover:bg-blue-400',
+    selectedRing: 'ring-blue-400',
+    emotions: ['Sad', 'Lonely', 'Disappointed', 'Melancholy', 'Grief', 'Ashamed']
+  },
+  {
+    category: 'anger',
+    label: 'Anger',
+    color: 'bg-red-300',
+    hoverColor: 'hover:bg-red-400',
+    selectedRing: 'ring-red-400',
+    emotions: ['Angry', 'Frustrated', 'Irritated', 'Annoyed']
+  },
+  {
+    category: 'fear',
+    label: 'Fear & Anxiety',
+    color: 'bg-mental-peach',
+    hoverColor: 'hover:bg-mental-peach/80',
+    selectedRing: 'ring-mental-peach',
+    emotions: ['Anxious', 'Worried', 'Nervous', 'Overwhelmed', 'Stressed']
+  },
+  {
+    category: 'surprise',
+    label: 'Surprise',
+    color: 'bg-purple-300',
+    hoverColor: 'hover:bg-purple-400',
+    selectedRing: 'ring-purple-400',
+    emotions: ['Surprised', 'Confused', 'Curious']
+  },
+  {
+    category: 'neutral',
+    label: 'Neutral',
+    color: 'bg-mental-gray',
+    hoverColor: 'hover:bg-mental-gray/80',
+    selectedRing: 'ring-mental-gray',
+    emotions: ['Tired', 'Bored', 'Neutral']
+  }
 ];
 
-const getCategoryInfo = (category: string) => {
-  const categoryMap: Record<string, { label: string; headerColor: string }> = {
-    joy: { label: 'Positive', headerColor: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
-    sadness: { label: 'Sadness', headerColor: 'text-blue-700 bg-blue-50 border-blue-200' },
-    anger: { label: 'Anger', headerColor: 'text-red-700 bg-red-50 border-red-200' },
-    fear: { label: 'Fear & Anxiety', headerColor: 'text-orange-700 bg-orange-50 border-orange-200' },
-    surprise: { label: 'Surprise', headerColor: 'text-purple-700 bg-purple-50 border-purple-200' },
-    disgust: { label: 'Disgust', headerColor: 'text-yellow-700 bg-yellow-50 border-yellow-200' },
-    neutral: { label: 'Neutral', headerColor: 'text-gray-700 bg-gray-50 border-gray-200' }
-  };
-  return categoryMap[category] || { label: 'Other', headerColor: 'text-gray-700 bg-gray-50 border-gray-200' };
-};
-
 const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selectedEmotion }) => {
-  const categories = Array.from(new Set(emotions.map(e => e.category)));
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+
+  // Find which category the selected emotion belongs to
+  const selectedCategory = wheelData.find(cat => 
+    cat.emotions.includes(selectedEmotion || '')
+  )?.category;
+
+  const handleCategoryClick = (category: string) => {
+    setExpandedCategory(expandedCategory === category ? null : category);
+  };
 
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4 text-foreground">How are you feeling?</h3>
-      <p className="text-sm mb-4 text-muted-foreground">Choose the emotion that best describes how you're feeling right now</p>
+    <div className="space-y-4">
+      <div className="text-center">
+        <h3 className="text-lg font-semibold text-foreground mb-1">How are you feeling?</h3>
+        <p className="text-sm text-muted-foreground">Tap a category, then choose your emotion</p>
+      </div>
       
-      <div className="space-y-4">
-        {categories.map(category => {
-          const categoryInfo = getCategoryInfo(category);
-          return (
-            <div key={category}>
-              <div className={`inline-block px-3 py-1 mb-2 rounded-full border ${categoryInfo.headerColor}`}>
-                <h4 className="text-sm font-medium">
-                  {categoryInfo.label}
-                </h4>
+      {/* Visual Wheel */}
+      <div className="relative flex justify-center py-4">
+        <div className="relative w-72 h-72 sm:w-80 sm:h-80">
+          {/* Center circle showing selected emotion */}
+          <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+            <div className={cn(
+              "w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300",
+              selectedEmotion && "ring-4 ring-offset-2",
+              selectedCategory && wheelData.find(c => c.category === selectedCategory)?.selectedRing
+            )}>
+              <span className={cn(
+                "text-sm font-medium text-center px-2 transition-all",
+                selectedEmotion ? "text-foreground" : "text-muted-foreground"
+              )}>
+                {selectedEmotion || 'Select a feeling'}
+              </span>
+            </div>
+          </div>
+          
+          {/* Category segments arranged in a circle */}
+          {wheelData.map((cat, index) => {
+            const angle = (index * 360) / wheelData.length;
+            const isExpanded = expandedCategory === cat.category;
+            const isHovered = hoveredCategory === cat.category;
+            const isSelected = selectedCategory === cat.category;
+            
+            return (
+              <div
+                key={cat.category}
+                className="absolute"
+                style={{
+                  top: '50%',
+                  left: '50%',
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-80px)`,
+                }}
+              >
+                <button
+                  onClick={() => handleCategoryClick(cat.category)}
+                  onMouseEnter={() => setHoveredCategory(cat.category)}
+                  onMouseLeave={() => setHoveredCategory(null)}
+                  className={cn(
+                    "w-20 h-20 sm:w-24 sm:h-24 rounded-full transition-all duration-300 shadow-md flex items-center justify-center",
+                    cat.color,
+                    cat.hoverColor,
+                    isExpanded && "scale-110 shadow-xl ring-4 ring-white",
+                    isHovered && !isExpanded && "scale-105",
+                    isSelected && !isExpanded && "ring-2 ring-offset-2 ring-foreground/20"
+                  )}
+                  style={{
+                    transform: `rotate(-${angle}deg)`,
+                  }}
+                  aria-label={`${cat.label} emotions category`}
+                  aria-expanded={isExpanded}
+                >
+                  <span className="text-xs sm:text-sm font-medium text-gray-800 text-center px-1">
+                    {cat.label}
+                  </span>
+                </button>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                {emotions
-                  .filter(emotion => emotion.category === category)
-                  .map(emotion => (
-                    <Button
-                      key={emotion.name}
-                      onClick={() => onEmotionSelect(emotion.name)}
-                      variant="outline"
-                      size="sm"
-                      className={`border transition-all ${
-                        selectedEmotion === emotion.name
-                          ? 'ring-2 ring-primary ring-offset-2 shadow-md transform scale-105' + ' ' + emotion.color
-                          : emotion.color
-                      }`}
-                      aria-pressed={selectedEmotion === emotion.name}
-                      aria-label={`Select ${emotion.name} emotion`}
-                    >
-                      {emotion.name}
-                    </Button>
-                  ))}
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Expanded emotions grid */}
+      {expandedCategory && (
+        <div className="animate-fade-in">
+          {wheelData.filter(cat => cat.category === expandedCategory).map(cat => (
+            <div key={cat.category} className="space-y-3">
+              <div className="flex items-center justify-center gap-2">
+                <div className={cn("w-3 h-3 rounded-full", cat.color)} />
+                <h4 className="text-sm font-medium text-foreground">{cat.label}</h4>
+              </div>
+              <div className="flex flex-wrap justify-center gap-2">
+                {cat.emotions.map(emotion => (
+                  <button
+                    key={emotion}
+                    onClick={() => onEmotionSelect(emotion)}
+                    className={cn(
+                      "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                      cat.color,
+                      cat.hoverColor,
+                      "text-gray-800 shadow-sm hover:shadow-md",
+                      selectedEmotion === emotion && "ring-2 ring-offset-2 ring-foreground scale-105 shadow-lg"
+                    )}
+                    aria-pressed={selectedEmotion === emotion}
+                    aria-label={`Select ${emotion} emotion`}
+                  >
+                    {emotion}
+                  </button>
+                ))}
               </div>
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* Quick emotion list when nothing is expanded */}
+      {!expandedCategory && selectedEmotion && (
+        <div className="text-center">
+          <p className="text-sm text-muted-foreground">
+            Selected: <span className="font-medium text-foreground">{selectedEmotion}</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

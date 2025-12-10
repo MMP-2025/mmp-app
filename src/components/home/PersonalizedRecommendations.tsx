@@ -13,10 +13,10 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
 
   return (
     <Card className="p-6 bg-mental-blue/10">
-      <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">Personalized Recommendations</h2>
+      <h2 className="text-xl font-semibold mb-4 text-muted-foreground">Personalized Recommendations</h2>
       <div className="space-y-2">
         {recommendations.map((rec, index) => (
-          <p key={index} className="text-[#7e868b] flex items-center">
+          <p key={index} className="text-muted-foreground flex items-center">
             <span className="w-2 h-2 bg-mental-blue rounded-full mr-2"></span>
             {rec}
           </p>
