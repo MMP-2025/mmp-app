@@ -19,7 +19,7 @@ interface SmartNotification {
   triggerConditions: {
     timeOfDay?: string;
     moodPattern?: string;
-    inactivityPeriod?: number; // hours
+    inactivityPeriod?: number;
     streakMilestone?: number;
   };
   enabled: boolean;
@@ -86,7 +86,7 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'morning_mood_check',
         type: 'mood_check',
-        title: 'Good Morning! 🌅',
+        title: 'Good Morning!',
         message: 'How are you feeling today? Take a moment to check in with yourself.',
         triggerConditions: { timeOfDay: '09:00' },
         enabled: true,
@@ -96,7 +96,7 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'afternoon_mindfulness',
         type: 'mindfulness_reminder',
-        title: 'Midday Mindfulness 🧘‍♀️',
+        title: 'Midday Mindfulness',
         message: 'Take a few minutes for a breathing exercise to reset your afternoon.',
         triggerConditions: { timeOfDay: '14:00' },
         enabled: userBehavior?.mostUsedFeatures.includes('mindfulness') ?? true,
@@ -106,7 +106,7 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'evening_reflection',
         type: 'journal_prompt',
-        title: 'Evening Reflection ✨',
+        title: 'Evening Reflection',
         message: 'What was meaningful about your day? Consider writing about it.',
         triggerConditions: { timeOfDay: '20:00' },
         enabled: true,
@@ -116,8 +116,8 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'inactivity_gentle_nudge',
         type: 'mood_check',
-        title: 'We miss you! 💙',
-        message: 'It\'s been a while since your last check-in. How are you doing?',
+        title: 'We miss you!',
+        message: "It's been a while since your last check-in. How are you doing?",
         triggerConditions: { inactivityPeriod: 72 },
         enabled: true,
         priority: 'high',
@@ -126,8 +126,8 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'streak_celebration',
         type: 'achievement_celebration',
-        title: 'Amazing streak! 🔥',
-        message: 'You\'re on a roll with your daily check-ins. Keep up the great work!',
+        title: 'Amazing streak!',
+        message: "You're on a roll with your daily check-ins. Keep up the great work!",
         triggerConditions: { streakMilestone: 7 },
         enabled: true,
         priority: 'high',
@@ -135,11 +135,9 @@ const SmartNotifications: React.FC = () => {
       }
     ];
 
-    // Filter based on user behavior and context
     const contextualNotifications = smartNotifications.filter(notification => {
       if (!notification.enabled) return false;
       
-      // Check if conditions are met
       if (notification.triggerConditions.inactivityPeriod) {
         return hoursInactive >= notification.triggerConditions.inactivityPeriod;
       }
@@ -149,7 +147,6 @@ const SmartNotifications: React.FC = () => {
         const triggerTime = notification.triggerConditions.timeOfDay;
         const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         
-        // Check if we're within 30 minutes of trigger time
         const trigger = new Date(`2000-01-01 ${triggerTime}`);
         const current = new Date(`2000-01-01 ${currentTime}`);
         const diffMinutes = Math.abs(trigger.getTime() - current.getTime()) / (1000 * 60);
@@ -207,9 +204,6 @@ const SmartNotifications: React.FC = () => {
 
   const scheduleNotifications = () => {
     if (!settings.enabled) return;
-    
-    // In a real app, this would integrate with a background service
-    // For demo purposes, we'll show how notifications would be scheduled
     toast.success(`${pendingNotifications.length} smart notifications scheduled based on your patterns!`);
   };
 
@@ -221,7 +215,6 @@ const SmartNotifications: React.FC = () => {
     const end = settings.quietHours.end;
     
     if (start > end) {
-      // Quiet hours span midnight
       return currentTime >= start || currentTime <= end;
     } else {
       return currentTime >= start && currentTime <= end;
@@ -232,26 +225,26 @@ const SmartNotifications: React.FC = () => {
     <div className="space-y-6">
       <Card className="p-6 bg-white/90">
         <div className="flex items-center gap-2 mb-4">
-          <Bell className="h-5 w-5" style={{color: '#737373'}} />
-          <h3 className="text-xl font-semibold" style={{color: '#737373'}}>Smart Notifications</h3>
+          <Bell className="h-5 w-5 text-muted-foreground" />
+          <h3 className="text-xl font-semibold text-muted-foreground">Smart Notifications</h3>
         </div>
         
-        <p className="mb-4" style={{color: '#737373'}}>
+        <p className="mb-4 text-muted-foreground">
           Context-aware reminders that adapt to your behavior patterns and preferences
         </p>
 
         {/* Notification Settings */}
         <Card className="p-4 mb-6 bg-mental-blue/20">
           <div className="flex items-center gap-2 mb-4">
-            <Settings className="h-4 w-4" style={{color: '#737373'}} />
-            <h4 className="font-semibold" style={{color: '#737373'}}>Settings</h4>
+            <Settings className="h-4 w-4 text-muted-foreground" />
+            <h4 className="font-semibold text-muted-foreground">Settings</h4>
           </div>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <Label style={{color: '#737373'}}>Enable Smart Notifications</Label>
-                <p className="text-xs text-gray-500">Turn on adaptive notifications</p>
+                <Label className="text-muted-foreground">Enable Smart Notifications</Label>
+                <p className="text-xs text-muted-foreground/70">Turn on adaptive notifications</p>
               </div>
               <Switch
                 checked={settings.enabled}
@@ -261,8 +254,8 @@ const SmartNotifications: React.FC = () => {
 
             <div className="flex items-center justify-between">
               <div>
-                <Label style={{color: '#737373'}}>Adaptive Scheduling</Label>
-                <p className="text-xs text-gray-500">Learn your optimal notification times</p>
+                <Label className="text-muted-foreground">Adaptive Scheduling</Label>
+                <p className="text-xs text-muted-foreground/70">Learn your optimal notification times</p>
               </div>
               <Switch
                 checked={settings.adaptiveScheduling}
@@ -272,8 +265,8 @@ const SmartNotifications: React.FC = () => {
 
             <div className="flex items-center justify-between">
               <div>
-                <Label style={{color: '#737373'}}>Context Awareness</Label>
-                <p className="text-xs text-gray-500">Adjust based on your mood patterns</p>
+                <Label className="text-muted-foreground">Context Awareness</Label>
+                <p className="text-xs text-muted-foreground/70">Adjust based on your mood patterns</p>
               </div>
               <Switch
                 checked={settings.contextAwareness}
@@ -283,7 +276,7 @@ const SmartNotifications: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="mb-2 block" style={{color: '#737373'}}>Quiet Hours Start</Label>
+                <Label className="mb-2 block text-muted-foreground">Quiet Hours Start</Label>
                 <Input
                   type="time"
                   value={settings.quietHours.start}
@@ -291,7 +284,7 @@ const SmartNotifications: React.FC = () => {
                 />
               </div>
               <div>
-                <Label className="mb-2 block" style={{color: '#737373'}}>Quiet Hours End</Label>
+                <Label className="mb-2 block text-muted-foreground">Quiet Hours End</Label>
                 <Input
                   type="time"
                   value={settings.quietHours.end}
@@ -301,7 +294,7 @@ const SmartNotifications: React.FC = () => {
             </div>
 
             <div>
-              <Label className="mb-2 block" style={{color: '#737373'}}>Max Notifications Per Day</Label>
+              <Label className="mb-2 block text-muted-foreground">Max Notifications Per Day</Label>
               <Input
                 type="number"
                 min="1"
@@ -326,44 +319,44 @@ const SmartNotifications: React.FC = () => {
 
         {/* Current Status */}
         <div className="mb-6 p-4 bg-mental-peach/20 rounded-lg">
-          <h4 className="font-semibold mb-2" style={{color: '#737373'}}>Current Status</h4>
+          <h4 className="font-semibold mb-2 text-muted-foreground">Current Status</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-lg font-bold" style={{color: '#737373'}}>
+              <div className="text-lg font-bold text-muted-foreground">
                 {settings.enabled ? 'ON' : 'OFF'}
               </div>
-              <div className="text-xs" style={{color: '#737373'}}>Notifications</div>
+              <div className="text-xs text-muted-foreground">Notifications</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold" style={{color: '#737373'}}>
+              <div className="text-lg font-bold text-muted-foreground">
                 {pendingNotifications.length}
               </div>
-              <div className="text-xs" style={{color: '#737373'}}>Pending</div>
+              <div className="text-xs text-muted-foreground">Pending</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold" style={{color: '#737373'}}>
+              <div className="text-lg font-bold text-muted-foreground">
                 {isInQuietHours() ? 'QUIET' : 'ACTIVE'}
               </div>
-              <div className="text-xs" style={{color: '#737373'}}>Current Mode</div>
+              <div className="text-xs text-muted-foreground">Current Mode</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold" style={{color: '#737373'}}>
+              <div className="text-lg font-bold text-muted-foreground">
                 {settings.maxPerDay}
               </div>
-              <div className="text-xs" style={{color: '#737373'}}>Daily Limit</div>
+              <div className="text-xs text-muted-foreground">Daily Limit</div>
             </div>
           </div>
         </div>
 
         {/* Notification Types */}
         <div>
-          <h4 className="font-semibold mb-4" style={{color: '#737373'}}>Notification Types</h4>
+          <h4 className="font-semibold mb-4 text-muted-foreground">Notification Types</h4>
           <div className="space-y-3">
             {notifications.map(notification => (
               <div key={notification.id} className="flex items-center justify-between p-3 border rounded-lg">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h5 className="font-medium" style={{color: '#737373'}}>{notification.title}</h5>
+                    <h5 className="font-medium text-muted-foreground">{notification.title}</h5>
                     <Badge variant={notification.priority === 'high' ? 'destructive' : notification.priority === 'medium' ? 'default' : 'secondary'}>
                       {notification.priority}
                     </Badge>
@@ -371,9 +364,9 @@ const SmartNotifications: React.FC = () => {
                       {notification.frequency}
                     </Badge>
                   </div>
-                  <p className="text-sm" style={{color: '#737373'}}>{notification.message}</p>
+                  <p className="text-sm text-muted-foreground">{notification.message}</p>
                   {notification.triggerConditions.timeOfDay && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground/70 mt-1">
                       <Clock className="h-3 w-3 inline mr-1" />
                       Triggers at {notification.triggerConditions.timeOfDay}
                     </p>

@@ -196,14 +196,14 @@ const LoginForm = () => {
                   </Select>
                 </div>
 
-                {role === 'patient' && validatedInvitation && <div className="p-3 bg-green-50 border border-green-200 rounded-md">
-                    <p className="text-sm text-green-700">
+                {role === 'patient' && validatedInvitation && <div className="p-3 bg-mental-green/30 border border-mental-green rounded-md">
+                    <p className="text-sm text-gray-700">
                       ✓ Invitation validated for: {validatedInvitation.email}
                     </p>
                   </div>}
 
-                {role === 'patient' && !validatedInvitation && <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
-                    <p className="text-sm text-blue-700">
+                {role === 'patient' && !validatedInvitation && <div className="p-3 bg-mental-blue/30 border border-mental-blue rounded-md">
+                    <p className="text-sm text-gray-700">
                       Patient registration requires an invitation from a provider. 
                       Click "Create Account" to enter your invitation token.
                     </p>

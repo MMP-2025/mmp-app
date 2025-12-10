@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const QuickAccess = () => {
   return (
     <Card className="p-6 bg-mental-gray">
-      <h2 className="text-xl font-semibold mb-2 text-[#7e868b]">Quick Access</h2>
+      <h2 className="text-xl font-semibold mb-2 text-muted-foreground">Quick Access</h2>
       <div className="grid grid-cols-2 gap-2">
         <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 text-gray-800 w-full text-left justify-start">
           <Link to="/journal">My Journal</Link>

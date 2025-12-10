@@ -35,7 +35,7 @@ const AudioMeditation: React.FC<AudioMeditationProps> = ({
       <audio ref={audioRef} src={source} onLoadedMetadata={actions.handleLoadedMetadata} onTimeUpdate={actions.handleTimeUpdate} onEnded={actions.handleAudioEnded} />
       <h3 className="text-xl font-semibold mb-4 text-foreground">{title}</h3>
       
-      {!source && <div className="text-center text-[#737373] my-8">
+      {!source && <div className="text-center text-muted-foreground my-8">
               Audio for this session is not available.
           </div>}
 
