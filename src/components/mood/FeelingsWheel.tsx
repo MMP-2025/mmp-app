@@ -123,12 +123,47 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                   transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-80px)`,
                 }}
               >
+                {/* Secondary emotions radiating out */}
+                {isExpanded && cat.emotions.map((emotion, emotionIndex) => {
+                  const emotionCount = cat.emotions.length;
+                  const spreadAngle = 120; // Total spread angle for emotions
+                  const startAngle = -spreadAngle / 2;
+                  const emotionAngle = emotionCount > 1 
+                    ? startAngle + (emotionIndex * spreadAngle) / (emotionCount - 1)
+                    : 0;
+                  const distance = 70 + (emotionIndex % 2) * 15; // Stagger distances
+                  
+                  return (
+                    <button
+                      key={emotion}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEmotionSelect(emotion);
+                      }}
+                      className={cn(
+                        "absolute px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-md whitespace-nowrap z-20",
+                        cat.color,
+                        cat.hoverColor,
+                        "text-gray-800 animate-scale-in",
+                        selectedEmotion === emotion && "ring-2 ring-offset-1 ring-foreground scale-110 shadow-lg"
+                      )}
+                      style={{
+                        transform: `rotate(-${angle}deg) rotate(${emotionAngle}deg) translateY(-${distance}px) rotate(-${emotionAngle}deg)`,
+                        animationDelay: `${emotionIndex * 50}ms`,
+                      }}
+                      aria-pressed={selectedEmotion === emotion}
+                    >
+                      {emotion}
+                    </button>
+                  );
+                })}
+                
                 <button
                   onClick={() => handleCategoryClick(cat.category)}
                   onMouseEnter={() => setHoveredCategory(cat.category)}
                   onMouseLeave={() => setHoveredCategory(null)}
                   className={cn(
-                    "w-20 h-20 sm:w-24 sm:h-24 rounded-full transition-all duration-300 shadow-md flex items-center justify-center",
+                    "w-20 h-20 sm:w-24 sm:h-24 rounded-full transition-all duration-300 shadow-md flex items-center justify-center z-10 relative",
                     cat.color,
                     cat.hoverColor,
                     isExpanded && "scale-110 shadow-xl ring-4 ring-white",
@@ -150,41 +185,7 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
           })}
         </div>
       </div>
-
-      {/* Expanded emotions grid */}
-      {expandedCategory && (
-        <div className="animate-fade-in">
-          {wheelData.filter(cat => cat.category === expandedCategory).map(cat => (
-            <div key={cat.category} className="space-y-3">
-              <div className="flex items-center justify-center gap-2">
-                <div className={cn("w-3 h-3 rounded-full", cat.color)} />
-                <h4 className="text-sm font-medium text-foreground">{cat.label}</h4>
-              </div>
-              <div className="flex flex-wrap justify-center gap-2">
-                {cat.emotions.map(emotion => (
-                  <button
-                    key={emotion}
-                    onClick={() => onEmotionSelect(emotion)}
-                    className={cn(
-                      "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
-                      cat.color,
-                      cat.hoverColor,
-                      "text-gray-800 shadow-sm hover:shadow-md",
-                      selectedEmotion === emotion && "ring-2 ring-offset-2 ring-foreground scale-105 shadow-lg"
-                    )}
-                    aria-pressed={selectedEmotion === emotion}
-                    aria-label={`Select ${emotion} emotion`}
-                  >
-                    {emotion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Quick emotion list when nothing is expanded */}
+      {/* Selected emotion display */}
       {!expandedCategory && selectedEmotion && (
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
