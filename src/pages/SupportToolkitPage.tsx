@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Brain, Target, Heart, Camera, Loader2 } from 'lucide-react';
+import { BookOpen, Brain, Target, Heart, Camera, Loader2, Wrench } from 'lucide-react';
 
 import { useResourceData } from '@/hooks/useResourceData';
+import { useToolkitData } from '@/hooks/useToolkitData';
 import { Resource } from '@/types/resource';
 
 import ToolkitNav from '@/components/support-toolkit/ToolkitNav';
@@ -37,11 +38,14 @@ const mapFileTypeToType = (fileType: string): Resource['type'] => {
 };
 
 const SupportToolkitPage = () => {
-  const { resources: dbResources, loading } = useResourceData();
+  const { resources: dbResources, loading: resourcesLoading } = useResourceData();
+  const { toolkitItems, loading: toolkitLoading } = useToolkitData();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [savedResources, setSavedResources] = useState<string[]>([]);
   const [currentView, setCurrentView] = useState<'all' | 'saved'>('all');
+  
+  const loading = resourcesLoading || toolkitLoading;
 
   // Transform Supabase resources to match ResourceCard expected format
   const resources: Resource[] = useMemo(() => {
@@ -108,33 +112,68 @@ const SupportToolkitPage = () => {
       {/* Comprehensive Support Toolkit Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+          <CardTitle className="flex items-center gap-2 text-foreground">
             <BookOpen className="h-5 w-5" />
             Comprehensive Support Toolkit
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-8">
+          {/* Provider Toolkit Items */}
+          {toolkitItems.length > 0 && (
+            <div>
+              <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
+                <Wrench className="h-5 w-5" />
+                Quick Tools & Techniques ({toolkitItems.length})
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {toolkitItems.map(item => (
+                  <Card key={item.id} className="bg-mental-blue/10 border-none">
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 rounded-full bg-mental-green/20">
+                          <Wrench className="h-4 w-4 text-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-foreground mb-1">{item.title}</h4>
+                          <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
+                          {item.instructions && (
+                            <p className="text-sm text-foreground/80 bg-background/50 p-2 rounded-md">
+                              {item.instructions}
+                            </p>
+                          )}
+                          <span className="inline-block mt-2 px-2 py-0.5 bg-mental-peach/30 text-foreground text-xs rounded-full">
+                            {item.category}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Available Resources */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+            <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
               <BookOpen className="h-5 w-5" />
               Available Resources ({filteredResources.length})
             </h3>
             {loading ? (
               <div className="text-center py-8">
                 <Loader2 className="h-8 w-8 mx-auto mb-4 animate-spin text-mental-blue" />
-                <p className="text-gray-500">Loading resources...</p>
+                <p className="text-muted-foreground">Loading resources...</p>
               </div>
             ) : currentView === 'saved' && savedResources.length === 0 ? (
               <div className="text-center py-8">
-                <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                <h4 className="text-lg font-semibold mb-2 text-[#7e868b]">No Saved Resources</h4>
-                <p className="text-gray-500 mb-4">You haven't saved any resources yet. Browse all resources and save your favorites!</p>
+                <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground/30" />
+                <h4 className="text-lg font-semibold mb-2 text-foreground">No Saved Resources</h4>
+                <p className="text-muted-foreground mb-4">You haven't saved any resources yet. Browse all resources and save your favorites!</p>
               </div>
             ) : filteredResources.length === 0 ? (
               <div className="text-center py-8">
-                <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                <p className="text-gray-500">No resources found matching your criteria</p>
+                <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground/30" />
+                <p className="text-muted-foreground">No resources found matching your criteria</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -152,7 +191,7 @@ const SupportToolkitPage = () => {
 
           {/* Therapeutic Tools & Exercises */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+            <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
               <Brain className="h-5 w-5" />
               Therapeutic Tools & Exercises
             </h3>
@@ -161,7 +200,7 @@ const SupportToolkitPage = () => {
 
           {/* Exposure Therapy Tracker */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+            <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
               <Target className="h-5 w-5" />
               Exposure Therapy Tracker
             </h3>
@@ -170,7 +209,7 @@ const SupportToolkitPage = () => {
 
           {/* Coping Skills Library */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+            <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
               <Heart className="h-5 w-5" />
               Coping Skills Library
             </h3>
@@ -179,7 +218,7 @@ const SupportToolkitPage = () => {
 
           {/* Progress Photography */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-[#7e868b] flex items-center gap-2">
+            <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
               <Camera className="h-5 w-5" />
               Progress Photography
             </h3>

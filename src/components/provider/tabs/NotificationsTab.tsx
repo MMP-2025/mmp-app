@@ -13,10 +13,10 @@ const NotificationsTab: React.FC = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[#7e868b]">Total Sent</p>
-                <p className="text-2xl font-bold text-[#7e868b]">127</p>
+                <p className="text-sm font-medium text-foreground">Total Sent</p>
+                <p className="text-2xl font-bold text-foreground">127</p>
               </div>
-              <Send className="h-8 w-8 text-[#7e868b]" />
+              <Send className="h-8 w-8 text-foreground" />
             </div>
           </CardContent>
         </Card>
@@ -25,10 +25,10 @@ const NotificationsTab: React.FC = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[#7e868b]">Active Patients</p>
-                <p className="text-2xl font-bold text-[#7e868b]">23</p>
+                <p className="text-sm font-medium text-foreground">Active Patients</p>
+                <p className="text-2xl font-bold text-foreground">23</p>
               </div>
-              <Users className="h-8 w-8 text-[#7e868b]" />
+              <Users className="h-8 w-8 text-foreground" />
             </div>
           </CardContent>
         </Card>
@@ -37,10 +37,10 @@ const NotificationsTab: React.FC = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[#7e868b]">Response Rate</p>
-                <p className="text-2xl font-bold text-[#7e868b]">89%</p>
+                <p className="text-sm font-medium text-foreground">Response Rate</p>
+                <p className="text-2xl font-bold text-foreground">89%</p>
               </div>
-              <MessageSquare className="h-8 w-8 text-[#7e868b]" />
+              <MessageSquare className="h-8 w-8 text-foreground" />
             </div>
           </CardContent>
         </Card>
@@ -52,12 +52,12 @@ const NotificationsTab: React.FC = () => {
       {/* Instructions */}
       <Card className="bg-mental-gray">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+          <CardTitle className="flex items-center gap-2 text-foreground">
             <Bell className="h-5 w-5" />
             Push Notification Guide
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 text-[#7e868b]">
+        <CardContent className="space-y-4 text-foreground">
           <div>
             <h4 className="font-semibold mb-2">Notification Types:</h4>
             <ul className="list-disc list-inside space-y-1 text-sm">

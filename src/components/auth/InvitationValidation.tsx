@@ -81,7 +81,7 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="bg-mental-gray">
-        <CardTitle className="text-2xl text-center text-[#7e868b]">
+        <CardTitle className="text-2xl text-center text-foreground">
           Patient Invitation
         </CardTitle>
         <p className="text-center text-mental-peach">
@@ -117,27 +117,27 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
           <div className="text-center space-y-4">
             {validationResult.valid ? (
               <div className="space-y-3">
-                <CheckCircle className="h-16 w-16 text-green-500 mx-auto" />
+                <CheckCircle className="h-16 w-16 text-mental-green mx-auto" />
                 <div>
-                  <h3 className="text-lg font-semibold text-[#7e868b]">
+                  <h3 className="text-lg font-semibold text-foreground">
                     Invitation Validated
                   </h3>
-                  <p className="text-sm text-[#737373]">
+                  <p className="text-sm text-muted-foreground">
                     Invited by: {validationResult.providerName}
                   </p>
-                  <p className="text-sm text-[#737373]">
+                  <p className="text-sm text-muted-foreground">
                     Email: {validationResult.email}
                   </p>
                 </div>
               </div>
             ) : (
               <div className="space-y-3">
-                <XCircle className="h-16 w-16 text-red-500 mx-auto" />
+                <XCircle className="h-16 w-16 text-destructive mx-auto" />
                 <div>
-                  <h3 className="text-lg font-semibold text-red-600">
+                  <h3 className="text-lg font-semibold text-destructive">
                     Invalid Invitation
                   </h3>
-                  <p className="text-sm text-[#737373]">
+                  <p className="text-sm text-muted-foreground">
                     This invitation token is invalid or has expired.
                   </p>
                 </div>

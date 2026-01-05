@@ -14,26 +14,26 @@ const ToolkitList: React.FC<ToolkitListProps> = ({
 }) => {
   return <Card>
       <CardHeader className="bg-mental-blue">
-        <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Wrench className="h-5 w-5" />
           Saved Toolkit Items ({toolkitItems.length})
         </CardTitle>
       </CardHeader>
       <CardContent className="bg-mental-blue">
-        {toolkitItems.length === 0 ? <p className="text-gray-500 text-center py-8">No toolkit items added yet</p> : <div className="space-y-3">
-            {toolkitItems.map(item => <div key={item.id} className="p-4 border rounded-lg bg-gray-50">
+        {toolkitItems.length === 0 ? <p className="text-muted-foreground text-center py-8">No toolkit items added yet</p> : <div className="space-y-3">
+            {toolkitItems.map(item => <div key={item.id} className="p-4 border rounded-lg bg-background/50">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h4 className="font-medium text-[#7e868b] mb-1">{item.title}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{item.description}</p>
-                    <p className="text-sm text-gray-700 mb-2">{item.instructions.substring(0, 100)}...</p>
+                    <h4 className="font-medium text-foreground mb-1">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
+                    <p className="text-sm text-foreground/80 mb-2">{item.instructions.substring(0, 100)}...</p>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                      <span className="px-2 py-1 bg-mental-green/30 text-foreground rounded-full text-xs">
                         {item.category}
                       </span>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => onDeleteToolkitItem(item.id)} className="text-red-600">
+                  <Button variant="outline" size="sm" onClick={() => onDeleteToolkitItem(item.id)} className="text-destructive hover:text-destructive">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>

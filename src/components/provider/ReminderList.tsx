@@ -15,27 +15,27 @@ const ReminderList: React.FC<ReminderListProps> = ({
 }) => {
   return <Card>
       <CardHeader className="bg-mental-blue">
-        <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Bell className="h-5 w-5" />
           Saved Reminders ({reminders.length})
         </CardTitle>
       </CardHeader>
       <CardContent className="bg-mental-blue">
-        {reminders.length === 0 ? <p className="text-gray-500 text-center py-8">No reminders added yet</p> : <div className="space-y-3">
-            {reminders.map(reminder => <div key={reminder.id} className="p-4 border rounded-lg bg-gray-50">
+        {reminders.length === 0 ? <p className="text-muted-foreground text-center py-8">No reminders added yet</p> : <div className="space-y-3">
+            {reminders.map(reminder => <div key={reminder.id} className="p-4 border rounded-lg bg-background/50">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="text-sm text-gray-700 mb-2">{reminder.message}</p>
+                    <p className="text-sm text-foreground mb-2">{reminder.message}</p>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">
+                      <span className="px-2 py-1 bg-mental-peach/50 text-foreground rounded-full text-xs">
                         {reminder.frequency}
                       </span>
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                      <span className="px-2 py-1 bg-mental-blue/50 text-foreground rounded-full text-xs">
                         {reminder.time}
                       </span>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => onDeleteReminder(reminder.id)} className="text-red-600">
+                  <Button variant="outline" size="sm" onClick={() => onDeleteReminder(reminder.id)} className="text-destructive hover:text-destructive">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
