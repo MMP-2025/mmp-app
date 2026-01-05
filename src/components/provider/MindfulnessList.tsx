@@ -13,25 +13,25 @@ const MindfulnessList: React.FC<MindfulnessListProps> = ({
   onDeleteMindfulnessPrompt
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow">
+    <div className="bg-card rounded-lg shadow">
       <div className="p-6 border-b">
-        <h2 className="text-xl font-semibold text-neutral-500">Mindfulness Prompts ({mindfulnessPrompts.length})</h2>
+        <h2 className="text-xl font-semibold text-foreground">Mindfulness Prompts ({mindfulnessPrompts.length})</h2>
       </div>
       <div className="p-6">
         {mindfulnessPrompts.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No mindfulness prompts added yet.</p>
+          <p className="text-muted-foreground text-center py-8">No mindfulness prompts added yet.</p>
         ) : (
           <div className="space-y-4">
             {mindfulnessPrompts.map((prompt) => (
               <div key={prompt.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="text-neutral-500 mb-2">{prompt.prompt}</p>
+                    <p className="text-foreground mb-2">{prompt.prompt}</p>
                     <div className="flex gap-2">
-                      <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                      <span className="inline-block bg-mental-blue/50 text-foreground text-xs px-2 py-1 rounded">
                         {prompt.category}
                       </span>
-                      <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                      <span className="inline-block bg-mental-green/50 text-foreground text-xs px-2 py-1 rounded">
                         {prompt.duration}
                       </span>
                     </div>

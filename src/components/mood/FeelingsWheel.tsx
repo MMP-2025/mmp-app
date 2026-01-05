@@ -126,12 +126,15 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                 {/* Secondary emotions radiating out */}
                 {isExpanded && cat.emotions.map((emotion, emotionIndex) => {
                   const emotionCount = cat.emotions.length;
-                  const spreadAngle = 120; // Total spread angle for emotions
-                  const startAngle = -spreadAngle / 2;
-                  const emotionAngle = emotionCount > 1 
-                    ? startAngle + (emotionIndex * spreadAngle) / (emotionCount - 1)
-                    : 0;
-                  const distance = 70 + (emotionIndex % 2) * 15; // Stagger distances
+                  // Calculate row layout: max 3 per row
+                  const row = Math.floor(emotionIndex / 3);
+                  const positionInRow = emotionIndex % 3;
+                  const itemsInRow = Math.min(3, emotionCount - row * 3);
+                  
+                  // Horizontal offset based on position in row
+                  const xOffset = (positionInRow - (itemsInRow - 1) / 2) * 85;
+                  // Vertical offset increases per row
+                  const yOffset = 65 + row * 40;
                   
                   return (
                     <button
@@ -148,7 +151,7 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                         selectedEmotion === emotion && "ring-2 ring-offset-1 ring-foreground scale-110 shadow-lg"
                       )}
                       style={{
-                        transform: `rotate(-${angle}deg) rotate(${emotionAngle}deg) translateY(-${distance}px) rotate(-${emotionAngle}deg)`,
+                        transform: `rotate(-${angle}deg) translate(${xOffset}px, ${yOffset}px)`,
                         animationDelay: `${emotionIndex * 50}ms`,
                       }}
                       aria-pressed={selectedEmotion === emotion}

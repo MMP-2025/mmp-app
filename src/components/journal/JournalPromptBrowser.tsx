@@ -60,8 +60,8 @@ const JournalPromptBrowser: React.FC<JournalPromptBrowserProps> = ({
       {currentView === 'saved' && savedPrompts.length === 0 ? (
         <Card className="p-8 bg-mental-beige/20 text-center">
           <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-mental-beige" />
-          <h3 className="text-xl font-semibold mb-2 text-[#7e868b]">No Saved Prompts</h3>
-          <p className="text-[#7e868b] mb-4">
+          <h3 className="text-xl font-semibold mb-2 text-foreground">No Saved Prompts</h3>
+          <p className="text-muted-foreground mb-4">
             You haven't saved any prompts yet. Browse all prompts and save your favorites!
           </p>
           <Button 
@@ -73,13 +73,13 @@ const JournalPromptBrowser: React.FC<JournalPromptBrowserProps> = ({
         </Card>
       ) : (
         <Card className="p-6 bg-mental-green">
-          <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">
+          <h2 className="text-xl font-semibold mb-4 text-foreground">
             {currentView === 'all' ? 'All Writing Prompts' : 'Your Saved Prompts'}
           </h2>
           <div className="grid gap-3">
             {getDisplayedPrompts().map((prompt, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-white/50 rounded-md">
-                <p className="text-[#7e868b] flex-1">{prompt}</p>
+                <p className="text-foreground flex-1">{prompt}</p>
                 <div className="flex gap-2 ml-3">
                   <Button
                     variant="ghost"
@@ -88,16 +88,16 @@ const JournalPromptBrowser: React.FC<JournalPromptBrowserProps> = ({
                     className="p-1"
                   >
                     {savedPrompts.includes(prompt) ? (
-                      <BookmarkCheck className="h-5 w-5 text-blue-600" />
+                      <BookmarkCheck className="h-5 w-5 text-primary" />
                     ) : (
-                      <BookmarkPlus className="h-5 w-5 text-gray-400" />
+                      <BookmarkPlus className="h-5 w-5 text-muted-foreground" />
                     )}
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => handleSelectPrompt(prompt)}
-                    className="text-[#7e868b]"
+                    className="text-foreground"
                   >
                     Use This
                   </Button>

@@ -27,17 +27,17 @@ const NotificationPreferencesCard = ({ notifications, onNotificationChange }: No
   return (
     <Card className="bg-mental-blue">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-[#737373]">
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Bell className="h-5 w-5" />
           Notification Preferences
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {notificationOptions.map(({ key, label, icon: Icon }) => (
-          <div key={key} className="flex items-center justify-between p-3 border rounded-lg border-[#737373]">
+          <div key={key} className="flex items-center justify-between p-3 border rounded-lg border-border">
             <div className="flex items-center gap-3">
-              <Icon className="h-5 w-5 text-[#737373]" />
-              <span className="text-[#737373]">{label}</span>
+              <Icon className="h-5 w-5 text-muted-foreground" />
+              <span className="text-foreground">{label}</span>
             </div>
             <Button
               variant={notifications[key as keyof NotificationSettings] ? "default" : "outline"}
