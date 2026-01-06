@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface FeelingsWheelProps {
@@ -67,93 +67,122 @@ const wheelData = [
   }
 ];
 
+type Point = { x: number; y: number };
+
+function getSecondaryPositions(params: {
+  emotionCount: number;
+  categoryCenter: Point;
+  wheelCenter: Point;
+}) {
+  const { emotionCount, categoryCenter, wheelCenter } = params;
+
+  const positions: { x: number; y: number; delay: number }[] = [];
+
+  // Direction vector from wheel center to category center
+  const dx = categoryCenter.x - wheelCenter.x;
+  const dy = categoryCenter.y - wheelCenter.y;
+  const baseAngle = Math.atan2(dy, dx);
+
+  // Spread secondaries in an arc around the outward direction
+  const spreadAngle = Math.PI * 0.95; // ~171°
+
+  // Ring strategy to reduce overlaps
+  const primaryRingCount = emotionCount <= 4 ? emotionCount : 5;
+  const secondaryRingCount = Math.max(0, emotionCount - primaryRingCount);
+
+  const ring1Radius = emotionCount <= 4 ? 84 : 88;
+  const ring2Radius = 136;
+
+  const angleForIndex = (idx: number, count: number) => {
+    if (count <= 1) return 0;
+    const t = idx / (count - 1); // 0..1
+    return (t - 0.5) * spreadAngle;
+  };
+
+  for (let i = 0; i < emotionCount; i++) {
+    const isRing2 = i >= primaryRingCount;
+    const ringIndex = isRing2 ? i - primaryRingCount : i;
+    const ringCount = isRing2 ? secondaryRingCount : primaryRingCount;
+
+    const radius = isRing2 ? ring2Radius : ring1Radius;
+    const angleOffset = angleForIndex(ringIndex, ringCount);
+    const angle = baseAngle + angleOffset;
+
+    positions.push({
+      x: categoryCenter.x + Math.cos(angle) * radius,
+      y: categoryCenter.y + Math.sin(angle) * radius,
+      delay: i * 45
+    });
+  }
+
+  return positions;
+}
+
 const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selectedEmotion }) => {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-  const [categoryPosition, setCategoryPosition] = useState<{ x: number; y: number } | null>(null);
+  const [categoryCenter, setCategoryCenter] = useState<Point | null>(null);
+
   const wheelRef = useRef<HTMLDivElement>(null);
   const categoryRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   // Find which category the selected emotion belongs to
-  const selectedCategory = wheelData.find(cat => 
-    cat.emotions.includes(selectedEmotion || '')
-  )?.category;
+  const selectedCategory = wheelData.find(cat => cat.emotions.includes(selectedEmotion || ''))?.category;
 
-  // Calculate category button position when expanded
+  const expandedCategoryData = useMemo(
+    () => wheelData.find(cat => cat.category === expandedCategory),
+    [expandedCategory]
+  );
+
+  const wheelCenter = useMemo<Point | null>(() => {
+    if (!wheelRef.current) return null;
+    const rect = wheelRef.current.getBoundingClientRect();
+    return { x: rect.width / 2, y: rect.height / 2 };
+  }, [expandedCategory, categoryCenter]);
+
+  // Update category center when expanded + on resize
   useEffect(() => {
-    if (expandedCategory && wheelRef.current) {
-      const categoryButton = categoryRefs.current.get(expandedCategory);
-      if (categoryButton) {
-        const wheelRect = wheelRef.current.getBoundingClientRect();
-        const buttonRect = categoryButton.getBoundingClientRect();
-        setCategoryPosition({
-          x: buttonRect.left + buttonRect.width / 2 - wheelRect.left,
-          y: buttonRect.top + buttonRect.height / 2 - wheelRect.top
-        });
+    const compute = () => {
+      if (!expandedCategory || !wheelRef.current) {
+        setCategoryCenter(null);
+        return;
       }
-    } else {
-      setCategoryPosition(null);
-    }
+
+      const categoryButton = categoryRefs.current.get(expandedCategory);
+      if (!categoryButton) {
+        setCategoryCenter(null);
+        return;
+      }
+
+      const wheelRect = wheelRef.current.getBoundingClientRect();
+      const btnRect = categoryButton.getBoundingClientRect();
+      setCategoryCenter({
+        x: btnRect.left + btnRect.width / 2 - wheelRect.left,
+        y: btnRect.top + btnRect.height / 2 - wheelRect.top
+      });
+    };
+
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
   }, [expandedCategory]);
 
+  const secondaryPositions = useMemo(() => {
+    if (!expandedCategoryData || !categoryCenter || !wheelCenter) return null;
+    return getSecondaryPositions({
+      emotionCount: expandedCategoryData.emotions.length,
+      categoryCenter,
+      wheelCenter
+    });
+  }, [expandedCategoryData, categoryCenter, wheelCenter]);
+
   const handleCategoryClick = (category: string) => {
-    setExpandedCategory(expandedCategory === category ? null : category);
+    setExpandedCategory(prev => (prev === category ? null : category));
   };
 
   const handleEmotionSelect = (emotion: string) => {
     onEmotionSelect(emotion);
     setExpandedCategory(null);
-  };
-
-  // Get expanded category data
-  const expandedCategoryData = wheelData.find(cat => cat.category === expandedCategory);
-
-  // Calculate secondary emotion positions in a radial pattern
-  const getSecondaryPositions = (emotionCount: number, centerX: number, centerY: number) => {
-    const positions: { x: number; y: number; delay: number }[] = [];
-    const wheelCenter = { x: 144, y: 144 }; // Half of 288px (w-72)
-    
-    // Direction vector from wheel center to category center
-    const dx = centerX - wheelCenter.x;
-    const dy = centerY - wheelCenter.y;
-    const baseAngle = Math.atan2(dy, dx);
-    
-    // Spread secondaries in an arc around the outward direction
-    const spreadAngle = Math.PI * 0.8; // 144 degrees spread
-    const baseRadius = 70;
-    const secondRadius = 120;
-    
-    for (let i = 0; i < emotionCount; i++) {
-      let radius: number;
-      let angleOffset: number;
-      
-      if (emotionCount <= 4) {
-        // Single arc for small counts
-        radius = baseRadius;
-        angleOffset = ((i - (emotionCount - 1) / 2) / Math.max(emotionCount - 1, 1)) * spreadAngle;
-      } else {
-        // Two rings for larger counts
-        if (i < 5) {
-          // First ring
-          radius = baseRadius;
-          angleOffset = ((i - 2) / 4) * spreadAngle;
-        } else {
-          // Second ring
-          radius = secondRadius;
-          const secondRowCount = emotionCount - 5;
-          angleOffset = ((i - 5 - (secondRowCount - 1) / 2) / Math.max(secondRowCount - 1, 1)) * spreadAngle;
-        }
-      }
-      
-      const angle = baseAngle + angleOffset;
-      positions.push({
-        x: centerX + Math.cos(angle) * radius,
-        y: centerY + Math.sin(angle) * radius,
-        delay: i * 40
-      });
-    }
-    
-    return positions;
   };
 
   return (
@@ -162,47 +191,49 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
         <h3 className="text-lg font-semibold text-foreground mb-1">How are you feeling?</h3>
         <p className="text-sm text-muted-foreground">Tap a category, then choose your emotion</p>
       </div>
-      
+
       {/* Visual Wheel */}
       <div className="relative flex justify-center py-4">
-        <div 
-          ref={wheelRef}
-          className="relative w-72 h-72 sm:w-80 sm:h-80"
-        >
+        <div ref={wheelRef} className="relative w-72 h-72 sm:w-80 sm:h-80">
           {/* Center circle showing selected emotion */}
           <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-            <div className={cn(
-              "w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300",
-              selectedEmotion && "ring-4 ring-offset-2",
-              selectedCategory && wheelData.find(c => c.category === selectedCategory)?.selectedRing
-            )}>
-              <span className={cn(
-                "text-xs font-medium text-center px-2 transition-all",
-                selectedEmotion ? "text-foreground" : "text-muted-foreground"
-              )}>
+            <div
+              className={cn(
+                "w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300",
+                selectedEmotion && "ring-4 ring-offset-2",
+                selectedCategory && wheelData.find(c => c.category === selectedCategory)?.selectedRing
+              )}
+            >
+              <span
+                className={cn(
+                  "text-xs font-medium text-center px-2 transition-all",
+                  selectedEmotion ? "text-foreground" : "text-muted-foreground"
+                )}
+              >
                 {selectedEmotion || 'Select'}
               </span>
             </div>
           </div>
-          
+
           {/* Category segments arranged in a circle */}
           {wheelData.map((cat, index) => {
             const angle = (index * 360) / wheelData.length;
             const isExpanded = expandedCategory === cat.category;
             const isHovered = hoveredCategory === cat.category;
             const isSelected = selectedCategory === cat.category;
-            // Larger radius to prevent overlap: 110px for mobile, 130px for sm+
-            const radius = 110;
-            
+
+            // Larger radius to prevent overlap
+            const radius = 116;
+
             // Calculate position using trigonometry
             const radians = (angle - 90) * (Math.PI / 180);
             const x = Math.cos(radians) * radius;
             const y = Math.sin(radians) * radius;
-            
+
             return (
               <button
                 key={cat.category}
-                ref={(el) => {
+                ref={el => {
                   if (el) categoryRefs.current.set(cat.category, el);
                 }}
                 onClick={() => handleCategoryClick(cat.category)}
@@ -212,15 +243,15 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                   "absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full transition-all duration-300 shadow-md flex items-center justify-center cursor-pointer",
                   cat.color,
                   cat.hoverColor,
-                  isExpanded && "scale-110 shadow-xl ring-4 ring-white z-20",
+                  isExpanded && "scale-110 shadow-xl ring-4 ring-white z-30",
                   isHovered && !isExpanded && "scale-105",
                   isSelected && !isExpanded && "ring-2 ring-offset-2 ring-foreground/20",
-                  !isExpanded && "z-10"
+                  !isExpanded && "z-20"
                 )}
                 style={{
                   top: '50%',
                   left: '50%',
-                  transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+                  transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`
                 }}
                 aria-label={`${cat.label} emotions category`}
                 aria-expanded={isExpanded}
@@ -233,32 +264,28 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
           })}
 
           {/* Secondary emotions overlay - rendered separately to avoid transform stacking */}
-          {expandedCategory && expandedCategoryData && categoryPosition && (
+          {expandedCategoryData && categoryCenter && secondaryPositions && (
             <>
-              {/* Backdrop to close on outside click */}
-              <div 
-                className="fixed inset-0 z-25"
+              {/* Click-catcher to close when clicking elsewhere in the wheel */}
+              <button
+                type="button"
+                aria-label="Close emotion list"
+                className="absolute inset-0 z-20"
                 onClick={() => setExpandedCategory(null)}
               />
-              
-              {/* Secondary emotion buttons */}
+
               {expandedCategoryData.emotions.map((emotion, index) => {
-                const positions = getSecondaryPositions(
-                  expandedCategoryData.emotions.length,
-                  categoryPosition.x,
-                  categoryPosition.y
-                );
-                const pos = positions[index];
-                
+                const pos = secondaryPositions[index];
+
                 return (
                   <button
                     key={emotion}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       handleEmotionSelect(emotion);
                     }}
                     className={cn(
-                      "absolute px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-md whitespace-nowrap z-30",
+                      "absolute px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-md whitespace-nowrap z-40",
                       expandedCategoryData.color,
                       expandedCategoryData.hoverColor,
                       "text-gray-800 animate-scale-in cursor-pointer",
@@ -268,7 +295,7 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                       left: pos.x,
                       top: pos.y,
                       transform: 'translate(-50%, -50%)',
-                      animationDelay: `${pos.delay}ms`,
+                      animationDelay: `${pos.delay}ms`
                     }}
                     aria-label={`Select emotion: ${emotion}`}
                     aria-pressed={selectedEmotion === emotion}
@@ -281,7 +308,7 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
           )}
         </div>
       </div>
-      
+
       {/* Selected emotion display */}
       {!expandedCategory && selectedEmotion && (
         <div className="text-center">
