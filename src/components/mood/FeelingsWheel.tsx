@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface FeelingsWheelProps {
@@ -70,14 +70,90 @@ const wheelData = [
 const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selectedEmotion }) => {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [categoryPosition, setCategoryPosition] = useState<{ x: number; y: number } | null>(null);
+  const wheelRef = useRef<HTMLDivElement>(null);
+  const categoryRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   // Find which category the selected emotion belongs to
   const selectedCategory = wheelData.find(cat => 
     cat.emotions.includes(selectedEmotion || '')
   )?.category;
 
+  // Calculate category button position when expanded
+  useEffect(() => {
+    if (expandedCategory && wheelRef.current) {
+      const categoryButton = categoryRefs.current.get(expandedCategory);
+      if (categoryButton) {
+        const wheelRect = wheelRef.current.getBoundingClientRect();
+        const buttonRect = categoryButton.getBoundingClientRect();
+        setCategoryPosition({
+          x: buttonRect.left + buttonRect.width / 2 - wheelRect.left,
+          y: buttonRect.top + buttonRect.height / 2 - wheelRect.top
+        });
+      }
+    } else {
+      setCategoryPosition(null);
+    }
+  }, [expandedCategory]);
+
   const handleCategoryClick = (category: string) => {
     setExpandedCategory(expandedCategory === category ? null : category);
+  };
+
+  const handleEmotionSelect = (emotion: string) => {
+    onEmotionSelect(emotion);
+    setExpandedCategory(null);
+  };
+
+  // Get expanded category data
+  const expandedCategoryData = wheelData.find(cat => cat.category === expandedCategory);
+
+  // Calculate secondary emotion positions in a radial pattern
+  const getSecondaryPositions = (emotionCount: number, centerX: number, centerY: number) => {
+    const positions: { x: number; y: number; delay: number }[] = [];
+    const wheelCenter = { x: 144, y: 144 }; // Half of 288px (w-72)
+    
+    // Direction vector from wheel center to category center
+    const dx = centerX - wheelCenter.x;
+    const dy = centerY - wheelCenter.y;
+    const baseAngle = Math.atan2(dy, dx);
+    
+    // Spread secondaries in an arc around the outward direction
+    const spreadAngle = Math.PI * 0.8; // 144 degrees spread
+    const baseRadius = 70;
+    const secondRadius = 120;
+    
+    for (let i = 0; i < emotionCount; i++) {
+      let radius: number;
+      let angleOffset: number;
+      
+      if (emotionCount <= 4) {
+        // Single arc for small counts
+        radius = baseRadius;
+        angleOffset = ((i - (emotionCount - 1) / 2) / Math.max(emotionCount - 1, 1)) * spreadAngle;
+      } else {
+        // Two rings for larger counts
+        if (i < 5) {
+          // First ring
+          radius = baseRadius;
+          angleOffset = ((i - 2) / 4) * spreadAngle;
+        } else {
+          // Second ring
+          radius = secondRadius;
+          const secondRowCount = emotionCount - 5;
+          angleOffset = ((i - 5 - (secondRowCount - 1) / 2) / Math.max(secondRowCount - 1, 1)) * spreadAngle;
+        }
+      }
+      
+      const angle = baseAngle + angleOffset;
+      positions.push({
+        x: centerX + Math.cos(angle) * radius,
+        y: centerY + Math.sin(angle) * radius,
+        delay: i * 40
+      });
+    }
+    
+    return positions;
   };
 
   return (
@@ -89,19 +165,22 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
       
       {/* Visual Wheel */}
       <div className="relative flex justify-center py-4">
-        <div className="relative w-72 h-72 sm:w-80 sm:h-80">
+        <div 
+          ref={wheelRef}
+          className="relative w-72 h-72 sm:w-80 sm:h-80"
+        >
           {/* Center circle showing selected emotion */}
           <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
             <div className={cn(
-              "w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300",
+              "w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300",
               selectedEmotion && "ring-4 ring-offset-2",
               selectedCategory && wheelData.find(c => c.category === selectedCategory)?.selectedRing
             )}>
               <span className={cn(
-                "text-sm font-medium text-center px-2 transition-all",
+                "text-xs font-medium text-center px-2 transition-all",
                 selectedEmotion ? "text-foreground" : "text-muted-foreground"
               )}>
-                {selectedEmotion || 'Select a feeling'}
+                {selectedEmotion || 'Select'}
               </span>
             </div>
           </div>
@@ -112,82 +191,97 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
             const isExpanded = expandedCategory === cat.category;
             const isHovered = hoveredCategory === cat.category;
             const isSelected = selectedCategory === cat.category;
+            // Larger radius to prevent overlap: 110px for mobile, 130px for sm+
+            const radius = 110;
+            
+            // Calculate position using trigonometry
+            const radians = (angle - 90) * (Math.PI / 180);
+            const x = Math.cos(radians) * radius;
+            const y = Math.sin(radians) * radius;
             
             return (
-              <div
+              <button
                 key={cat.category}
-                className="absolute"
+                ref={(el) => {
+                  if (el) categoryRefs.current.set(cat.category, el);
+                }}
+                onClick={() => handleCategoryClick(cat.category)}
+                onMouseEnter={() => setHoveredCategory(cat.category)}
+                onMouseLeave={() => setHoveredCategory(null)}
+                className={cn(
+                  "absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full transition-all duration-300 shadow-md flex items-center justify-center cursor-pointer",
+                  cat.color,
+                  cat.hoverColor,
+                  isExpanded && "scale-110 shadow-xl ring-4 ring-white z-20",
+                  isHovered && !isExpanded && "scale-105",
+                  isSelected && !isExpanded && "ring-2 ring-offset-2 ring-foreground/20",
+                  !isExpanded && "z-10"
+                )}
                 style={{
                   top: '50%',
                   left: '50%',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-80px)`,
+                  transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
                 }}
+                aria-label={`${cat.label} emotions category`}
+                aria-expanded={isExpanded}
               >
-                {/* Secondary emotions radiating out */}
-                {isExpanded && cat.emotions.map((emotion, emotionIndex) => {
-                  const emotionCount = cat.emotions.length;
-                  // Calculate row layout: max 3 per row
-                  const row = Math.floor(emotionIndex / 3);
-                  const positionInRow = emotionIndex % 3;
-                  const itemsInRow = Math.min(3, emotionCount - row * 3);
-                  
-                  // Horizontal offset based on position in row
-                  const xOffset = (positionInRow - (itemsInRow - 1) / 2) * 85;
-                  // Vertical offset increases per row
-                  const yOffset = 65 + row * 40;
-                  
-                  return (
-                    <button
-                      key={emotion}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onEmotionSelect(emotion);
-                      }}
-                      className={cn(
-                        "absolute px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-md whitespace-nowrap z-20",
-                        cat.color,
-                        cat.hoverColor,
-                        "text-gray-800 animate-scale-in",
-                        selectedEmotion === emotion && "ring-2 ring-offset-1 ring-foreground scale-110 shadow-lg"
-                      )}
-                      style={{
-                        transform: `rotate(-${angle}deg) translate(${xOffset}px, ${yOffset}px)`,
-                        animationDelay: `${emotionIndex * 50}ms`,
-                      }}
-                      aria-pressed={selectedEmotion === emotion}
-                    >
-                      {emotion}
-                    </button>
-                  );
-                })}
-                
-                <button
-                  onClick={() => handleCategoryClick(cat.category)}
-                  onMouseEnter={() => setHoveredCategory(cat.category)}
-                  onMouseLeave={() => setHoveredCategory(null)}
-                  className={cn(
-                    "w-20 h-20 sm:w-24 sm:h-24 rounded-full transition-all duration-300 shadow-md flex items-center justify-center z-10 relative",
-                    cat.color,
-                    cat.hoverColor,
-                    isExpanded && "scale-110 shadow-xl ring-4 ring-white",
-                    isHovered && !isExpanded && "scale-105",
-                    isSelected && !isExpanded && "ring-2 ring-offset-2 ring-foreground/20"
-                  )}
-                  style={{
-                    transform: `rotate(-${angle}deg)`,
-                  }}
-                  aria-label={`${cat.label} emotions category`}
-                  aria-expanded={isExpanded}
-                >
-                  <span className="text-xs sm:text-sm font-medium text-gray-800 text-center px-1">
-                    {cat.label}
-                  </span>
-                </button>
-              </div>
+                <span className="text-[10px] sm:text-xs font-medium text-gray-800 text-center px-1 leading-tight">
+                  {cat.label}
+                </span>
+              </button>
             );
           })}
+
+          {/* Secondary emotions overlay - rendered separately to avoid transform stacking */}
+          {expandedCategory && expandedCategoryData && categoryPosition && (
+            <>
+              {/* Backdrop to close on outside click */}
+              <div 
+                className="fixed inset-0 z-25"
+                onClick={() => setExpandedCategory(null)}
+              />
+              
+              {/* Secondary emotion buttons */}
+              {expandedCategoryData.emotions.map((emotion, index) => {
+                const positions = getSecondaryPositions(
+                  expandedCategoryData.emotions.length,
+                  categoryPosition.x,
+                  categoryPosition.y
+                );
+                const pos = positions[index];
+                
+                return (
+                  <button
+                    key={emotion}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEmotionSelect(emotion);
+                    }}
+                    className={cn(
+                      "absolute px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-md whitespace-nowrap z-30",
+                      expandedCategoryData.color,
+                      expandedCategoryData.hoverColor,
+                      "text-gray-800 animate-scale-in cursor-pointer",
+                      selectedEmotion === emotion && "ring-2 ring-offset-1 ring-foreground scale-110 shadow-lg"
+                    )}
+                    style={{
+                      left: pos.x,
+                      top: pos.y,
+                      transform: 'translate(-50%, -50%)',
+                      animationDelay: `${pos.delay}ms`,
+                    }}
+                    aria-label={`Select emotion: ${emotion}`}
+                    aria-pressed={selectedEmotion === emotion}
+                  >
+                    {emotion}
+                  </button>
+                );
+              })}
+            </>
+          )}
         </div>
       </div>
+      
       {/* Selected emotion display */}
       {!expandedCategory && selectedEmotion && (
         <div className="text-center">
