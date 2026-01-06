@@ -83,15 +83,18 @@ function getSecondaryPositions(params: {
   const dy = categoryCenter.y - wheelCenter.y;
   const baseAngle = Math.atan2(dy, dx);
 
-  // Spread secondaries in an arc around the outward direction
-  const spreadAngle = Math.PI * 0.95; // ~171°
+  // We want a wider spread and more rings for large categories (Joy = 9)
+  const spreadAngle = Math.PI * 1.1; // ~198°
 
-  // Ring strategy to reduce overlaps
-  const primaryRingCount = emotionCount <= 4 ? emotionCount : 5;
-  const secondaryRingCount = Math.max(0, emotionCount - primaryRingCount);
+  // 1 ring for <=4, 2 rings for 5-7, 3 rings for 8+
+  const ringCounts =
+    emotionCount <= 4
+      ? [emotionCount]
+      : emotionCount <= 7
+        ? [4, emotionCount - 4]
+        : [3, 3, emotionCount - 6];
 
-  const ring1Radius = emotionCount <= 4 ? 84 : 88;
-  const ring2Radius = 136;
+  const ringRadii = emotionCount <= 4 ? [92] : emotionCount <= 7 ? [96, 148] : [98, 150, 198];
 
   const angleForIndex = (idx: number, count: number) => {
     if (count <= 1) return 0;
@@ -99,20 +102,20 @@ function getSecondaryPositions(params: {
     return (t - 0.5) * spreadAngle;
   };
 
-  for (let i = 0; i < emotionCount; i++) {
-    const isRing2 = i >= primaryRingCount;
-    const ringIndex = isRing2 ? i - primaryRingCount : i;
-    const ringCount = isRing2 ? secondaryRingCount : primaryRingCount;
+  let globalIndex = 0;
+  for (let ring = 0; ring < ringCounts.length; ring++) {
+    const count = ringCounts[ring];
+    const radius = ringRadii[ring] ?? ringRadii[ringRadii.length - 1];
 
-    const radius = isRing2 ? ring2Radius : ring1Radius;
-    const angleOffset = angleForIndex(ringIndex, ringCount);
-    const angle = baseAngle + angleOffset;
-
-    positions.push({
-      x: categoryCenter.x + Math.cos(angle) * radius,
-      y: categoryCenter.y + Math.sin(angle) * radius,
-      delay: i * 45
-    });
+    for (let i = 0; i < count; i++) {
+      const angle = baseAngle + angleForIndex(i, count);
+      positions.push({
+        x: categoryCenter.x + Math.cos(angle) * radius,
+        y: categoryCenter.y + Math.sin(angle) * radius,
+        delay: globalIndex * 45
+      });
+      globalIndex++;
+    }
   }
 
   return positions;
@@ -274,6 +277,35 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                 onClick={() => setExpandedCategory(null)}
               />
 
+              {/* Optional "stems" */}
+              <svg
+                className="absolute inset-0 z-30 pointer-events-none"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
+                {expandedCategoryData.emotions.map((emotion, index) => {
+                  const pos = secondaryPositions[index];
+                  // Convert px positions into 0..100 viewBox space
+                  const x1 = (categoryCenter.x / (wheelRef.current?.getBoundingClientRect().width || 1)) * 100;
+                  const y1 = (categoryCenter.y / (wheelRef.current?.getBoundingClientRect().height || 1)) * 100;
+                  const x2 = (pos.x / (wheelRef.current?.getBoundingClientRect().width || 1)) * 100;
+                  const y2 = (pos.y / (wheelRef.current?.getBoundingClientRect().height || 1)) * 100;
+
+                  return (
+                    <line
+                      key={emotion}
+                      x1={x1}
+                      y1={y1}
+                      x2={x2}
+                      y2={y2}
+                      stroke="hsl(var(--border))"
+                      strokeWidth="0.6"
+                      opacity="0.6"
+                    />
+                  );
+                })}
+              </svg>
+
               {expandedCategoryData.emotions.map((emotion, index) => {
                 const pos = secondaryPositions[index];
 
@@ -285,7 +317,7 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                       handleEmotionSelect(emotion);
                     }}
                     className={cn(
-                      "absolute px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-md whitespace-nowrap z-40",
+                      "absolute px-2.5 py-1 rounded-full text-[11px] font-medium transition-all duration-300 shadow-md whitespace-nowrap z-40",
                       expandedCategoryData.color,
                       expandedCategoryData.hoverColor,
                       "text-gray-800 animate-scale-in cursor-pointer",
