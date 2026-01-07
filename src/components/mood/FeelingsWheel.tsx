@@ -39,8 +39,8 @@ const wheelData = [
   {
     category: 'fear',
     label: 'Fear',
-    color: 'bg-mental-peach',
-    hoverColor: 'hover:bg-mental-peach/80',
+    color: 'bg-amber-300',
+    hoverColor: 'hover:bg-amber-400',
     emotions: ['Anxious', 'Worried', 'Nervous', 'Overwhelmed', 'Stressed']
   },
   {
@@ -115,6 +115,9 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
             const isSelected = selectedCategory?.category === cat.category;
             const isOpen = openCategory === cat.category;
 
+            // Determine popover side based on position
+            const popoverSide = x > 0 ? 'right' : 'left';
+
             return (
               <Popover
                 key={cat.category}
@@ -145,6 +148,7 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                 </PopoverTrigger>
                 <PopoverContent
                   className="w-48 p-3"
+                  side={popoverSide}
                   sideOffset={8}
                   collisionPadding={16}
                 >
