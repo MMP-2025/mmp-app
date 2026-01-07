@@ -159,8 +159,8 @@ const FeelingsWheel: React.FC<FeelingsWheelProps> = ({ onEmotionSelect, selected
                         key={emotion}
                         onClick={() => handleEmotionSelect(emotion)}
                         className={cn(
-                          "px-2 py-1.5 rounded-full text-xs font-medium transition-colors",
-                          "text-gray-800 cursor-pointer",
+                          "px-2 py-1.5 rounded-lg text-xs font-medium transition-colors text-center",
+                          "text-gray-800 cursor-pointer break-words",
                           cat.color,
                           cat.hoverColor,
                           selectedEmotion?.toLowerCase() === emotion.toLowerCase() &&
