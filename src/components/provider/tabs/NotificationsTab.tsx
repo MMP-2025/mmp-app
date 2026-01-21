@@ -1,20 +1,32 @@
-
 import React from 'react';
 import NotificationSender from '@/components/provider/NotificationSender';
+import NotificationHistory from '@/components/provider/NotificationHistory';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bell, Send, Users, MessageSquare } from 'lucide-react';
+import { Bell, Send, Users, MessageSquare, Clock } from 'lucide-react';
+import { useProviderNotifications } from '@/hooks/useProviderNotifications';
+import { useProviderPatients } from '@/hooks/useProviderPatients';
 
 const NotificationsTab: React.FC = () => {
+  const { notifications, loading: notificationsLoading } = useProviderNotifications();
+  const { patients, loading: patientsLoading } = useProviderPatients();
+
+  const totalSent = notifications.filter(n => n.status === 'sent' || n.status === 'read').length;
+  const pendingScheduled = notifications.filter(n => n.status === 'pending' && n.scheduled_at).length;
+  const readCount = notifications.filter(n => n.status === 'read').length;
+  const readRate = totalSent > 0 ? Math.round((readCount / totalSent) * 100) : 0;
+
   return (
     <div className="space-y-6">
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-mental-green">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-foreground">Total Sent</p>
-                <p className="text-2xl font-bold text-foreground">127</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {notificationsLoading ? '...' : totalSent}
+                </p>
               </div>
               <Send className="h-8 w-8 text-foreground" />
             </div>
@@ -26,9 +38,25 @@ const NotificationsTab: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-foreground">Active Patients</p>
-                <p className="text-2xl font-bold text-foreground">23</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {patientsLoading ? '...' : patients.length}
+                </p>
               </div>
               <Users className="h-8 w-8 text-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-mental-gray">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-foreground">Scheduled</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {notificationsLoading ? '...' : pendingScheduled}
+                </p>
+              </div>
+              <Clock className="h-8 w-8 text-foreground" />
             </div>
           </CardContent>
         </Card>
@@ -37,8 +65,10 @@ const NotificationsTab: React.FC = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-foreground">Response Rate</p>
-                <p className="text-2xl font-bold text-foreground">89%</p>
+                <p className="text-sm font-medium text-foreground">Read Rate</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {notificationsLoading ? '...' : `${readRate}%`}
+                </p>
               </div>
               <MessageSquare className="h-8 w-8 text-foreground" />
             </div>
@@ -48,6 +78,9 @@ const NotificationsTab: React.FC = () => {
 
       {/* Notification Sender */}
       <NotificationSender />
+
+      {/* Notification History */}
+      <NotificationHistory />
 
       {/* Instructions */}
       <Card className="bg-mental-gray">
@@ -78,12 +111,11 @@ const NotificationsTab: React.FC = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-2">Best Practices:</h4>
+            <h4 className="font-semibold mb-2">New Features:</h4>
             <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>Keep titles under 50 characters for better mobile display</li>
-              <li>Write clear, actionable messages</li>
-              <li>Use high priority sparingly to maintain effectiveness</li>
-              <li>Include action URLs when appropriate for direct engagement</li>
+              <li><strong>Bulk Send:</strong> Select multiple patients to send the same notification</li>
+              <li><strong>Scheduling:</strong> Schedule notifications for a future date and time</li>
+              <li><strong>Specific Targeting:</strong> Send to all patients, specific patient, or selected group</li>
             </ul>
           </div>
         </CardContent>
