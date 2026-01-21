@@ -603,6 +603,54 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          action_url: string | null
+          created_at: string
+          id: string
+          message: string
+          patient_id: string | null
+          priority: string
+          provider_id: string
+          read_at: string | null
+          scheduled_at: string | null
+          sent_at: string | null
+          status: string
+          title: string
+          type: string
+        }
+        Insert: {
+          action_url?: string | null
+          created_at?: string
+          id?: string
+          message: string
+          patient_id?: string | null
+          priority?: string
+          provider_id: string
+          read_at?: string | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          title: string
+          type?: string
+        }
+        Update: {
+          action_url?: string | null
+          created_at?: string
+          id?: string
+          message?: string
+          patient_id?: string | null
+          priority?: string
+          provider_id?: string
+          read_at?: string | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
       patient_invitations: {
         Row: {
           created_at: string
