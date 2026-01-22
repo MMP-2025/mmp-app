@@ -103,6 +103,15 @@ const LoginForm = () => {
         <InvitationValidation onValidInvitation={handleValidInvitation} onBack={() => setShowInvitationValidation(false)} />
       </div>;
   }
+  const handleGuestAccess = () => {
+    loginAsGuest();
+    toast({
+      title: "Welcome!",
+      description: "You're now browsing as a guest.",
+      className: "bg-white border border-gray-200 text-gray-900"
+    });
+  };
+
   return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
       <Card className="w-full max-w-md shadow-lg border-0">
         <CardHeader className="bg-white/80 rounded-t-lg">
@@ -112,6 +121,27 @@ const LoginForm = () => {
           <p className="text-center text-gray-600">Welcome to your mental wellness journey</p>
         </CardHeader>
         <CardContent className="bg-white/80 rounded-b-lg pt-4">
+          {/* Prominent Guest Access Button */}
+          <div className="mb-6">
+            <Button 
+              onClick={handleGuestAccess}
+              variant="outline"
+              className="w-full py-6 text-lg border-2 border-mental-green bg-mental-green/10 hover:bg-mental-green/20 text-mental-green font-medium rounded-xl"
+            >
+              Continue as Guest
+            </Button>
+            <p className="text-center text-sm text-gray-500 mt-2">No account needed - explore the app freely</p>
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-2 text-gray-500">Or sign in with account</span>
+            </div>
+          </div>
+
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-mental-peach/50">
               <TabsTrigger value="login" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
@@ -129,55 +159,28 @@ const LoginForm = () => {
                     <SelectContent className="bg-white">
                       <SelectItem value="patient">Patient</SelectItem>
                       <SelectItem value="provider">Provider</SelectItem>
-                      <SelectItem value="guest">Guest</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {role !== 'guest' && <>
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-white" />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="password">Password</Label>
-                      <div className="relative">
-                        <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Enter your password" className="bg-white pr-10" />
-                        <Button type="button" variant="ghost" size="sm" className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent" onClick={() => setShowPassword(!showPassword)}>
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </Button>
-                      </div>
-                    </div>
-                  </>}
-
-                {role === 'guest' && <div className="text-center p-4 bg-mental-green/20 rounded-md border border-mental-green/30">
-                    <p className="text-gray-600">No login required for guest access</p>
-                  </div>}
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-white" />
+                </div>
+                
+                <div>
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Enter your password" className="bg-white pr-10" />
+                    <Button type="button" variant="ghost" size="sm" className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
 
                 <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base text-white bg-mental-blue hover:bg-mental-blue/90">
-                  {isLoading ? 'Signing in...' : role === 'guest' ? 'Continue as Guest' : 'Sign In'}
+                  {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
-
-                {role !== 'guest' && <div className="mt-4 p-3 bg-mental-peach/40 border border-mental-peach rounded-md">
-                    <p className="text-xs font-semibold text-gray-800 mb-2">Demo Credentials:</p>
-                    <div className="space-y-1">
-                      <button type="button" onClick={() => {
-                    setEmail('provider@demo.com');
-                    setPassword('demo123');
-                    setRole('provider');
-                  }} className="block w-full text-left text-xs text-gray-700 font-medium hover:text-mental-blue hover:bg-mental-peach/60 p-1.5 rounded transition-colors">
-                        Provider: provider@demo.com / demo123
-                      </button>
-                      <button type="button" onClick={() => {
-                    setEmail('patient@demo.com');
-                    setPassword('demo123');
-                    setRole('patient');
-                  }} className="block w-full text-left text-xs text-gray-700 font-medium hover:text-mental-blue hover:bg-mental-peach/60 p-1.5 rounded transition-colors">
-                        Patient: patient@demo.com / demo123
-                      </button>
-                    </div>
-                  </div>}
               </form>
             </TabsContent>
 

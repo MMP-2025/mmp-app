@@ -1,11 +1,12 @@
 import React from 'react';
-import { Book, Calendar, FileText, Home, Smile, Pencil, Timer, Bell, Phone, User, Users, Settings, Wrench, X } from 'lucide-react';
+import { Book, Calendar, FileText, Home, Smile, Pencil, Timer, Bell, Phone, User, Users, Settings, Wrench, Inbox } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 import UserProfile from './UserProfile';
 import HomeButton from '@/components/ui/home-button';
 import { useAuth } from '@/contexts/AuthContext';
+import NotificationBell from '@/components/notifications/NotificationBell';
 interface SidebarLayoutProps {
   children: React.ReactNode;
 }
@@ -114,9 +115,12 @@ export function SidebarLayout({
             <SidebarTrigger className="text-foreground hover:bg-accent" />
             <HomeButton />
           </div>
-          {/* User Profile in header */}
-          <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
-            <UserProfile />
+          {/* Notification Bell and User Profile in header */}
+          <div className="flex items-center gap-3">
+            <NotificationBell />
+            <div className="bg-background/95 backdrop-blur-sm shadow-lg rounded-lg border p-2">
+              <UserProfile />
+            </div>
           </div>
         </header>
 

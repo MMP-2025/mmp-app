@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import WellnessScore from '@/components/wellness/WellnessScore';
+import WellnessScoreMini from '@/components/wellness/WellnessScoreMini';
 import PersonalizedRecommendations from '@/components/home/PersonalizedRecommendations';
 import DailyQuestion from '@/components/home/DailyQuestion';
 import QuickAccess from '@/components/home/QuickAccess';
@@ -34,6 +34,9 @@ const HomePage = () => {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-8">
+          {/* Wellness Score prominently at top */}
+          <WellnessScoreMini />
+          
           <PersonalizedRecommendations recommendations={recommendations} />
           
           <DailyQuestion />
