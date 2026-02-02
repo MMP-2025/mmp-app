@@ -7,12 +7,30 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ChevronDown, ChevronUp } from 'lucide-react';
 import InvitationValidation from './InvitationValidation';
+
 interface ValidatedInvitation {
   token: string;
   email: string;
 }
+
+// Check if we're in dev/preview environment
+const isDevEnvironment = () => {
+  const hostname = window.location.hostname;
+  return (
+    import.meta.env.DEV ||
+    hostname === 'localhost' ||
+    hostname.includes('preview') ||
+    hostname.includes('lovable.app')
+  );
+};
+
+const DEMO_CREDENTIALS = {
+  patient: { email: 'patient@demo.com', password: 'password123' },
+  provider: { email: 'provider@demo.com', password: 'password123' }
+};
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +40,16 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showInvitationValidation, setShowInvitationValidation] = useState(false);
   const [validatedInvitation, setValidatedInvitation] = useState<ValidatedInvitation | null>(null);
+  const [showDevCredentials, setShowDevCredentials] = useState(false);
+
+  const isDev = isDevEnvironment();
+
+  const fillDemoCredentials = (type: 'patient' | 'provider') => {
+    const creds = DEMO_CREDENTIALS[type];
+    setEmail(creds.email);
+    setPassword(creds.password);
+    setRole(type);
+  };
   const {
     login,
     register,
@@ -122,7 +150,7 @@ const LoginForm = () => {
         </CardHeader>
         <CardContent className="bg-white/80 rounded-b-lg pt-4">
           {/* Prominent Guest Access Button */}
-          <div className="mb-6">
+          <div className="mb-4">
             <Button 
               onClick={handleGuestAccess}
               variant="outline"
@@ -130,8 +158,54 @@ const LoginForm = () => {
             >
               Continue as Guest
             </Button>
-            <p className="text-center text-sm text-gray-500 mt-2">No account needed - explore the app freely</p>
+            <p className="text-center text-sm text-muted-foreground mt-2">No account needed - explore the app freely</p>
           </div>
+
+          {/* Dev-only Demo Credentials */}
+          {isDev && (
+            <div className="mb-4">
+              <button
+                type="button"
+                onClick={() => setShowDevCredentials(!showDevCredentials)}
+                className="w-full flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+              >
+                <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs font-medium">DEV</span>
+                Demo Credentials
+                {showDevCredentials ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </button>
+              
+              {showDevCredentials && (
+                <div className="mt-2 p-3 bg-muted/50 rounded-lg border border-border space-y-2">
+                  <p className="text-xs text-muted-foreground text-center mb-2">Click to auto-fill credentials:</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => fillDemoCredentials('patient')}
+                      className="text-xs"
+                    >
+                      Patient Demo
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => fillDemoCredentials('provider')}
+                      className="text-xs"
+                    >
+                      Provider Demo
+                    </Button>
+                  </div>
+                  <div className="text-xs text-muted-foreground text-center mt-2 space-y-1">
+                    <p>Patient: patient@demo.com</p>
+                    <p>Provider: provider@demo.com</p>
+                    <p>Password: password123</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
