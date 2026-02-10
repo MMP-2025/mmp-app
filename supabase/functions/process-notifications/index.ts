@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
       .order('scheduled_at', { ascending: true });
 
     if (fetchError) {
-      console.error('Error fetching pending notifications:', fetchError);
+      console.error('Error fetching pending notifications:', fetchError.code || 'unknown');
       throw fetchError;
     }
 
@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
       .select();
 
     if (updateError) {
-      console.error('Error updating notifications:', updateError);
+      console.error('Error updating notifications:', updateError.code || 'unknown');
       throw updateError;
     }
 
