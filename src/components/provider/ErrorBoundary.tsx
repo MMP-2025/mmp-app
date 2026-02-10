@@ -50,7 +50,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <p className="text-gray-600">
               We encountered an unexpected error. Please try refreshing the page or contact support if the problem persists.
             </p>
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="text-sm text-gray-500">
                 <summary>Error details</summary>
                 <pre className="mt-2 p-2 bg-gray-100 rounded overflow-auto">
