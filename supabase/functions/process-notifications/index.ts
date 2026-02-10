@@ -12,11 +12,51 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Use service role key for admin access to process all notifications
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Authentication: Allow pg_cron calls (with service role key) or authenticated providers/admins
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    
+    // If the token is the service role key (pg_cron call), allow through
+    const isServiceRole = token === supabaseServiceKey;
+    
+    if (!isServiceRole) {
+      // Validate as a user JWT and check for provider/admin role
+      const anonClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_ANON_KEY')!);
+      const { data: { user }, error: authError } = await anonClient.auth.getUser(token);
+      
+      if (authError || !user) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid token' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Verify user is a provider or admin
+      const { data: roles } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .in('role', ['provider', 'admin']);
+
+      if (!roles || roles.length === 0) {
+        return new Response(
+          JSON.stringify({ error: 'Insufficient permissions' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
 
     const now = new Date().toISOString();
 
@@ -50,7 +90,6 @@ Deno.serve(async (req) => {
 
     console.log(`Found ${pendingNotifications.length} pending notifications to process`);
 
-    // Update all pending notifications to 'sent' status
     const notificationIds = pendingNotifications.map(n => n.id);
     
     const { data: updatedNotifications, error: updateError } = await supabase
@@ -68,12 +107,6 @@ Deno.serve(async (req) => {
     }
 
     console.log(`Successfully processed ${updatedNotifications?.length || 0} notifications`);
-
-    // In a real implementation, you might:
-    // - Send push notifications via a service like Firebase Cloud Messaging
-    // - Send email notifications via a service like Resend or SendGrid
-    // - Send SMS notifications via Twilio
-    // For now, we just mark them as 'sent' so they appear in the patient's inbox
 
     return new Response(
       JSON.stringify({ 
@@ -98,7 +131,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message 
+        error: 'Internal server error'
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
