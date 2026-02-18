@@ -13,7 +13,7 @@ const ViewTabs: React.FC<ViewTabsProps> = ({
   savedExercisesCount,
   onShuffle
 }) => {
-  return <div className="flex gap-2 mb-6">
+  return <div className="flex flex-wrap gap-2 mb-6">
       <Button variant={currentView === 'all' ? 'default' : 'outline'} onClick={() => setCurrentView('all')} className={currentView === 'all' ? 'bg-mental-green hover:bg-mental-green/80' : ''}>
         All Practices
       </Button>
