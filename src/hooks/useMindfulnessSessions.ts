@@ -12,12 +12,12 @@ interface MindfulnessSession {
 }
 
 export const useMindfulnessSessions = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [sessions, setSessions] = useState<MindfulnessSession[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setSessions([]);
       setLoading(false);
       return;
@@ -51,7 +51,7 @@ export const useMindfulnessSessions = () => {
     };
 
     fetchSessions();
-  }, [user]);
+  }, [user, isGuest]);
 
   const saveSession = useCallback(async (
     sessionType: 'meditation' | 'breathing' | 'body_scan',

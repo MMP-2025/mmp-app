@@ -24,12 +24,12 @@ interface MoodEntry {
 }
 
 export const useMoodEntries = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setMoodHistory([]);
       setLoading(false);
       return;
@@ -73,7 +73,7 @@ export const useMoodEntries = () => {
     };
 
     fetchMoodEntries();
-  }, [user]);
+  }, [user, isGuest]);
 
   const saveMoodEntry = useCallback(async (entry: Omit<MoodEntry, 'id'>) => {
     if (!user) {

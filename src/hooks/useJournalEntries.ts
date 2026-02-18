@@ -12,12 +12,12 @@ interface JournalEntry {
 }
 
 export const useJournalEntries = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setJournalEntries([]);
       setLoading(false);
       return;
@@ -51,7 +51,7 @@ export const useJournalEntries = () => {
     };
 
     fetchJournalEntries();
-  }, [user]);
+  }, [user, isGuest]);
 
   const saveJournalEntry = useCallback(async (
     content: string,

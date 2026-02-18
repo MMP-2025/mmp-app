@@ -10,12 +10,12 @@ interface GratitudeEntry {
 }
 
 export const useGratitudeEntries = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setGratitudeEntries([]);
       setLoading(false);
       return;
@@ -47,7 +47,7 @@ export const useGratitudeEntries = () => {
     };
 
     fetchGratitudeEntries();
-  }, [user]);
+  }, [user, isGuest]);
 
   const saveGratitudeEntry = useCallback(async (
     content: string,

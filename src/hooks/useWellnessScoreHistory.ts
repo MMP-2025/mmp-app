@@ -4,11 +4,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { WellnessScore, ScoreHistory } from '@/types/wellness';
 
 export const useWellnessScoreHistory = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [scoreHistory, setScoreHistory] = useState<ScoreHistory[]>([]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || isGuest) return;
 
     const fetchHistory = async () => {
       const { data, error } = await supabase
@@ -30,10 +30,10 @@ export const useWellnessScoreHistory = () => {
     };
 
     fetchHistory();
-  }, [user]);
+  }, [user, isGuest]);
 
   const saveScoreToHistory = useCallback(async (newScore: WellnessScore) => {
-    if (!user) return;
+    if (!user || isGuest) return;
 
     const today = new Date().toISOString().split('T')[0];
     
@@ -70,7 +70,7 @@ export const useWellnessScoreHistory = () => {
         return [typedData, ...filtered].slice(0, 30);
       });
     }
-  }, [user]);
+  }, [user, isGuest]);
 
   return { scoreHistory, saveScoreToHistory };
 };
