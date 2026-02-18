@@ -177,8 +177,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (error) throw error;
 
-      // In a real app, you would send an email here with the invitation link
-      console.log(`Invitation sent to ${patientEmail} with token: ${token}`);
+      // In production, send an email with the invitation link via a secure edge function
     } catch (error) {
       console.error('Error sending invitation:', error);
       throw error;
