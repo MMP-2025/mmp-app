@@ -15,13 +15,13 @@ interface ProgressPhoto {
 }
 
 export const useProgressPhotos = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [photos, setPhotos] = useState<ProgressPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setLoading(false);
       return;
     }
@@ -42,7 +42,7 @@ export const useProgressPhotos = () => {
     };
 
     fetchPhotos();
-  }, [user]);
+  }, [user, isGuest]);
 
   const uploadPhoto = useCallback(async (
     file: File,

@@ -24,12 +24,12 @@ interface CrisisPlan {
 }
 
 export const useCrisisPlans = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [crisisPlan, setCrisisPlan] = useState<CrisisPlan | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setLoading(false);
       return;
     }
@@ -55,7 +55,7 @@ export const useCrisisPlans = () => {
     };
 
     fetchCrisisPlan();
-  }, [user]);
+  }, [user, isGuest]);
 
   const saveCrisisPlan = useCallback(async (planData: Omit<CrisisPlan, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
     if (!user) {

@@ -14,12 +14,12 @@ interface HabitLog {
 }
 
 export const useHabitLogs = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [habitLogs, setHabitLogs] = useState<HabitLog[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setLoading(false);
       return;
     }
@@ -40,7 +40,7 @@ export const useHabitLogs = () => {
     };
 
     fetchHabitLogs();
-  }, [user]);
+  }, [user, isGuest]);
 
   const addHabitLog = useCallback(async (habitData: Omit<HabitLog, 'id' | 'user_id' | 'created_at'>) => {
     if (!user) {

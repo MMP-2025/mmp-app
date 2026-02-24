@@ -27,13 +27,13 @@ interface Goal {
 }
 
 export const useGoals = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [milestones, setMilestones] = useState<{ [goalId: string]: Milestone[] }>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setLoading(false);
       return;
     }
@@ -73,7 +73,7 @@ export const useGoals = () => {
     };
 
     fetchGoals();
-  }, [user]);
+  }, [user, isGuest]);
 
   const addGoal = useCallback(async (goalData: Omit<Goal, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
     if (!user) {

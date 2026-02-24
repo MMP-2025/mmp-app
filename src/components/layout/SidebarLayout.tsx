@@ -1,17 +1,20 @@
 import React from 'react';
 import { Book, Calendar, FileText, Home, Smile, Pencil, Timer, Bell, Phone, User, Users, Settings, Wrench, Inbox } from 'lucide-react';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
 import UserProfile from './UserProfile';
 import HomeButton from '@/components/ui/home-button';
 import { useAuth } from '@/contexts/AuthContext';
 import NotificationBell from '@/components/notifications/NotificationBell';
+import { useIsMobile } from '@/hooks/use-mobile';
 interface SidebarLayoutProps {
   children: React.ReactNode;
 }
 function AppSidebar() {
   const location = useLocation();
+  const isMobile = useIsMobile();
+  const { setOpenMobile } = useSidebar();
   const {
     isProvider,
     isGuest
@@ -87,7 +90,7 @@ function AppSidebar() {
             <SidebarMenu>
               {menuItems.map(item => <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.path} className={`flex items-center gap-2 text-sidebar-foreground ${location.pathname === item.path ? 'font-medium' : ''}`}>
+                    <Link to={item.path} onClick={() => { if (isMobile) setOpenMobile(false); }} className={`flex items-center gap-2 text-sidebar-foreground ${location.pathname === item.path ? 'font-medium' : ''}`}>
                       <item.icon className="h-5 w-5" />
                       <span>{item.label}</span>
                     </Link>
@@ -98,17 +101,17 @@ function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4 text-xs text-center bg-mental-peach">
-        <p className="text-sidebar-foreground">© 2025 Making Meaning Psychology</p>
+        <p className="text-sidebar-foreground">© 2026 Making Meaning Psychology</p>
       </SidebarFooter>
     </Sidebar>;
 }
 export function SidebarLayout({
   children
 }: SidebarLayoutProps) {
-  return <div className="min-h-screen flex w-full">
+  return <div className="min-h-screen flex w-full overflow-x-hidden">
       <AppSidebar />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header bar with trigger and navigation */}
         <header className="h-16 flex items-center justify-between border-b px-4 shrink-0 bg-mental-peach">
           <div className="flex items-center gap-4">
@@ -125,7 +128,7 @@ export function SidebarLayout({
         </header>
 
         {/* Main content */}
-        <main className="flex-1 p-6 overflow-auto bg-mental-peach">
+        <main className="flex-1 p-4 md:p-6 overflow-auto bg-mental-peach">
           <div className="w-full">
             {children}
           </div>
