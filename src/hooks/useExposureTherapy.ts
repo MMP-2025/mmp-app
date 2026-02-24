@@ -28,13 +28,13 @@ interface ExposureSession {
 }
 
 export const useExposureTherapy = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [goals, setGoals] = useState<ExposureGoal[]>([]);
   const [sessions, setSessions] = useState<ExposureSession[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setLoading(false);
       return;
     }
@@ -70,7 +70,7 @@ export const useExposureTherapy = () => {
     };
 
     fetchData();
-  }, [user]);
+  }, [user, isGuest]);
 
   const addGoal = useCallback(async (goalData: Omit<ExposureGoal, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'completed_at'>) => {
     if (!user) {

@@ -26,7 +26,7 @@ interface CBTModule {
 }
 
 export const useCBTSessions = () => {
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const [sessions, setSessions] = useState<CBTSession[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +58,7 @@ export const useCBTSessions = () => {
   ];
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuest) {
       setLoading(false);
       return;
     }
@@ -80,7 +80,7 @@ export const useCBTSessions = () => {
     };
 
     fetchSessions();
-  }, [user]);
+  }, [user, isGuest]);
 
   const addSession = useCallback(async (sessionData: Omit<CBTSession, 'id' | 'user_id' | 'created_at'>) => {
     if (!user) {
