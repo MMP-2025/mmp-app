@@ -1,51 +1,18 @@
 
-// Service Worker for offline functionality
-const CACHE_NAME = 'daily-compass-v1';
-const urlsToCache = [
-  '/',
-  '/mood',
-  '/journal',
-  '/mindfulness',
-  '/gratitude',
-  '/crisis',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/manifest.json'
-];
+// Service Worker utilities for offline functionality
 
 export const registerSW = () => {
+  // Service worker registration is disabled - no sw.js file exists
+  // This prevents MIME type errors in the console
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('SW registered: ', registration);
-        })
-        .catch((registrationError) => {
-          console.log('SW registration failed: ', registrationError);
-        });
+    // Unregister any previously registered service workers
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
     });
   }
 };
-
-// Install Service Worker
-self.addEventListener('install', (event: any) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
-  );
-});
-
-// Fetch from cache when offline
-self.addEventListener('fetch', (event: any) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
-      }
-    )
-  );
-});
 
 export const checkOnlineStatus = () => {
   return navigator.onLine;
