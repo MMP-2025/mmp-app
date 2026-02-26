@@ -1,10 +1,313 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "./styles/base/variables.css";
-@import "./styles/base/global.css";
-@import "./styles/components/utilities.css";
-@import "./styles/components/overrides.css";
-@import "./styles/accessibility/main.css";
+@layer base {
+  :root {
+    --background: 10 78% 91%;
+    --foreground: 0 4% 27%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 4% 27%;
+    --popover: 194 32% 78%;
+    --popover-foreground: 0 0% 45%;
+    --primary: 194 32% 78%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 22 48% 80%;
+    --secondary-foreground: 0 4% 27%;
+    --muted: 0 6% 79%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 91 24% 68%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 331 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 45%;
+    --input: 0 6% 79%;
+    --ring: 0 0% 45%;
+    --radius: 0.8rem;
+    --sidebar-background: 10 78% 91%;
+    --sidebar-foreground: 0 0% 45%;
+    --sidebar-primary: 22 48% 80%;
+    --sidebar-primary-foreground: 0 0% 45%;
+    --sidebar-accent: 194 32% 78%;
+    --sidebar-accent-foreground: 0 0% 45%;
+    --sidebar-border: 0 0% 45%;
+    --sidebar-ring: 0 0% 45%;
+    --mental-gray: 204, 198, 198;
+    --mental-peach: 250, 220, 214;
+    --mental-blue: 182, 209, 217;
+    --mental-beige: 229, 199, 181;
+    --mental-green: 174, 194, 155;
+  }
+
+  .dark {
+    --background: 0 6% 79%;
+    --foreground: 0 0% 45%;
+    --card: 10 78% 91%;
+    --card-foreground: 0 0% 45%;
+    --popover: 194 32% 78%;
+    --popover-foreground: 0 0% 45%;
+    --primary: 22 48% 80%;
+    --primary-foreground: 0 0% 45%;
+    --secondary: 91 24% 68%;
+    --secondary-foreground: 0 0% 45%;
+    --muted: 0 6% 79%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 194 32% 78%;
+    --accent-foreground: 0 0% 45%;
+    --destructive: 331 72% 51%;
+    --destructive-foreground: 0 0% 45%;
+    --border: 0 0% 45%;
+    --input: 0 6% 79%;
+    --ring: 0 0% 45%;
+    --sidebar-background: 10 78% 91%;
+    --sidebar-foreground: 0 0% 45%;
+    --sidebar-primary: 22 48% 80%;
+    --sidebar-primary-foreground: 0 0% 45%;
+    --sidebar-accent: 194 32% 78%;
+    --sidebar-accent-foreground: 0 0% 45%;
+    --sidebar-border: 0 0% 45%;
+    --sidebar-ring: 0 0% 45%;
+  }
+
+  html {
+    font-family: 'Sora', sans-serif;
+    color: rgb(var(--foreground));
+    background-color: rgb(var(--background));
+  }
+
+  body {
+    color: rgb(var(--foreground));
+    background-color: rgb(var(--background));
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Marmelad', serif;
+    color: rgb(var(--foreground));
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .high-contrast {
+    --background: 0 0 0;
+    --foreground: 255 255 255;
+    --card: 0 0 0;
+    --card-foreground: 255 255 255;
+    --border: 255 255 255;
+    --input: 0 0 0;
+  }
+
+  .high-contrast * {
+    background-color: black !important;
+    color: white !important;
+    border-color: white !important;
+  }
+
+  .high-contrast button, .high-contrast [role="button"] {
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid white !important;
+  }
+
+  /* Font size adjustments - use !important to override Tailwind */
+  [data-font-size="small"] {
+    font-size: 14px !important;
+  }
+
+  [data-font-size="medium"] {
+    font-size: 16px !important;
+  }
+
+  [data-font-size="large"] {
+    font-size: 18px !important;
+  }
+
+  [data-font-size="large"] p,
+  [data-font-size="large"] span,
+  [data-font-size="large"] li,
+  [data-font-size="large"] label {
+    font-size: 18px;
+  }
+
+  [data-font-size="extra-large"] {
+    font-size: 20px !important;
+  }
+
+  [data-font-size="extra-large"] p,
+  [data-font-size="extra-large"] span,
+  [data-font-size="extra-large"] li,
+  [data-font-size="extra-large"] label {
+    font-size: 20px;
+  }
+
+  .reduce-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .focus-visible *:focus {
+    outline: 3px solid #007acc !important;
+    outline-offset: 2px !important;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #007acc;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 1000;
+  }
+
+  .skip-link:focus {
+    top: 6px;
+  }
+}
+
+@layer components {
+  [tabindex]:focus,
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus,
+  a:focus {
+    outline: 3px solid #007acc;
+    outline-offset: 2px;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  [aria-live] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .rdp-day_selected {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 2px solid #737373 !important;
+  }
+
+  .rdp-day_today {
+    background-color: rgb(var(--mental-peach)) !important;
+    color: #737373 !important;
+    border: 2px solid #737373 !important;
+  }
+
+  .sonner-toast {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 1px solid #737373 !important;
+  }
+
+  [data-state="open"], [data-state="checked"], [data-highlighted] {
+    background-color: rgb(var(--mental-blue)) !important;
+    color: #737373 !important;
+    border: 1px solid #737373 !important;
+  }
+
+  .bg-white:hover, .bg-white:focus {
+    background-color: rgb(var(--mental-blue)) !important;
+    border: 1px solid #737373 !important;
+  }
+
+  .text-white {
+    color: hsl(var(--primary-foreground)) !important;
+  }
+
+  input, textarea, select {
+    background-color: rgb(var(--mental-gray)) !important;
+    border-color: #737373 !important;
+  }
+
+  .bg-white {
+    background-color: hsl(var(--card)) !important;
+  }
+
+  .bg-white\/90 {
+    background-color: hsl(var(--card) / 0.9) !important;
+  }
+
+  .bg-transparent {
+    background-color: transparent !important;
+  }
+
+  .bg-red-500 {
+    background-color: hsl(var(--destructive)) !important;
+  }
+
+  .bg-red-600 {
+    background-color: hsl(var(--destructive) / 0.9) !important;
+  }
+
+  .bg-blue-500 {
+    background-color: hsl(var(--primary)) !important;
+  }
+}
+
+@layer utilities {
+  .bg-mental-gray {
+    background-color: rgb(var(--mental-gray));
+  }
+  .bg-mental-peach {
+    background-color: rgb(var(--mental-peach));
+  }
+  .bg-mental-blue {
+    background-color: rgb(var(--mental-blue));
+  }
+  .bg-mental-beige {
+    background-color: rgb(var(--mental-beige));
+  }
+  .bg-mental-green {
+    background-color: rgb(var(--mental-green));
+  }
+  .text-mental-gray {
+    color: rgb(var(--mental-gray));
+  }
+  .text-mental-peach {
+    color: rgb(var(--mental-peach));
+  }
+  .text-mental-blue {
+    color: rgb(var(--mental-blue));
+  }
+  .text-mental-beige {
+    color: rgb(var(--mental-beige));
+  }
+  .text-mental-green {
+    color: rgb(var(--mental-green));
+  }
+  .text-destructive {
+    color: hsl(var(--destructive));
+  }
+}

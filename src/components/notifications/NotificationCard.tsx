@@ -44,13 +44,13 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 
   return (
     <Card 
-      className={`${notification.readAt ? 'bg-gray-50' : 'bg-white border-l-4 border-l-blue-500'}`}
+      className={`${notification.readAt ? 'bg-card/80' : 'bg-card border-l-4 border-l-[hsl(194,32%,58%)]'}`}
     >
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <h4 className={`font-medium ${notification.readAt ? 'text-muted-foreground/70' : 'text-muted-foreground font-semibold'}`}>
+              <h4 className={`font-medium ${notification.readAt ? 'text-foreground/60' : 'text-foreground font-semibold'}`}>
                 {notification.title}
               </h4>
               <Badge className={getTypeColor(notification.type)}>
@@ -61,12 +61,12 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               </Badge>
             </div>
             
-            <p className={`text-sm mb-2 ${notification.readAt ? 'text-muted-foreground/70' : 'text-muted-foreground'}`}>
+            <p className={`text-sm mb-2 ${notification.readAt ? 'text-foreground/50' : 'text-foreground/80'}`}>
               {notification.message}
             </p>
             
             <div className="flex items-center justify-between">
-              <div className="text-xs text-muted-foreground/60">
+              <div className="text-xs text-foreground/50">
                 From: {notification.fromProvider} • {formatDate(notification.createdAt)}
                 {notification.readAt && (
                   <span className="ml-2">• Read {formatDate(notification.readAt)}</span>
