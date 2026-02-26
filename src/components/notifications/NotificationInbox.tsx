@@ -51,7 +51,7 @@ const NotificationInbox: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-white/90">
+      <Card className="bg-card shadow-md">
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-[#737373]">
             <div className="flex items-center gap-2">
