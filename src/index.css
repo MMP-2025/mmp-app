@@ -32,11 +32,11 @@
     --sidebar-accent-foreground: 0 0% 45%;
     --sidebar-border: 0 0% 45%;
     --sidebar-ring: 0 0% 45%;
-    --mental-gray: 204, 198, 198;
-    --mental-peach: 250, 220, 214;
-    --mental-blue: 182, 209, 217;
-    --mental-beige: 229, 199, 181;
-    --mental-green: 174, 194, 155;
+    --mental-gray: 237, 235, 235;
+    --mental-peach: 253, 243, 241;
+    --mental-blue: 229, 239, 242;
+    --mental-beige: 246, 235, 229;
+    --mental-green: 227, 234, 220;
   }
 
   .dark {

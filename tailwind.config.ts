@@ -64,11 +64,11 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				mental: {
-					gray: '#CCC6C6',
-					peach: '#FADCD6',
-					blue: '#B6D1D9',
-					beige: '#E5C7B5',
-					green: '#AEC29B'
+					gray: '#EDEBEB',
+					peach: '#FDF3F1',
+					blue: '#E5EFF2',
+					beige: '#F6EBE5',
+					green: '#E3EADC'
 				}
 			},
 			fontFamily: {
