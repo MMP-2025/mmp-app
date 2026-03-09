@@ -358,9 +358,7 @@ const CommunityChallenges = () => {
       }}>
           Propose a new challenge and help others on their mental health journey.
         </p>
-        <Button className="bg-mental-green hover:bg-mental-green/80" onClick={() => toast.success('Thank you for your interest! Challenge proposals coming soon.')}>
-          Propose Challenge
-        </Button>
+        <ProposeChallengeDialog />
       </Card>
     </div>;
 };

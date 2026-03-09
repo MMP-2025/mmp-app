@@ -137,7 +137,7 @@ const MoodCardSelector: React.FC<MoodCardSelectorProps> = ({ onEmotionSelect, se
 
               <CollapsibleContent className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
                 <div className="pt-3 pb-1">
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {category.emotions.map((emotion) => {
                       const isEmotionSelected = selectedEmotion?.toLowerCase() === emotion.toLowerCase();
 
