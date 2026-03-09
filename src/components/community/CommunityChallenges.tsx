@@ -3,8 +3,78 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Trophy, Target, Users, Calendar, Timer, Star, Award, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
+
+const ProposeChallengeDialog = () => {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [duration, setDuration] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim() || !description.trim() || !category || !duration) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+    toast.success('Challenge proposal submitted! Our team will review it shortly.');
+    setTitle('');
+    setDescription('');
+    setCategory('');
+    setDuration('');
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-mental-green hover:bg-mental-green/80">
+          Propose Challenge
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-white">
+        <DialogHeader>
+          <DialogTitle>Propose a Community Challenge</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label>Challenge Title</Label>
+            <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g., 7-Day Gratitude Sprint" />
+          </div>
+          <div>
+            <Label>Description</Label>
+            <Textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Describe the challenge and its goals..." />
+          </div>
+          <div>
+            <Label>Category</Label>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectItem value="mindfulness">Mindfulness</SelectItem>
+                <SelectItem value="gratitude">Gratitude</SelectItem>
+                <SelectItem value="mood">Mood Tracking</SelectItem>
+                <SelectItem value="physical">Physical Wellness</SelectItem>
+                <SelectItem value="social">Social Connection</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Duration (days)</Label>
+            <Input type="number" value={duration} onChange={e => setDuration(e.target.value)} placeholder="e.g., 7" min="1" max="90" />
+          </div>
+          <Button type="submit" className="w-full bg-mental-green hover:bg-mental-green/80">Submit Proposal</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
 interface Challenge {
   id: string;
   title: string;
