@@ -101,48 +101,31 @@ const AppContent = () => {
                   <SupportToolkitPage />
                 </PageWrapper>
               } />
+              <Route path="/community" element={
+                <PageWrapper backgroundColor="bg-mental-blue">
+                  <CommunityPage />
+                </PageWrapper>
+              } />
               {!isGuest ? (
-                <>
-                  <Route path="/profile" element={
-                    <PageWrapper backgroundColor="bg-mental-gray">
-                      <ProfilePage />
-                    </PageWrapper>
-                  } />
-                  <Route path="/community" element={
-                    <PageWrapper backgroundColor="bg-mental-blue">
-                      <CommunityPage />
-                    </PageWrapper>
-                  } />
-                </>
+                <Route path="/profile" element={
+                  <PageWrapper backgroundColor="bg-mental-gray">
+                    <ProfilePage />
+                  </PageWrapper>
+                } />
               ) : (
-                <>
-                  <Route path="/profile" element={
-                    <GuestUpgradePrompt 
-                      featureName="Personal Profile"
-                      description="Create and manage your personalized wellness profile"
-                      features={[
-                        "Save your preferences and settings",
-                        "Track your progress over time",
-                        "Personalized recommendations",
-                        "Custom reminders and goals",
-                        "Data backup and synchronization"
-                      ]}
-                    />
-                  } />
-                  <Route path="/community" element={
-                    <GuestUpgradePrompt 
-                      featureName="Community Features"
-                      description="Connect with others on their wellness journey"
-                      features={[
-                        "Join supportive community groups",
-                        "Share experiences safely and anonymously",
-                        "Participate in wellness challenges",
-                        "Access peer support networks",
-                        "Connect with mental health professionals"
-                      ]}
-                    />
-                  } />
-                </>
+                <Route path="/profile" element={
+                  <GuestUpgradePrompt 
+                    featureName="Personal Profile"
+                    description="Create and manage your personalized wellness profile"
+                    features={[
+                      "Save your preferences and settings",
+                      "Track your progress over time",
+                      "Personalized recommendations",
+                      "Custom reminders and goals",
+                      "Data backup and synchronization"
+                    ]}
+                  />
+                } />
               )}
               <Route path="/provider-dashboard" element={
                 <ProtectedRoute requiredRole="provider">
