@@ -130,7 +130,7 @@ const LoginForm = () => {
             <Button 
               onClick={handleGuestAccess}
               variant="outline"
-              className="w-full py-6 text-lg border-2 border-mental-green bg-mental-green/10 hover:bg-mental-green/20 text-mental-green font-medium rounded-xl"
+              className="w-full py-6 text-lg border-2 border-accent bg-accent/20 hover:bg-accent/30 text-foreground font-medium rounded-xl"
             >
               Continue as Guest
             </Button>
@@ -183,7 +183,7 @@ const LoginForm = () => {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base text-white bg-mental-blue hover:bg-mental-blue/90">
+                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base text-primary-foreground bg-primary hover:bg-primary/90">
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
               </form>
@@ -237,7 +237,7 @@ const LoginForm = () => {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-mental-blue text-white hover:bg-mental-blue/90">
+                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-primary text-primary-foreground hover:bg-primary/90">
                   {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </form>

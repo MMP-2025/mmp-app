@@ -310,4 +310,18 @@
   .text-destructive {
     color: hsl(var(--destructive));
   }
+
+  /* Ensure buttons with muted brand backgrounds use dark text for readability */
+  button.bg-mental-blue,
+  button.bg-mental-green,
+  button.bg-mental-peach,
+  button.bg-mental-beige,
+  button.bg-mental-gray,
+  [role="button"].bg-mental-blue,
+  [role="button"].bg-mental-green,
+  [role="button"].bg-mental-peach,
+  [role="button"].bg-mental-beige,
+  [role="button"].bg-mental-gray {
+    color: hsl(var(--foreground)) !important;
+  }
 }
