@@ -115,8 +115,8 @@ const MoodCardSelector: React.FC<MoodCardSelectorProps> = ({ onEmotionSelect, se
               open={isOpen}
               onOpenChange={() => handleCategoryClick(category.name)}
               className={cn(
-                "col-span-1",
-                category.name === 'neutral' && "col-span-2"
+                isOpen ? "col-span-2" : "col-span-1",
+                category.name === 'neutral' && !isOpen && "col-span-2"
               )}
             >
               <CollapsibleTrigger asChild>
