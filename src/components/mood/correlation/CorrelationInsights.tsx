@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -108,12 +107,12 @@ const CorrelationInsights: React.FC<CorrelationInsightsProps> = ({ moodHistory }
 
   return (
     <Card className="p-6 bg-mental-blue/20">
-      <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Key Insights</h3>
+      <h3 className="text-lg font-semibold mb-4 text-foreground">Key Insights</h3>
       <div className="space-y-2">
         {insights.map((insight, index) => (
           <div key={index} className="flex items-start gap-2">
             <Badge variant="outline" className="mt-1">💡</Badge>
-            <p className="text-sm" style={{color: '#737373'}}>{insight}</p>
+            <p className="text-sm text-muted-foreground">{insight}</p>
           </div>
         ))}
       </div>

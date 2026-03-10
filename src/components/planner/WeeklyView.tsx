@@ -8,15 +8,12 @@ interface WeeklyViewProps {
 }
 
 export const WeeklyView: React.FC<WeeklyViewProps> = ({ selectedDate, events }) => {
-  // Get the start of the week for the selected date
   const startDate = startOfWeek(selectedDate, { weekStartsOn: 0 });
-  
-  // Generate array of days in the week
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(startDate, i));
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-medium" style={{color: '#737373'}}>
+      <h3 className="text-xl font-medium text-foreground">
         Week of {format(startDate, 'MMMM d, yyyy')}
       </h3>
       
@@ -31,8 +28,8 @@ export const WeeklyView: React.FC<WeeklyViewProps> = ({ selectedDate, events }) 
               <div className={`text-center p-2 rounded-md ${
                 day.toDateString() === new Date().toDateString() 
                   ? 'bg-mental-blue font-bold text-white' 
-                  : 'bg-muted/30'
-              }`} style={day.toDateString() !== new Date().toDateString() ? {color: '#737373'} : {}}>
+                  : 'bg-muted/30 text-foreground'
+              }`}>
                 <div>{format(day, 'EEE')}</div>
                 <div>{format(day, 'd')}</div>
               </div>
@@ -41,18 +38,18 @@ export const WeeklyView: React.FC<WeeklyViewProps> = ({ selectedDate, events }) 
                 {dayEvents.length > 0 ? (
                   <div className="space-y-1 text-xs">
                     {dayEvents.slice(0, 3).map(event => (
-                      <div key={event.id} className="bg-mental-blue/20 p-1 rounded truncate" style={{color: '#737373'}}>
+                      <div key={event.id} className="bg-mental-blue/20 p-1 rounded truncate text-muted-foreground">
                         {event.time} - {event.title}
                       </div>
                     ))}
                     {dayEvents.length > 3 && (
-                      <div className="text-center" style={{color: '#737373'}}>
+                      <div className="text-center text-muted-foreground">
                         +{dayEvents.length - 3} more
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="text-center text-xs italic mt-2" style={{color: '#737373'}}>
+                  <div className="text-center text-xs italic mt-2 text-muted-foreground">
                     No events
                   </div>
                 )}

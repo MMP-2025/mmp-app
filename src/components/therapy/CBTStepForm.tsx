@@ -51,7 +51,7 @@ export const CBTStepForm: React.FC<CBTStepFormProps> = ({ step, sessionData, onU
 
   return (
     <div>
-      <Label className="mb-2 block" style={{color: '#737373'}}>
+      <Label className="mb-2 block text-muted-foreground">
         {config.label}
       </Label>
       <Textarea

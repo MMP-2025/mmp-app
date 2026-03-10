@@ -18,7 +18,7 @@ interface PredictionsListProps {
 const PredictionsList: React.FC<PredictionsListProps> = ({ predictions }) => {
   if (predictions.length === 0) {
     return (
-      <p style={{color: '#737373'}}>
+      <p className="text-muted-foreground">
         No strong patterns detected yet. Continue tracking to improve prediction accuracy.
       </p>
     );

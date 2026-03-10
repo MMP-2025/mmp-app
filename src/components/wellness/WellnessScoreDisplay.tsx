@@ -32,14 +32,14 @@ export const WellnessScoreDisplay: React.FC<WellnessScoreDisplayProps> = ({ scor
           {score} Points
         </div>
       </div>
-      <div className="text-lg font-medium mb-2" style={{color: '#737373'}}>
+      <div className="text-lg font-medium mb-2 text-foreground">
         {getScoreMessage(score)}
       </div>
-      <div className="text-sm mb-4" style={{color: '#737373'}}>
+      <div className="text-sm mb-4 text-muted-foreground">
         You've earned points for your wellness activities
       </div>
       <Progress value={Math.min(score, 100)} className="w-48 mx-auto" />
-      <p className="text-sm text-gray-500 mt-2">
+      <p className="text-sm text-muted-foreground mt-2">
         Last updated: {new Date(calculatedAt).toLocaleDateString()}
       </p>
     </div>
