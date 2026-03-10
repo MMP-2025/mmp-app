@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: 10 78% 91%;
-    --foreground: 0 4% 27%;
+    --foreground: 0 0% 27%;
     --card: 0 0% 100%;
     --card-foreground: 0 4% 27%;
     --popover: 194 32% 78%;
