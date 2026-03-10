@@ -119,7 +119,7 @@ const LoginForm = () => {
   return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
       <Card className="w-full max-w-md shadow-lg border-0">
         <CardHeader className="bg-white/80 rounded-t-lg">
-          <CardTitle className="text-2xl text-center text-mental-blue font-semibold">
+          <CardTitle className="text-2xl text-center font-semibold" style={{ color: '#444' }}>
             Making Meaning Psychology
           </CardTitle>
           <p className="text-center text-gray-600">Welcome to your mental wellness journey</p>
