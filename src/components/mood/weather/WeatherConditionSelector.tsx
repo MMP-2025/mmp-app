@@ -30,7 +30,7 @@ const WeatherConditionSelector: React.FC<WeatherConditionSelectorProps> = ({
 
   return (
     <div>
-      <Label className="text-sm font-medium" style={{color: '#737373'}}>
+      <Label className="text-sm font-medium text-muted-foreground">
         Weather Condition
       </Label>
       <Select

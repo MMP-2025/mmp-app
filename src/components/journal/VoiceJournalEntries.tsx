@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -131,7 +130,6 @@ const VoiceJournalEntries: React.FC = () => {
       
       mediaRecorderRef.current.start();
       
-      // Start speech recognition if supported
       if (speechSupported && recognitionRef.current) {
         recognitionRef.current.start();
       }
@@ -143,7 +141,6 @@ const VoiceJournalEntries: React.FC = () => {
         duration: 0
       }));
       
-      // Start duration timer
       intervalRef.current = setInterval(() => {
         setRecordingState(prev => ({
           ...prev,
@@ -216,7 +213,6 @@ const VoiceJournalEntries: React.FC = () => {
     setEntries(updatedEntries);
     StorageManager.save('voice_journal_entries', updatedEntries);
 
-    // Reset form
     setCurrentTitle('');
     setCurrentTranscript('');
     setCurrentTags('');
@@ -257,11 +253,11 @@ const VoiceJournalEntries: React.FC = () => {
     <div className="space-y-6">
       <Card className="p-6 bg-white/90">
         <div className="flex items-center gap-2 mb-4">
-          <Mic className="h-5 w-5" style={{color: '#737373'}} />
-          <h3 className="text-xl font-semibold" style={{color: '#737373'}}>Voice Journal Entries</h3>
+          <Mic className="h-5 w-5 text-muted-foreground" />
+          <h3 className="text-xl font-semibold text-foreground">Voice Journal Entries</h3>
         </div>
         
-        <p className="mb-4" style={{color: '#737373'}}>
+        <p className="mb-4 text-muted-foreground">
           Record your thoughts with voice and automatically transcribe them to text
         </p>
 
@@ -273,13 +269,12 @@ const VoiceJournalEntries: React.FC = () => {
           </div>
         )}
 
-        {/* Recording Interface */}
         <Card className="p-4 mb-6 bg-mental-peach/20">
-          <h4 className="font-semibold mb-4" style={{color: '#737373'}}>New Voice Entry</h4>
+          <h4 className="font-semibold mb-4 text-foreground">New Voice Entry</h4>
           
           <div className="space-y-4">
             <div>
-              <Label className="mb-2 block" style={{color: '#737373'}}>Title (Optional)</Label>
+              <Label className="mb-2 block text-muted-foreground">Title (Optional)</Label>
               <input
                 type="text"
                 placeholder="Give your entry a title..."
@@ -299,7 +294,7 @@ const VoiceJournalEntries: React.FC = () => {
                   >
                     <Mic className="h-6 w-6" />
                   </Button>
-                  <p className="text-sm" style={{color: '#737373'}}>
+                  <p className="text-sm text-muted-foreground">
                     Click to start recording
                   </p>
                 </div>
@@ -315,7 +310,7 @@ const VoiceJournalEntries: React.FC = () => {
                   <p className="text-sm font-semibold text-red-600 mb-2">
                     Recording... {formatDuration(recordingState.duration)}
                   </p>
-                  <p className="text-xs" style={{color: '#737373'}}>
+                  <p className="text-xs text-muted-foreground">
                     Click to stop recording
                   </p>
                 </div>
@@ -331,14 +326,14 @@ const VoiceJournalEntries: React.FC = () => {
                 >
                   {isPlaying === 'preview' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                 </Button>
-                <span className="text-sm" style={{color: '#737373'}}>
+                <span className="text-sm text-muted-foreground">
                   Preview Recording ({formatDuration(recordingState.duration)})
                 </span>
               </div>
             )}
 
             <div>
-              <Label className="mb-2 block" style={{color: '#737373'}}>
+              <Label className="mb-2 block text-muted-foreground">
                 Transcript {speechSupported ? '(Auto-generated)' : '(Manual)'}
               </Label>
               <Textarea
@@ -350,7 +345,7 @@ const VoiceJournalEntries: React.FC = () => {
             </div>
 
             <div>
-              <Label className="mb-2 block" style={{color: '#737373'}}>Tags (comma-separated)</Label>
+              <Label className="mb-2 block text-muted-foreground">Tags (comma-separated)</Label>
               <input
                 type="text"
                 placeholder="reflection, gratitude, goals..."
@@ -371,19 +366,18 @@ const VoiceJournalEntries: React.FC = () => {
           </div>
         </Card>
 
-        {/* Entries List */}
         <div>
-          <h4 className="font-semibold mb-4" style={{color: '#737373'}}>Your Voice Entries</h4>
+          <h4 className="font-semibold mb-4 text-foreground">Your Voice Entries</h4>
           {entries.length === 0 ? (
-            <p style={{color: '#737373'}}>No voice entries yet. Start recording to create your first entry!</p>
+            <p className="text-muted-foreground">No voice entries yet. Start recording to create your first entry!</p>
           ) : (
             <div className="space-y-3">
               {entries.map(entry => (
                 <div key={entry.id} className="border rounded-lg p-4 bg-mental-peach/10">
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h5 className="font-semibold" style={{color: '#737373'}}>{entry.title}</h5>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <h5 className="font-semibold text-foreground">{entry.title}</h5>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <span>{formatDate(entry.timestamp)}</span>
                         <Badge variant="outline" className="text-xs">
                           Voice Entry
@@ -417,7 +411,7 @@ const VoiceJournalEntries: React.FC = () => {
 
                   {entry.transcript && (
                     <div className="mb-3">
-                      <p className="text-sm leading-relaxed" style={{color: '#737373'}}>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
                         {entry.transcript}
                       </p>
                     </div>

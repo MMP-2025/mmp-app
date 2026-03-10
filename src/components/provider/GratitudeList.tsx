@@ -20,26 +20,26 @@ const GratitudeList: React.FC<GratitudeListProps> = ({ gratitudePrompts, onDelet
   return (
     <Card className="bg-mental-blue">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2" style={{color: '#737373'}}>
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Heart className="h-5 w-5" />
           Saved Gratitude Prompts ({gratitudePrompts.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
         {gratitudePrompts.length === 0 ? (
-          <p className="text-center py-8" style={{color: '#737373'}}>No gratitude prompts added yet</p>
+          <p className="text-center py-8 text-muted-foreground">No gratitude prompts added yet</p>
         ) : (
           <div className="space-y-3">
             {gratitudePrompts.map(prompt => (
               <div key={prompt.id} className="p-4 border rounded-lg bg-mental-peach/30">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="mb-2" style={{color: '#737373'}}>{prompt.prompt}</p>
+                    <p className="mb-2 text-foreground">{prompt.prompt}</p>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="px-2 py-1 bg-mental-green/50 rounded-full text-xs" style={{color: '#737373'}}>
+                      <span className="px-2 py-1 bg-mental-green/50 rounded-full text-xs text-foreground">
                         {prompt.category}
                       </span>
-                      <span className="px-2 py-1 bg-mental-beige/50 rounded-full text-xs" style={{color: '#737373'}}>
+                      <span className="px-2 py-1 bg-mental-beige/50 rounded-full text-xs text-foreground">
                         {prompt.difficulty}
                       </span>
                     </div>

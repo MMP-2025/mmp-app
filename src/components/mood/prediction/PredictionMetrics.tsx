@@ -39,10 +39,10 @@ const PredictionMetrics: React.FC<PredictionMetricsProps> = ({ metrics }) => {
         return (
           <Card key={index} className="p-4 bg-white/90">
             <div className="flex items-center justify-between mb-2">
-              <h4 className="font-medium" style={{color: '#737373'}}>{metric.label}</h4>
+              <h4 className="font-medium text-foreground">{metric.label}</h4>
               <TrendIcon className={`h-4 w-4 ${getTrendColor(metric.trend)}`} />
             </div>
-            <div className="text-lg font-bold mb-2" style={{color: '#737373'}}>
+            <div className="text-lg font-bold mb-2 text-foreground">
               {metric.value}
             </div>
             <Badge variant="outline" className="text-xs">

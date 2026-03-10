@@ -14,7 +14,7 @@ interface MindfulnessSession {
 
 interface MindfulnessProgressTrackerProps {
   sessions: MindfulnessSession[];
-  weeklyGoal: number; // minutes
+  weeklyGoal: number;
 }
 
 const MindfulnessProgressTracker: React.FC<MindfulnessProgressTrackerProps> = ({
@@ -37,17 +37,16 @@ const MindfulnessProgressTracker: React.FC<MindfulnessProgressTrackerProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Weekly Progress */}
       <Card className="p-6 bg-mental-green">
         <div className="flex items-center gap-2 mb-4">
-          <Target className="h-5 w-5" style={{color: '#737373'}} />
-          <h3 className="text-lg font-semibold" style={{color: '#737373'}}>Weekly Goal Progress</h3>
+          <Target className="h-5 w-5 text-muted-foreground" />
+          <h3 className="text-lg font-semibold text-foreground">Weekly Goal Progress</h3>
         </div>
         
         <div className="mb-4">
           <div className="flex justify-between mb-2">
-            <span style={{color: '#737373'}}>{thisWeekMinutes} / {weeklyGoal} minutes</span>
-            <span style={{color: '#737373'}}>{Math.round(progressPercentage)}%</span>
+            <span className="text-muted-foreground">{thisWeekMinutes} / {weeklyGoal} minutes</span>
+            <span className="text-muted-foreground">{Math.round(progressPercentage)}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div 
@@ -64,38 +63,36 @@ const MindfulnessProgressTracker: React.FC<MindfulnessProgressTrackerProps> = ({
         )}
       </Card>
 
-      {/* Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="p-4 bg-white/90 text-center">
-          <TrendingUp className="h-6 w-6 mx-auto mb-2" style={{color: '#737373'}} />
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{streak}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Day Streak</div>
+          <TrendingUp className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+          <div className="text-2xl font-bold text-foreground">{streak}</div>
+          <div className="text-sm text-muted-foreground">Day Streak</div>
         </Card>
         
         <Card className="p-4 bg-white/90 text-center">
-          <Calendar className="h-6 w-6 mx-auto mb-2" style={{color: '#737373'}} />
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{totalSessions}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Total Sessions</div>
+          <Calendar className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+          <div className="text-2xl font-bold text-foreground">{totalSessions}</div>
+          <div className="text-sm text-muted-foreground">Total Sessions</div>
         </Card>
         
         <Card className="p-4 bg-white/90 text-center">
-          <Clock className="h-6 w-6 mx-auto mb-2" style={{color: '#737373'}} />
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{averageSessionLength}</div>
-          <div className="text-sm" style={{color: '#737373'}}>Avg Length (min)</div>
+          <Clock className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+          <div className="text-2xl font-bold text-foreground">{averageSessionLength}</div>
+          <div className="text-sm text-muted-foreground">Avg Length (min)</div>
         </Card>
         
         <Card className="p-4 bg-white/90 text-center">
-          <Target className="h-6 w-6 mx-auto mb-2" style={{color: '#737373'}} />
-          <div className="text-2xl font-bold" style={{color: '#737373'}}>{thisWeekSessions.length}</div>
-          <div className="text-sm" style={{color: '#737373'}}>This Week</div>
+          <Target className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+          <div className="text-2xl font-bold text-foreground">{thisWeekSessions.length}</div>
+          <div className="text-sm text-muted-foreground">This Week</div>
         </Card>
       </div>
 
-      {/* Recent Sessions */}
       <Card className="p-6 bg-white/90">
-        <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Recent Sessions</h3>
+        <h3 className="text-lg font-semibold mb-4 text-foreground">Recent Sessions</h3>
         {thisWeekSessions.length === 0 ? (
-          <p style={{color: '#737373'}}>No sessions this week. Start your mindfulness practice!</p>
+          <p className="text-muted-foreground">No sessions this week. Start your mindfulness practice!</p>
         ) : (
           <div className="space-y-3">
             {thisWeekSessions.slice(0, 5).map(session => (
@@ -105,16 +102,16 @@ const MindfulnessProgressTracker: React.FC<MindfulnessProgressTrackerProps> = ({
                     {session.type === 'meditation' ? '🧘' : session.type === 'breathing' ? '🫁' : '✨'}
                   </Badge>
                   <div>
-                    <div className="font-medium" style={{color: '#737373'}}>
+                    <div className="font-medium text-foreground">
                       {session.type.charAt(0).toUpperCase() + session.type.slice(1).replace('_', ' ')}
                     </div>
-                    <div className="text-sm" style={{color: '#737373'}}>
+                    <div className="text-sm text-muted-foreground">
                       {new Date(session.completedAt).toLocaleDateString()}
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-medium" style={{color: '#737373'}}>{session.duration} min</div>
+                  <div className="font-medium text-foreground">{session.duration} min</div>
                   {session.quality && (
                     <Badge 
                       variant={session.quality === 'excellent' ? 'default' : 'outline'}

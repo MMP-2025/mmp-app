@@ -37,7 +37,6 @@ const AccessibilityToolbar = () => {
 
   return (
     <>
-      {/* Accessibility Button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-4 z-40 bg-mental-blue hover:bg-mental-blue/80 p-3 rounded-full shadow-lg"
@@ -46,11 +45,10 @@ const AccessibilityToolbar = () => {
         <Accessibility className="h-5 w-5" />
       </Button>
 
-      {/* Accessibility Panel */}
       {isOpen && (
         <Card className="fixed bottom-20 right-4 z-40 p-4 w-80 max-h-[70vh] overflow-y-auto bg-mental-peach shadow-xl">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold flex items-center gap-2" style={{color: '#737373'}}>
+            <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground">
               <Settings className="h-5 w-5" />
               Accessibility Options
             </h3>
@@ -65,11 +63,10 @@ const AccessibilityToolbar = () => {
           </div>
 
           <div className="space-y-4">
-            {/* High Contrast */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Eye className="h-4 w-4" style={{color: '#737373'}} />
-                <span className="text-sm" style={{color: '#737373'}}>High Contrast</span>
+                <Eye className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">High Contrast</span>
               </div>
               <Switch
                 checked={settings.highContrast}
@@ -78,11 +75,10 @@ const AccessibilityToolbar = () => {
               />
             </div>
 
-            {/* Font Size */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Type className="h-4 w-4" style={{color: '#737373'}} />
-                <span className="text-sm" style={{color: '#737373'}}>Font Size</span>
+                <Type className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Font Size</span>
                 <Badge variant="secondary" className="text-xs">
                   {fontSizeLabels[settings.fontSize]}
                 </Badge>
@@ -109,9 +105,8 @@ const AccessibilityToolbar = () => {
               </div>
             </div>
 
-            {/* Reduced Motion */}
             <div className="flex items-center justify-between">
-              <span className="text-sm" style={{color: '#737373'}}>Reduced Motion</span>
+              <span className="text-sm text-muted-foreground">Reduced Motion</span>
               <Switch
                 checked={settings.reducedMotion}
                 onCheckedChange={(checked) => updateSetting('reducedMotion', checked)}
@@ -119,11 +114,10 @@ const AccessibilityToolbar = () => {
               />
             </div>
 
-            {/* Screen Reader Announcements */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Volume2 className="h-4 w-4" style={{color: '#737373'}} />
-                <span className="text-sm" style={{color: '#737373'}}>Screen Reader</span>
+                <Volume2 className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Screen Reader</span>
               </div>
               <Switch
                 checked={settings.screenReaderAnnouncements}
@@ -132,11 +126,10 @@ const AccessibilityToolbar = () => {
               />
             </div>
 
-            {/* Keyboard Navigation */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Keyboard className="h-4 w-4" style={{color: '#737373'}} />
-                <span className="text-sm" style={{color: '#737373'}}>Keyboard Navigation</span>
+                <Keyboard className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Keyboard Navigation</span>
               </div>
               <Switch
                 checked={settings.keyboardNavigation}
@@ -145,11 +138,10 @@ const AccessibilityToolbar = () => {
               />
             </div>
 
-            {/* Voice Control */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Mic className="h-4 w-4" style={{color: '#737373'}} />
-                <span className="text-sm" style={{color: '#737373'}}>Voice Control</span>
+                <Mic className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Voice Control</span>
               </div>
               <Switch
                 checked={settings.voiceControl}
@@ -159,10 +151,9 @@ const AccessibilityToolbar = () => {
             </div>
           </div>
 
-          {/* Keyboard Shortcuts Info */}
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <h4 className="text-sm font-medium mb-2" style={{color: '#737373'}}>Keyboard Shortcuts</h4>
-            <div className="text-xs space-y-1" style={{color: '#737373'}}>
+          <div className="mt-4 pt-4 border-t border-border">
+            <h4 className="text-sm font-medium mb-2 text-foreground">Keyboard Shortcuts</h4>
+            <div className="text-xs space-y-1 text-muted-foreground">
               <div>Alt + H: Toggle high contrast</div>
               <div>Ctrl + +: Increase font size</div>
               <div>Ctrl + -: Decrease font size</div>

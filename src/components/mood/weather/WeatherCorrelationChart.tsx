@@ -31,15 +31,15 @@ const WeatherCorrelationChart: React.FC<WeatherCorrelationChartProps> = ({ corre
 
   return (
     <Card className="p-6 bg-white/90">
-      <h4 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Weather-Mood Correlations</h4>
+      <h4 className="text-lg font-semibold mb-4 text-foreground">Weather-Mood Correlations</h4>
       <div className="space-y-3">
         {correlations.map(({ condition, averageMood, count }) => {
           const IconComponent = weatherIcons[condition as keyof typeof weatherIcons];
           return (
             <div key={condition} className="flex items-center justify-between p-3 bg-mental-peach/20 rounded">
               <div className="flex items-center gap-3">
-                <IconComponent className="h-5 w-5" style={{color: '#737373'}} />
-                <span className="capitalize font-medium" style={{color: '#737373'}}>{condition}</span>
+                <IconComponent className="h-5 w-5 text-muted-foreground" />
+                <span className="capitalize font-medium text-foreground">{condition}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="text-xs">{count} entries</Badge>
