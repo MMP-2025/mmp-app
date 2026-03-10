@@ -46,7 +46,7 @@ const FactorAnalysisDisplay: React.FC<FactorAnalysisDisplayProps> = ({ moodHisto
 
   return (
     <Card className="p-6 bg-white/90">
-      <h3 className="text-lg font-semibold mb-4" style={{color: '#737373'}}>Factor Impact Analysis</h3>
+      <h3 className="text-lg font-semibold mb-4 text-foreground">Factor Impact Analysis</h3>
       <div className="space-y-3">
         {factorAnalysis.map((factor, index) => (
           <div key={factor.factor} className="flex items-center justify-between p-3 bg-mental-peach/20 rounded-md">
@@ -56,15 +56,15 @@ const FactorAnalysisDisplay: React.FC<FactorAnalysisDisplayProps> = ({ moodHisto
               >
                 {factor.factor}
               </Badge>
-              <span className="text-sm" style={{color: '#737373'}}>
+              <span className="text-sm text-muted-foreground">
                 {factor.frequency} occurrences
               </span>
             </div>
             <div className="text-right">
-              <div className="font-medium" style={{color: '#737373'}}>
+              <div className="font-medium text-foreground">
                 {factor.avgIntensity.toFixed(1)} avg
               </div>
-              <div className="text-xs" style={{color: '#737373'}}>
+              <div className="text-xs text-muted-foreground">
                 {factor.impact} impact
               </div>
             </div>

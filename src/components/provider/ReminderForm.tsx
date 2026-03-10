@@ -20,14 +20,16 @@ interface ReminderFormProps {
   }>>;
   onAddReminder: () => void;
 }
+
 const ReminderForm: React.FC<ReminderFormProps> = ({
   newReminder,
   setNewReminder,
   onAddReminder
 }) => {
-  return <Card className="bg-mental-blue">
+  return (
+    <Card className="bg-mental-blue">
       <CardHeader className="bg-mental-blue">
-        <CardTitle className="flex items-center gap-2 text-[#7e868b]">
+        <CardTitle className="flex items-center gap-2 text-foreground">
           <Plus className="h-5 w-5" />
           Add New Reminder
         </CardTitle>
@@ -48,7 +50,7 @@ const ReminderForm: React.FC<ReminderFormProps> = ({
               ...prev,
               frequency: e.target.value as Reminder['frequency']
             }))} 
-            className="p-2 border border-gray-300 rounded-md"
+            className="p-2 border border-gray-300 rounded-md text-foreground"
           >
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
@@ -64,8 +66,10 @@ const ReminderForm: React.FC<ReminderFormProps> = ({
             }))} 
           />
         </div>
-        <Button onClick={onAddReminder} className="bg-mental-gray">Add Reminder</Button>
+        <Button onClick={onAddReminder} className="bg-mental-gray text-foreground">Add Reminder</Button>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
+
 export default ReminderForm;
