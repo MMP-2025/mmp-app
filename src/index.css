@@ -5,15 +5,15 @@
 @layer base {
   :root {
     --background: 10 78% 91%;
-    --foreground: 0 4% 27%;
+    --foreground: 0 0% 27%;
     --card: 0 0% 100%;
-    --card-foreground: 0 4% 27%;
+    --card-foreground: 0 0% 27%;
     --popover: 194 32% 78%;
     --popover-foreground: 0 0% 45%;
     --primary: 194 32% 78%;
     --primary-foreground: 0 0% 100%;
     --secondary: 22 48% 80%;
-    --secondary-foreground: 0 4% 27%;
+    --secondary-foreground: 0 0% 27%;
     --muted: 0 6% 79%;
     --muted-foreground: 0 0% 45%;
     --accent: 91 24% 68%;
@@ -71,18 +71,18 @@
 
   html {
     font-family: 'Sora', sans-serif;
-    color: rgb(var(--foreground));
+    color: #444;
     background-color: rgb(var(--background));
   }
 
   body {
-    color: rgb(var(--foreground));
+    color: #444;
     background-color: rgb(var(--background));
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Marmelad', serif;
-    color: rgb(var(--foreground));
+    font-family: 'Merriweather', serif;
+    color: #444;
   }
 
   .sr-only {
