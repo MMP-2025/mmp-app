@@ -71,12 +71,12 @@
 
   html {
     font-family: 'Sora', sans-serif;
-    color: rgb(var(--foreground));
+    color: #444;
     background-color: rgb(var(--background));
   }
 
   body {
-    color: rgb(var(--foreground));
+    color: #444;
     background-color: rgb(var(--background));
   }
 

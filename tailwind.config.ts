@@ -73,7 +73,7 @@ export default {
 			},
 			fontFamily: {
 				sans: ['Sora', 'sans-serif'],
-				marmelad: ['Marmelad', 'serif']
+				merriweather: ['Merriweather', 'serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
