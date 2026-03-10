@@ -231,10 +231,16 @@
     border: 1px solid #555 !important;
   }
 
-  [data-state="open"], [data-state="checked"], [data-highlighted] {
+  [data-state="open"], [data-state="checked"], [data-highlighted],
+  [data-state="active"], [aria-selected="true"] {
     background-color: rgb(var(--mental-blue)) !important;
     color: #444 !important;
     border: 1px solid #555 !important;
+  }
+
+  [data-state="open"] *, [data-state="checked"] *, [data-highlighted] *,
+  [data-state="active"] *, [aria-selected="true"] * {
+    color: #444 !important;
   }
 
   .bg-white:hover, .bg-white:focus {
