@@ -274,6 +274,13 @@
   .bg-blue-500 {
     background-color: hsl(var(--primary)) !important;
   }
+
+
+  /* Override light gray/neutral text classes for readability */
+  .text-gray-400, .text-neutral-400 { color: #555 !important; }
+  .text-gray-500, .text-neutral-500 { color: #555 !important; }
+  .text-gray-600, .text-neutral-600 { color: #444 !important; }
+  .text-gray-700, .text-neutral-700 { color: #444 !important; }
 }
 
 @layer utilities {
