@@ -149,8 +149,8 @@ const LoginForm = () => {
 
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-mental-peach/50">
-              <TabsTrigger value="login" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
-              <TabsTrigger value="register" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Sign Up</TabsTrigger>
+              <TabsTrigger value="login" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
+              <TabsTrigger value="register" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Sign Up</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
@@ -183,7 +183,7 @@ const LoginForm = () => {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base text-primary-foreground bg-primary hover:bg-primary/90">
+                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base text-foreground bg-mental-blue hover:bg-mental-blue/80 border border-input">
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
               </form>
@@ -237,7 +237,7 @@ const LoginForm = () => {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-mental-blue text-foreground hover:bg-mental-blue/80 border border-input">
                   {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </form>
