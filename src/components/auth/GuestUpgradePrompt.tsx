@@ -51,7 +51,7 @@ const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, de
             <div className="flex flex-col gap-3">
               <Button 
                 onClick={handleCreateAccount}
-                className="w-full bg-mental-blue hover:bg-mental-blue/80 text-white font-medium py-3"
+                className="w-full bg-mental-blue hover:bg-mental-blue/80 text-foreground font-medium py-3"
               >
                 Schedule a Consultation
               </Button>

@@ -52,15 +52,15 @@ const MindfulnessPage = () => {
 
       <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
         <TabsList className={`grid w-full ${isGuest ? 'grid-cols-2' : 'grid-cols-3'} bg-mental-peach/50`}>
-          <TabsTrigger value="exercises" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">
+          <TabsTrigger value="exercises" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">
             <Brain className="h-4 w-4" />
             Exercises
           </TabsTrigger>
-          <TabsTrigger value="breathing" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">
+          <TabsTrigger value="breathing" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">
             <Activity className="h-4 w-4" />
             Breathing
           </TabsTrigger>
-          {!isGuest && <TabsTrigger value="progress" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">
+          {!isGuest && <TabsTrigger value="progress" className="flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">
               <Activity className="h-4 w-4" />
               Progress
             </TabsTrigger>}

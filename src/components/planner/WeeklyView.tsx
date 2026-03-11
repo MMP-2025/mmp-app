@@ -27,7 +27,7 @@ export const WeeklyView: React.FC<WeeklyViewProps> = ({ selectedDate, events }) 
             <div key={index} className="space-y-2">
               <div className={`text-center p-2 rounded-md ${
                 day.toDateString() === new Date().toDateString() 
-                  ? 'bg-mental-blue font-bold text-white' 
+                  ? 'bg-mental-blue font-bold text-foreground' 
                   : 'bg-muted/30 text-foreground'
               }`}>
                 <div>{format(day, 'EEE')}</div>

@@ -85,7 +85,7 @@ const WellnessScoreMini: React.FC = () => {
               onClick={calculateWellnessScore} 
               disabled={isCalculating}
               size="sm"
-              className="bg-mental-green hover:bg-mental-green/90 text-white"
+              className="bg-mental-green hover:bg-mental-green/90 text-foreground"
             >
               {isCalculating ? 'Calculating...' : 'Calculate'}
             </Button>

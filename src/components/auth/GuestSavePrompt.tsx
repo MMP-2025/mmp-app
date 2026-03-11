@@ -57,7 +57,7 @@ const GuestSavePrompt: React.FC<GuestSavePromptProps> = ({ isOpen, onClose, feat
         <AlertDialogFooter className="sm:flex-col gap-2">
           <AlertDialogAction
             onClick={handleCreateAccount}
-            className="w-full bg-mental-blue hover:bg-mental-blue/80 text-white"
+            className="w-full bg-mental-blue hover:bg-mental-blue/80 text-foreground"
           >
             Schedule a Consultation
           </AlertDialogAction>
