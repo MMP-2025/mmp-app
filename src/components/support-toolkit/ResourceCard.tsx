@@ -18,7 +18,7 @@ const categoryColors: {
   // mental-green
   template: 'bg-card/50 text-card-foreground',
   // mental-peach
-  reference: 'bg-primary/20 text-primary-foreground',
+  reference: 'bg-primary/20 text-foreground',
   // mental-beige
   default: 'bg-muted text-muted-foreground'
 };
