@@ -30,7 +30,7 @@ const GuestSavePrompt: React.FC<GuestSavePromptProps> = ({ isOpen, onClose, feat
       <AlertDialogContent className="sm:max-w-md">
         <AlertDialogHeader>
           <div className="mx-auto mb-2 w-12 h-12 bg-mental-blue rounded-full flex items-center justify-center">
-            <Crown className="h-6 w-6 text-white" />
+            <Crown className="h-6 w-6 text-foreground" />
           </div>
           <AlertDialogTitle className="text-center">
             Schedule a Consultation to Save
