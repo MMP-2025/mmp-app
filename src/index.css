@@ -239,7 +239,16 @@
   }
 
   [data-state="open"] *, [data-state="checked"] *, [data-highlighted] *,
-  [data-state="active"] *, [aria-selected="true"] * {
+  [data-state="active"] *, [aria-selected="true"] *,
+  [data-state="open"] .text-white, [data-state="checked"] .text-white,
+  [data-highlighted] .text-white, [data-state="active"] .text-white,
+  [aria-selected="true"] .text-white,
+  [data-state="open"] [class*="text-white"], [data-state="checked"] [class*="text-white"],
+  [data-highlighted] [class*="text-white"], [data-state="active"] [class*="text-white"],
+  [aria-selected="true"] [class*="text-white"],
+  [data-state="open"] .text-primary-foreground, [data-state="checked"] .text-primary-foreground,
+  [data-highlighted] .text-primary-foreground, [data-state="active"] .text-primary-foreground,
+  [aria-selected="true"] .text-primary-foreground {
     color: #444 !important;
   }
 
