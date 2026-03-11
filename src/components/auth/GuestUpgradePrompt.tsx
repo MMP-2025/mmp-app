@@ -22,7 +22,7 @@ const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, de
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 w-16 h-16 bg-mental-blue rounded-full flex items-center justify-center">
-            <Crown className="h-8 w-8 text-white" />
+            <Crown className="h-8 w-8 text-foreground" />
           </div>
           <CardTitle className="text-3xl font-bold text-gray-900">
             Unlock {featureName}
