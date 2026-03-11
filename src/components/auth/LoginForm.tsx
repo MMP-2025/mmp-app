@@ -237,7 +237,7 @@ const LoginForm = () => {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-mental-blue text-foreground hover:bg-mental-blue/80 border border-input">
                   {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </form>
