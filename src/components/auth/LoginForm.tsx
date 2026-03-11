@@ -149,8 +149,8 @@ const LoginForm = () => {
 
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-mental-peach/50">
-              <TabsTrigger value="login" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
-              <TabsTrigger value="register" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Sign Up</TabsTrigger>
+              <TabsTrigger value="login" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
+              <TabsTrigger value="register" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Sign Up</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
