@@ -99,7 +99,7 @@ const AIGeneratedAudios: React.FC<AIGeneratedAudiosProps> = ({
               {audio.description}
             </p>
             <div className="flex items-center gap-3">
-              <Button onClick={() => handlePlayPause(audio.id)} size="sm" className="flex items-center gap-2 bg-primary text-primary-foreground hover:opacity-90" disabled={!audio.audioUrl}>
+              <Button onClick={() => handlePlayPause(audio.id)} size="sm" className="flex items-center gap-2 bg-primary text-foreground hover:opacity-90" disabled={!audio.audioUrl}>
                 {playingAudio === audio.id ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                 {playingAudio === audio.id ? 'Pause' : (audio.audioUrl ? 'Play' : 'No audio')}
               </Button>

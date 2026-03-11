@@ -20,7 +20,7 @@ const TriggerPatternCard: React.FC<TriggerPatternCardProps> = ({ trigger }) => {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'high': return 'text-destructive bg-destructive/10 border-destructive/20';
-      case 'medium': return 'text-primary-foreground bg-primary/20 border-primary';
+      case 'medium': return 'text-foreground bg-primary/20 border-primary';
       case 'low': return 'text-secondary bg-secondary/10 border-secondary/20';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
