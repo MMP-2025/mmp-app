@@ -22,7 +22,7 @@ const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, de
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 w-16 h-16 bg-mental-blue rounded-full flex items-center justify-center">
-            <Crown className="h-8 w-8 text-white" />
+            <Crown className="h-8 w-8 text-foreground" />
           </div>
           <CardTitle className="text-3xl font-bold text-gray-900">
             Unlock {featureName}
@@ -51,7 +51,7 @@ const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, de
             <div className="flex flex-col gap-3">
               <Button 
                 onClick={handleCreateAccount}
-                className="w-full bg-mental-blue hover:bg-mental-blue/80 text-white font-medium py-3"
+                className="w-full bg-mental-blue hover:bg-mental-blue/80 text-foreground font-medium py-3"
               >
                 Schedule a Consultation
               </Button>

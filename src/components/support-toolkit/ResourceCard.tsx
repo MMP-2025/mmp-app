@@ -18,7 +18,7 @@ const categoryColors: {
   // mental-green
   template: 'bg-card/50 text-card-foreground',
   // mental-peach
-  reference: 'bg-primary/20 text-primary-foreground',
+  reference: 'bg-primary/20 text-foreground',
   // mental-beige
   default: 'bg-muted text-muted-foreground'
 };
@@ -90,7 +90,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
         </div>
       </div>
       
-      <Button size="sm" onClick={() => handleDownload(resource)} className="w-full bg-primary text-primary-foreground hover:opacity-90" disabled={!resource.downloadUrl}>
+      <Button size="sm" onClick={() => handleDownload(resource)} className="w-full bg-primary text-foreground hover:opacity-90" disabled={!resource.downloadUrl}>
         <Download className="h-4 w-4 mr-2" />
         {resource.downloadUrl ? 'Download' : 'No Attachment'}
       </Button>

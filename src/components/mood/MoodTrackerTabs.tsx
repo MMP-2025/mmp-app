@@ -14,7 +14,7 @@ const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({
     isGuest
   } = useAuth();
   const guestRestrictedTabs = ['history', 'analytics', 'advanced', 'correlations', 'insights', 'predictions', 'habits', 'environment'];
-  const tabTriggerClass = "flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all";
+  const tabTriggerClass = "flex items-center gap-2 data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all";
 
   return <TabsList className="flex h-auto w-full flex-wrap justify-start bg-mental-peach/50">
       <TabsTrigger value="track" className={tabTriggerClass}>

@@ -257,7 +257,7 @@ const QuickActionCard: React.FC<{
   description: string;
 }> = ({ number, title, description }) => (
   <div className="flex items-start gap-4 p-4 rounded-lg border-2 border-border">
-    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">
+    <div className="w-8 h-8 rounded-full bg-primary text-foreground flex items-center justify-center font-bold flex-shrink-0">
       {number}
     </div>
     <div className="flex-1">

@@ -141,9 +141,9 @@ const TimerPage = () => {
       
       <Tabs defaultValue="pomodoro" className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-mental-peach/50">
-          <TabsTrigger value="pomodoro" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Pomodoro</TabsTrigger>
-          <TabsTrigger value="countdown" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Countdown</TabsTrigger>
-          <TabsTrigger value="stopwatch" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Stopwatch</TabsTrigger>
+          <TabsTrigger value="pomodoro" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Pomodoro</TabsTrigger>
+          <TabsTrigger value="countdown" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Countdown</TabsTrigger>
+          <TabsTrigger value="stopwatch" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Stopwatch</TabsTrigger>
         </TabsList>
         
         {/* Pomodoro Timer Tab */}

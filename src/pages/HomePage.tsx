@@ -29,8 +29,8 @@ const HomePage = () => {
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 bg-mental-peach/50">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Daily Overview</TabsTrigger>
-          <TabsTrigger value="progress" className="data-[state=active]:bg-mental-blue data-[state=active]:text-white data-[state=active]:shadow-md transition-all">Your Progress</TabsTrigger>
+          <TabsTrigger value="overview" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Daily Overview</TabsTrigger>
+          <TabsTrigger value="progress" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Your Progress</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-8">
