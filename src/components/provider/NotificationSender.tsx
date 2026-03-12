@@ -82,6 +82,8 @@ const NotificationSender: React.FC = () => {
       setType('general');
       setPriority('medium');
       setActionUrl('');
+      setActionOption1('');
+      setActionOption2('');
       setScheduleEnabled(false);
       setScheduledDate('');
       setScheduledTime('09:00');
