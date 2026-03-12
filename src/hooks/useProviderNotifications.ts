@@ -27,6 +27,8 @@ export interface CreateNotificationData {
   priority: Notification['priority'];
   action_url?: string;
   scheduled_at?: string | null;
+  action_option_1?: string;
+  action_option_2?: string;
 }
 
 export function useProviderNotifications() {
