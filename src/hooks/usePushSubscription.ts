@@ -69,8 +69,25 @@ export function usePushSubscription() {
   }, [user]);
 
   const subscribe = useCallback(async () => {
-    if (!user || !isSupported || !VAPID_PUBLIC_KEY) {
+    if (!user || !isSupported) {
       toast.error('Push notifications are not available');
+      return false;
+    }
+
+    // Fetch VAPID key from edge function
+    if (!cachedVapidKey) {
+      try {
+        const { data, error } = await supabase.functions.invoke('get-vapid-key');
+        if (error) throw error;
+        cachedVapidKey = data?.vapid_public_key || '';
+      } catch {
+        toast.error('Could not retrieve push configuration');
+        return false;
+      }
+    }
+
+    if (!cachedVapidKey) {
+      toast.error('Push notifications not configured');
       return false;
     }
 
