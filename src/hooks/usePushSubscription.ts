@@ -107,7 +107,7 @@ export function usePushSubscription() {
       // Subscribe to push
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY) as BufferSource,
+        applicationServerKey: urlBase64ToUint8Array(cachedVapidKey!) as BufferSource,
       });
 
       const subJson = subscription.toJSON();
