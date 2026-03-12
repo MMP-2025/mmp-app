@@ -603,8 +603,42 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_responses: {
+        Row: {
+          id: string
+          notification_id: string
+          patient_id: string
+          responded_at: string
+          response: string
+        }
+        Insert: {
+          id?: string
+          notification_id: string
+          patient_id: string
+          responded_at?: string
+          response: string
+        }
+        Update: {
+          id?: string
+          notification_id?: string
+          patient_id?: string
+          responded_at?: string
+          response?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_responses_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
+          action_option_1: string | null
+          action_option_2: string | null
           action_url: string | null
           created_at: string
           id: string
@@ -620,6 +654,8 @@ export type Database = {
           type: string
         }
         Insert: {
+          action_option_1?: string | null
+          action_option_2?: string | null
           action_url?: string | null
           created_at?: string
           id?: string
@@ -635,6 +671,8 @@ export type Database = {
           type?: string
         }
         Update: {
+          action_option_1?: string | null
+          action_option_2?: string | null
           action_url?: string | null
           created_at?: string
           id?: string
@@ -787,6 +825,36 @@ export type Database = {
           date?: string
           id?: string
           photo_url?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          endpoint: string
+          id: string
+          p256dh: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
           updated_at?: string
           user_id?: string
         }
