@@ -352,6 +352,37 @@ const NotificationSender: React.FC = () => {
           />
         </div>
 
+        {/* Interactive Response Options */}
+        <div className="space-y-2">
+          <Label className="text-foreground flex items-center gap-1">
+            <MessageSquare className="h-4 w-4" />
+            Response Options (Optional)
+          </Label>
+          <p className="text-xs text-muted-foreground">
+            Add two choices that patients can respond to directly from their device's home screen notification.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Input
+                placeholder="e.g. Yes, I did"
+                value={actionOption1}
+                onChange={(e) => setActionOption1(e.target.value)}
+                maxLength={30}
+              />
+              <div className="text-xs text-muted-foreground mt-1">Choice 1</div>
+            </div>
+            <div>
+              <Input
+                placeholder="e.g. Not yet"
+                value={actionOption2}
+                onChange={(e) => setActionOption2(e.target.value)}
+                maxLength={30}
+              />
+              <div className="text-xs text-muted-foreground mt-1">Choice 2</div>
+            </div>
+          </div>
+        </div>
+
         {/* Summary Badges */}
         <div className="flex flex-wrap items-center gap-2">
           <Badge className={getTypeColor(type)}>{type}</Badge>

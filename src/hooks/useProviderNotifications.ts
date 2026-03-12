@@ -144,6 +144,8 @@ export function useProviderNotifications() {
         scheduled_at: data.scheduled_at || null,
         status: data.scheduled_at ? 'pending' : 'sent',
         sent_at: data.scheduled_at ? null : new Date().toISOString(),
+        action_option_1: (data as any).action_option_1 || null,
+        action_option_2: (data as any).action_option_2 || null,
       }));
 
       const { error } = await supabase
