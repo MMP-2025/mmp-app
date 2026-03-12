@@ -1,6 +1,7 @@
 import React from 'react';
 import NotificationSender from '@/components/provider/NotificationSender';
 import NotificationHistory from '@/components/provider/NotificationHistory';
+import NotificationResponseViewer from '@/components/provider/NotificationResponseViewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bell, Send, Users, MessageSquare, Clock } from 'lucide-react';
 import { useProviderNotifications } from '@/hooks/useProviderNotifications';
@@ -82,6 +83,9 @@ const NotificationsTab: React.FC = () => {
       {/* Notification History */}
       <NotificationHistory />
 
+      {/* Patient Responses */}
+      <NotificationResponseViewer />
+
       {/* Instructions */}
       <Card className="bg-mental-gray">
         <CardHeader>
@@ -116,6 +120,8 @@ const NotificationsTab: React.FC = () => {
               <li><strong>Bulk Send:</strong> Select multiple patients to send the same notification</li>
               <li><strong>Scheduling:</strong> Schedule notifications for a future date and time</li>
               <li><strong>Specific Targeting:</strong> Send to all patients, specific patient, or selected group</li>
+              <li><strong>Interactive Responses:</strong> Add two custom choices that patients can respond to from their home screen</li>
+              <li><strong>Push Notifications:</strong> Notifications delivered to patient devices even when app is closed</li>
             </ul>
           </div>
         </CardContent>

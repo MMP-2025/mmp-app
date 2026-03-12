@@ -2,3 +2,9 @@ project_id = "zbongxcpwfeoyxqdgyso"
 
 [functions.process-notifications]
 verify_jwt = false
+
+[functions.send-push-notification]
+verify_jwt = false
+
+[functions.get-vapid-key]
+verify_jwt = false

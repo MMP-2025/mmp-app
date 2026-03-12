@@ -27,6 +27,8 @@ export interface CreateNotificationData {
   priority: Notification['priority'];
   action_url?: string;
   scheduled_at?: string | null;
+  action_option_1?: string;
+  action_option_2?: string;
 }
 
 export function useProviderNotifications() {
@@ -84,13 +86,29 @@ export function useProviderNotifications() {
         scheduled_at: data.scheduled_at || null,
         status: data.scheduled_at ? 'pending' : 'sent',
         sent_at: data.scheduled_at ? null : new Date().toISOString(),
+        action_option_1: data.action_option_1 || null,
+        action_option_2: data.action_option_2 || null,
       };
 
-      const { error } = await supabase
+      const { data: insertedData, error } = await supabase
         .from('notifications')
-        .insert(notificationData);
+        .insert(notificationData)
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // If sent immediately (not scheduled), trigger push notification
+      if (!data.scheduled_at && insertedData) {
+        try {
+          await supabase.functions.invoke('send-push-notification', {
+            body: { notification_ids: [insertedData.id] },
+          });
+        } catch (pushError) {
+          console.error('Push notification delivery failed:', pushError);
+          // Don't fail the whole operation if push fails
+        }
+      }
 
       toast.success(data.scheduled_at ? 'Notification scheduled!' : 'Notification sent!');
       await fetchNotifications();
@@ -126,6 +144,8 @@ export function useProviderNotifications() {
         scheduled_at: data.scheduled_at || null,
         status: data.scheduled_at ? 'pending' : 'sent',
         sent_at: data.scheduled_at ? null : new Date().toISOString(),
+        action_option_1: (data as any).action_option_1 || null,
+        action_option_2: (data as any).action_option_2 || null,
       }));
 
       const { error } = await supabase

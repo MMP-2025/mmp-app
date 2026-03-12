@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Send, Users, User, Clock, Calendar, Loader2 } from 'lucide-react';
+import { Send, Users, User, Clock, Calendar, Loader2, MessageSquare } from 'lucide-react';
 import { useProviderPatients } from '@/hooks/useProviderPatients';
 import { useProviderNotifications, type Notification } from '@/hooks/useProviderNotifications';
 
@@ -23,6 +23,8 @@ const NotificationSender: React.FC = () => {
   const [selectedPatientId, setSelectedPatientId] = useState<string>('');
   const [selectedPatientIds, setSelectedPatientIds] = useState<string[]>([]);
   const [actionUrl, setActionUrl] = useState('');
+  const [actionOption1, setActionOption1] = useState('');
+  const [actionOption2, setActionOption2] = useState('');
   const [scheduleEnabled, setScheduleEnabled] = useState(false);
   const [scheduledDate, setScheduledDate] = useState('');
   const [scheduledTime, setScheduledTime] = useState('09:00');
@@ -58,6 +60,8 @@ const NotificationSender: React.FC = () => {
       priority,
       action_url: actionUrl.trim() || undefined,
       scheduled_at: getScheduledAt(),
+      action_option_1: actionOption1.trim() || undefined,
+      action_option_2: actionOption2.trim() || undefined,
     };
 
     let success = false;
@@ -78,6 +82,8 @@ const NotificationSender: React.FC = () => {
       setType('general');
       setPriority('medium');
       setActionUrl('');
+      setActionOption1('');
+      setActionOption2('');
       setScheduleEnabled(false);
       setScheduledDate('');
       setScheduledTime('09:00');
@@ -344,6 +350,37 @@ const NotificationSender: React.FC = () => {
             onChange={(e) => setActionUrl(e.target.value)}
             className="mt-1"
           />
+        </div>
+
+        {/* Interactive Response Options */}
+        <div className="space-y-2">
+          <Label className="text-foreground flex items-center gap-1">
+            <MessageSquare className="h-4 w-4" />
+            Response Options (Optional)
+          </Label>
+          <p className="text-xs text-muted-foreground">
+            Add two choices that patients can respond to directly from their device's home screen notification.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Input
+                placeholder="e.g. Yes, I did"
+                value={actionOption1}
+                onChange={(e) => setActionOption1(e.target.value)}
+                maxLength={30}
+              />
+              <div className="text-xs text-muted-foreground mt-1">Choice 1</div>
+            </div>
+            <div>
+              <Input
+                placeholder="e.g. Not yet"
+                value={actionOption2}
+                onChange={(e) => setActionOption2(e.target.value)}
+                maxLength={30}
+              />
+              <div className="text-xs text-muted-foreground mt-1">Choice 2</div>
+            </div>
+          </div>
         </div>
 
         {/* Summary Badges */}

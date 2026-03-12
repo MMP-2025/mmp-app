@@ -118,6 +118,30 @@ Deno.serve(async (req) => {
 
     console.log(`Successfully processed ${updatedNotifications?.length || 0} notifications`);
 
+    // Trigger push notifications for processed notifications
+    if (updatedNotifications && updatedNotifications.length > 0) {
+      try {
+        const pushResponse = await fetch(
+          `${supabaseUrl}/functions/v1/send-push-notification`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${supabaseServiceKey}`,
+            },
+            body: JSON.stringify({
+              notification_ids: updatedNotifications.map(n => n.id),
+            }),
+          }
+        );
+        const pushResult = await pushResponse.json();
+        console.log('Push notification result:', pushResult);
+      } catch (pushError) {
+        console.error('Error triggering push notifications:', pushError);
+        // Don't fail the whole operation
+      }
+    }
+
     return new Response(
       JSON.stringify({ 
         success: true, 
