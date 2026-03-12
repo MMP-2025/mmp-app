@@ -1,17 +1,9 @@
-
-// Service Worker utilities for offline functionality
+// PWA Service Worker utilities
+// vite-plugin-pwa handles SW registration automatically via registerType: 'autoUpdate'
 
 export const registerSW = () => {
-  // Service worker registration is disabled - no sw.js file exists
-  // This prevents MIME type errors in the console
-  if ('serviceWorker' in navigator) {
-    // Unregister any previously registered service workers
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      for (const registration of registrations) {
-        registration.unregister();
-      }
-    });
-  }
+  // vite-plugin-pwa auto-registers the service worker
+  // This function is kept for backward compatibility
 };
 
 export const checkOnlineStatus = () => {
