@@ -23,6 +23,8 @@ const NotificationSender: React.FC = () => {
   const [selectedPatientId, setSelectedPatientId] = useState<string>('');
   const [selectedPatientIds, setSelectedPatientIds] = useState<string[]>([]);
   const [actionUrl, setActionUrl] = useState('');
+  const [actionOption1, setActionOption1] = useState('');
+  const [actionOption2, setActionOption2] = useState('');
   const [scheduleEnabled, setScheduleEnabled] = useState(false);
   const [scheduledDate, setScheduledDate] = useState('');
   const [scheduledTime, setScheduledTime] = useState('09:00');
