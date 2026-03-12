@@ -60,6 +60,8 @@ const NotificationSender: React.FC = () => {
       priority,
       action_url: actionUrl.trim() || undefined,
       scheduled_at: getScheduledAt(),
+      action_option_1: actionOption1.trim() || undefined,
+      action_option_2: actionOption2.trim() || undefined,
     };
 
     let success = false;
