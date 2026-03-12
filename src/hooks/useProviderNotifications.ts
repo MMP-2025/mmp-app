@@ -90,11 +90,25 @@ export function useProviderNotifications() {
         action_option_2: data.action_option_2 || null,
       };
 
-      const { error } = await supabase
+      const { data: insertedData, error } = await supabase
         .from('notifications')
-        .insert(notificationData);
+        .insert(notificationData)
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // If sent immediately (not scheduled), trigger push notification
+      if (!data.scheduled_at && insertedData) {
+        try {
+          await supabase.functions.invoke('send-push-notification', {
+            body: { notification_ids: [insertedData.id] },
+          });
+        } catch (pushError) {
+          console.error('Push notification delivery failed:', pushError);
+          // Don't fail the whole operation if push fails
+        }
+      }
 
       toast.success(data.scheduled_at ? 'Notification scheduled!' : 'Notification sent!');
       await fetchNotifications();
