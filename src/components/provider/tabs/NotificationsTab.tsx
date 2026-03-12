@@ -120,6 +120,8 @@ const NotificationsTab: React.FC = () => {
               <li><strong>Bulk Send:</strong> Select multiple patients to send the same notification</li>
               <li><strong>Scheduling:</strong> Schedule notifications for a future date and time</li>
               <li><strong>Specific Targeting:</strong> Send to all patients, specific patient, or selected group</li>
+              <li><strong>Interactive Responses:</strong> Add two custom choices that patients can respond to from their home screen</li>
+              <li><strong>Push Notifications:</strong> Notifications delivered to patient devices even when app is closed</li>
             </ul>
           </div>
         </CardContent>
