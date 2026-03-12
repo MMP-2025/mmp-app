@@ -33,6 +33,7 @@ const NotificationsPage = () => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
+            <PushNotificationToggle />
             <SmartNotifications />
           </TabsContent>
         </Tabs>
