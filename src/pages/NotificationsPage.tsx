@@ -3,6 +3,7 @@ import React from 'react';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import NotificationInbox from '@/components/notifications/NotificationInbox';
 import SmartNotifications from '@/components/notifications/SmartNotifications';
+import PushNotificationToggle from '@/components/notifications/PushNotificationToggle';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Bell, Settings } from 'lucide-react';
 
