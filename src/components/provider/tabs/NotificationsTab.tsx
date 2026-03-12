@@ -1,6 +1,7 @@
 import React from 'react';
 import NotificationSender from '@/components/provider/NotificationSender';
 import NotificationHistory from '@/components/provider/NotificationHistory';
+import NotificationResponseViewer from '@/components/provider/NotificationResponseViewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bell, Send, Users, MessageSquare, Clock } from 'lucide-react';
 import { useProviderNotifications } from '@/hooks/useProviderNotifications';
