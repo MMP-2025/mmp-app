@@ -83,6 +83,9 @@ const NotificationsTab: React.FC = () => {
       {/* Notification History */}
       <NotificationHistory />
 
+      {/* Patient Responses */}
+      <NotificationResponseViewer />
+
       {/* Instructions */}
       <Card className="bg-mental-gray">
         <CardHeader>
