@@ -132,10 +132,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return { valid: false };
       }
 
+      const result = data as { valid: boolean; patient_email: string; provider_name: string };
       return {
         valid: true,
-        email: data.patient_email,
-        providerName: data.provider_name
+        email: result.patient_email,
+        providerName: result.provider_name
       };
     } catch (error) {
       console.error('Error validating invitation:', error);
