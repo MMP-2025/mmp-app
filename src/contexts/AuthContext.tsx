@@ -126,15 +126,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const validateInvitation = async (token: string) => {
     try {
       const { data, error } = await supabase
-        .from('patient_invitations')
-        .select(`
-          *,
-          provider:profiles!patient_invitations_provider_id_fkey(name)
-        `)
-        .eq('token', token)
-        .eq('status', 'pending')
-        .gt('expires_at', new Date().toISOString())
-        .single();
+        .rpc('validate_invitation', { p_token: token });
 
       if (error || !data) {
         return { valid: false };
@@ -143,7 +135,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return {
         valid: true,
         email: data.patient_email,
-        providerName: data.provider.name
+        providerName: data.provider_name
       };
     } catch (error) {
       console.error('Error validating invitation:', error);
