@@ -1,19 +1,16 @@
-
 import React from 'react';
 import { SidebarLayout } from "@/components/layout/SidebarLayout";
 
 interface PageWrapperProps {
   children: React.ReactNode;
-  backgroundColor: string;
+  backgroundColor?: string;
 }
 
-const PageWrapper: React.FC<PageWrapperProps> = ({ children, backgroundColor }) => {
+const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
   return (
-    <div className={`${backgroundColor} min-h-screen`}>
-      <SidebarLayout>
-        {children}
-      </SidebarLayout>
-    </div>
+    <SidebarLayout>
+      {children}
+    </SidebarLayout>
   );
 };
 

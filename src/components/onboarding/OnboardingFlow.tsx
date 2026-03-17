@@ -3,19 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { 
-  Sparkles, 
-  Heart, 
-  BookOpen, 
-  Brain, 
-  TrendingUp, 
-  Target,
-  CheckCircle2,
-  ArrowRight,
-  X
+  Heart, BookOpen, Brain, Sparkles, TrendingUp, Target,
+  CheckCircle2, ArrowRight, X, MessageCircle
 } from 'lucide-react';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useAuth } from '@/contexts/AuthContext';
 import { Checkbox } from '@/components/ui/checkbox';
+import logo from '@/assets/logo.png';
 
 const OnboardingFlow: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState(0);
@@ -37,9 +31,7 @@ const OnboardingFlow: React.FC = () => {
 
   const handleGoalToggle = (goalId: string) => {
     setSelectedGoals(prev =>
-      prev.includes(goalId)
-        ? prev.filter(id => id !== goalId)
-        : [...prev, goalId]
+      prev.includes(goalId) ? prev.filter(id => id !== goalId) : [...prev, goalId]
     );
   };
 
@@ -51,9 +43,7 @@ const OnboardingFlow: React.FC = () => {
     }
   };
 
-  const handleSkip = () => {
-    handleComplete();
-  };
+  const handleSkip = () => handleComplete();
 
   const handleComplete = async () => {
     updatePreferences({ goals: selectedGoals });
@@ -63,81 +53,69 @@ const OnboardingFlow: React.FC = () => {
   const screens = [
     // Screen 0: Welcome
     <div key="welcome" className="space-y-6 text-center">
-      <div className="mx-auto w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/40 rounded-full flex items-center justify-center">
-        <Heart className="h-10 w-10 text-primary" />
-      </div>
+      <img src={logo} alt="" className="h-20 w-20 mx-auto" />
       <div className="space-y-3">
-        <h2 className="text-3xl font-bold text-foreground">
+        <h2 className="text-2xl font-merriweather font-bold text-foreground">
           Welcome to Making Meaning Psychology
         </h2>
-        <p className="text-lg text-muted-foreground max-w-lg mx-auto">
+        <p className="text-muted-foreground max-w-md mx-auto">
           {isGuest 
-            ? "You're exploring as a guest. Ready to unlock the full experience and save your progress? Schedule a consultation to start your journey with Making Meaning Psychology."
-            : "We're so glad you're here. Let's take a quick tour to help you get the most out of your mental wellness journey."}
+            ? "You're exploring as a guest. To save your progress, schedule a consultation with your provider."
+            : "Let's set you up for your mental wellness journey."}
         </p>
       </div>
-      <div className="flex flex-col gap-3 max-w-md mx-auto pt-4">
-        <Button onClick={handleNext} size="lg" className="w-full">
+      <div className="flex flex-col gap-3 max-w-sm mx-auto pt-4">
+        <Button onClick={handleNext} size="lg" className="w-full bg-primary text-primary-foreground rounded-xl">
           Get Started <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
-        <Button onClick={handleSkip} variant="ghost" size="sm">
+        <Button onClick={handleSkip} variant="ghost" size="sm" className="text-muted-foreground">
           Skip Tour
         </Button>
       </div>
     </div>,
 
-    // Screen 1: Key Features
-    <div key="features" className="space-y-6">
+    // Screen 1: How it works — Provider questions
+    <div key="how-it-works" className="space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-foreground">Key Features to Explore</h2>
-        <p className="text-muted-foreground">
-          Discover the tools designed to support your wellbeing
-        </p>
+        <h2 className="text-2xl font-merriweather font-bold text-foreground">How It Works</h2>
+        <p className="text-muted-foreground">Your provider connects with you through this app</p>
       </div>
       <div className="grid gap-4 max-w-2xl mx-auto">
         <FeatureCard
-          icon={Heart}
-          title="Mood Tracking"
-          description="Monitor your emotional patterns and identify triggers"
+          icon={MessageCircle}
+          title="Provider Check-ins"
+          description="Your provider sends personalized questions. You'll get notified and can respond instantly."
+          highlight
         />
         <FeatureCard
-          icon={BookOpen}
-          title="Journaling"
-          description="Express your thoughts with guided prompts and free writing"
+          icon={Heart}
+          title="Mood & Journal Tracking"
+          description="Track your emotions and journal your thoughts between sessions"
         />
         <FeatureCard
           icon={Brain}
-          title="Mindfulness Exercises"
-          description="Access guided meditations and breathing exercises"
-        />
-        <FeatureCard
-          icon={Sparkles}
-          title="Gratitude Practice"
-          description="Cultivate positivity through daily gratitude reflections"
+          title="Mindfulness Tools"
+          description="Guided breathing exercises and meditation to support your wellbeing"
         />
         <FeatureCard
           icon={TrendingUp}
           title="Progress Insights"
-          description="Visualize your wellness journey with detailed analytics"
+          description="See your wellness journey over time with personalized analytics"
         />
       </div>
-      <div className="flex gap-3 max-w-md mx-auto pt-4">
-        <Button onClick={handleNext} className="flex-1">
+      <div className="flex gap-3 max-w-sm mx-auto pt-4">
+        <Button onClick={handleNext} className="flex-1 bg-primary text-primary-foreground rounded-xl">
           Continue
         </Button>
-        <Button onClick={handleSkip} variant="outline">
-          Skip
-        </Button>
+        <Button onClick={handleSkip} variant="outline" className="rounded-xl">Skip</Button>
       </div>
     </div>,
 
     // Screen 2: Set Goals
     <div key="goals" className="space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-foreground">Set Your Goals</h2>
-        <p className="text-muted-foreground">
-          Choose what you'd like to focus on (optional)
-        </p>
+        <h2 className="text-2xl font-merriweather font-bold text-foreground">Set Your Goals</h2>
+        <p className="text-muted-foreground">Choose what you'd like to focus on (optional)</p>
       </div>
       <div className="grid gap-3 max-w-2xl mx-auto">
         {goals.map((goal) => {
@@ -147,61 +125,43 @@ const OnboardingFlow: React.FC = () => {
             <div
               key={goal.id}
               onClick={() => handleGoalToggle(goal.id)}
-              className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
                 isSelected
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-primary/50'
+                  ? 'border-primary bg-sage-light'
+                  : 'border-border hover:border-primary/40'
               }`}
             >
               <Checkbox checked={isSelected} />
               <Icon className={`h-5 w-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-              <span className={`flex-1 ${isSelected ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+              <span className={`flex-1 text-sm ${isSelected ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
                 {goal.label}
               </span>
             </div>
           );
         })}
       </div>
-      <div className="flex gap-3 max-w-md mx-auto pt-4">
-        <Button onClick={handleNext} className="flex-1">
-          Continue
-        </Button>
-        <Button onClick={handleSkip} variant="outline">
-          Skip
-        </Button>
+      <div className="flex gap-3 max-w-sm mx-auto pt-4">
+        <Button onClick={handleNext} className="flex-1 bg-primary text-primary-foreground rounded-xl">Continue</Button>
+        <Button onClick={handleSkip} variant="outline" className="rounded-xl">Skip</Button>
       </div>
     </div>,
 
-    // Screen 3: Quick Start
+    // Screen 3: Ready
     <div key="quickstart" className="space-y-6">
-      <div className="text-center space-y-2">
-        <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-500/20 to-green-600/40 rounded-full flex items-center justify-center mb-4">
-          <CheckCircle2 className="h-8 w-8 text-green-600" />
+      <div className="text-center space-y-3">
+        <div className="mx-auto w-16 h-16 bg-sage-light rounded-full flex items-center justify-center">
+          <CheckCircle2 className="h-8 w-8 text-primary" />
         </div>
-        <h2 className="text-2xl font-bold text-foreground">You're All Set!</h2>
-        <p className="text-muted-foreground">
-          Here are some suggested first steps to get started
-        </p>
+        <h2 className="text-2xl font-merriweather font-bold text-foreground">You're All Set!</h2>
+        <p className="text-muted-foreground">Here's how to get started</p>
       </div>
       <div className="grid gap-4 max-w-2xl mx-auto">
-        <QuickActionCard
-          number="1"
-          title="Check in with your mood"
-          description="Track how you're feeling today"
-        />
-        <QuickActionCard
-          number="2"
-          title="Try a mindfulness exercise"
-          description="Take 5 minutes to center yourself"
-        />
-        <QuickActionCard
-          number="3"
-          title="Write in your journal"
-          description="Reflect on your thoughts and experiences"
-        />
+        <QuickActionCard number="1" title="Check in with your mood" description="Start by logging how you're feeling right now" />
+        <QuickActionCard number="2" title="Respond to your provider" description="Look for provider questions on your home screen" />
+        <QuickActionCard number="3" title="Try a mindfulness exercise" description="Take 5 minutes to center yourself" />
       </div>
-      <div className="flex gap-3 max-w-md mx-auto pt-4">
-        <Button onClick={handleComplete} className="flex-1" size="lg">
+      <div className="max-w-sm mx-auto pt-4">
+        <Button onClick={handleComplete} className="w-full bg-primary text-primary-foreground rounded-xl" size="lg">
           Start Your Journey
         </Button>
       </div>
@@ -210,22 +170,17 @@ const OnboardingFlow: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+      <Card className="w-full max-w-3xl max-h-[90vh] overflow-y-auto border-border/50 shadow-xl">
         <CardHeader className="relative">
-          <div className="flex items-center justify-between mb-4">
-            <CardTitle className="text-sm text-muted-foreground">
+          <div className="flex items-center justify-between mb-3">
+            <CardTitle className="text-xs text-muted-foreground font-normal">
               Step {currentScreen + 1} of {totalScreens}
             </CardTitle>
-            <Button
-              onClick={handleSkip}
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0"
-            >
+            <Button onClick={handleSkip} variant="ghost" size="sm" className="h-8 w-8 p-0">
               <X className="h-4 w-4" />
             </Button>
           </div>
-          <Progress value={progress} className="h-2" />
+          <Progress value={progress} className="h-1.5" />
         </CardHeader>
         <CardContent className="py-8">
           {screens[currentScreen]}
@@ -239,14 +194,19 @@ const FeatureCard: React.FC<{
   icon: React.ElementType;
   title: string;
   description: string;
-}> = ({ icon: Icon, title, description }) => (
-  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/50">
-    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-      <Icon className="h-5 w-5 text-primary" />
+  highlight?: boolean;
+}> = ({ icon: Icon, title, description, highlight }) => (
+  <div className={`flex items-start gap-4 p-4 rounded-xl ${
+    highlight ? 'bg-sage-light border border-primary/20' : 'bg-muted/30'
+  }`}>
+    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+      highlight ? 'bg-primary/15' : 'bg-accent'
+    }`}>
+      <Icon className={`h-5 w-5 ${highlight ? 'text-primary' : 'text-muted-foreground'}`} />
     </div>
     <div className="flex-1">
-      <h3 className="font-semibold text-foreground mb-1">{title}</h3>
-      <p className="text-sm text-muted-foreground">{description}</p>
+      <h3 className="font-semibold text-foreground text-sm mb-0.5">{title}</h3>
+      <p className="text-xs text-muted-foreground leading-relaxed">{description}</p>
     </div>
   </div>
 );
@@ -256,13 +216,13 @@ const QuickActionCard: React.FC<{
   title: string;
   description: string;
 }> = ({ number, title, description }) => (
-  <div className="flex items-start gap-4 p-4 rounded-lg border-2 border-border">
-    <div className="w-8 h-8 rounded-full bg-primary text-foreground flex items-center justify-center font-bold flex-shrink-0">
+  <div className="flex items-start gap-4 p-4 rounded-xl border border-border">
+    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shrink-0">
       {number}
     </div>
     <div className="flex-1">
-      <h3 className="font-semibold text-foreground mb-1">{title}</h3>
-      <p className="text-sm text-muted-foreground">{description}</p>
+      <h3 className="font-semibold text-foreground text-sm mb-0.5">{title}</h3>
+      <p className="text-xs text-muted-foreground">{description}</p>
     </div>
   </div>
 );
