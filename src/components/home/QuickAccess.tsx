@@ -1,26 +1,34 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Smile, FileText, Brain, Pencil } from 'lucide-react';
+
+const quickLinks = [
+  { label: 'Mood Check-in', path: '/mood', icon: Smile, color: 'bg-sage-light text-sage' },
+  { label: 'My Journal', path: '/journal', icon: FileText, color: 'bg-teal-light text-teal' },
+  { label: 'Mindfulness', path: '/mindfulness', icon: Brain, color: 'bg-warm text-warm-dark' },
+  { label: 'Gratitude', path: '/gratitude', icon: Pencil, color: 'bg-accent text-foreground' },
+];
 
 const QuickAccess = () => {
   return (
-    <Card className="p-6 bg-mental-gray">
-      <h2 className="text-xl font-semibold mb-2 text-muted-foreground">Quick Access</h2>
+    <Card className="p-5 bg-card border-border/50">
+      <h2 className="text-sm font-semibold mb-3 text-foreground">Quick Access</h2>
       <div className="grid grid-cols-2 gap-2">
-        <Button asChild className="bg-mental-blue hover:bg-mental-blue/80 text-gray-800 w-full text-left justify-start">
-          <Link to="/journal">My Journal</Link>
-        </Button>
-        <Button asChild className="bg-mental-green hover:bg-mental-green/80 text-gray-800 w-full text-left justify-start">
-          <Link to="/mood">Mood Check-in</Link>
-        </Button>
-        <Button asChild className="bg-mental-peach hover:bg-mental-peach/80 text-gray-800 w-full text-left justify-start">
-          <Link to="/mindfulness">Mindfulness</Link>
-        </Button>
-        <Button asChild className="bg-mental-beige hover:bg-mental-beige/80 text-gray-800 w-full text-left justify-start">
-          <Link to="/planner">Today's Plan</Link>
-        </Button>
+        {quickLinks.map(link => (
+          <Button
+            key={link.path}
+            asChild
+            variant="ghost"
+            className={`justify-start gap-2 h-auto py-3 px-3 rounded-xl ${link.color} hover:opacity-80 no-underline`}
+          >
+            <Link to={link.path}>
+              <link.icon className="h-4 w-4 shrink-0" />
+              <span className="text-sm font-medium text-foreground">{link.label}</span>
+            </Link>
+          </Button>
+        ))}
       </div>
     </Card>
   );

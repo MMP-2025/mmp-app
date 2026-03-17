@@ -41,7 +41,6 @@ const AppContent = () => {
   const { shouldShowOnboarding } = useOnboarding();
 
   React.useEffect(() => {
-    // Register service worker for PWA functionality
     registerSW();
   }, []);
 
@@ -63,55 +62,19 @@ const AppContent = () => {
           <VoiceControl />
           <div className="w-full min-h-screen">
             <Routes>
-              <Route path="/" element={
-                <PageWrapper backgroundColor="bg-mental-peach">
-                  <HomePage />
-                </PageWrapper>
-              } />
-              <Route path="/crisis" element={
-                <PageWrapper backgroundColor="bg-red-50">
-                  <CrisisResourcesPage />
-                </PageWrapper>
-              } />
+              <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
+              <Route path="/crisis" element={<PageWrapper><CrisisResourcesPage /></PageWrapper>} />
               <Route path="/mood" element={<MoodTrackerPage />} />
-              <Route path="/journal" element={
-                <PageWrapper backgroundColor="bg-mental-green">
-                  <JournalPage />
-                </PageWrapper>
-              } />
-              <Route path="/mindfulness" element={
-                <PageWrapper backgroundColor="bg-mental-beige">
-                  <MindfulnessPage />
-                </PageWrapper>
-              } />
-              <Route path="/gratitude" element={
-                <PageWrapper backgroundColor="bg-mental-gray">
-                  <GratitudePage />
-                </PageWrapper>
-              } />
+              <Route path="/journal" element={<PageWrapper><JournalPage /></PageWrapper>} />
+              <Route path="/mindfulness" element={<PageWrapper><MindfulnessPage /></PageWrapper>} />
+              <Route path="/gratitude" element={<PageWrapper><GratitudePage /></PageWrapper>} />
               <Route path="/planner" element={<PlannerPage />} />
-              <Route path="/reminders" element={
-                <PageWrapper backgroundColor="bg-mental-peach">
-                  <RemindersPage />
-                </PageWrapper>
-              } />
+              <Route path="/reminders" element={<PageWrapper><RemindersPage /></PageWrapper>} />
               <Route path="/timer" element={<TimerPage />} />
-              <Route path="/support-toolkit" element={
-                <PageWrapper backgroundColor="bg-mental-beige">
-                  <SupportToolkitPage />
-                </PageWrapper>
-              } />
-              <Route path="/community" element={
-                <PageWrapper backgroundColor="bg-mental-blue">
-                  <CommunityPage />
-                </PageWrapper>
-              } />
+              <Route path="/support-toolkit" element={<PageWrapper><SupportToolkitPage /></PageWrapper>} />
+              <Route path="/community" element={<PageWrapper><CommunityPage /></PageWrapper>} />
               {!isGuest ? (
-                <Route path="/profile" element={
-                  <PageWrapper backgroundColor="bg-mental-gray">
-                    <ProfilePage />
-                  </PageWrapper>
-                } />
+                <Route path="/profile" element={<PageWrapper><ProfilePage /></PageWrapper>} />
               ) : (
                 <Route path="/profile" element={
                   <GuestUpgradePrompt 
@@ -129,14 +92,10 @@ const AppContent = () => {
               )}
               <Route path="/provider-dashboard" element={
                 <ProtectedRoute requiredRole="provider">
-                  <PageWrapper backgroundColor="bg-mental-gray">
-                    <ProviderDashboard />
-                  </PageWrapper>
+                  <PageWrapper><ProviderDashboard /></PageWrapper>
                 </ProtectedRoute>
               } />
-              <Route path="/personalization" element={
-                <PersonalizationPage />
-              } />
+              <Route path="/personalization" element={<PersonalizationPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

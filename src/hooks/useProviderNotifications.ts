@@ -12,6 +12,8 @@ export interface Notification {
   type: 'general' | 'reminder' | 'appointment' | 'wellness_check';
   priority: 'low' | 'medium' | 'high';
   action_url: string | null;
+  action_option_1: string | null;
+  action_option_2: string | null;
   scheduled_at: string | null;
   sent_at: string | null;
   read_at: string | null;

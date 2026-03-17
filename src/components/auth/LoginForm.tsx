@@ -1,250 +1,296 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import InvitationValidation from './InvitationValidation';
+import logo from '@/assets/logo.png';
 
 interface ValidatedInvitation {
   token: string;
   email: string;
 }
 
-
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState<UserRole>('patient');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showInvitationValidation, setShowInvitationValidation] = useState(false);
   const [validatedInvitation, setValidatedInvitation] = useState<ValidatedInvitation | null>(null);
 
-  const {
-    login,
-    register,
-    loginAsGuest,
-    loading
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
+  const { login, register, loginAsGuest, loading } = useAuth();
+  const { toast } = useToast();
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      if (role === 'guest') {
-        loginAsGuest();
-        toast({
-          title: "Welcome!",
-          description: "You're now browsing as a guest.",
-          className: "bg-white border border-gray-200 text-gray-900"
-        });
-      } else {
-        await login(email, password);
-        toast({
-          title: "Login successful",
-          description: `Welcome back!`,
-          className: "bg-white border border-gray-200 text-gray-900"
-        });
-      }
+      await login(email, password);
+      toast({
+        title: "Welcome back",
+        description: "You're signed in.",
+      });
     } catch (error: any) {
       toast({
-        title: "Login failed",
-        description: error.message || "Please check your credentials and try again.",
-        variant: "destructive"
+        title: "Sign in failed",
+        description: error.message || "Please check your credentials.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
   };
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // If registering as patient, show invitation validation first
-    if (role === 'patient' && !validatedInvitation) {
+    // Patient registration requires invitation
+    if (!validatedInvitation) {
       setShowInvitationValidation(true);
       return;
     }
+
     setIsLoading(true);
     try {
-      await register(validatedInvitation ? validatedInvitation.email : email, password, name, role, validatedInvitation?.token);
+      await register(
+        validatedInvitation.email,
+        password,
+        name,
+        'patient' as UserRole,
+        validatedInvitation.token
+      );
       toast({
-        title: "Registration successful",
-        description: "Please check your email to verify your account."
+        title: "Account created",
+        description: "Please check your email to verify your account.",
       });
     } catch (error: any) {
       toast({
         title: "Registration failed",
         description: error.message || "Please try again.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
   };
+
   const handleValidInvitation = (token: string, invitationEmail: string) => {
-    setValidatedInvitation({
-      token,
-      email: invitationEmail
-    });
+    setValidatedInvitation({ token, email: invitationEmail });
     setEmail(invitationEmail);
     setShowInvitationValidation(false);
   };
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mental-blue"></div>
-      </div>;
-  }
-  if (showInvitationValidation) {
-    return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
-        <InvitationValidation onValidInvitation={handleValidInvitation} onBack={() => setShowInvitationValidation(false)} />
-      </div>;
-  }
+
   const handleGuestAccess = () => {
     loginAsGuest();
     toast({
-      title: "Welcome!",
-      description: "You're now browsing as a guest.",
-      className: "bg-white border border-gray-200 text-gray-900"
+      title: "Exploring as guest",
+      description: "Your data won't be saved.",
     });
   };
 
-  return <div className="min-h-screen flex items-center justify-center bg-mental-peach p-4">
-      <Card className="w-full max-w-md shadow-lg border-0">
-        <CardHeader className="bg-white/80 rounded-t-lg">
-          <CardTitle className="text-2xl text-center font-semibold" style={{ color: '#444' }}>
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
+  if (showInvitationValidation) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <InvitationValidation
+          onValidInvitation={handleValidInvitation}
+          onBack={() => setShowInvitationValidation(false)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sage-light to-background p-4">
+      <Card className="w-full max-w-md shadow-xl border-border/50">
+        <CardHeader className="text-center pb-2 pt-8">
+          <img src={logo} alt="Making Meaning Psychology" className="h-16 w-16 mx-auto mb-3" />
+          <h1 className="font-merriweather text-xl font-bold text-foreground">
             Making Meaning Psychology
-          </CardTitle>
-          <p className="text-center text-gray-600">Welcome to your mental wellness journey</p>
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Your companion for mental wellbeing
+          </p>
         </CardHeader>
-        <CardContent className="bg-white/80 rounded-b-lg pt-4">
-          {/* Prominent Guest Access Button */}
-          <div className="mb-4">
-            <Button 
-              onClick={handleGuestAccess}
-              variant="outline"
-              className="w-full py-6 text-lg border-2 border-accent bg-accent/20 hover:bg-accent/30 text-foreground font-medium rounded-xl"
-            >
-              Continue as Guest
-            </Button>
-            <p className="text-center text-sm text-muted-foreground mt-2">No account needed - explore the app freely</p>
-          </div>
 
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Or sign in with account</span>
-            </div>
-          </div>
-
+        <CardContent className="pt-4 space-y-5">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-mental-peach/50">
-              <TabsTrigger value="login" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Sign In</TabsTrigger>
-              <TabsTrigger value="register" className="data-[state=active]:bg-mental-blue data-[state=active]:text-foreground data-[state=active]:shadow-md transition-all">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-muted/50">
+              <TabsTrigger value="login">Sign In</TabsTrigger>
+              <TabsTrigger value="register">Sign Up</TabsTrigger>
             </TabsList>
-            
-            <TabsContent value="login">
+
+            <TabsContent value="login" className="mt-4">
               <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <Label htmlFor="role">Role</Label>
-                  <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your role" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      <SelectItem value="patient">Patient</SelectItem>
-                      <SelectItem value="provider">Provider</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-1.5">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                    placeholder="you@example.com"
+                    className="bg-background"
+                  />
                 </div>
 
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-white" />
-                </div>
-                
-                <div>
+                <div className="space-y-1.5">
                   <Label htmlFor="password">Password</Label>
                   <div className="relative">
-                    <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Enter your password" className="bg-white pr-10" />
-                    <Button type="button" variant="ghost" size="sm" className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent" onClick={() => setShowPassword(!showPassword)}>
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      required
+                      placeholder="Enter your password"
+                      className="bg-background pr-10"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base text-foreground bg-mental-blue hover:bg-mental-blue/80 border border-input">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl h-11"
+                >
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
               </form>
             </TabsContent>
 
-            <TabsContent value="register">
+            <TabsContent value="register" className="mt-4">
               <form onSubmit={handleRegister} className="space-y-4">
-                <div>
-                  <Label htmlFor="register-role">Role</Label>
-                  <Select value={role} onValueChange={(value: UserRole) => setRole(value)}>
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your role" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      <SelectItem value="patient">Patient</SelectItem>
-                      <SelectItem value="provider">Provider</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {role === 'patient' && validatedInvitation && <div className="p-3 bg-mental-green/30 border border-mental-green rounded-md">
-                    <p className="text-sm text-gray-700">
-                      ✓ Invitation validated for: {validatedInvitation.email}
+                {validatedInvitation ? (
+                  <div className="p-3 bg-sage-light border border-primary/20 rounded-lg">
+                    <p className="text-sm text-foreground">
+                      ✓ Invitation verified for: <strong>{validatedInvitation.email}</strong>
                     </p>
-                  </div>}
-
-                {role === 'patient' && !validatedInvitation && <div className="p-3 bg-mental-blue/30 border border-mental-blue rounded-md">
-                    <p className="text-sm text-gray-700">
-                      Patient registration requires an invitation from a provider. 
-                      Click "Create Account" to enter your invitation token.
+                  </div>
+                ) : (
+                  <div className="p-3 bg-accent/50 border border-border rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      Patient registration requires an invitation from your provider. 
+                      Click "Create Account" to enter your invitation code.
                     </p>
-                  </div>}
+                  </div>
+                )}
 
-                <div>
+                <div className="space-y-1.5">
                   <Label htmlFor="register-name">Full Name</Label>
-                  <Input id="register-name" type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="Enter your full name" className="bg-white" />
+                  <Input
+                    id="register-name"
+                    type="text"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    required
+                    placeholder="Your full name"
+                    className="bg-background"
+                  />
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label htmlFor="register-email">Email</Label>
-                  <Input id="register-email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Enter your email" className="bg-white" disabled={role === 'patient' && !!validatedInvitation} />
+                  <Input
+                    id="register-email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                    placeholder="you@example.com"
+                    className="bg-background"
+                    disabled={!!validatedInvitation}
+                  />
                 </div>
-                
-                <div>
+
+                <div className="space-y-1.5">
                   <Label htmlFor="register-password">Password</Label>
                   <div className="relative">
-                    <Input id="register-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Create a password (min 6 characters)" className="bg-white pr-10" minLength={6} />
-                    <Button type="button" variant="ghost" size="sm" className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent" onClick={() => setShowPassword(!showPassword)}>
+                    <Input
+                      id="register-password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      required
+                      placeholder="Min. 6 characters"
+                      className="bg-background pr-10"
+                      minLength={6}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    Must be at least 6 characters long
+                  </p>
                 </div>
 
-                <Button type="submit" disabled={isLoading} className="w-full rounded-xl font-medium text-base bg-mental-blue text-foreground hover:bg-mental-blue/80 border border-input">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl h-11"
+                >
                   {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </form>
             </TabsContent>
           </Tabs>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">or</span>
+            </div>
+          </div>
+
+          <div className="text-center space-y-2">
+            <Button
+              onClick={handleGuestAccess}
+              variant="ghost"
+              className="text-sm text-muted-foreground hover:text-foreground no-underline"
+            >
+              Continue as Guest →
+            </Button>
+            <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+              <AlertTriangle className="h-3 w-3 text-warm-dark" />
+              Guest data won't be saved
+            </p>
+          </div>
         </CardContent>
       </Card>
-    </div>;
+    </div>
+  );
 };
+
 export default LoginForm;
