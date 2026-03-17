@@ -64,12 +64,24 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				mental: {
-					gray: '#EDEBEB',
-					peach: '#FDF3F1',
-					blue: '#E5EFF2',
-					beige: '#F6EBE5',
-					green: '#E3EADC'
-				}
+					gray: 'rgb(var(--mental-gray))',
+					peach: 'rgb(var(--mental-peach))',
+					blue: 'rgb(var(--mental-blue))',
+					beige: 'rgb(var(--mental-beige))',
+					green: 'rgb(var(--mental-green))'
+				},
+				sage: {
+					DEFAULT: 'hsl(var(--sage))',
+					light: 'hsl(var(--sage-light))'
+				},
+				teal: {
+					DEFAULT: 'hsl(var(--teal))',
+					light: 'hsl(var(--teal-light))'
+				},
+				warm: {
+					DEFAULT: 'hsl(var(--warm))',
+					dark: 'hsl(var(--warm-dark))'
+				},
 			},
 			fontFamily: {
 				sans: ['Sora', 'sans-serif'],
@@ -82,45 +94,32 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
 				},
 				'fade-in': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(10px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				},
 				'pulse-slow': {
-					'0%, 100%': {
-						opacity: '1'
-					},
-					'50%': {
-						opacity: '0.8'
-					}
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.8' }
+				},
+				'slide-up': {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.5s ease-out',
-				'pulse-slow': 'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+				'pulse-slow': 'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'slide-up': 'slide-up 0.4s ease-out'
 			}
 		}
 	},
