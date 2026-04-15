@@ -16,7 +16,7 @@ const MoodFactors: React.FC<MoodFactorsProps> = ({
 }) => {
   return (
     <div>
-      <Label className="text-lg font-medium mb-3 block" style={{color: '#737373'}}>
+      <Label className="text-lg font-medium mb-3 block text-foreground">
         What might be influencing your mood? (Select all that apply)
       </Label>
       <FactorsGrid

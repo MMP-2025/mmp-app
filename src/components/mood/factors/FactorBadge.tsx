@@ -18,8 +18,8 @@ const FactorBadge: React.FC<FactorBadgeProps> = ({
       variant={isSelected ? "default" : "outline"}
       className={`cursor-pointer transition-all hover:scale-105 ${
         isSelected 
-          ? 'bg-mental-peach text-gray-700 border-gray-400' 
-          : 'hover:bg-mental-peach/40'
+          ? 'bg-primary text-primary-foreground border-primary' 
+          : 'hover:bg-mental-peach text-foreground'
       }`}
       onClick={() => onToggle(factor)}
     >

@@ -14,63 +14,63 @@ const moodCategories = [
     name: 'joy',
     label: 'Joy',
     icon: Smile,
-    color: 'bg-mental-green/20',
-    activeColor: 'bg-mental-green/40',
-    borderColor: 'border-mental-green',
+    color: 'bg-mental-green',
+    activeColor: 'bg-accent/40',
+    borderColor: 'border-accent',
     emotions: ['Joyful', 'Happy', 'Excited', 'Grateful', 'Content', 'Peaceful', 'Hopeful', 'Energetic', 'Proud']
   },
   {
     name: 'calm',
     label: 'Calm',
     icon: Moon,
-    color: 'bg-mental-blue/20',
-    activeColor: 'bg-mental-blue/40',
-    borderColor: 'border-mental-blue',
+    color: 'bg-mental-blue',
+    activeColor: 'bg-secondary/40',
+    borderColor: 'border-secondary',
     emotions: ['Relaxed', 'Serene', 'Balanced', 'Mindful', 'Centered', 'Tranquil', 'At Peace', 'Comfortable']
   },
   {
     name: 'sadness',
     label: 'Sadness',
     icon: CloudRain,
-    color: 'bg-blue-100',
-    activeColor: 'bg-blue-200',
-    borderColor: 'border-blue-400',
+    color: 'bg-secondary/20',
+    activeColor: 'bg-secondary/35',
+    borderColor: 'border-secondary',
     emotions: ['Sad', 'Melancholy', 'Lonely', 'Disappointed', 'Hopeless', 'Grieving', 'Empty', 'Heartbroken']
   },
   {
     name: 'anger',
     label: 'Anger',
     icon: Flame,
-    color: 'bg-red-100',
-    activeColor: 'bg-red-200',
-    borderColor: 'border-red-400',
+    color: 'bg-mental-peach',
+    activeColor: 'bg-primary/35',
+    borderColor: 'border-primary',
     emotions: ['Angry', 'Frustrated', 'Irritated', 'Resentful', 'Annoyed', 'Bitter', 'Hostile', 'Furious']
   },
   {
     name: 'fear',
     label: 'Fear',
     icon: AlertTriangle,
-    color: 'bg-amber-100',
-    activeColor: 'bg-amber-200',
-    borderColor: 'border-amber-400',
+    color: 'bg-mental-warm',
+    activeColor: 'bg-primary/30',
+    borderColor: 'border-primary',
     emotions: ['Anxious', 'Worried', 'Nervous', 'Scared', 'Overwhelmed', 'Panicked', 'Insecure', 'Uneasy']
   },
   {
     name: 'surprise',
     label: 'Surprise',
     icon: Sparkles,
-    color: 'bg-purple-100',
-    activeColor: 'bg-purple-200',
-    borderColor: 'border-purple-400',
+    color: 'bg-mental-gray',
+    activeColor: 'bg-muted/50',
+    borderColor: 'border-muted',
     emotions: ['Surprised', 'Amazed', 'Astonished', 'Confused', 'Shocked', 'Curious', 'Intrigued']
   },
   {
     name: 'neutral',
     label: 'Neutral',
     icon: Circle,
-    color: 'bg-mental-gray/30',
-    activeColor: 'bg-mental-gray/50',
-    borderColor: 'border-mental-gray',
+    color: 'bg-mental-gray',
+    activeColor: 'bg-muted/50',
+    borderColor: 'border-muted',
     emotions: ['Okay', 'Fine', 'Indifferent', 'Numb', 'Detached', 'Bored', 'Tired', 'Drained']
   }
 ];
@@ -95,9 +95,11 @@ const MoodCardSelector: React.FC<MoodCardSelectorProps> = ({ onEmotionSelect, se
   };
 
   return (
-    <Card className="p-4 bg-card/90">
+    <Card className="p-4 bg-card">
+      <h3 className="text-lg font-semibold mb-3 text-foreground">How are you feeling?</h3>
+      
       {selectedEmotion && (
-        <div className="mb-4 p-3 rounded-lg bg-primary/10 border border-primary/20 text-center">
+        <div className="mb-4 p-3 rounded-lg bg-mental-blue border border-secondary/30 text-center">
           <span className="text-sm text-muted-foreground">Selected: </span>
           <span className="font-semibold text-foreground">{selectedEmotion}</span>
         </div>
@@ -125,7 +127,7 @@ const MoodCardSelector: React.FC<MoodCardSelectorProps> = ({ onEmotionSelect, se
                     "w-full p-4 rounded-xl border-2 transition-all duration-200",
                     "flex flex-col items-center gap-2 cursor-pointer",
                     "hover:scale-[1.02] hover:shadow-md",
-                    "focus:outline-none focus:ring-2 focus:ring-primary/50",
+                    "focus:outline-none focus:ring-2 focus:ring-ring/50",
                     isOpen ? category.activeColor : category.color,
                     isSelected && !isOpen ? `${category.activeColor} ${category.borderColor}` : "border-transparent"
                   )}
@@ -146,12 +148,12 @@ const MoodCardSelector: React.FC<MoodCardSelectorProps> = ({ onEmotionSelect, se
                           key={emotion}
                           onClick={() => handleEmotionSelect(emotion)}
                           className={cn(
-                            "px-2 py-2 rounded-lg text-xs font-medium transition-all",
-                            "text-center break-words cursor-pointer",
+                            "px-3 py-2 rounded-lg text-xs font-medium transition-all",
+                            "text-center break-words cursor-pointer text-foreground",
                             "hover:scale-105",
-                            "focus:outline-none focus:ring-2 focus:ring-primary/50",
+                            "focus:outline-none focus:ring-2 focus:ring-ring/50",
                             category.color,
-                            isEmotionSelected && `${category.activeColor} ring-2 ring-primary`
+                            isEmotionSelected && `${category.activeColor} ring-2 ring-secondary`
                           )}
                         >
                           <span className="flex items-center justify-center gap-1">
