@@ -67,8 +67,15 @@ export default {
 					gray: 'rgb(var(--mental-gray))',
 					peach: 'rgb(var(--mental-peach))',
 					blue: 'rgb(var(--mental-blue))',
-					beige: 'rgb(var(--mental-beige))',
+					warm: 'rgb(var(--mental-warm))',
 					green: 'rgb(var(--mental-green))'
+				},
+				brand: {
+					peach: 'hsl(var(--brand-peach))',
+					warm: 'hsl(var(--brand-warm))',
+					blue: 'hsl(var(--brand-blue))',
+					gray: 'hsl(var(--brand-gray))',
+					green: 'hsl(var(--brand-green))'
 				},
 				sage: {
 					DEFAULT: 'hsl(var(--sage))',
