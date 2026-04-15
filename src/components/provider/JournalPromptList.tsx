@@ -41,7 +41,7 @@ const JournalPromptList: React.FC<JournalPromptListProps> = ({ journalPrompts, o
                       <span className="px-2 py-1 bg-mental-green/50 rounded-full text-xs text-foreground">
                         {prompt.category}
                       </span>
-                      <span className="px-2 py-1 bg-mental-beige/50 rounded-full text-xs text-foreground">
+                      <span className="px-2 py-1 bg-mental-warm/50 rounded-full text-xs text-foreground">
                         {prompt.difficulty}
                       </span>
                     </div>

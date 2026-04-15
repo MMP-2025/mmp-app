@@ -43,7 +43,7 @@ const MoodHistoryItem: React.FC<MoodHistoryItemProps> = ({ entry }) => {
 
   const getIntensityColor = (intensity: number) => {
     if (intensity <= 3) return 'text-destructive';
-    if (intensity <= 6) return 'text-mental-beige';
+    if (intensity <= 6) return 'text-mental-warm';
     return 'text-mental-green';
   };
 

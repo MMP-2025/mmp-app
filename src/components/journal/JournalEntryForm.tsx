@@ -43,8 +43,8 @@ const JournalEntryForm: React.FC<JournalEntryFormProps> = ({
           onComplete={() => setShowSuccess(false)}
         />
       )}
-    <Card className="p-6 bg-mental-beige/20">
-      <h2 className="text-xl font-semibold mb-4 text-[#7e868b]">New Entry</h2>
+    <Card className="p-6 bg-mental-warm/20">
+      <h2 className="text-xl font-semibold mb-4 text-foreground">New Entry</h2>
       <div className="flex flex-wrap gap-3 mb-4">
         <Button onClick={onGetRandomPrompt} className="bg-mental-blue hover:bg-mental-blue/80 flex items-center gap-2">
           <Quote className="h-4 w-4 text-[#7e868b]" />

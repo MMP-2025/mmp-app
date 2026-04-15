@@ -14,7 +14,7 @@ const MoodNoteInput: React.FC<MoodNoteInputProps> = ({
 }) => {
   return (
     <div>
-      <Label className="text-lg font-medium mb-3 block" style={{color: '#737373'}}>
+      <Label className="text-lg font-medium mb-3 block text-foreground">
         Additional Notes (Optional)
       </Label>
       <Textarea

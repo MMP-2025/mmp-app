@@ -5,51 +5,57 @@
 @layer base {
   :root {
     --background: 30 25% 96%;
-    --foreground: 220 15% 20%;
+    --foreground: 0 0% 27%;
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 20%;
+    --card-foreground: 0 0% 27%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 25%;
-    --primary: 160 30% 45%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 25 30% 90%;
-    --secondary-foreground: 220 15% 20%;
-    --muted: 30 10% 92%;
-    --muted-foreground: 220 10% 45%;
-    --accent: 200 25% 88%;
-    --accent-foreground: 220 15% 20%;
+    --popover-foreground: 0 0% 27%;
+    --primary: 22 42% 80%;
+    --primary-foreground: 0 0% 27%;
+    --secondary: 194 30% 78%;
+    --secondary-foreground: 0 0% 27%;
+    --muted: 0 5% 79%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 91 24% 68%;
+    --accent-foreground: 0 0% 27%;
     --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 30 15% 85%;
-    --input: 30 15% 88%;
-    --ring: 160 30% 45%;
+    --border: 22 20% 88%;
+    --input: 22 20% 90%;
+    --ring: 194 30% 60%;
     --radius: 0.75rem;
 
-    /* Brand palette */
-    --mental-gray: 237, 235, 235;
+    /* Brand palette — hex originals at 35% opacity on white */
     --mental-peach: 253, 243, 241;
+    --mental-warm: 245, 227, 215;
     --mental-blue: 229, 239, 242;
-    --mental-beige: 246, 235, 229;
+    --mental-gray: 237, 235, 235;
     --mental-green: 227, 234, 220;
 
-    /* Semantic brand tokens */
-    --sage: 150 25% 55%;
-    --sage-light: 150 25% 92%;
-    --teal: 190 30% 50%;
-    --teal-light: 190 30% 92%;
-    --warm: 25 35% 92%;
-    --warm-dark: 25 20% 50%;
-    --calm-blue: 210 25% 88%;
-    --hero-gradient: linear-gradient(135deg, hsl(150 25% 92%), hsl(190 30% 92%));
+    /* Full-strength brand colors for accents/borders */
+    --brand-peach: 10 82% 91%;
+    --brand-warm: 22 42% 80%;
+    --brand-blue: 194 30% 78%;
+    --brand-gray: 0 5% 79%;
+    --brand-green: 91 24% 68%;
+
+    /* Semantic tokens */
+    --sage: 91 24% 68%;
+    --sage-light: 91 24% 92%;
+    --teal: 194 30% 65%;
+    --teal-light: 194 30% 92%;
+    --warm: 22 42% 92%;
+    --warm-dark: 22 30% 55%;
+    --calm-blue: 194 25% 88%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 15% 25%;
-    --sidebar-primary: 160 30% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 25% 92%;
-    --sidebar-accent-foreground: 220 15% 20%;
-    --sidebar-border: 30 15% 88%;
-    --sidebar-ring: 160 30% 45%;
+    --sidebar-foreground: 0 0% 27%;
+    --sidebar-primary: 22 42% 80%;
+    --sidebar-primary-foreground: 0 0% 27%;
+    --sidebar-accent: 91 24% 92%;
+    --sidebar-accent-foreground: 0 0% 27%;
+    --sidebar-border: 22 20% 88%;
+    --sidebar-ring: 194 30% 60%;
   }
 
   .dark {
@@ -59,42 +65,48 @@
     --card-foreground: 30 10% 90%;
     --popover: 220 15% 14%;
     --popover-foreground: 30 10% 88%;
-    --primary: 160 30% 50%;
+    --primary: 22 42% 70%;
     --primary-foreground: 220 15% 10%;
-    --secondary: 220 12% 20%;
+    --secondary: 194 25% 35%;
     --secondary-foreground: 30 10% 88%;
     --muted: 220 12% 18%;
     --muted-foreground: 30 10% 60%;
-    --accent: 200 20% 22%;
+    --accent: 91 20% 35%;
     --accent-foreground: 30 10% 88%;
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 12% 22%;
     --input: 220 12% 20%;
-    --ring: 160 30% 50%;
+    --ring: 194 25% 50%;
 
-    --mental-gray: 40, 40, 45;
     --mental-peach: 45, 38, 36;
+    --mental-warm: 50, 42, 38;
     --mental-blue: 35, 42, 48;
-    --mental-beige: 45, 40, 38;
+    --mental-gray: 40, 40, 45;
     --mental-green: 38, 42, 35;
 
-    --sage: 150 25% 45%;
-    --sage-light: 150 15% 18%;
-    --teal: 190 25% 42%;
-    --teal-light: 190 15% 18%;
-    --warm: 25 15% 18%;
-    --warm-dark: 25 15% 55%;
-    --calm-blue: 210 15% 20%;
+    --brand-peach: 10 40% 25%;
+    --brand-warm: 22 30% 30%;
+    --brand-blue: 194 20% 30%;
+    --brand-gray: 0 5% 30%;
+    --brand-green: 91 15% 28%;
+
+    --sage: 91 20% 42%;
+    --sage-light: 91 15% 18%;
+    --teal: 194 20% 42%;
+    --teal-light: 194 15% 18%;
+    --warm: 22 15% 18%;
+    --warm-dark: 22 15% 55%;
+    --calm-blue: 194 15% 20%;
 
     --sidebar-background: 220 15% 12%;
     --sidebar-foreground: 30 10% 88%;
-    --sidebar-primary: 160 30% 50%;
+    --sidebar-primary: 22 42% 70%;
     --sidebar-primary-foreground: 220 15% 10%;
-    --sidebar-accent: 150 15% 18%;
+    --sidebar-accent: 91 15% 18%;
     --sidebar-accent-foreground: 30 10% 88%;
     --sidebar-border: 220 12% 22%;
-    --sidebar-ring: 160 30% 50%;
+    --sidebar-ring: 194 25% 50%;
   }
 
   html {
@@ -209,12 +221,12 @@
   .bg-mental-gray { background-color: rgb(var(--mental-gray)); }
   .bg-mental-peach { background-color: rgb(var(--mental-peach)); }
   .bg-mental-blue { background-color: rgb(var(--mental-blue)); }
-  .bg-mental-beige { background-color: rgb(var(--mental-beige)); }
+  .bg-mental-warm { background-color: rgb(var(--mental-warm)); }
   .bg-mental-green { background-color: rgb(var(--mental-green)); }
   .text-mental-gray { color: rgb(var(--mental-gray)); }
   .text-mental-peach { color: rgb(var(--mental-peach)); }
   .text-mental-blue { color: rgb(var(--mental-blue)); }
-  .text-mental-beige { color: rgb(var(--mental-beige)); }
+  .text-mental-warm { color: rgb(var(--mental-warm)); }
   .text-mental-green { color: rgb(var(--mental-green)); }
   .text-destructive { color: hsl(var(--destructive)); }
 

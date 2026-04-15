@@ -116,10 +116,10 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
             setLocation={setLocation}
           />
           
-          <Card className="p-6 bg-white/90">
+          <Card className="p-6 bg-card">
             <Button 
               onClick={handleSave} 
-              className="w-full bg-mental-blue hover:bg-mental-blue/80 hover-scale"
+              className="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground"
               size="lg"
             >
               Save Mood Entry
