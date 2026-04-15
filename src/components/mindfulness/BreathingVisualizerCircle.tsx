@@ -45,7 +45,7 @@ const getPhaseColor = (phase: Phase) => {
     case 'exhale':
       return 'bg-mental-green';
     case 'pause':
-      return 'bg-mental-beige';
+      return 'bg-mental-warm';
     default:
       return 'bg-mental-gray';
   }

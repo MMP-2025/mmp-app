@@ -12,7 +12,7 @@ interface WellnessMetricsCardProps {
 export const WellnessMetricsCard: React.FC<WellnessMetricsCardProps> = ({ metrics }) => {
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-mental-green';
-    if (score >= 60) return 'text-mental-beige';
+    if (score >= 60) return 'text-mental-warm';
     return 'text-destructive';
   };
 

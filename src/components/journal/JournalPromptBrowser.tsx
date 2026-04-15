@@ -58,8 +58,8 @@ const JournalPromptBrowser: React.FC<JournalPromptBrowserProps> = ({
 
       {/* Browse Prompts Section */}
       {currentView === 'saved' && savedPrompts.length === 0 ? (
-        <Card className="p-8 bg-mental-beige/20 text-center">
-          <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-mental-beige" />
+        <Card className="p-8 bg-mental-warm/20 text-center">
+          <BookmarkPlus className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
           <h3 className="text-xl font-semibold mb-2 text-foreground">No Saved Prompts</h3>
           <p className="text-muted-foreground mb-4">
             You haven't saved any prompts yet. Browse all prompts and save your favorites!
