@@ -12,6 +12,8 @@ import MoodTrackerHeader from '@/components/mood/MoodTrackerHeader';
 import MoodTrackerTabs from '@/components/mood/MoodTrackerTabs';
 import MoodTrackerContent from '@/components/mood/MoodTrackerContent';
 import GuestSavePrompt from '@/components/auth/GuestSavePrompt';
+import { PageTransition } from '@/components/ui/animated';
+import { MoodTrackerSkeleton } from '@/components/ui/page-skeletons';
 
 const MoodTrackerPage = () => {
   const [currentTab, setCurrentTab] = useState('track');
@@ -99,42 +101,52 @@ const MoodTrackerPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <SidebarLayout>
+        <MoodTrackerSkeleton />
+      </SidebarLayout>
+    );
+  }
+
   return (
     <SidebarLayout>
-      <div className="space-y-6 max-w-4xl mx-auto">
-          <MoodTrackerHeader onExportData={exportMoodData} />
-          
-          <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <MoodTrackerTabs currentTab={currentTab} onTabChange={setCurrentTab} />
+      <PageTransition>
+        <div className="space-y-6 max-w-4xl mx-auto">
+            <MoodTrackerHeader onExportData={exportMoodData} />
             
-            <MoodTrackerContent
-              selectedMood={selectedMood}
-              moodIntensity={moodIntensity}
-              moodNote={moodNote}
-              selectedFactors={selectedFactors}
-              moodHistory={moodHistory}
-              moodFactors={moodFactors}
-              userBehavior={userBehavior}
-              sleepHours={sleepHours}
-              setSleepHours={setSleepHours}
-              exerciseMinutes={exerciseMinutes}
-              setExerciseMinutes={setExerciseMinutes}
-              cycleTracking={cycleTracking}
-              setCycleTracking={setCycleTracking}
-              cycleDay={cycleDay}
-              setCycleDay={setCycleDay}
-              weather={weather}
-              setWeather={setWeather}
-              location={location}
-              setLocation={setLocation}
-              onMoodSelection={handleMoodSelection}
-              onIntensityChange={setMoodIntensity}
-              onNoteChange={setMoodNote}
-              onFactorToggle={handleFactorToggle}
-              onSaveMood={handleSaveMood}
-            />
-          </Tabs>
-      </div>
+            <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+              <MoodTrackerTabs currentTab={currentTab} onTabChange={setCurrentTab} />
+              
+              <MoodTrackerContent
+                selectedMood={selectedMood}
+                moodIntensity={moodIntensity}
+                moodNote={moodNote}
+                selectedFactors={selectedFactors}
+                moodHistory={moodHistory}
+                moodFactors={moodFactors}
+                userBehavior={userBehavior}
+                sleepHours={sleepHours}
+                setSleepHours={setSleepHours}
+                exerciseMinutes={exerciseMinutes}
+                setExerciseMinutes={setExerciseMinutes}
+                cycleTracking={cycleTracking}
+                setCycleTracking={setCycleTracking}
+                cycleDay={cycleDay}
+                setCycleDay={setCycleDay}
+                weather={weather}
+                setWeather={setWeather}
+                location={location}
+                setLocation={setLocation}
+                onMoodSelection={handleMoodSelection}
+                onIntensityChange={setMoodIntensity}
+                onNoteChange={setMoodNote}
+                onFactorToggle={handleFactorToggle}
+                onSaveMood={handleSaveMood}
+              />
+            </Tabs>
+        </div>
+      </PageTransition>
       
       <GuestSavePrompt 
         isOpen={showGuestPrompt}

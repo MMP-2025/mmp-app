@@ -8,6 +8,7 @@ import { useJournalPromptData } from '@/hooks/useJournalPromptData';
 import JournalEntryForm from '@/components/journal/JournalEntryForm';
 import JournalEntriesList from '@/components/journal/JournalEntriesList';
 import GuestSavePrompt from '@/components/auth/GuestSavePrompt';
+import { PageTransition } from '@/components/ui/animated';
 
 
 const JournalPage = () => {
@@ -83,32 +84,38 @@ const JournalPage = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold mb-2 text-muted-foreground">Journal</h1>
-        <p className="text-muted-foreground">Express your thoughts and feelings</p>
+    <PageTransition>
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
+          <h1 className="text-2xl font-merriweather font-bold mb-1 text-foreground">Journal</h1>
+          <p className="text-sm text-muted-foreground">Express your thoughts and feelings</p>
+        </div>
+        
+        <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '100ms', animationFillMode: 'forwards' }}>
+          <JournalEntryForm
+            journalContent={journalContent}
+            setJournalContent={setJournalContent}
+            currentPrompt={currentPrompt}
+            setCurrentPrompt={setCurrentPrompt}
+            savedPrompts={savedPrompts}
+            onGetRandomPrompt={getRandomPrompt}
+            onStartFreeWriting={startFreeWriting}
+            onSaveEntry={saveJournalEntry}
+            onToggleSavedPrompt={toggleSavedPrompt}
+          />
+        </div>
+        
+        <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}>
+          <JournalEntriesList journalEntries={journalEntries} />
+        </div>
+        
+        <GuestSavePrompt 
+          isOpen={showGuestPrompt}
+          onClose={() => setShowGuestPrompt(false)}
+          featureName="journal entries"
+        />
       </div>
-      
-      <JournalEntryForm
-        journalContent={journalContent}
-        setJournalContent={setJournalContent}
-        currentPrompt={currentPrompt}
-        setCurrentPrompt={setCurrentPrompt}
-        savedPrompts={savedPrompts}
-        onGetRandomPrompt={getRandomPrompt}
-        onStartFreeWriting={startFreeWriting}
-        onSaveEntry={saveJournalEntry}
-        onToggleSavedPrompt={toggleSavedPrompt}
-      />
-      
-      <JournalEntriesList journalEntries={journalEntries} />
-      
-      <GuestSavePrompt 
-        isOpen={showGuestPrompt}
-        onClose={() => setShowGuestPrompt(false)}
-        featureName="journal entries"
-      />
-    </div>
+    </PageTransition>
   );
 };
 
