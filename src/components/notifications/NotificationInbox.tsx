@@ -9,7 +9,6 @@ import NotificationFilters from './NotificationFilters';
 import NotificationCard from './NotificationCard';
 import EmptyNotificationState from './EmptyNotificationState';
 
-// Mock current user ID - in real app, this would come from auth context
 const CURRENT_USER_ID = 'user123';
 
 const NotificationInbox: React.FC = () => {
@@ -51,9 +50,9 @@ const NotificationInbox: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-card shadow-md">
+      <Card className="shadow-card-elevated">
         <CardHeader>
-          <CardTitle className="flex items-center justify-between text-[#737373]">
+          <CardTitle className="flex items-center justify-between text-foreground">
             <div className="flex items-center gap-2">
               <Bell className="h-5 w-5" />
               Notifications
@@ -63,7 +62,7 @@ const NotificationInbox: React.FC = () => {
                 </Badge>
               )}
             </div>
-            <Filter className="h-4 w-4" />
+            <Filter className="h-4 w-4 text-muted-foreground" />
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -78,14 +77,19 @@ const NotificationInbox: React.FC = () => {
             <EmptyNotificationState filter={filter} />
           ) : (
             <div className="space-y-3">
-              {filteredNotifications.map(notification => (
-                <NotificationCard
+              {filteredNotifications.map((notification, i) => (
+                <div
                   key={notification.id}
-                  notification={notification}
-                  onMarkAsRead={handleMarkAsRead}
-                  onDelete={handleDelete}
-                  onActionClick={handleActionClick}
-                />
+                  className="opacity-0 animate-fade-in-up"
+                  style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'forwards' }}
+                >
+                  <NotificationCard
+                    notification={notification}
+                    onMarkAsRead={handleMarkAsRead}
+                    onDelete={handleDelete}
+                    onActionClick={handleActionClick}
+                  />
+                </div>
               ))}
             </div>
           )}
