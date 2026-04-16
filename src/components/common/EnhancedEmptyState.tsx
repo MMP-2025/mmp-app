@@ -21,27 +21,27 @@ export const EnhancedEmptyState: React.FC<EnhancedEmptyStateProps> = ({
   onAction
 }) => {
   return (
-    <Card className="p-8 text-center animate-fade-in">
-      <div className="flex justify-center mb-4">
+    <Card className="p-10 text-center animate-scale-in shadow-card-elevated border-dashed">
+      <div className="flex justify-center mb-6">
         <div className="relative">
-          <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
-          <div className="relative bg-primary/10 p-6 rounded-full">
-            <Icon className="h-12 w-12 text-primary" />
+          <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl animate-breathe" />
+          <div className="relative bg-gradient-to-br from-primary/15 to-sage-light p-7 rounded-full">
+            <Icon className="h-10 w-10 text-primary" />
           </div>
         </div>
       </div>
       
-      <h3 className="text-xl font-semibold mb-2 text-foreground">
+      <h3 className="text-xl font-merriweather font-semibold mb-2 text-foreground">
         {title}
       </h3>
       
-      <p className="text-muted-foreground mb-4 max-w-md mx-auto">
+      <p className="text-muted-foreground mb-5 max-w-sm mx-auto leading-relaxed">
         {description}
       </p>
       
       {motivationalText && (
-        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-4 max-w-md mx-auto">
-          <p className="text-sm font-medium text-primary italic">
+        <div className="bg-sage-light/60 border border-primary/10 rounded-xl p-4 mb-5 max-w-sm mx-auto">
+          <p className="text-sm font-medium text-foreground/70 italic">
             "{motivationalText}"
           </p>
         </div>
@@ -51,7 +51,7 @@ export const EnhancedEmptyState: React.FC<EnhancedEmptyStateProps> = ({
         <Button 
           onClick={onAction}
           size="lg"
-          className="mt-2 hover-scale"
+          className="mt-1 rounded-xl shadow-card-hover"
         >
           {actionLabel}
         </Button>
