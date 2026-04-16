@@ -1,8 +1,14 @@
 import React, { lazy, Suspense } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { GenericPageSkeleton } from '@/components/ui/page-skeletons';
 import { ErrorBoundary } from '@/components/provider/ErrorBoundary';
 import PatientInvitations from '@/components/provider/PatientInvitations';
+import { PageTransition, StaggeredList } from '@/components/ui/animated';
+import {
+  Quote, FileText, HelpCircle, Wrench, Bell, Heart,
+  Brain, Music, FolderOpen, Send, Users
+} from 'lucide-react';
+import { useState } from 'react';
 
 // Lazy load tab components
 const QuotesTab = lazy(() => import('@/components/provider/tabs/QuotesTab'));
@@ -16,139 +22,163 @@ const NotificationsTab = lazy(() => import('@/components/provider/tabs/Notificat
 const AudiosTab = lazy(() => import('@/components/provider/tabs/AudiosTab'));
 const ResourcesTab = lazy(() => import('@/components/provider/tabs/ResourcesTab'));
 
-// Import custom hooks
 import { useProviderData } from '@/hooks/useProviderData';
 import { useProviderHandlers } from '@/hooks/useProviderHandlers';
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
-const LoadingFallback = () => (
-  <div className="flex items-center justify-center p-8">
-    <LoadingSpinner size="lg" text="Loading..." />
-  </div>
-);
+const sections = [
+  { key: 'patients', label: 'Patients', icon: Users, color: 'bg-mental-blue' },
+  { key: 'notifications', label: 'Send Notifications', icon: Send, color: 'bg-mental-peach' },
+  { key: 'questions', label: 'Questions', icon: HelpCircle, color: 'bg-mental-green' },
+  { key: 'quotes', label: 'Quotes', icon: Quote, color: 'bg-mental-warm' },
+  { key: 'prompts', label: 'Journal Prompts', icon: FileText, color: 'bg-mental-blue' },
+  { key: 'toolkit', label: 'Toolkit', icon: Wrench, color: 'bg-mental-gray' },
+  { key: 'reminders', label: 'Reminders', icon: Bell, color: 'bg-mental-peach' },
+  { key: 'gratitude', label: 'Gratitude', icon: Heart, color: 'bg-mental-green' },
+  { key: 'mindfulness', label: 'Mindfulness', icon: Brain, color: 'bg-mental-warm' },
+  { key: 'audios', label: 'Audio Files', icon: Music, color: 'bg-mental-blue' },
+  { key: 'resources', label: 'Resources', icon: FolderOpen, color: 'bg-mental-gray' },
+];
+
+const LoadingFallback = () => <GenericPageSkeleton />;
 
 const ProviderDashboard = () => {
   const data = useProviderData();
   const handlers = useProviderHandlers(data);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
-  // Keyboard shortcuts for tab navigation
-  useKeyboardShortcuts([
-    {
-      key: '1',
-      altKey: true,
-      callback: () => {
-        const quotesTab = document.querySelector('[data-state="active"][value="quotes"]');
-        if (!quotesTab) {
-          const quotesTabTrigger = document.querySelector('[value="quotes"]') as HTMLElement;
-          quotesTabTrigger?.click();
-        }
-      }
-    },
-    {
-      key: '2',
-      altKey: true,
-      callback: () => {
-        const promptsTab = document.querySelector('[data-state="active"][value="prompts"]');
-        if (!promptsTab) {
-          const promptsTabTrigger = document.querySelector('[value="prompts"]') as HTMLElement;
-          promptsTabTrigger?.click();
-        }
-      }
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'patients':
+        return <PatientInvitations />;
+      case 'notifications':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <NotificationsTab />
+          </Suspense>
+        );
+      case 'questions':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <QuestionsTab data={data} handlers={handlers} />
+          </Suspense>
+        );
+      case 'quotes':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <QuotesTab data={data} handlers={handlers} />
+          </Suspense>
+        );
+      case 'prompts':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <JournalPromptsTab data={data} handlers={handlers} />
+          </Suspense>
+        );
+      case 'toolkit':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ToolkitTab data={data} handlers={handlers} />
+          </Suspense>
+        );
+      case 'reminders':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <RemindersTab data={data} handlers={handlers} />
+          </Suspense>
+        );
+      case 'gratitude':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <GratitudeTab data={data} handlers={handlers} />
+          </Suspense>
+        );
+      case 'mindfulness':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <MindfulnessTab data={data} handlers={handlers} />
+          </Suspense>
+        );
+      case 'audios':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <AudiosTab />
+          </Suspense>
+        );
+      case 'resources':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ResourcesTab />
+          </Suspense>
+        );
+      default:
+        return null;
     }
-    // Add more shortcuts as needed
-  ]);
+  };
 
   return (
     <ErrorBoundary>
-      <div className="container mx-auto p-6 space-y-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#7e868b] mb-2">Provider Dashboard</h1>
-          <p className="text-[#7e868b]">Manage all content including quotes, prompts, resources, audio files, and patient invitations.</p>
-          <div className="mt-2 text-xs text-gray-500">
-            Keyboard shortcuts: Alt+1 (Quotes), Alt+2 (Prompts), Ctrl+S (Save), Ctrl+Shift+Q (Focus quote input)
+      <PageTransition>
+        <div className="container mx-auto p-6 space-y-6">
+          <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
+            <h1 className="text-2xl font-merriweather font-bold text-foreground mb-1">Provider Dashboard</h1>
+            <p className="text-sm text-muted-foreground">Manage content, patients, and notifications.</p>
           </div>
+
+          {/* Quick action grid */}
+          {!activeSection && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {sections.map((section, i) => {
+                const Icon = section.icon;
+                return (
+                  <button
+                    key={section.key}
+                    onClick={() => setActiveSection(section.key)}
+                    className="opacity-0 animate-fade-in-up p-4 rounded-xl border bg-card shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 text-left min-h-[80px] flex flex-col justify-between"
+                    style={{ animationDelay: `${100 + i * 60}ms`, animationFillMode: 'forwards' }}
+                  >
+                    <div className={`w-9 h-9 rounded-lg ${section.color} flex items-center justify-center mb-2`}>
+                      <Icon className="h-4.5 w-4.5 text-foreground/70" />
+                    </div>
+                    <span className="text-sm font-medium text-foreground">{section.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Active section */}
+          {activeSection && (
+            <div className="space-y-4 animate-fade-in">
+              <button
+                onClick={() => setActiveSection(null)}
+                className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 no-underline min-h-[44px]"
+              >
+                ← Back to Dashboard
+              </button>
+              <Card className="shadow-card-elevated">
+                <CardHeader>
+                  <CardTitle className="text-foreground flex items-center gap-2">
+                    {(() => {
+                      const section = sections.find(s => s.key === activeSection);
+                      if (!section) return activeSection;
+                      const Icon = section.icon;
+                      return (
+                        <>
+                          <Icon className="h-5 w-5" />
+                          {section.label}
+                        </>
+                      );
+                    })()}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {renderContent()}
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
-
-        {/* Patient Invitations Section */}
-        <div className="mb-6">
-          <PatientInvitations />
-        </div>
-
-        <Tabs defaultValue="quotes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10 bg-mental-blue">
-            <TabsTrigger value="quotes">Quotes</TabsTrigger>
-            <TabsTrigger value="prompts">Prompts</TabsTrigger>
-            <TabsTrigger value="questions">Questions</TabsTrigger>
-            <TabsTrigger value="toolkit">Toolkit</TabsTrigger>
-            <TabsTrigger value="reminders">Reminders</TabsTrigger>
-            <TabsTrigger value="gratitude">Gratitude</TabsTrigger>
-            <TabsTrigger value="mindfulness">Mindfulness</TabsTrigger>
-            <TabsTrigger value="audios">Audios</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="quotes">
-            <Suspense fallback={<LoadingFallback />}>
-              <QuotesTab data={data} handlers={handlers} />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="prompts">
-            <Suspense fallback={<LoadingFallback />}>
-              <JournalPromptsTab data={data} handlers={handlers} />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="questions">
-             <Suspense fallback={<LoadingFallback />}>
-              <QuestionsTab data={data} handlers={handlers} />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="toolkit">
-            <Suspense fallback={<LoadingFallback />}>
-              <ToolkitTab data={data} handlers={handlers} />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="reminders">
-             <Suspense fallback={<LoadingFallback />}>
-              <RemindersTab data={data} handlers={handlers} />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="gratitude">
-            <Suspense fallback={<LoadingFallback />}>
-              <GratitudeTab data={data} handlers={handlers} />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="mindfulness">
-            <Suspense fallback={<LoadingFallback />}>
-              <MindfulnessTab data={data} handlers={handlers} />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="audios">
-            <Suspense fallback={<LoadingFallback />}>
-              <AudiosTab />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="resources">
-            <Suspense fallback={<LoadingFallback />}>
-              <ResourcesTab />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="notifications">
-            <Suspense fallback={<LoadingFallback />}>
-              <NotificationsTab />
-            </Suspense>
-          </TabsContent>
-        </Tabs>
-      </div>
+      </PageTransition>
     </ErrorBoundary>
   );
 };
