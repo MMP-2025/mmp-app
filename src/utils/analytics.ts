@@ -64,8 +64,6 @@ class AnalyticsManager {
 
     this.events.push(event);
     this.saveEvents();
-    
-    console.log('Analytics Event:', event);
   }
 
   getUserMetrics(): UserMetrics {
