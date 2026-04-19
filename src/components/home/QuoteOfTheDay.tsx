@@ -40,7 +40,7 @@ const QuoteOfTheDay = () => {
 
   if (loading) {
     return (
-      <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+      <Card className="border-border/50 bg-card card-elevated">
         <CardContent className="p-6">
           <div className="flex items-center gap-4 animate-pulse">
             <div className="rounded-full bg-primary/10 p-3 h-14 w-14" />
@@ -57,14 +57,14 @@ const QuoteOfTheDay = () => {
 
   if (!quote) {
     return (
-      <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+      <Card className="border-border/50 bg-card card-elevated hover-card-subtle">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             <div className="rounded-full bg-primary/10 p-3">
               <Quote className="h-6 w-6 text-primary" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Quote of the Day</h3>
+              <h3 className="mb-2 text-foreground">Quote of the Day</h3>
               <p className="text-sm text-muted-foreground">
                 Your provider will add inspiring quotes soon. Check back later!
               </p>
@@ -76,15 +76,15 @@ const QuoteOfTheDay = () => {
   }
 
   return (
-    <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+    <Card className="border-border/50 bg-card card-elevated hover-card-subtle">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="rounded-full bg-primary/10 p-3">
             <Quote className="h-6 w-6 text-primary" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold mb-2 text-foreground">Quote of the Day</h3>
-            <blockquote className="italic text-muted-foreground mb-2">
+            <h3 className="mb-2 text-foreground">Quote of the Day</h3>
+            <blockquote className="font-merriweather italic text-foreground/85 mb-2 leading-relaxed">
               "{quote.text}"
             </blockquote>
             <cite className="text-sm text-muted-foreground not-italic">

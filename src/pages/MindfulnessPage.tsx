@@ -48,7 +48,7 @@ const MindfulnessPage = () => {
     <PageTransition>
       <div className="space-y-6 max-w-4xl mx-auto">
         <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-          <h1 className="text-2xl font-merriweather font-bold mb-1 text-foreground">Mindfulness & Meditation</h1>
+          <h1 className="mb-1 text-foreground">Mindfulness & Meditation</h1>
           <p className="text-sm text-muted-foreground">Practice being present and cultivate awareness</p>
         </div>
 
