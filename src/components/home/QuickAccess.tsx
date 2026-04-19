@@ -21,11 +21,11 @@ const QuickAccess = () => {
             key={link.path}
             asChild
             variant="ghost"
-            className={`justify-start gap-2 min-h-[44px] py-3 px-3 rounded-xl ${link.color} hover:opacity-80 no-underline transition-all`}
+            className={`w-full justify-start gap-2 min-h-[44px] py-3 px-3 rounded-xl ${link.color} hover:opacity-80 no-underline transition-all`}
           >
-            <Link to={link.path}>
+            <Link to={link.path} className="flex items-center gap-2 min-w-0 w-full">
               <link.icon className="h-4 w-4 shrink-0" />
-              <span className="text-sm font-medium text-foreground">{link.label}</span>
+              <span className="text-sm font-medium text-foreground truncate">{link.label}</span>
             </Link>
           </Button>
         ))}
