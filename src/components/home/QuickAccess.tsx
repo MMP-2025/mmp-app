@@ -15,7 +15,7 @@ const QuickAccess = () => {
   return (
     <Card className="p-5 bg-card border-border/50 card-elevated hover-card-subtle">
       <h2 className="mb-3 text-foreground">Quick Access</h2>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
         {quickLinks.map(link => (
           <Button
             key={link.path}
