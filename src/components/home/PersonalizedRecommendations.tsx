@@ -12,12 +12,12 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
   }
 
   return (
-    <Card className="p-6 bg-mental-blue/10">
-      <h2 className="text-xl font-semibold mb-4 text-muted-foreground">Personalized Recommendations</h2>
+    <Card className="p-6 bg-card border-border/50 card-elevated hover-card-subtle">
+      <h2 className="mb-4 text-foreground">Personalized Recommendations</h2>
       <div className="space-y-2">
         {recommendations.map((rec, index) => (
-          <p key={index} className="text-muted-foreground flex items-center">
-            <span className="w-2 h-2 bg-mental-blue rounded-full mr-2"></span>
+          <p key={index} className="text-sm text-muted-foreground flex items-center leading-relaxed">
+            <span className="w-2 h-2 bg-primary rounded-full mr-2 shrink-0"></span>
             {rec}
           </p>
         ))}
