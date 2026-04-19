@@ -35,11 +35,11 @@ const WellnessScore: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white/90">
+      <Card className="p-6 bg-card card-elevated border-border/50">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Star className="h-5 w-5 text-mental-green" />
-            <h3 className="text-xl font-semibold text-muted-foreground">Wellness Points</h3>
+            <h2 className="font-semibold text-foreground">Wellness Points</h2>
           </div>
           <Button 
             onClick={calculateWellnessScore} 
