@@ -56,14 +56,14 @@ const DailyQuestion = () => {
 
   if (!question) {
     return (
-      <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+      <Card className="border-border/50 bg-card card-elevated hover-card-subtle">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             <div className="rounded-full bg-primary/10 p-3">
               <HelpCircle className="h-6 w-6 text-primary" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold mb-2 text-foreground">Daily Question</h3>
+              <h3 className="mb-2 text-foreground">Daily Question</h3>
               <p className="text-sm text-muted-foreground">
                 Your provider will add reflection questions soon. Check back later!
               </p>
@@ -75,15 +75,15 @@ const DailyQuestion = () => {
   }
 
   return (
-    <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover-card-subtle">
+    <Card className="border-border/50 bg-card card-elevated hover-card-subtle">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="rounded-full bg-primary/10 p-3">
             <HelpCircle className="h-6 w-6 text-primary" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold mb-2 text-foreground">Daily Question</h3>
-            <p className="text-muted-foreground">{question}</p>
+            <h3 className="mb-2 text-foreground">Daily Question</h3>
+            <p className="text-muted-foreground leading-relaxed">{question}</p>
           </div>
         </div>
       </CardContent>

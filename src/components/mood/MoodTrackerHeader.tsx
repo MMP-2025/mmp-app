@@ -11,7 +11,7 @@ const MoodTrackerHeader: React.FC<MoodTrackerHeaderProps> = ({ onExportData }) =
   return (
     <div className="flex items-center justify-between opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
       <div>
-        <h1 className="text-2xl font-merriweather font-bold mb-1 text-foreground">Mood Tracker</h1>
+        <h1 className="mb-1 text-foreground">Mood Tracker</h1>
         <p className="text-sm text-muted-foreground">Track and understand your emotional patterns</p>
       </div>
       <Button onClick={onExportData} variant="outline" className="flex items-center gap-2 rounded-xl">

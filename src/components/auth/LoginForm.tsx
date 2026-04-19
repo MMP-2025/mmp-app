@@ -114,14 +114,16 @@ const LoginForm = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sage-light to-background p-4">
-      <Card className="w-full max-w-md shadow-xl border-border/50">
-        <CardHeader className="text-center pb-2 pt-8">
-          <img src={logo} alt="Making Meaning Psychology" className="h-16 w-16 mx-auto mb-3" />
-          <h1 className="font-merriweather text-xl font-bold text-foreground">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sage-light via-background to-background p-4">
+      <Card className="w-full max-w-md card-hero border-border/50 animate-fade-in-up">
+        <CardHeader className="text-center pb-2 pt-10">
+          <div className="mx-auto mb-4 rounded-2xl bg-gradient-to-br from-sage-light to-mental-peach p-4 w-fit shadow-card">
+            <img src={logo} alt="Making Meaning Psychology" className="h-20 w-20" />
+          </div>
+          <h1 className="font-merriweather text-2xl font-bold text-foreground">
             Making Meaning Psychology
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-muted-foreground mt-2">
             Your companion for mental wellbeing
           </p>
         </CardHeader>
@@ -274,11 +276,11 @@ const LoginForm = () => {
             </div>
           </div>
 
-          <div className="text-center space-y-2">
+          <div className="space-y-2">
             <Button
               onClick={handleGuestAccess}
-              variant="ghost"
-              className="text-sm text-muted-foreground hover:text-foreground no-underline"
+              variant="outline"
+              className="w-full rounded-xl h-11 border-border hover:bg-accent/30"
             >
               Continue as Guest →
             </Button>

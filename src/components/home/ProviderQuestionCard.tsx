@@ -84,7 +84,7 @@ const ProviderQuestionCard: React.FC = () => {
   const isAnswered = latestQuestion.status === 'read';
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-sage-light to-teal-light border-border/50 shadow-sm relative overflow-hidden">
+    <Card className="p-6 bg-gradient-to-br from-sage-light to-teal-light border-border/50 card-hero relative overflow-hidden">
       {unreadCount > 0 && (
         <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
           {unreadCount}

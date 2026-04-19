@@ -57,9 +57,10 @@ const MoodTrackerTabs: React.FC<MoodTrackerTabsProps> = ({
           </TabsTrigger>
         </>}
       
-      {isGuest && <div className="ml-4 px-4 py-2 bg-mental-peach/30 border border-mental-peach rounded-md">
-          <p className="text-xs text-gray-700">
-            📊 Unlock History, Analytics, AI Insights & more by scheduling a consultation!
+      {isGuest && <div className="ml-4 px-4 py-2.5 bg-gradient-to-r from-mental-peach to-mental-warm border border-brand-warm/40 rounded-xl shadow-card flex items-center gap-2">
+          <span className="text-base">📊</span>
+          <p className="text-xs text-foreground/85 font-medium">
+            Unlock History, Analytics & AI Insights — <span className="text-primary font-semibold underline">schedule a consultation</span>
           </p>
         </div>}
     </TabsList>;
