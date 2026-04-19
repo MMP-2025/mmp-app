@@ -59,54 +59,56 @@
   }
 
   .dark {
-    --background: 220 15% 10%;
-    --foreground: 30 10% 90%;
-    --card: 220 12% 15%;
-    --card-foreground: 30 10% 90%;
-    --popover: 220 12% 15%;
-    --popover-foreground: 30 10% 88%;
-    --primary: 22 42% 70%;
-    --primary-foreground: 220 15% 10%;
-    --secondary: 194 25% 35%;
-    --secondary-foreground: 30 10% 88%;
-    --muted: 220 12% 20%;
-    --muted-foreground: 30 10% 60%;
-    --accent: 91 20% 35%;
-    --accent-foreground: 30 10% 88%;
-    --destructive: 0 60% 50%;
+    /* Warm sage-toned dark palette — keeps Making Meaning brand identity */
+    --background: 150 12% 8%;
+    --foreground: 30 15% 92%;
+    --card: 150 10% 12%;
+    --card-foreground: 30 15% 92%;
+    --popover: 150 10% 13%;
+    --popover-foreground: 30 15% 90%;
+    --primary: 22 45% 72%;
+    --primary-foreground: 150 12% 8%;
+    --secondary: 194 22% 38%;
+    --secondary-foreground: 30 15% 92%;
+    --muted: 150 8% 18%;
+    --muted-foreground: 30 10% 68%;
+    --accent: 91 22% 38%;
+    --accent-foreground: 30 15% 92%;
+    --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 12% 24%;
-    --input: 220 12% 22%;
-    --ring: 194 25% 50%;
+    --border: 150 8% 22%;
+    --input: 150 8% 20%;
+    --ring: 194 28% 55%;
 
-    --mental-peach: 45, 38, 36;
-    --mental-warm: 50, 42, 38;
-    --mental-blue: 35, 42, 48;
-    --mental-gray: 40, 40, 45;
-    --mental-green: 38, 42, 35;
+    /* Warmer sage-toned brand surfaces in dark mode */
+    --mental-peach: 48, 40, 36;
+    --mental-warm: 52, 44, 38;
+    --mental-blue: 36, 46, 48;
+    --mental-gray: 42, 44, 42;
+    --mental-green: 40, 46, 38;
 
-    --brand-peach: 10 40% 25%;
-    --brand-warm: 22 30% 30%;
-    --brand-blue: 194 20% 30%;
-    --brand-gray: 0 5% 30%;
-    --brand-green: 91 15% 28%;
+    --brand-peach: 10 35% 28%;
+    --brand-warm: 22 32% 32%;
+    --brand-blue: 194 22% 32%;
+    --brand-gray: 150 6% 30%;
+    --brand-green: 91 18% 30%;
 
-    --sage: 91 20% 42%;
-    --sage-light: 91 15% 20%;
-    --teal: 194 20% 42%;
-    --teal-light: 194 15% 20%;
-    --warm: 22 15% 20%;
-    --warm-dark: 22 15% 55%;
-    --calm-blue: 194 15% 22%;
+    --sage: 91 22% 45%;
+    --sage-light: 91 18% 22%;
+    --teal: 194 22% 45%;
+    --teal-light: 194 18% 22%;
+    --warm: 22 18% 22%;
+    --warm-dark: 22 25% 60%;
+    --calm-blue: 194 18% 24%;
 
-    --sidebar-background: 220 15% 12%;
-    --sidebar-foreground: 30 10% 88%;
-    --sidebar-primary: 22 42% 70%;
-    --sidebar-primary-foreground: 220 15% 10%;
-    --sidebar-accent: 91 15% 20%;
-    --sidebar-accent-foreground: 30 10% 88%;
-    --sidebar-border: 220 12% 24%;
-    --sidebar-ring: 194 25% 50%;
+    --sidebar-background: 150 12% 10%;
+    --sidebar-foreground: 30 15% 90%;
+    --sidebar-primary: 22 45% 72%;
+    --sidebar-primary-foreground: 150 12% 8%;
+    --sidebar-accent: 91 18% 22%;
+    --sidebar-accent-foreground: 30 15% 90%;
+    --sidebar-border: 150 8% 22%;
+    --sidebar-ring: 194 28% 55%;
   }
 
   html {
