@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { Smile, FileText, Brain, Pencil } from 'lucide-react';
 
 const quickLinks = [
-  { label: 'Mood Check-in', path: '/mood', icon: Smile, color: 'bg-sage-light text-sage' },
-  { label: 'My Journal', path: '/journal', icon: FileText, color: 'bg-teal-light text-teal' },
-  { label: 'Mindfulness', path: '/mindfulness', icon: Brain, color: 'bg-warm text-warm-dark' },
+  { label: 'Mood', path: '/mood', icon: Smile, color: 'bg-sage-light text-sage' },
+  { label: 'Journal', path: '/journal', icon: FileText, color: 'bg-teal-light text-teal' },
+  { label: 'Mindful', path: '/mindfulness', icon: Brain, color: 'bg-warm text-warm-dark' },
   { label: 'Gratitude', path: '/gratitude', icon: Pencil, color: 'bg-accent text-foreground' },
 ];
 
