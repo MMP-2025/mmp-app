@@ -49,7 +49,9 @@ function AppSidebar() {
   return (
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="p-4 flex items-center gap-3 bg-sidebar">
-        <img src={logo} alt="" className="h-8 w-8" />
+        <div className="rounded-lg bg-gradient-to-br from-sage-light to-mental-peach p-2 shadow-sm">
+          <img src={logo} alt="" className="h-10 w-10" />
+        </div>
         <h1 className="font-merriweather font-bold text-sidebar-foreground text-sm">
           Making Meaning Psychology
         </h1>
