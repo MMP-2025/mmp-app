@@ -87,7 +87,7 @@ const JournalPage = () => {
     <PageTransition>
       <div className="space-y-6 max-w-4xl mx-auto">
         <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-          <h1 className="text-2xl font-merriweather font-bold mb-1 text-foreground">Journal</h1>
+          <h1 className="mb-1 text-foreground">Journal</h1>
           <p className="text-sm text-muted-foreground">Express your thoughts and feelings</p>
         </div>
         

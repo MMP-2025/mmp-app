@@ -53,7 +53,7 @@ const ProfilePage = () => {
     <PageTransition>
       <div className="space-y-6 max-w-4xl mx-auto">
         <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-          <h1 className="text-2xl font-merriweather font-bold text-foreground mb-1">Your Profile</h1>
+          <h1 className="text-foreground mb-1">Your Profile</h1>
           <p className="text-sm text-muted-foreground">
             Manage your personal information and preferences.
           </p>
@@ -63,7 +63,7 @@ const ProfilePage = () => {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <User className="h-4 w-4 text-muted-foreground" />
-              <h2 className="text-base font-semibold text-foreground">Personal Information</h2>
+              <h2 className="text-foreground">Personal Information</h2>
             </div>
             <PersonalInfoCard
               personalInfo={personalInfo}
@@ -74,7 +74,7 @@ const ProfilePage = () => {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Bell className="h-4 w-4 text-muted-foreground" />
-              <h2 className="text-base font-semibold text-foreground">Notification Preferences</h2>
+              <h2 className="text-foreground">Notification Preferences</h2>
             </div>
             <NotificationPreferencesCard
               notifications={notifications}
@@ -85,7 +85,7 @@ const ProfilePage = () => {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Shield className="h-4 w-4 text-muted-foreground" />
-              <h2 className="text-base font-semibold text-foreground">Privacy & Data</h2>
+              <h2 className="text-foreground">Privacy & Data</h2>
             </div>
             <div className="p-5 rounded-xl border bg-card shadow-card">
               <p className="text-sm text-muted-foreground leading-relaxed">

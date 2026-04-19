@@ -13,15 +13,15 @@ const quickLinks = [
 
 const QuickAccess = () => {
   return (
-    <Card className="p-5 bg-card border-border/50">
-      <h2 className="text-sm font-semibold mb-3 text-foreground">Quick Access</h2>
+    <Card className="p-5 bg-card border-border/50 card-elevated hover-card-subtle">
+      <h2 className="mb-3 text-foreground">Quick Access</h2>
       <div className="grid grid-cols-2 gap-2">
         {quickLinks.map(link => (
           <Button
             key={link.path}
             asChild
             variant="ghost"
-            className={`justify-start gap-2 h-auto py-3 px-3 rounded-xl ${link.color} hover:opacity-80 no-underline`}
+            className={`justify-start gap-2 min-h-[44px] py-3 px-3 rounded-xl ${link.color} hover:opacity-80 no-underline transition-all`}
           >
             <Link to={link.path}>
               <link.icon className="h-4 w-4 shrink-0" />
