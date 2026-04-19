@@ -160,9 +160,10 @@ const SupportToolkitPage = () => {
               Available Resources ({filteredResources.length})
             </h3>
             {loading ? (
-              <div className="text-center py-8">
-                <Loader2 className="h-8 w-8 mx-auto mb-4 animate-spin text-mental-blue" />
-                <p className="text-muted-foreground">Loading resources...</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="h-40 rounded-xl bg-muted/40 animate-pulse" />
+                ))}
               </div>
             ) : currentView === 'saved' && savedResources.length === 0 ? (
               <div className="text-center py-8">

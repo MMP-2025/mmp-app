@@ -89,8 +89,10 @@ const RemindersPage = () => {
             </CardHeader>
             <CardContent className="bg-mental-green">
               {loading ? (
-                <div className="text-center py-6">
-                  <Loader2 className="h-6 w-6 mx-auto animate-spin text-mental-blue" />
+                <div className="space-y-2">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-14 rounded-md bg-mental-peach/30 animate-pulse" />
+                  ))}
                 </div>
               ) : reminders.length === 0 ? (
                 <div className="text-center py-6 text-[#7e868b]">
