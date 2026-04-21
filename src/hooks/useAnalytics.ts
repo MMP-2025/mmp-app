@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { analytics } from '@/utils/analytics';
+import { trackEvent, trackFeatureUsed } from '@/utils/trackEvent';
 
 export const useAnalytics = () => {
   const location = useLocation();
@@ -12,6 +13,7 @@ export const useAnalytics = () => {
       page: location.pathname,
       timestamp: Date.now()
     });
+    trackEvent('page_viewed', { page: location.pathname });
   }, [location.pathname]);
 
   const trackAction = (action: string, data: Record<string, any> = {}) => {
@@ -20,6 +22,7 @@ export const useAnalytics = () => {
       page: location.pathname,
       ...data
     });
+    trackFeatureUsed(action, { page: location.pathname, ...data });
   };
 
   const trackMoodEntry = (mood: string, note?: string) => {
@@ -28,6 +31,7 @@ export const useAnalytics = () => {
       hasNote: !!note,
       noteLength: note?.length || 0
     });
+    trackEvent('mood_logged', { mood, has_note: !!note });
   };
 
   const trackJournalEntry = (hasPrompt: boolean, wordCount: number) => {
@@ -36,6 +40,7 @@ export const useAnalytics = () => {
       wordCount,
       timestamp: Date.now()
     });
+    trackEvent('journal_entry_created', { has_prompt: hasPrompt, word_count: wordCount });
   };
 
   const trackMindfulnessSession = (exerciseTitle: string, duration: number) => {
@@ -44,6 +49,7 @@ export const useAnalytics = () => {
       duration,
       completed: true
     });
+    trackEvent('mindfulness_session_completed', { exercise: exerciseTitle, duration });
   };
 
   const trackResourceDownload = (resourceId: string, resourceTitle: string, category: string) => {

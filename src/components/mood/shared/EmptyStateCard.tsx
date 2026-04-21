@@ -17,12 +17,12 @@ const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
   action
 }) => {
   return (
-    <Card className="p-6 bg-white/90 text-center">
-      <Icon className="h-12 w-12 mx-auto mb-4" style={{color: '#737373'}} />
-      <h3 className="text-lg font-semibold mb-2" style={{color: '#737373'}}>
+    <Card className="p-6 bg-card text-center card-elevated">
+      <Icon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+      <h3 className="text-lg font-semibold mb-2 text-foreground">
         {title}
       </h3>
-      <p className="mb-4" style={{color: '#737373'}}>
+      <p className="mb-4 text-muted-foreground">
         {description}
       </p>
       {action && action}

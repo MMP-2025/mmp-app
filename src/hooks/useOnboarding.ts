@@ -87,6 +87,11 @@ export const useOnboarding = () => {
       if (error) throw error;
       setHasCompletedOnboarding(true);
       setPreferences(finalPreferences || preferences);
+      // Fire-and-forget — never block UI on analytics.
+      try {
+        const { trackEvent } = await import('@/utils/trackEvent');
+        trackEvent('onboarding_completed', { goal_count: prefsToSave?.goals?.length ?? 0 });
+      } catch { /* noop */ }
     } catch (error) {
       console.error('Error completing onboarding:', error);
     }
