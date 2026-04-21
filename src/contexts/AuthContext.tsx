@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import { analytics } from '@/utils/analytics';
 
 export type UserRole = 'patient' | 'provider' | 'guest';
 
@@ -294,6 +295,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       setUser(null);
+      // Clear local analytics so previous user's data isn't visible on shared devices
+      analytics.clearAnalytics();
     } catch (error) {
       console.error('Error signing out:', error);
     } finally {

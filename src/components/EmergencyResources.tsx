@@ -101,7 +101,7 @@ const EmergencyResources = () => {
         window.location.href = `tel:${cleanNumber}`;
       }
     } else if (type === "text") {
-      console.log(`Text action: ${value}`);
+      // Text action handler — wire to SMS deep link if needed
     } else if (type === "website") {
       window.open(`https://${value}`, '_blank');
     }
