@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -237,9 +237,9 @@ const LoginForm = () => {
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       required
-                      placeholder="Min. 6 characters"
+                      placeholder="Min. 8 characters"
                       className="bg-background pr-10"
-                      minLength={6}
+                      minLength={8}
                     />
                     <Button
                       type="button"
@@ -251,9 +251,7 @@ const LoginForm = () => {
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Must be at least 6 characters long
-                  </p>
+                  <PasswordStrength password={password} />
                 </div>
 
                 <Button
