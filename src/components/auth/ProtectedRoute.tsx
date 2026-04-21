@@ -19,34 +19,34 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (!isAuthenticated) {
     return fallback || (
-      <div className="min-h-screen flex items-center justify-center bg-red-50 p-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-destructive/10 p-4">
+        <Card className="w-full max-w-md card-elevated">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-red-600">
+            <CardTitle className="flex items-center gap-2 text-destructive">
               <Shield className="h-5 w-5" />
               Access Denied
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">You must be logged in to access this page.</p>
+            <p className="text-muted-foreground">You must be logged in to access this page.</p>
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  if (requiredRole && user?.role !== requiredRole && user?.role !== 'guest') {
+  if (requiredRole && user?.role !== requiredRole) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-red-50 p-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-destructive/10 p-4">
+        <Card className="w-full max-w-md card-elevated">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-red-600">
+            <CardTitle className="flex items-center gap-2 text-destructive">
               <AlertTriangle className="h-5 w-5" />
               Unauthorized Access
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               You don't have permission to access this page. This area is restricted to {requiredRole}s only.
             </p>
           </CardContent>
