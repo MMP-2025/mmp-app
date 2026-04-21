@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { supabase } from '@/integrations/supabase/client';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { analytics } from '@/utils/analytics';
+import { identifyUser, resetAnalyticsIdentity, trackEvent } from '@/utils/trackEvent';
 
 export type UserRole = 'patient' | 'provider' | 'guest';
 
@@ -109,6 +110,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
 
         setUser(newProfile);
+        identifyUser(newProfile.id, newProfile.role);
+        trackEvent('user_signed_up', { method: 'invitation' });
       } else {
         setUser({
           id: profile.id,
@@ -116,6 +119,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           email: profile.email,
           role: profile.role as UserRole
         });
+        identifyUser(profile.id, profile.role);
+        trackEvent('user_logged_in');
       }
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
@@ -287,6 +292,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       role: 'guest'
     };
     setUser(guestUser);
+    identifyUser(guestUser.id, 'guest');
+    trackEvent('guest_session_started');
   };
 
   const logout = async () => {
@@ -297,6 +304,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(null);
       // Clear local analytics so previous user's data isn't visible on shared devices
       analytics.clearAnalytics();
+      trackEvent('user_logged_out');
+      resetAnalyticsIdentity();
     } catch (error) {
       console.error('Error signing out:', error);
     } finally {
