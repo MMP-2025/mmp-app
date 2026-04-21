@@ -8,22 +8,23 @@ import { toast } from 'sonner';
 import NotificationFilters from './NotificationFilters';
 import NotificationCard from './NotificationCard';
 import EmptyNotificationState from './EmptyNotificationState';
-
-const CURRENT_USER_ID = 'user123';
+import { useAuth } from '@/contexts/AuthContext';
 
 const NotificationInbox: React.FC = () => {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState<PushNotification[]>([]);
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
   const [typeFilter, setTypeFilter] = useState<'all' | PushNotification['type']>('all');
 
   useEffect(() => {
+    if (!user?.id) return;
     const unsubscribe = pushNotificationService.subscribe((allNotifications) => {
-      const patientNotifications = pushNotificationService.getNotificationsForPatient(CURRENT_USER_ID);
+      const patientNotifications = pushNotificationService.getNotificationsForPatient(user.id);
       setNotifications(patientNotifications);
     });
 
     return unsubscribe;
-  }, []);
+  }, [user?.id]);
 
   const filteredNotifications = notifications.filter(notification => {
     if (filter === 'unread' && notification.readAt) return false;
