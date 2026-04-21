@@ -117,8 +117,8 @@ const LoginForm = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sage-light via-background to-background p-4">
       <Card className="w-full max-w-md card-hero border-border/50 animate-fade-in-up">
         <CardHeader className="text-center pb-2 pt-10">
-          <div className="mx-auto mb-4 rounded-2xl bg-gradient-to-br from-sage-light to-mental-peach p-4 w-fit shadow-card">
-            <img src={logo} alt="Making Meaning Psychology" className="h-20 w-20" />
+          <div className="mx-auto mb-4 rounded-2xl bg-gradient-to-br from-sage-light to-mental-peach p-6 w-fit shadow-card">
+            <img src={logo} alt="Making Meaning Psychology" className="h-32 w-32" />
           </div>
           <h1 className="font-merriweather text-2xl font-bold text-foreground">
             Making Meaning Psychology
