@@ -8,6 +8,7 @@ import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import InvitationValidation from './InvitationValidation';
+import { PasswordStrength } from './PasswordStrength';
 import logo from '@/assets/logo.png';
 
 interface ValidatedInvitation {
