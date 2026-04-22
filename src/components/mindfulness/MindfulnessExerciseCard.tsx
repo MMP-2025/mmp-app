@@ -42,7 +42,10 @@ const MindfulnessExerciseCard: React.FC<MindfulnessExerciseCardProps> = ({
         <span>{exercise.duration}</span>
       </div>
       <p className="mb-4 font-normal text-neutral-500">{exercise.description}</p>
-      <Button onClick={() => onStart(exercise)} className="w-full bg-mental-gray">
+      <Button
+        onClick={() => onStart(exercise)}
+        className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+      >
         Start Exercise
       </Button>
     </Card>;
