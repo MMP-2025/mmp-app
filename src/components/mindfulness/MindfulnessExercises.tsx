@@ -25,6 +25,10 @@ const MindfulnessExercises: React.FC = () => {
       setActiveStep(0);
     }
   };
+  const exitExercise = () => {
+    setSelectedExercise(null);
+    setActiveStep(0);
+  };
   const toggleFavorite = (exerciseId: number) => {
     setFavorites(prev => prev.includes(exerciseId) ? prev.filter(id => id !== exerciseId) : [...prev, exerciseId]);
   };
@@ -56,15 +60,21 @@ const MindfulnessExercises: React.FC = () => {
   return <div className="space-y-6">
             {/* Navigation Tabs */}
             <div className="flex gap-2">
-                <Button variant={currentView === 'all' ? 'default' : 'outline'} onClick={() => setCurrentView('all')} className={currentView === 'all' ? 'bg-mental-gray' : ''}>
+                <Button
+                    variant={currentView === 'all' ? 'default' : 'outline'}
+                    onClick={() => setCurrentView('all')}
+                >
                     All Exercises
                 </Button>
-                <Button variant={currentView === 'saved' ? 'default' : 'outline'} onClick={() => setCurrentView('saved')} className={currentView === 'saved' ? 'bg-mental-gray' : ''}>
+                <Button
+                    variant={currentView === 'saved' ? 'default' : 'outline'}
+                    onClick={() => setCurrentView('saved')}
+                >
                     Saved Exercises ({savedExercises.length})
                 </Button>
             </div>
             
-            {selectedExercise ? <MindfulnessExerciseSession exercise={selectedExercise} activeStep={activeStep} onNextStep={nextStep} /> : <>
+            {selectedExercise ? <MindfulnessExerciseSession exercise={selectedExercise} activeStep={activeStep} onNextStep={nextStep} onExit={exitExercise} /> : <>
                     {currentView === 'saved' && savedExercises.length === 0 ? <MindfulnessEmptyState onBrowseAll={() => setCurrentView('all')} /> : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {getDisplayedExercises().map(exercise => <MindfulnessExerciseCard key={exercise.id} exercise={exercise} isFavorite={favorites.includes(exercise.id)} isSaved={savedExercises.includes(exercise.id)} onStart={startExercise} onToggleFavorite={toggleFavorite} onToggleSaved={toggleSaved} />)}
                         </div>}
