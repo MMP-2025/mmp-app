@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, AlertTriangle } from 'lucide-react';
+import { Eye, EyeOff, AlertTriangle, Mail, KeyRound } from 'lucide-react';
 import InvitationValidation from './InvitationValidation';
 import { PasswordStrength } from './PasswordStrength';
 import logo from '@/assets/logo.png';
@@ -24,6 +24,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showInvitationValidation, setShowInvitationValidation] = useState(false);
   const [validatedInvitation, setValidatedInvitation] = useState<ValidatedInvitation | null>(null);
+  const [signupMode, setSignupMode] = useState<'choose' | 'code'>('choose');
 
   const { login, register, loginAsGuest, loading } = useAuth();
   const { toast } = useToast();

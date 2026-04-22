@@ -135,7 +135,7 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
                     </a>
                   </Button>
                   <Button asChild size="sm" variant="outline" className="rounded-lg">
-                    <Link to="/crisis-resources">View crisis resources</Link>
+                    <Link to="/crisis">View crisis resources</Link>
                   </Button>
                 </div>
               </AlertDescription>
