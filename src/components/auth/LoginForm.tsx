@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, AlertTriangle } from 'lucide-react';
+import { Eye, EyeOff, AlertTriangle, Mail, KeyRound } from 'lucide-react';
 import InvitationValidation from './InvitationValidation';
 import { PasswordStrength } from './PasswordStrength';
 import logo from '@/assets/logo.png';
@@ -24,6 +24,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showInvitationValidation, setShowInvitationValidation] = useState(false);
   const [validatedInvitation, setValidatedInvitation] = useState<ValidatedInvitation | null>(null);
+  const [signupMode, setSignupMode] = useState<'choose' | 'code'>('choose');
 
   const { login, register, loginAsGuest, loading } = useAuth();
   const { toast } = useToast();
@@ -186,6 +187,42 @@ const LoginForm = () => {
             </TabsContent>
 
             <TabsContent value="register" className="mt-4">
+              {!validatedInvitation && signupMode === 'choose' ? (
+                <div className="space-y-3">
+                  <div className="p-3 bg-accent/50 border border-border rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      Making Meaning Psychology is invitation-only. Choose how you'd like to get started:
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setSignupMode('code')}
+                    className="w-full text-left p-4 rounded-xl border border-border bg-background hover:bg-accent/30 transition-colors flex items-start gap-3"
+                  >
+                    <KeyRound className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-medium text-foreground">I have an invitation code</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Your provider sent you a code by email.
+                      </p>
+                    </div>
+                  </button>
+
+                  <a
+                    href="mailto:hello@makingmeaningpsychology.com?subject=Consultation%20request"
+                    className="w-full text-left p-4 rounded-xl border border-border bg-background hover:bg-accent/30 transition-colors flex items-start gap-3"
+                  >
+                    <Mail className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-medium text-foreground">I'd like to book a consultation</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Reach out to start working with a provider.
+                      </p>
+                    </div>
+                  </a>
+                </div>
+              ) : (
               <form onSubmit={handleRegister} className="space-y-4">
                 {validatedInvitation ? (
                   <div className="p-3 bg-sage-light border border-primary/20 rounded-lg">
@@ -194,11 +231,17 @@ const LoginForm = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="p-3 bg-accent/50 border border-border rounded-lg">
+                  <div className="p-3 bg-accent/50 border border-border rounded-lg flex items-start justify-between gap-2">
                     <p className="text-sm text-muted-foreground">
-                      Patient registration requires an invitation from your provider. 
                       Click "Create Account" to enter your invitation code.
                     </p>
+                    <button
+                      type="button"
+                      onClick={() => setSignupMode('choose')}
+                      className="text-xs text-primary hover:underline shrink-0"
+                    >
+                      Back
+                    </button>
                   </div>
                 )}
 
@@ -263,6 +306,7 @@ const LoginForm = () => {
                   {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </form>
+              )}
             </TabsContent>
           </Tabs>
 
