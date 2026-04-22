@@ -46,12 +46,12 @@ const JournalEntryForm: React.FC<JournalEntryFormProps> = ({
     <Card className="p-6 bg-mental-warm/20">
       <h2 className="text-xl font-semibold mb-4 text-foreground">New Entry</h2>
       <div className="flex flex-wrap gap-3 mb-4">
-        <Button onClick={onGetRandomPrompt} className="bg-mental-blue hover:bg-mental-blue/80 flex items-center gap-2">
-          <Quote className="h-4 w-4 text-[#7e868b]" />
+        <Button onClick={onGetRandomPrompt} variant="secondary" className="flex items-center gap-2">
+          <Quote className="h-4 w-4" />
           Get Writing Prompt
         </Button>
-        <Button onClick={onStartFreeWriting} className="bg-mental-green hover:bg-mental-green/80 flex items-center gap-2">
-          <Edit className="h-4 w-4 text-[#7e868b]" />
+        <Button onClick={onStartFreeWriting} variant="outline" className="flex items-center gap-2">
+          <Edit className="h-4 w-4" />
           Free Writing
         </Button>
       </div>
@@ -83,7 +83,11 @@ const JournalEntryForm: React.FC<JournalEntryFormProps> = ({
         className="min-h-[200px] mb-4" 
       />
       
-      <Button onClick={handleSave} className="w-full bg-mental-green hover:bg-mental-green/80 hover-scale">
+      <Button
+        onClick={handleSave}
+        disabled={!journalContent.trim()}
+        className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover-scale"
+      >
         Save Journal Entry
       </Button>
     </Card>
