@@ -48,6 +48,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Rehydrate guest session from localStorage so guests aren't kicked
+    // back to the login screen on reload / re-entry.
+    try {
+      const storedGuest = localStorage.getItem('guest_user');
+      if (storedGuest) {
+        const parsed = JSON.parse(storedGuest) as User;
+        if (parsed?.role === 'guest') {
+          setUser(parsed);
+          identifyUser(parsed.id, 'guest');
+        }
+      }
+    } catch {
+      // ignore parse errors
+    }
+
     // Listen for auth changes FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -55,11 +70,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         // Defer profile fetching to avoid blocking auth state updates
         if (session?.user) {
+          // A real auth session takes precedence over a stored guest.
+          localStorage.removeItem('guest_user');
           setTimeout(() => {
             fetchUserProfile(session.user);
           }, 0);
         } else {
-          setUser(null);
+          // Don't clobber a hydrated guest user when no Supabase session exists.
+          setUser((current) => (current?.role === 'guest' ? current : null));
           setLoading(false);
         }
       }
@@ -292,6 +310,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       role: 'guest'
     };
     setUser(guestUser);
+    try {
+      localStorage.setItem('guest_user', JSON.stringify(guestUser));
+    } catch {
+      // storage may be unavailable (private mode); session stays in-memory
+    }
     identifyUser(guestUser.id, 'guest');
     trackEvent('guest_session_started');
   };
@@ -299,8 +322,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      // Guests have no Supabase session — just clear local state.
+      const wasGuest = user?.role === 'guest';
+      if (!wasGuest) {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+      }
+      try {
+        localStorage.removeItem('guest_user');
+      } catch {
+        // ignore
+      }
       setUser(null);
       // Clear local analytics so previous user's data isn't visible on shared devices
       analytics.clearAnalytics();
