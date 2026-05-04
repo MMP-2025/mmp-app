@@ -29,6 +29,7 @@ import CrisisResourcesPage from "./pages/CrisisResourcesPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import GuestUpgradePrompt from "./components/auth/GuestUpgradePrompt";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 // Route-level code splitting for heavy / lower-traffic pages.
 // Cuts ~40% off the initial bundle and defers recharts/dashboards.
@@ -50,6 +51,16 @@ const AppContent = () => {
     registerSW();
   }, []);
 
+  // Public routes that must work regardless of auth state.
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+  if (path === '/reset-password') {
+    return (
+      <Routes>
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+      </Routes>
+    );
+  }
+
   if (!isAuthenticated) {
     return <LoginForm />;
   }
@@ -66,7 +77,13 @@ const AppContent = () => {
           <Sonner />
           <AccessibilityToolbar />
           <VoiceControl />
-          <div className="w-full min-h-screen">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-3 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md"
+          >
+            Skip to main content
+          </a>
+          <main id="main-content" className="w-full min-h-screen">
             <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
@@ -103,10 +120,11 @@ const AppContent = () => {
                 </ProtectedRoute>
               } />
               <Route path="/personalization" element={<PersonalizationPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>
-          </div>
+          </main>
         </SidebarProvider>
       </AccessibilityProvider>
     </UserPreferencesProvider>
