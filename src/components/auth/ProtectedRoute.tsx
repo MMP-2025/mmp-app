@@ -7,13 +7,11 @@ import { AlertTriangle } from 'lucide-react';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: UserRole;
-  fallback?: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
   children, 
   requiredRole,
-  fallback 
 }) => {
   const { user } = useAuth();
   // Note: unauthenticated users never reach this component because
