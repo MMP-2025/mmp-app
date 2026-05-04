@@ -40,6 +40,7 @@ function evaluate(password: string): { score: number; tier: Tier; hints: string[
 
 export const PasswordStrength: React.FC<PasswordStrengthProps> = ({ password }) => {
   const { tier, hints } = useMemo(() => evaluate(password), [password]);
+  const meetsMinimum = password.length >= 8;
 
   return (
     <div className="space-y-1.5" aria-live="polite">
@@ -52,6 +53,9 @@ export const PasswordStrength: React.FC<PasswordStrengthProps> = ({ password }) 
       <p className="text-xs text-muted-foreground">
         <span className="font-medium text-foreground">{tier.label}</span>
         {password && hints.length > 0 && <span> — {hints.slice(0, 2).join(', ')}</span>}
+        {meetsMinimum && hints.length === 0 && (
+          <span className="ml-1 text-primary">Strong enough ✓</span>
+        )}
       </p>
     </div>
   );
