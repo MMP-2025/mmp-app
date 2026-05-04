@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, AlertTriangle, Mail, KeyRound } from 'lucide-react';
+import { Eye, EyeOff, Sparkles, Mail, KeyRound, MailCheck, ArrowLeft } from 'lucide-react';
 import InvitationValidation from './InvitationValidation';
 import { PasswordStrength } from './PasswordStrength';
 import logo from '@/assets/logo.png';
@@ -25,8 +25,10 @@ const LoginForm = () => {
   const [showInvitationValidation, setShowInvitationValidation] = useState(false);
   const [validatedInvitation, setValidatedInvitation] = useState<ValidatedInvitation | null>(null);
   const [signupMode, setSignupMode] = useState<'choose' | 'code'>('choose');
+  const [forgotMode, setForgotMode] = useState(false);
+  const [signupComplete, setSignupComplete] = useState<string | null>(null);
 
-  const { login, register, loginAsGuest, loading } = useAuth();
+  const { login, register, loginAsGuest, loading, resetPassword } = useAuth();
   const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -67,10 +69,7 @@ const LoginForm = () => {
         'patient' as UserRole,
         validatedInvitation.token
       );
-      toast({
-        title: "Account created",
-        description: "Please check your email to verify your account.",
-      });
+      setSignupComplete(validatedInvitation.email);
     } catch (error: any) {
       toast({
         title: "Registration failed",
@@ -99,7 +98,10 @@ const LoginForm = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+          <p className="text-sm text-muted-foreground">Loading your space…</p>
+        </div>
       </div>
     );
   }
@@ -111,6 +113,44 @@ const LoginForm = () => {
           onValidInvitation={handleValidInvitation}
           onBack={() => setShowInvitationValidation(false)}
         />
+      </div>
+    );
+  }
+
+  if (signupComplete) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sage-light via-background to-background p-4">
+        <Card className="w-full max-w-md card-hero border-border/50 animate-fade-in-up">
+          <CardHeader className="text-center pt-10">
+            <div className="mx-auto mb-4 rounded-2xl bg-sage-light p-5 w-fit shadow-card">
+              <MailCheck className="h-10 w-10 text-primary" />
+            </div>
+            <h1 className="font-merriweather text-2xl font-bold text-foreground">
+              Check your inbox
+            </h1>
+            <p className="text-sm text-muted-foreground mt-2">
+              We sent a verification link to <strong>{signupComplete}</strong>. Open it to finish setting up your account.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-3 pb-8">
+            <p className="text-xs text-muted-foreground text-center">
+              Didn't get it? Check your spam folder, or wait a minute and try again.
+            </p>
+            <Button
+              variant="outline"
+              className="w-full rounded-xl"
+              onClick={() => {
+                setSignupComplete(null);
+                setValidatedInvitation(null);
+                setSignupMode('choose');
+                setPassword('');
+                setName('');
+              }}
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" /> Back to sign in
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -131,13 +171,61 @@ const LoginForm = () => {
         </CardHeader>
 
         <CardContent className="pt-4 space-y-5">
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs defaultValue="register" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-muted/50">
               <TabsTrigger value="login">Sign In</TabsTrigger>
               <TabsTrigger value="register">Sign Up</TabsTrigger>
             </TabsList>
 
             <TabsContent value="login" className="mt-4">
+              {forgotMode ? (
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (!email) return;
+                    setIsLoading(true);
+                    try {
+                      await resetPassword(email);
+                      toast({
+                        title: 'Reset link sent',
+                        description: `If an account exists for ${email}, you'll get an email shortly.`,
+                      });
+                      setForgotMode(false);
+                    } catch (err: any) {
+                      toast({ title: 'Could not send reset email', description: err.message, variant: 'destructive' });
+                    } finally {
+                      setIsLoading(false);
+                    }
+                  }}
+                  className="space-y-4"
+                >
+                  <div className="space-y-1.5">
+                    <Label htmlFor="forgot-email">Email</Label>
+                    <Input
+                      id="forgot-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      placeholder="you@example.com"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      We'll send you a link to set a new password.
+                    </p>
+                  </div>
+                  <Button type="submit" disabled={isLoading} className="w-full rounded-xl h-11">
+                    {isLoading ? 'Sending…' : 'Send reset link'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full"
+                    onClick={() => setForgotMode(false)}
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-1" /> Back to sign in
+                  </Button>
+                </form>
+              ) : (
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="email">Email</Label>
@@ -183,7 +271,15 @@ const LoginForm = () => {
                 >
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
+                <button
+                  type="button"
+                  onClick={() => setForgotMode(true)}
+                  className="w-full text-center text-sm text-primary hover:underline"
+                >
+                  Forgot your password?
+                </button>
               </form>
+              )}
             </TabsContent>
 
             <TabsContent value="register" className="mt-4">
@@ -217,7 +313,8 @@ const LoginForm = () => {
                     <div>
                       <p className="font-medium text-foreground">I'd like to book a consultation</p>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        Reach out to start working with a provider.
+                        Reach out to start working with a provider. If your email app doesn't open, write to{' '}
+                        <span className="font-medium text-foreground">hello@makingmeaningpsychology.com</span>.
                       </p>
                     </div>
                   </a>
@@ -322,14 +419,12 @@ const LoginForm = () => {
           <div className="space-y-2">
             <Button
               onClick={handleGuestAccess}
-              variant="outline"
-              className="w-full rounded-xl h-11 border-border hover:bg-accent/30"
+              className="w-full rounded-xl h-11 bg-secondary text-secondary-foreground hover:bg-secondary/80"
             >
-              Continue as Guest →
+              <Sparkles className="h-4 w-4 mr-2" /> Explore as Guest
             </Button>
-            <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-              <AlertTriangle className="h-3 w-3 text-warm-dark" />
-              Guest data won't be saved
+            <p className="text-center text-xs text-muted-foreground">
+              Look around freely — no signup needed. Sign up later to save your progress.
             </p>
           </div>
         </CardContent>
