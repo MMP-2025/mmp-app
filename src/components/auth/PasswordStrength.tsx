@@ -52,10 +52,10 @@ export const PasswordStrength: React.FC<PasswordStrengthProps> = ({ password }) 
       </div>
       <p className="text-xs text-muted-foreground">
         <span className="font-medium text-foreground">{tier.label}</span>
-        {password && hints.length > 0 && <span> — {hints.slice(0, 2).join(', ')}</span>}
-        {meetsMinimum && hints.length === 0 && (
-          <span className="ml-1 text-primary">Strong enough ✓</span>
+        {meetsMinimum && (
+          <span className="ml-1 text-primary">· Strong enough ✓</span>
         )}
+        {password && hints.length > 0 && <span> — {hints.slice(0, 2).join(', ')}</span>}
       </p>
     </div>
   );
