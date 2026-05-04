@@ -71,7 +71,7 @@ const OnboardingFlow: React.FC = () => {
           Get Started <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
         <Button onClick={handleSkip} variant="ghost" size="sm" className="text-muted-foreground">
-          Skip Tour
+          Skip for now
         </Button>
       </div>
     </div>,

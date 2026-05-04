@@ -26,6 +26,7 @@ interface AuthContextType {
   loading: boolean;
   validateInvitation: (token: string) => Promise<{ valid: boolean; email?: string; providerName?: string }>;
   sendPatientInvitation: (patientEmail: string, patientName: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -110,26 +111,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return;
       }
 
-      // If no profile exists, create one with default values
+      // Do NOT silently auto-create a profile with role 'patient' — that
+      // would let any future SSO/sign-in path bypass the invitation gate.
+      // Profiles are created during the explicit register() flow.
       if (!profile) {
-        const newProfile = {
-          id: supabaseUser.id,
-          name: supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'User',
-          role: 'patient' as UserRole,
-          email: supabaseUser.email!
-        };
-
-        const { error: insertError } = await supabase
-          .from('profiles')
-          .insert([newProfile]);
-
-        if (insertError) {
-          console.error('Error creating profile:', insertError);
-        }
-
-        setUser(newProfile);
-        identifyUser(newProfile.id, newProfile.role);
-        trackEvent('user_signed_up', { method: 'invitation' });
+        console.warn('No profile found for authenticated user; signing out.');
+        await supabase.auth.signOut();
+        setUser(null);
+        setLoading(false);
+        return;
       } else {
         setUser({
           id: profile.id,
@@ -302,9 +292,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) throw error;
+  };
+
   const loginAsGuest = () => {
+    // Stable guest id — many hooks/local-storage keys assume this exact
+    // value (see project memory: "Guests have ID `guest-123`").
     const guestUser: User = {
-      id: 'guest-' + Date.now().toString(),
+      id: 'guest-123',
       name: 'Guest User',
       email: '',
       role: 'guest'
@@ -357,7 +356,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isGuest: user?.role === 'guest',
     loading,
     validateInvitation,
-    sendPatientInvitation
+    sendPatientInvitation,
+    resetPassword,
   };
 
   return (

@@ -68,15 +68,20 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
   onSaveMood
 }) => {
   const [showSuccess, setShowSuccess] = useState(false);
+  const [intensityTouched, setIntensityTouched] = useState(false);
 
   const isHighRisk =
     !!selectedMood &&
     HIGH_RISK_EMOTIONS.includes(selectedMood.toLowerCase()) &&
     moodIntensity[0] >= 7;
 
+  const canSave = !!selectedMood && intensityTouched;
+
   const handleSave = () => {
+    if (!canSave) return;
     onSaveMood();
     setShowSuccess(true);
+    setIntensityTouched(false);
   };
 
   return (
@@ -97,7 +102,10 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
         <>
           <IntensitySlider 
             intensity={moodIntensity[0]} 
-            onIntensityChange={(intensity) => onIntensityChange([intensity])} 
+            onIntensityChange={(intensity) => {
+              setIntensityTouched(true);
+              onIntensityChange([intensity]);
+            }} 
           />
           
           <MoodNoteInput 
@@ -163,10 +171,11 @@ const MoodTrackingForm: React.FC<MoodTrackingFormProps> = ({
           <Card className="p-6 bg-card">
             <Button 
               onClick={handleSave} 
+              disabled={!canSave}
               className="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground"
               size="lg"
             >
-              Save Mood Entry
+              {canSave ? 'Save Mood Entry' : 'Set intensity to save'}
             </Button>
           </Card>
         </>

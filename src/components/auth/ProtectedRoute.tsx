@@ -2,38 +2,20 @@
 import React from 'react';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: UserRole;
-  fallback?: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
   children, 
   requiredRole,
-  fallback 
 }) => {
-  const { isAuthenticated, user } = useAuth();
-
-  if (!isAuthenticated) {
-    return fallback || (
-      <div className="min-h-screen flex items-center justify-center bg-destructive/10 p-4">
-        <Card className="w-full max-w-md card-elevated">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-destructive">
-              <Shield className="h-5 w-5" />
-              Access Denied
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">You must be logged in to access this page.</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  const { user } = useAuth();
+  // Note: unauthenticated users never reach this component because
+  // AppContent short-circuits to <LoginForm /> before any routes mount.
 
   if (requiredRole && user?.role !== requiredRole) {
     return (
