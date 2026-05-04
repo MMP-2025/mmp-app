@@ -26,6 +26,7 @@ interface AuthContextType {
   loading: boolean;
   validateInvitation: (token: string) => Promise<{ valid: boolean; email?: string; providerName?: string }>;
   sendPatientInvitation: (patientEmail: string, patientName: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -291,6 +292,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) throw error;
+  };
+
   const loginAsGuest = () => {
     // Stable guest id — many hooks/local-storage keys assume this exact
     // value (see project memory: "Guests have ID `guest-123`").
@@ -348,7 +356,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isGuest: user?.role === 'guest',
     loading,
     validateInvitation,
-    sendPatientInvitation
+    sendPatientInvitation,
+    resetPassword,
   };
 
   return (
