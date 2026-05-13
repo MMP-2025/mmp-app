@@ -306,7 +306,7 @@ const LoginForm = () => {
                   </button>
 
                   <a
-                    href="mailto:hello@makingmeaningpsychology.com?subject=Consultation%20request"
+                    href="mailto:admin@makingmeaningpsychology.com?subject=Consultation%20request"
                     className="w-full text-left p-4 rounded-xl border border-border bg-background hover:bg-accent/30 transition-colors flex items-start gap-3 no-underline"
                   >
                     <Mail className="h-5 w-5 text-primary mt-0.5 shrink-0" />
@@ -314,7 +314,7 @@ const LoginForm = () => {
                       <p className="font-medium text-foreground no-underline">I'd like to book a consultation</p>
                       <p className="text-xs text-muted-foreground mt-0.5 no-underline">
                         Reach out to start working with a provider. If your email app doesn't open, write to{' '}
-                        <span className="font-medium text-foreground">hello@makingmeaningpsychology.com</span>.
+                        <span className="font-medium text-foreground">admin@makingmeaningpsychology.com</span>.
                       </p>
                     </div>
                   </a>
