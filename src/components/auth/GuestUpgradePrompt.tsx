@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Crown, Sparkles } from 'lucide-react';
+import { Crown, Sparkles, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface GuestUpgradePromptProps {
   featureName: string;
@@ -12,13 +13,19 @@ interface GuestUpgradePromptProps {
 
 const GuestUpgradePrompt: React.FC<GuestUpgradePromptProps> = ({ featureName, description, features }) => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleCreateAccount = () => {
     logout(); // This will take them back to the login form where they can register
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-mental-peach/20 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-mental-peach/20 p-4">
+      <div className="w-full max-w-2xl mb-3">
+        <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Back to app
+        </Button>
+      </div>
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 w-16 h-16 bg-mental-blue rounded-full flex items-center justify-center">
