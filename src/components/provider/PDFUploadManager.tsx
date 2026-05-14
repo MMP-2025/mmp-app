@@ -32,12 +32,20 @@ const PDFUploadManager = () => {
 
       if (error) throw error;
 
-      const files = data.map(file => ({
-        name: file.name,
-        url: supabase.storage.from('resource-pdfs').getPublicUrl(file.name).data.publicUrl,
-        size: file.metadata?.size || 0,
-        created_at: file.created_at
-      }));
+      // Bucket is private — generate short-lived signed URLs.
+      const files = await Promise.all(
+        data.map(async (file) => {
+          const { data: signed } = await supabase.storage
+            .from('resource-pdfs')
+            .createSignedUrl(file.name, 3600);
+          return {
+            name: file.name,
+            url: signed?.signedUrl ?? '',
+            size: file.metadata?.size || 0,
+            created_at: file.created_at,
+          };
+        })
+      );
 
       setPdfFiles(files);
     } catch (error: any) {

@@ -107,11 +107,26 @@ Deno.serve(async (req) => {
     const token = authHeader.replace('Bearer ', '');
     const isServiceRole = token === supabaseServiceKey;
 
+    let callerId: string | null = null;
     if (!isServiceRole) {
       const { data, error } = await supabase.auth.getUser(token);
       if (error || !data?.user) {
         return new Response(JSON.stringify({ error: 'Invalid token' }), {
           status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      callerId = data.user.id;
+
+      // Authorization: only providers may trigger push delivery.
+      const { data: roleRow } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', callerId)
+        .eq('role', 'provider')
+        .maybeSingle();
+      if (!roleRow) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
     }
@@ -125,11 +140,15 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Fetch the notifications
-    const { data: notifications, error: notifError } = await supabase
+    // Fetch the notifications. Non-service callers may only push their own.
+    let notifQuery = supabase
       .from('notifications')
       .select('*')
       .in('id', notification_ids);
+    if (!isServiceRole && callerId) {
+      notifQuery = notifQuery.eq('provider_id', callerId);
+    }
+    const { data: notifications, error: notifError } = await notifQuery;
 
     if (notifError) throw notifError;
     if (!notifications || notifications.length === 0) {

@@ -32,12 +32,20 @@ const AudioUploadManager = () => {
 
       if (error) throw error;
 
-      const files = data.map(file => ({
-        name: file.name,
-        url: supabase.storage.from('meditation-audios').getPublicUrl(file.name).data.publicUrl,
-        size: file.metadata?.size || 0,
-        created_at: file.created_at
-      }));
+      // Private bucket — sign URLs for playback.
+      const files = await Promise.all(
+        data.map(async (file) => {
+          const { data: signed } = await supabase.storage
+            .from('meditation-audios')
+            .createSignedUrl(file.name, 3600);
+          return {
+            name: file.name,
+            url: signed?.signedUrl ?? '',
+            size: file.metadata?.size || 0,
+            created_at: file.created_at,
+          };
+        })
+      );
 
       setAudioFiles(files);
     } catch (error: any) {
