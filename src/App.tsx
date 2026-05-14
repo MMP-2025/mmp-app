@@ -12,6 +12,7 @@ import AccessibilityToolbar from "@/components/accessibility/AccessibilityToolba
 import VoiceControl from "@/components/accessibility/VoiceControl";
 import LoginForm from "@/components/auth/LoginForm";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import ProviderMfaGate from "@/components/auth/ProviderMfaGate";
 import { registerSW } from './utils/serviceWorker';
 import PageWrapper from "@/components/PageWrapper";
 import OnboardingFlow from "@/components/onboarding/OnboardingFlow";
@@ -116,7 +117,9 @@ const AppContent = () => {
               )}
               <Route path="/provider-dashboard" element={
                 <ProtectedRoute requiredRole="provider">
-                  <PageWrapper><ProviderDashboard /></PageWrapper>
+                  <ProviderMfaGate>
+                    <PageWrapper><ProviderDashboard /></PageWrapper>
+                  </ProviderMfaGate>
                 </ProtectedRoute>
               } />
               <Route path="/personalization" element={<PersonalizationPage />} />
