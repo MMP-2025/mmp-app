@@ -140,11 +140,15 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Fetch the notifications
-    const { data: notifications, error: notifError } = await supabase
+    // Fetch the notifications. Non-service callers may only push their own.
+    let notifQuery = supabase
       .from('notifications')
       .select('*')
       .in('id', notification_ids);
+    if (!isServiceRole && callerId) {
+      notifQuery = notifQuery.eq('provider_id', callerId);
+    }
+    const { data: notifications, error: notifError } = await notifQuery;
 
     if (notifError) throw notifError;
     if (!notifications || notifications.length === 0) {
