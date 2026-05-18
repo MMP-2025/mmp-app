@@ -770,6 +770,42 @@ export type Database = {
         }
         Relationships: []
       }
+      phi_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          actor_role: string | null
+          id: string
+          metadata: Json | null
+          occurred_at: string
+          patient_id: string | null
+          row_id: string | null
+          table_name: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          actor_role?: string | null
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string
+          patient_id?: string | null
+          row_id?: string | null
+          table_name: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          actor_role?: string | null
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string
+          patient_id?: string | null
+          row_id?: string | null
+          table_name?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
