@@ -5,6 +5,7 @@ import { Save, User, Bell, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import PersonalInfoCard from '@/components/profile/PersonalInfoCard';
 import NotificationPreferencesCard from '@/components/profile/NotificationPreferencesCard';
+import DataExportCard from '@/components/profile/DataExportCard';
 import { PageTransition, StaggeredList } from '@/components/ui/animated';
 
 const ProfilePage = () => {
@@ -91,6 +92,9 @@ const ProfilePage = () => {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Your data is private and securely stored. Only your provider can see responses you submit to their questions. You can request a data export at any time.
               </p>
+            </div>
+            <div className="mt-3">
+              <DataExportCard />
             </div>
           </div>
         </StaggeredList>
