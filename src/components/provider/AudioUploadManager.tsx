@@ -37,7 +37,7 @@ const AudioUploadManager = () => {
         data.map(async (file) => {
           const { data: signed } = await supabase.storage
             .from('meditation-audios')
-            .createSignedUrl(file.name, 3600);
+            .createSignedUrl(file.name, 600);
           return {
             name: file.name,
             url: signed?.signedUrl ?? '',

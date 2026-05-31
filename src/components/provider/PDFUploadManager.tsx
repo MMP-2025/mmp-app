@@ -37,7 +37,7 @@ const PDFUploadManager = () => {
         data.map(async (file) => {
           const { data: signed } = await supabase.storage
             .from('resource-pdfs')
-            .createSignedUrl(file.name, 3600);
+            .createSignedUrl(file.name, 600);
           return {
             name: file.name,
             url: signed?.signedUrl ?? '',
