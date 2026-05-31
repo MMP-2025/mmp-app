@@ -6,7 +6,7 @@ import PatientInvitations from '@/components/provider/PatientInvitations';
 import { PageTransition, StaggeredList } from '@/components/ui/animated';
 import {
   Quote, FileText, HelpCircle, Wrench, Bell, Heart,
-  Brain, Music, FolderOpen, Send, Users
+  Brain, Music, FolderOpen, Send, Users, ShieldCheck
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,9 +21,11 @@ const MindfulnessTab = lazy(() => import('@/components/provider/tabs/Mindfulness
 const NotificationsTab = lazy(() => import('@/components/provider/tabs/NotificationsTab'));
 const AudiosTab = lazy(() => import('@/components/provider/tabs/AudiosTab'));
 const ResourcesTab = lazy(() => import('@/components/provider/tabs/ResourcesTab'));
+const AuditLogTab = lazy(() => import('@/components/provider/tabs/AuditLogTab'));
 
 import { useProviderData } from '@/hooks/useProviderData';
 import { useProviderHandlers } from '@/hooks/useProviderHandlers';
+import { useIdleLogout } from '@/hooks/useIdleLogout';
 
 const sections = [
   { key: 'patients', label: 'Patients', icon: Users, color: 'bg-mental-blue' },
@@ -37,6 +39,7 @@ const sections = [
   { key: 'mindfulness', label: 'Mindfulness', icon: Brain, color: 'bg-mental-warm' },
   { key: 'audios', label: 'Audio Files', icon: Music, color: 'bg-mental-blue' },
   { key: 'resources', label: 'Resources', icon: FolderOpen, color: 'bg-mental-gray' },
+  { key: 'audit', label: 'Audit Log', icon: ShieldCheck, color: 'bg-mental-gray' },
 ];
 
 const LoadingFallback = () => <GenericPageSkeleton />;
@@ -45,6 +48,9 @@ const ProviderDashboard = () => {
   const data = useProviderData();
   const handlers = useProviderHandlers(data);
   const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  // HIPAA: auto sign-out provider after 30 minutes of inactivity.
+  useIdleLogout(true);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -108,6 +114,12 @@ const ProviderDashboard = () => {
         return (
           <Suspense fallback={<LoadingFallback />}>
             <ResourcesTab />
+          </Suspense>
+        );
+      case 'audit':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <AuditLogTab />
           </Suspense>
         );
       default:
