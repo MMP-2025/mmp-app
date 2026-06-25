@@ -6,9 +6,13 @@ import { useToast } from '@/hooks/use-toast';
 import PersonalInfoCard from '@/components/profile/PersonalInfoCard';
 import NotificationPreferencesCard from '@/components/profile/NotificationPreferencesCard';
 import DataExportCard from '@/components/profile/DataExportCard';
+import MyAccessLogCard from '@/components/profile/MyAccessLogCard';
+import ProviderSecurityCard from '@/components/profile/ProviderSecurityCard';
+import { useAuth } from '@/contexts/AuthContext';
 import { PageTransition, StaggeredList } from '@/components/ui/animated';
 
 const ProfilePage = () => {
+  const { isProvider } = useAuth();
   const [personalInfo, setPersonalInfo] = useState({
     username: '',
     email: '',
@@ -88,13 +92,10 @@ const ProfilePage = () => {
               <Shield className="h-4 w-4 text-muted-foreground" />
               <h2 className="text-foreground">Privacy & Data</h2>
             </div>
-            <div className="p-5 rounded-xl border bg-card shadow-card">
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Your data is private and securely stored. Only your provider can see responses you submit to their questions. You can request a data export at any time.
-              </p>
-            </div>
-            <div className="mt-3">
+            <div className="space-y-3">
+              {isProvider && <ProviderSecurityCard />}
               <DataExportCard />
+              {!isProvider && <MyAccessLogCard />}
             </div>
           </div>
         </StaggeredList>
