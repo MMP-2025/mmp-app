@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ShieldAlert } from 'lucide-react';
 import { toast } from 'sonner';
@@ -14,9 +23,29 @@ interface AuditEntry {
   actor_role: string | null;
   patient_id: string | null;
   row_id: string | null;
+  metadata: any;
 }
 
-const AuditLogTab: React.FC = () => {
+interface AuditLogTabProps {
+  /** When 'patient', shows the viewer's own audit trail and hides the
+   *  patient column. Defaults to provider view. */
+  scope?: 'provider' | 'patient';
+}
+
+const actionVariant = (a: string): { label: string; className: string } => {
+  switch (a) {
+    case 'INSERT':
+      return { label: 'Created', className: 'bg-mental-green text-foreground border-transparent' };
+    case 'UPDATE':
+      return { label: 'Updated', className: 'bg-mental-blue text-foreground border-transparent' };
+    case 'DELETE':
+      return { label: 'Deleted', className: 'bg-destructive/15 text-destructive border-transparent' };
+    default:
+      return { label: a, className: 'bg-muted text-foreground border-transparent' };
+  }
+};
+
+const AuditLogTab: React.FC<AuditLogTabProps> = ({ scope = 'provider' }) => {
   const [entries, setEntries] = useState<AuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,9 +53,9 @@ const AuditLogTab: React.FC = () => {
     (async () => {
       const { data, error } = await supabase
         .from('phi_audit_log')
-        .select('id, occurred_at, action, table_name, actor_id, actor_role, patient_id, row_id')
+        .select('id, occurred_at, action, table_name, actor_id, actor_role, patient_id, row_id, metadata')
         .order('occurred_at', { ascending: false })
-        .limit(200);
+        .limit(scope === 'patient' ? 50 : 200);
       if (error) {
         toast.error('Failed to load audit log: ' + error.message);
       } else {
@@ -34,7 +63,7 @@ const AuditLogTab: React.FC = () => {
       }
       setLoading(false);
     })();
-  }, []);
+  }, [scope]);
 
   if (loading) return <LoadingSpinner size="lg" text="Loading audit trail..." />;
 
@@ -42,41 +71,61 @@ const AuditLogTab: React.FC = () => {
     return (
       <Card className="p-8 text-center text-muted-foreground">
         <ShieldAlert className="w-10 h-10 mx-auto mb-2 opacity-50" />
-        <p>No PHI access events recorded yet for your patients.</p>
+        <p>
+          {scope === 'patient'
+            ? 'No access to your data has been recorded yet.'
+            : 'No PHI access events recorded yet for your patients.'}
+        </p>
       </Card>
     );
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
-        Showing the 200 most recent PHI changes for your patients. All inserts, updates, and deletes are recorded.
+        {scope === 'patient'
+          ? 'Most recent changes made to your data. Creates, updates, and deletes are all logged.'
+          : 'Showing the 200 most recent PHI changes for your patients.'}
       </p>
-      <div className="overflow-x-auto rounded-lg border">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/40 text-left">
-            <tr>
-              <th className="p-2 font-medium">When</th>
-              <th className="p-2 font-medium">Action</th>
-              <th className="p-2 font-medium">Table</th>
-              <th className="p-2 font-medium">Actor role</th>
-              <th className="p-2 font-medium">Patient</th>
-              <th className="p-2 font-medium">Row</th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries.map((e) => (
-              <tr key={e.id} className="border-t">
-                <td className="p-2 whitespace-nowrap">{new Date(e.occurred_at).toLocaleString()}</td>
-                <td className="p-2">{e.action}</td>
-                <td className="p-2">{e.table_name}</td>
-                <td className="p-2">{e.actor_role ?? '—'}</td>
-                <td className="p-2 font-mono text-xs">{e.patient_id?.slice(0, 8) ?? '—'}</td>
-                <td className="p-2 font-mono text-xs">{e.row_id?.slice(0, 8) ?? '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="rounded-lg border overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/40 hover:bg-muted/40">
+              <TableHead>When</TableHead>
+              <TableHead>Action</TableHead>
+              <TableHead>Table</TableHead>
+              <TableHead>By</TableHead>
+              {scope === 'provider' && <TableHead>Patient</TableHead>}
+              <TableHead className="hidden md:table-cell">Details</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {entries.map((e) => {
+              const v = actionVariant(e.action);
+              const changed: string[] | undefined = e.metadata?.changed_columns;
+              return (
+                <TableRow key={e.id} className="even:bg-muted/20">
+                  <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
+                    {new Date(e.occurred_at).toLocaleString()}
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={v.className}>{v.label}</Badge>
+                  </TableCell>
+                  <TableCell className="font-mono text-xs">{e.table_name}</TableCell>
+                  <TableCell className="text-xs capitalize">{e.actor_role ?? '—'}</TableCell>
+                  {scope === 'provider' && (
+                    <TableCell className="font-mono text-xs">{e.patient_id?.slice(0, 8) ?? '—'}</TableCell>
+                  )}
+                  <TableCell className="hidden md:table-cell text-xs text-muted-foreground">
+                    {changed && changed.length > 0
+                      ? changed.slice(0, 4).join(', ') + (changed.length > 4 ? '…' : '')
+                      : '—'}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ import PageWrapper from "@/components/PageWrapper";
 import OnboardingFlow from "@/components/onboarding/OnboardingFlow";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { GenericPageSkeleton } from "@/components/ui/page-skeletons";
+import { useIdleLogout } from "@/hooks/useIdleLogout";
 
 import HomePage from "./pages/HomePage";
 import MoodTrackerPage from "./pages/MoodTrackerPage";
@@ -45,8 +46,12 @@ const queryClient = new QueryClient();
 const RouteFallback = () => <GenericPageSkeleton />;
 
 const AppContent = () => {
-  const { isAuthenticated, isGuest } = useAuth();
+  const { isAuthenticated, isGuest, isProvider } = useAuth();
   const { shouldShowOnboarding } = useOnboarding();
+
+  // HIPAA: auto sign-out provider after 30 minutes of inactivity,
+  // application-wide (not just on the dashboard).
+  useIdleLogout(isAuthenticated && isProvider);
 
   React.useEffect(() => {
     registerSW();

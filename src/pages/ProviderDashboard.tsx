@@ -25,7 +25,6 @@ const AuditLogTab = lazy(() => import('@/components/provider/tabs/AuditLogTab'))
 
 import { useProviderData } from '@/hooks/useProviderData';
 import { useProviderHandlers } from '@/hooks/useProviderHandlers';
-import { useIdleLogout } from '@/hooks/useIdleLogout';
 
 const sections = [
   { key: 'patients', label: 'Patients', icon: Users, color: 'bg-mental-blue' },
@@ -39,7 +38,7 @@ const sections = [
   { key: 'mindfulness', label: 'Mindfulness', icon: Brain, color: 'bg-mental-warm' },
   { key: 'audios', label: 'Audio Files', icon: Music, color: 'bg-mental-blue' },
   { key: 'resources', label: 'Resources', icon: FolderOpen, color: 'bg-mental-gray' },
-  { key: 'audit', label: 'Audit Log', icon: ShieldCheck, color: 'bg-mental-gray' },
+  { key: 'audit', label: 'Audit Log', icon: ShieldCheck, color: 'bg-sage-light', accent: true },
 ];
 
 const LoadingFallback = () => <GenericPageSkeleton />;
@@ -48,9 +47,6 @@ const ProviderDashboard = () => {
   const data = useProviderData();
   const handlers = useProviderHandlers(data);
   const [activeSection, setActiveSection] = useState<string | null>(null);
-
-  // HIPAA: auto sign-out provider after 30 minutes of inactivity.
-  useIdleLogout(true);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -145,7 +141,7 @@ const ProviderDashboard = () => {
                   <button
                     key={section.key}
                     onClick={() => setActiveSection(section.key)}
-                    className="opacity-0 animate-fade-in-up p-4 rounded-xl border bg-card shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 text-left min-h-[80px] flex flex-col justify-between"
+                    className={`opacity-0 animate-fade-in-up p-4 rounded-xl border bg-card shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 text-left min-h-[80px] flex flex-col justify-between ${(section as any).accent ? 'ring-1 ring-primary/30' : ''}`}
                     style={{ animationDelay: `${100 + i * 60}ms`, animationFillMode: 'forwards' }}
                   >
                     <div className={`w-9 h-9 rounded-lg ${section.color} flex items-center justify-center mb-2`}>
