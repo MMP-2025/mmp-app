@@ -40,12 +40,7 @@ export function usePatientNotifications() {
   const markAsRead = async (notificationId: string) => {
     try {
       const { error } = await supabase
-        .from('notifications')
-        .update({ 
-          status: 'read',
-          read_at: new Date().toISOString() 
-        })
-        .eq('id', notificationId);
+        .rpc('mark_notification_read', { _notification_id: notificationId });
 
       if (error) throw error;
       await fetchNotifications();
