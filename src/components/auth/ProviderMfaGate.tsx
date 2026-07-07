@@ -36,7 +36,7 @@ const ProviderMfaGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
       if (!verified) {
         // Need to enroll. Clean up any unverified factors first.
-        const stale = factorsData?.totp?.find((f) => f.status === 'unverified');
+        const stale = factorsData?.totp?.find((f) => (f.status as string) === 'unverified');
         if (stale) await supabase.auth.mfa.unenroll({ factorId: stale.id });
         const { data: enrollData, error } = await supabase.auth.mfa.enroll({
           factorType: 'totp',
