@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { Upload, Trash2, Music } from 'lucide-react';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AudioFile {
   name: string;
@@ -16,30 +17,33 @@ interface AudioFile {
 }
 
 const AudioUploadManager = () => {
+  const { user } = useAuth();
   const [uploading, setUploading] = useState(false);
   const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
   const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     loadAudioFiles();
-  }, []);
+  }, [user?.id]);
 
   const loadAudioFiles = async () => {
+    if (!user?.id) { setLoading(false); return; }
     try {
       const { data, error } = await supabase.storage
         .from('meditation-audios')
-        .list();
+        .list(user.id);
 
       if (error) throw error;
 
       // Private bucket — sign URLs for playback.
       const files = await Promise.all(
         data.map(async (file) => {
+          const path = `${user.id}/${file.name}`;
           const { data: signed } = await supabase.storage
             .from('meditation-audios')
-            .createSignedUrl(file.name, 600);
+            .createSignedUrl(path, 600);
           return {
-            name: file.name,
+            name: path,
             url: signed?.signedUrl ?? '',
             size: file.metadata?.size || 0,
             created_at: file.created_at,
@@ -74,8 +78,8 @@ const AudioUploadManager = () => {
     setUploading(true);
 
     try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${file.name}`;
+      if (!user?.id) throw new Error('Not authenticated');
+      const fileName = `${user.id}/${Date.now()}-${file.name}`;
 
       const { error: uploadError } = await supabase.storage
         .from('meditation-audios')
