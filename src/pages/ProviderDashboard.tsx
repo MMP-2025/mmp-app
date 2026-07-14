@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GenericPageSkeleton } from '@/components/ui/page-skeletons';
 import { ErrorBoundary } from '@/components/provider/ErrorBoundary';
-import PatientInvitations from '@/components/provider/PatientInvitations';
+import PatientsTab from '@/components/provider/patients/PatientsTab';
 import { PageTransition, StaggeredList } from '@/components/ui/animated';
 import {
   Quote, FileText, HelpCircle, Wrench, Bell, Heart,
@@ -51,7 +51,7 @@ const ProviderDashboard = () => {
   const renderContent = () => {
     switch (activeSection) {
       case 'patients':
-        return <PatientInvitations />;
+        return <PatientsTab />;
       case 'notifications':
         return (
           <Suspense fallback={<LoadingFallback />}>

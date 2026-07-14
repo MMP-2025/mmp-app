@@ -1,7 +1,10 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { MessageSquare, BookOpen } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, CheckCircle2 } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import ShareJournalDialog from './ShareJournalDialog';
+import { useToastService } from '@/hooks/useToastService';
 
 interface JournalEntry {
   id: string;
@@ -10,13 +13,20 @@ interface JournalEntry {
   hasPrompt: boolean;
   prompt?: string;
   wordCount: number;
+  sharedWithProvider: boolean;
+  sharedAt?: Date;
 }
 
 interface JournalEntriesListProps {
   journalEntries: JournalEntry[];
+  onShareEntry?: (entryId: string) => Promise<void>;
 }
 
-const JournalEntriesList: React.FC<JournalEntriesListProps> = ({ journalEntries }) => {
+const JournalEntriesList: React.FC<JournalEntriesListProps> = ({ journalEntries, onShareEntry }) => {
+  const [pendingShareId, setPendingShareId] = React.useState<string | null>(null);
+  const [isSharing, setIsSharing] = React.useState(false);
+  const { showSuccess, showWarning } = useToastService();
+
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -25,6 +35,23 @@ const JournalEntriesList: React.FC<JournalEntriesListProps> = ({ journalEntries 
       hour: '2-digit',
       minute: '2-digit'
     }).format(date);
+  };
+
+  const formatShortDate = (date: Date) =>
+    new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
+
+  const handleConfirmShare = async () => {
+    if (!pendingShareId || !onShareEntry) return;
+    setIsSharing(true);
+    try {
+      await onShareEntry(pendingShareId);
+      showSuccess('Journal entry shared with your therapist');
+      setPendingShareId(null);
+    } catch (err: any) {
+      showWarning(err?.message || 'Could not share entry. Please try again.');
+    } finally {
+      setIsSharing(false);
+    }
   };
 
   return (
@@ -70,10 +97,44 @@ const JournalEntriesList: React.FC<JournalEntriesListProps> = ({ journalEntries 
               )}
               
               <p className="whitespace-pre-wrap text-sm text-foreground/80 leading-relaxed">{entry.content}</p>
+
+              {onShareEntry && (
+                <div className="mt-3 pt-3 border-t border-border flex items-center justify-between gap-2">
+                  {entry.sharedWithProvider ? (
+                    <div className="flex items-center gap-1.5 text-xs text-primary">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      <span>
+                        Shared with Therapist
+                        {entry.sharedAt ? ` · ${formatShortDate(entry.sharedAt)}` : ''}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">Private to you</span>
+                  )}
+                  {!entry.sharedWithProvider && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPendingShareId(entry.id)}
+                      className="text-xs"
+                    >
+                      <Share2 className="h-3.5 w-3.5 mr-1.5" />
+                      Share with Therapist
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
       )}
+
+      <ShareJournalDialog
+        open={!!pendingShareId}
+        onOpenChange={(open) => !open && setPendingShareId(null)}
+        onConfirm={handleConfirmShare}
+        isSharing={isSharing}
+      />
     </Card>
   );
 };

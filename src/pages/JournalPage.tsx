@@ -18,7 +18,7 @@ const JournalPage = () => {
   const [showGuestPrompt, setShowGuestPrompt] = useState(false);
   
   const { isGuest } = useAuth();
-  const { journalEntries, saveJournalEntry: saveEntry } = useJournalEntries();
+  const { journalEntries, saveJournalEntry: saveEntry, shareJournalEntry } = useJournalEntries();
   const { journalPrompts } = useJournalPromptData();
   const { trackJournalEntry, trackAction } = useAnalytics();
   const { showSuccess, showWarning, showInfo } = useToastService();
@@ -106,7 +106,7 @@ const JournalPage = () => {
         </div>
         
         <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}>
-          <JournalEntriesList journalEntries={journalEntries} />
+          <JournalEntriesList journalEntries={journalEntries} onShareEntry={shareJournalEntry} />
         </div>
         
         <GuestSavePrompt 
