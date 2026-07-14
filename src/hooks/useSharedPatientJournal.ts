@@ -20,8 +20,8 @@ export function useSharedPatientJournal(patientId: string | undefined) {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('journal_entries')
+      const { data, error } = await (supabase
+        .from('journal_entries') as any)
         .select('id, content, title, prompt_id, created_at, shared_at')
         .eq('user_id', patientId)
         .eq('shared_with_provider', true)
