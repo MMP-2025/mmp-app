@@ -9,6 +9,8 @@ interface JournalEntry {
   hasPrompt: boolean;
   prompt?: string;
   wordCount: number;
+  sharedWithProvider: boolean;
+  sharedAt?: Date;
 }
 
 export const useJournalEntries = () => {
@@ -39,7 +41,9 @@ export const useJournalEntries = () => {
           date: new Date(entry.created_at),
           hasPrompt: !!entry.prompt_id,
           prompt: entry.title !== entry.content ? entry.title : undefined,
-          wordCount: entry.content.trim().split(/\s+/).length
+          wordCount: entry.content.trim().split(/\s+/).length,
+          sharedWithProvider: !!(entry as any).shared_with_provider,
+          sharedAt: (entry as any).shared_at ? new Date((entry as any).shared_at) : undefined,
         }));
 
         setJournalEntries(formattedEntries);
@@ -84,7 +88,8 @@ export const useJournalEntries = () => {
         date: new Date(data.created_at),
         hasPrompt: !!prompt,
         prompt,
-        wordCount
+        wordCount,
+        sharedWithProvider: false,
       };
 
       setJournalEntries(prev => [newEntry, ...prev]);
@@ -94,9 +99,36 @@ export const useJournalEntries = () => {
     }
   }, [user]);
 
+  const shareJournalEntry = useCallback(async (entryId: string) => {
+    if (!user) throw new Error('You must be logged in to share journal entries');
+
+    const { data, error } = await supabase
+      .from('journal_entries')
+      .update({ shared_with_provider: true } as any)
+      .eq('id', entryId)
+      .eq('user_id', user.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    setJournalEntries(prev =>
+      prev.map(e =>
+        e.id === entryId
+          ? {
+              ...e,
+              sharedWithProvider: true,
+              sharedAt: (data as any)?.shared_at ? new Date((data as any).shared_at) : new Date(),
+            }
+          : e
+      )
+    );
+  }, [user]);
+
   return {
     journalEntries,
     loading,
-    saveJournalEntry
+    saveJournalEntry,
+    shareJournalEntry,
   };
 };
