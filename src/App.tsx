@@ -40,6 +40,7 @@ const SupportToolkitPage = lazy(() => import("./pages/SupportToolkitPage"));
 const CommunityPage = lazy(() => import("./pages/CommunityPage"));
 const ProviderDashboard = lazy(() => import("./pages/ProviderDashboard"));
 const PersonalizationPage = lazy(() => import("./pages/PersonalizationPage"));
+const ProviderPatientDetailPage = lazy(() => import("./pages/ProviderPatientDetailPage"));
 
 const queryClient = new QueryClient();
 
@@ -124,6 +125,13 @@ const AppContent = () => {
                 <ProtectedRoute requiredRole="provider">
                   <ProviderMfaGate>
                     <PageWrapper><ProviderDashboard /></PageWrapper>
+                  </ProviderMfaGate>
+                </ProtectedRoute>
+              } />
+              <Route path="/provider/patients/:id" element={
+                <ProtectedRoute requiredRole="provider">
+                  <ProviderMfaGate>
+                    <PageWrapper><ProviderPatientDetailPage /></PageWrapper>
                   </ProviderMfaGate>
                 </ProtectedRoute>
               } />
