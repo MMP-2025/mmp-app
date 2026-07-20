@@ -377,6 +377,8 @@ export type Database = {
           is_voice_entry: boolean | null
           mood: string | null
           prompt_id: string | null
+          shared_at: string | null
+          shared_with_provider: boolean
           tags: string[] | null
           title: string
           transcript: string | null
@@ -392,6 +394,8 @@ export type Database = {
           is_voice_entry?: boolean | null
           mood?: string | null
           prompt_id?: string | null
+          shared_at?: string | null
+          shared_with_provider?: boolean
           tags?: string[] | null
           title: string
           transcript?: string | null
@@ -407,6 +411,8 @@ export type Database = {
           is_voice_entry?: boolean | null
           mood?: string | null
           prompt_id?: string | null
+          shared_at?: string | null
+          shared_with_provider?: boolean
           tags?: string[] | null
           title?: string
           transcript?: string | null
