@@ -63,15 +63,15 @@ const OnboardingFlow: React.FC = () => {
         <p className="text-muted-foreground max-w-md mx-auto">
           {isGuest 
             ? "You're exploring as a guest. To save your progress, schedule a consultation with your provider."
-            : "Let's set you up for your mental wellness journey."}
+            : "This space is here to support the work you do with your therapist — it's not a replacement for care. Take a moment to look around at your own pace."}
         </p>
       </div>
       <div className="flex flex-col gap-3 max-w-sm mx-auto pt-4">
         <Button onClick={handleNext} size="lg" className="w-full rounded-xl">
-          Get Started <ArrowRight className="ml-2 h-4 w-4" />
+          Take a quick tour <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
         <Button onClick={handleSkip} variant="ghost" size="sm" className="text-muted-foreground">
-          Skip for now
+          Skip the tour
         </Button>
       </div>
     </div>,
@@ -80,14 +80,14 @@ const OnboardingFlow: React.FC = () => {
     <div key="how-it-works" className="space-y-6 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-merriweather font-bold text-foreground">How It Works</h2>
-        <p className="text-muted-foreground">Your provider connects with you through this app</p>
+        <p className="text-muted-foreground">A gentle companion between sessions</p>
       </div>
       <div className="grid gap-3 max-w-2xl mx-auto">
         {[
-          { icon: MessageCircle, title: "Provider Check-ins", desc: "Your provider sends personalized questions. You'll get notified and can respond instantly.", highlight: true },
-          { icon: Heart, title: "Mood & Journal Tracking", desc: "Track your emotions and journal your thoughts between sessions" },
-          { icon: Brain, title: "Mindfulness Tools", desc: "Guided breathing exercises and meditation to support your wellbeing" },
-          { icon: TrendingUp, title: "Progress Insights", desc: "See your wellness journey over time with personalized analytics" },
+          { icon: MessageCircle, title: "Check-ins from your therapist", desc: "If your therapist sends a reflection, it'll appear on your home screen. You can respond when you're ready — there's no pressure.", highlight: true },
+          { icon: Heart, title: "Mood & journaling", desc: "A private place to notice how you're feeling and jot down thoughts between sessions." },
+          { icon: Brain, title: "Grounding tools", desc: "Short breathing and mindfulness exercises for moments when you need them." },
+          { icon: TrendingUp, title: "Your own patterns", desc: "See gentle trends over time if you'd like to bring them into your next session." },
         ].map((item, i) => (
           <FeatureCard key={i} icon={item.icon} title={item.title} description={item.desc} highlight={item.highlight} delay={i * 80} />
         ))}
@@ -102,7 +102,7 @@ const OnboardingFlow: React.FC = () => {
     <div key="goals" className="space-y-6 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-merriweather font-bold text-foreground">Set Your Goals</h2>
-        <p className="text-muted-foreground">Choose what you'd like to focus on (optional)</p>
+        <p className="text-muted-foreground">Anything you'd like to focus on? Skip if you're not sure — you can change this anytime.</p>
       </div>
       <div className="grid gap-3 max-w-2xl mx-auto">
         {goals.map((goal, i) => {
@@ -141,20 +141,20 @@ const OnboardingFlow: React.FC = () => {
           <CheckCircle2 className="h-8 w-8 text-primary" />
         </div>
         <h2 className="text-2xl font-merriweather font-bold text-foreground">You're All Set!</h2>
-        <p className="text-muted-foreground">Here's how to get started</p>
+        <p className="text-muted-foreground">A few gentle ways to begin — whenever you're ready</p>
       </div>
       <div className="grid gap-3 max-w-2xl mx-auto">
         {[
-          { num: "1", title: "Check in with your mood", desc: "Start by logging how you're feeling right now" },
-          { num: "2", title: "Respond to your provider", desc: "Look for provider questions on your home screen" },
-          { num: "3", title: "Try a mindfulness exercise", desc: "Take 5 minutes to center yourself" },
+          { num: "1", title: "Notice how you're feeling", desc: "A quick mood check-in is a soft place to start." },
+          { num: "2", title: "Write a thought or two", desc: "Journaling is private by default — you choose if anything is shared with your therapist." },
+          { num: "3", title: "Try a grounding exercise", desc: "A few minutes of breathing when you have the time." },
         ].map((item, i) => (
           <QuickActionCard key={i} number={item.num} title={item.title} description={item.desc} delay={i * 100} />
         ))}
       </div>
       <div className="max-w-sm mx-auto pt-4">
         <Button onClick={handleComplete} className="w-full rounded-xl" size="lg">
-          Start Your Journey
+          Enter the app
         </Button>
       </div>
     </div>,
@@ -168,7 +168,14 @@ const OnboardingFlow: React.FC = () => {
             <CardTitle className="text-xs text-muted-foreground font-normal">
               Step {currentScreen + 1} of {totalScreens}
             </CardTitle>
-            <Button onClick={handleSkip} variant="ghost" size="icon" className="h-11 w-11">
+            <Button
+              onClick={handleSkip}
+              variant="ghost"
+              size="icon"
+              className="h-11 w-11"
+              aria-label="Skip onboarding tour"
+              title="Skip tour"
+            >
               <X className="h-4 w-4" />
             </Button>
           </div>

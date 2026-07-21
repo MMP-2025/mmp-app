@@ -70,10 +70,10 @@ const ProviderQuestionCard: React.FC = () => {
           </div>
           <div>
             <h3 className="font-merriweather font-semibold text-foreground mb-1">
-              Provider Check-in
+              No check-ins right now
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              No new questions from your provider. Check back later or explore the tools below.
+              If your therapist sends a reflection between sessions, it'll show up here. In the meantime, feel free to explore the tools below at your own pace.
             </p>
           </div>
         </div>
