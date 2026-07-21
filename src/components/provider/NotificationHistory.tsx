@@ -5,16 +5,18 @@ import { Badge } from '@/components/ui/badge';
 import { History, Trash2, XCircle, Users, User, Loader2, Clock, Check, Bell } from 'lucide-react';
 import { useProviderNotifications, type Notification } from '@/hooks/useProviderNotifications';
 import { useProviderPatients } from '@/hooks/useProviderPatients';
+import { computePatientLabels } from '@/lib/patient-display';
+import { useMemo } from 'react';
 import { format } from 'date-fns';
 
 const NotificationHistory: React.FC = () => {
   const { notifications, loading, cancelNotification, deleteNotification } = useProviderNotifications();
   const { patients } = useProviderPatients();
+  const labels = useMemo(() => computePatientLabels(patients), [patients]);
 
-  const getPatientName = (patientId: string | null) => {
+  const getPatientLabel = (patientId: string | null) => {
     if (!patientId) return 'All Patients';
-    const patient = patients.find(p => p.id === patientId);
-    return patient?.name || 'Unknown Patient';
+    return `Patient ${labels[patientId] || '—'}`;
   };
 
   const getStatusBadge = (status: Notification['status']) => {
@@ -97,7 +99,7 @@ const NotificationHistory: React.FC = () => {
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         {notification.patient_id ? <User className="h-3 w-3" /> : <Users className="h-3 w-3" />}
-                        {getPatientName(notification.patient_id)}
+                        {getPatientLabel(notification.patient_id)}
                       </span>
                       <span>
                         {notification.scheduled_at && notification.status === 'pending' 

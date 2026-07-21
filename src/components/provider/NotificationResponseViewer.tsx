@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MessageSquareReply, Loader2, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProviderPatients } from '@/hooks/useProviderPatients';
+import { computePatientLabels } from '@/lib/patient-display';
 import { format } from 'date-fns';
 
 interface NotificationResponse {
@@ -20,6 +21,7 @@ const NotificationResponseViewer: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { patients } = useProviderPatients();
+  const labels = useMemo(() => computePatientLabels(patients), [patients]);
 
   useEffect(() => {
     if (!user) return;
@@ -43,10 +45,8 @@ const NotificationResponseViewer: React.FC = () => {
     }
   };
 
-  const getPatientName = (patientId: string) => {
-    const patient = patients.find(p => p.id === patientId);
-    return patient?.name || 'Unknown Patient';
-  };
+  const getPatientLabel = (patientId: string) =>
+    `Patient ${labels[patientId] || '—'}`;
 
   if (loading) {
     return (
@@ -80,7 +80,7 @@ const NotificationResponseViewer: React.FC = () => {
                 <div className="flex items-center justify-between mb-1">
                   <span className="flex items-center gap-1 text-sm font-medium">
                     <User className="h-3 w-3" />
-                    {getPatientName(response.patient_id)}
+                    {getPatientLabel(response.patient_id)}
                   </span>
                   <span className="text-xs text-muted-foreground">
                     {format(new Date(response.responded_at), 'MMM d, h:mm a')}

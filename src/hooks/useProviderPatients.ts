@@ -5,7 +5,6 @@ import { useAuth } from '@/contexts/AuthContext';
 interface Patient {
   id: string;
   name: string;
-  email: string;
 }
 
 export function useProviderPatients() {
@@ -42,7 +41,7 @@ export function useProviderPatients() {
         const patientIds = relationships.map(r => r.patient_id);
         const { data: profiles, error: profError } = await supabase
           .from('profiles')
-          .select('id, name, email')
+          .select('id, name')
           .in('id', patientIds);
 
         if (profError) throw profError;
