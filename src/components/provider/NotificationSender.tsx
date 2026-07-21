@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,10 +10,12 @@ import { Label } from '@/components/ui/label';
 import { Send, Users, User, Clock, Calendar, Loader2, MessageSquare } from 'lucide-react';
 import { useProviderPatients } from '@/hooks/useProviderPatients';
 import { useProviderNotifications, type Notification } from '@/hooks/useProviderNotifications';
+import { computePatientLabels } from '@/lib/patient-display';
 
 const NotificationSender: React.FC = () => {
   const { patients, loading: patientsLoading } = useProviderPatients();
   const { sendNotification, sendBulkNotifications, sending } = useProviderNotifications();
+  const labels = useMemo(() => computePatientLabels(patients), [patients]);
 
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
@@ -229,7 +231,7 @@ const NotificationSender: React.FC = () => {
                 <SelectContent>
                   {patients.map(patient => (
                     <SelectItem key={patient.id} value={patient.id}>
-                      {patient.name} ({patient.email})
+                      Patient {labels[patient.id] || '—'}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -287,7 +289,7 @@ const NotificationSender: React.FC = () => {
                       htmlFor={`patient-${patient.id}`}
                       className="text-sm cursor-pointer flex-1"
                     >
-                      {patient.name} <span className="text-muted-foreground">({patient.email})</span>
+                      Patient {labels[patient.id] || '—'}
                     </label>
                   </div>
                 ))}
