@@ -86,8 +86,8 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'morning_mood_check',
         type: 'mood_check',
-        title: 'Good Morning!',
-        message: 'How are you feeling today? Take a moment to check in with yourself.',
+        title: 'Good morning',
+        message: 'If you have a moment, how are you feeling today? No pressure — only if it feels useful.',
         triggerConditions: { timeOfDay: '09:00' },
         enabled: true,
         priority: 'medium',
@@ -96,8 +96,8 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'afternoon_mindfulness',
         type: 'mindfulness_reminder',
-        title: 'Midday Mindfulness',
-        message: 'Take a few minutes for a breathing exercise to reset your afternoon.',
+        title: 'A pause, if you want one',
+        message: 'A short breathing exercise is here if it would feel supportive right now.',
         triggerConditions: { timeOfDay: '14:00' },
         enabled: userBehavior?.mostUsedFeatures.includes('mindfulness') ?? true,
         priority: 'low',
@@ -106,8 +106,8 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'evening_reflection',
         type: 'journal_prompt',
-        title: 'Evening Reflection',
-        message: 'What was meaningful about your day? Consider writing about it.',
+        title: 'Evening check-in',
+        message: 'If anything from today is worth sitting with, journaling is here whenever you\'re ready.',
         triggerConditions: { timeOfDay: '20:00' },
         enabled: true,
         priority: 'medium',
@@ -116,21 +116,21 @@ const SmartNotifications: React.FC = () => {
       {
         id: 'inactivity_gentle_nudge',
         type: 'mood_check',
-        title: 'We miss you!',
-        message: "It's been a while since your last check-in. How are you doing?",
+        title: 'Whenever you\'re ready',
+        message: "No pressure to check in — the app is here whenever it feels helpful.",
         triggerConditions: { inactivityPeriod: 72 },
         enabled: true,
-        priority: 'high',
+        priority: 'low',
         frequency: 'conditional'
       },
       {
         id: 'streak_celebration',
         type: 'achievement_celebration',
-        title: 'Amazing streak!',
-        message: "You're on a roll with your daily check-ins. Keep up the great work!",
+        title: 'A gentle acknowledgement',
+        message: "You\'ve been checking in regularly. However you use this app is entirely up to you — there\'s no streak to protect.",
         triggerConditions: { streakMilestone: 7 },
         enabled: true,
-        priority: 'high',
+        priority: 'low',
         frequency: 'conditional'
       }
     ];

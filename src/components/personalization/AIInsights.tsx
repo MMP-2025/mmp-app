@@ -30,25 +30,25 @@ const AIInsights: React.FC<AIInsightsProps> = ({
         insights.push({
           type: 'positive',
           icon: CheckCircle,
-          title: 'Strong Mental Health Trend',
-          description: 'Your mood has been consistently positive this week. Keep up the great work!',
-          recommendation: 'Continue your current practices and consider sharing your strategies in our community.'
+          title: 'A steadier week',
+          description: 'Your check-ins have felt more positive this week.',
+          recommendation: 'If it feels useful, notice what supported you — it can be worth mentioning in your next session.'
         });
       } else if (avgIntensity <= 4) {
         insights.push({
           type: 'concern',
           icon: AlertTriangle,
-          title: 'Mood Support Needed',
-          description: 'Your mood has been lower than usual this week.',
-          recommendation: 'Consider increasing mindfulness practice or reaching out to support resources.'
+          title: 'A harder stretch',
+          description: 'Your check-ins have felt lower than usual this week.',
+          recommendation: 'This is something worth sharing with your therapist. If you need immediate support, the Crisis Resources page is always available.'
         });
       } else {
         insights.push({
           type: 'neutral',
           icon: TrendingUp,
-          title: 'Steady Progress',
-          description: 'Your mood is showing stable patterns with room for improvement.',
-          recommendation: 'Try incorporating new wellness activities to boost your overall well-being.'
+          title: 'A mixed week',
+          description: 'Your mood has looked fairly steady, with some ups and downs.',
+          recommendation: 'No changes needed — these entries can be a helpful starting point for your next session.'
         });
       }
 
@@ -64,9 +64,9 @@ const AIInsights: React.FC<AIInsightsProps> = ({
         insights.push({
           type: 'insight',
           icon: Brain,
-          title: 'Pattern Recognition',
-          description: `${topFactor[0]} appears frequently in your mood entries this week.`,
-          recommendation: `Consider how ${topFactor[0]} impacts your well-being and develop strategies around it.`
+          title: 'Something you mentioned often',
+          description: `"${topFactor[0]}" came up in several entries this week.`,
+          recommendation: `You might reflect on what role "${topFactor[0]}" is playing right now — a therapist can help make sense of patterns like this.`
         });
       }
     }
@@ -77,17 +77,17 @@ const AIInsights: React.FC<AIInsightsProps> = ({
         insights.push({
           type: 'achievement',
           icon: Target,
-          title: 'High Engagement Achievement',
-          description: 'You\'re actively using multiple mental health tools!',
-          recommendation: 'Consider exploring advanced features like correlation tracking and detailed analytics.'
+          title: 'Regular self-reflection',
+          description: 'You\'ve been using a few different reflection tools recently.',
+          recommendation: 'Use whatever feels supportive — there\'s no goal to hit here.'
         });
       } else if (userBehavior.engagementLevel === 'low') {
         insights.push({
           type: 'suggestion',
           icon: Target,
-          title: 'Engagement Opportunity',
-          description: 'There are several features that could benefit your mental health journey.',
-          recommendation: 'Try exploring the journal or gratitude features to expand your wellness toolkit.'
+          title: 'Other tools are here if you want them',
+          description: 'Journaling and gratitude prompts are available whenever they feel useful.',
+          recommendation: 'There\'s no expectation to use every feature — this app is meant to support you between sessions, not add pressure.'
         });
       }
 
@@ -96,9 +96,9 @@ const AIInsights: React.FC<AIInsightsProps> = ({
         insights.push({
           type: 'insight',
           icon: Brain,
-          title: 'Night Owl Pattern',
-          description: 'You tend to be most active with mental health check-ins during evening hours.',
-          recommendation: 'Consider adding a morning mood check to balance your daily awareness.'
+          title: 'You tend to check in later in the day',
+          description: 'Most of your reflections happen in the evening.',
+          recommendation: 'Whatever time feels natural is the right time — there\'s no better or worse moment to check in.'
         });
       }
     }
@@ -157,10 +157,12 @@ const AIInsights: React.FC<AIInsightsProps> = ({
         <Brain className="h-5 w-5 text-mental-blue" />
         <h3 className="text-lg font-semibold" style={{
         color: '#737373'
-      }}>AI Insights</h3>
-        <Badge variant="outline" className="text-xs">Powered by your data</Badge>
+      }}>Reflection Prompts</h3>
+        <Badge variant="outline" className="text-xs">Based on your entries</Badge>
       </div>
-      
+      <p className="text-xs text-muted-foreground mb-4">
+        These are gentle observations based on what you\'ve logged — not clinical advice or a diagnosis. Your therapist is the best person to interpret what any pattern means for you.
+      </p>
       <div className="space-y-4">
         {insights.map((insight, index) => {
         const IconComponent = insight.icon;

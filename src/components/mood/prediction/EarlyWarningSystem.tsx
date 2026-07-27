@@ -38,10 +38,10 @@ const EarlyWarningSystem: React.FC<EarlyWarningSystemProps> = ({ moodHistory }) 
     const consecutiveLow = recent5Days.filter(entry => entry.intensity <= 4).length;
     if (consecutiveLow >= 3) {
       warnings.push({
-        type: 'Persistent Low Mood',
+        type: 'A stretch of lower days',
         severity: 'high',
-        message: `${consecutiveLow} consecutive days with mood intensity ≤ 4/10`,
-        action: 'Consider reaching out to a mental health professional'
+        message: `${consecutiveLow} days in a row with a lower mood rating (4 or below).`,
+        action: 'This may be worth bringing up with your therapist. If you\'re in crisis, the Crisis Resources page has immediate support options.'
       });
     }
 
@@ -51,10 +51,10 @@ const EarlyWarningSystem: React.FC<EarlyWarningSystemProps> = ({ moodHistory }) 
       const decline = intensities[0] - intensities[intensities.length - 1];
       if (decline >= 3) {
         warnings.push({
-          type: 'Rapid Mood Decline',
+          type: 'A noticeable dip',
           severity: 'medium',
-          message: `Mood intensity dropped ${decline} points in ${intensities.length} days`,
-          action: 'Focus on stress management and self-care activities'
+          message: `Your mood ratings have dropped ${decline} points over the last ${intensities.length} days.`,
+          action: 'A pattern like this can be a useful thing to share in your next session.'
         });
       }
     }
@@ -69,23 +69,23 @@ const EarlyWarningSystem: React.FC<EarlyWarningSystemProps> = ({ moodHistory }) 
   }
 
   return (
-    <Card className="p-6 bg-destructive/10 border-destructive/20">
+    <Card className="p-6 bg-mental-peach/20 border-border/50">
       <div className="flex items-center gap-2 mb-4">
-        <AlertTriangle className="h-5 w-5 text-destructive" />
-        <h3 className="text-lg font-semibold text-destructive">Early Warning System</h3>
+        <AlertTriangle className="h-5 w-5 text-muted-foreground" />
+        <h3 className="text-lg font-semibold text-foreground">Patterns to Notice</h3>
       </div>
+      <p className="text-xs text-muted-foreground mb-3">
+        These are observations from your own entries — not a diagnosis or a clinical assessment.
+      </p>
       <div className="space-y-3">
         {earlyWarnings.map((warning, index) => (
-          <div key={index} className="p-3 bg-white/80 rounded-md border border-destructive/20">
+          <div key={index} className="p-3 bg-card rounded-md border border-border/50">
             <div className="flex items-center justify-between mb-2">
-              <h4 className="font-medium text-destructive">{warning.type}</h4>
-              <Badge variant={warning.severity === 'high' ? 'destructive' : 'outline'}>
-                {warning.severity} priority
-              </Badge>
+              <h4 className="font-medium text-foreground">{warning.type}</h4>
             </div>
-            <p className="text-sm text-destructive mb-2">{warning.message}</p>
-            <p className="flex items-center text-xs font-medium text-destructive">
-              <Lightbulb className="h-4 w-4 mr-1.5 text-mental-blue" />
+            <p className="text-sm text-muted-foreground mb-2">{warning.message}</p>
+            <p className="flex items-center text-xs font-medium text-foreground">
+              <Lightbulb className="h-4 w-4 mr-1.5 text-mental-blue shrink-0" />
               {warning.action}
             </p>
           </div>
