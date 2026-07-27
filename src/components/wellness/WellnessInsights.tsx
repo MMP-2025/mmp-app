@@ -12,14 +12,14 @@ export const WellnessInsights: React.FC<WellnessInsightsProps> = ({ improvements
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {improvements.length > 0 && (
-        <Card className="p-4 bg-destructive/10">
+        <Card className="p-4 bg-mental-peach/20">
           <div className="flex items-center gap-2 mb-3">
-            <Lightbulb className="h-4 w-4 text-destructive" />
-            <h5 className="font-semibold text-destructive">Areas for Improvement</h5>
+            <Lightbulb className="h-4 w-4 text-muted-foreground" />
+            <h5 className="font-semibold text-foreground">Gentle Suggestions</h5>
           </div>
           <ul className="space-y-1">
             {improvements.map((improvement, index) => (
-              <li key={index} className="text-sm text-destructive">
+              <li key={index} className="text-sm text-muted-foreground">
                 • {improvement}
               </li>
             ))}
@@ -31,7 +31,7 @@ export const WellnessInsights: React.FC<WellnessInsightsProps> = ({ improvements
         <Card className="p-4 bg-mental-green/10">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp className="h-4 w-4 text-mental-green" />
-            <h5 className="font-semibold text-mental-green">Your Strengths</h5>
+            <h5 className="font-semibold text-mental-green">What\'s Going Well</h5>
           </div>
           <ul className="space-y-1">
             {strengths.map((strength, index) => (
