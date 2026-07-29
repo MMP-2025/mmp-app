@@ -16,7 +16,14 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string, role: UserRole, invitationToken?: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    name: string,
+    role: UserRole,
+    invitationToken?: string,
+    consents?: Array<{ consent_type: string; policy_version: string }>
+  ) => Promise<void>;
   loginAsGuest: () => void;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
@@ -191,7 +198,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (email: string, password: string, name: string, role: UserRole, invitationToken?: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    name: string,
+    role: UserRole,
+    invitationToken?: string,
+    consents?: Array<{ consent_type: string; policy_version: string }>
+  ) => {
     setLoading(true);
     try {
       // If registering as a patient, validate the invitation token
@@ -269,6 +283,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               patient_id: data.user.id
             })
             .eq('token', invitationToken);
+        }
+
+        // Record legal consents captured at signup (patients only).
+        // No PHI is stored — only consent_type + policy_version + timestamp.
+        if (role === 'patient' && consents && consents.length > 0) {
+          const rows = consents.map((c) => ({
+            user_id: data.user!.id,
+            consent_type: c.consent_type,
+            policy_version: c.policy_version,
+            accepted_at: new Date().toISOString(),
+          }));
+          const { error: consentError } = await supabase.from('user_consents').insert(rows);
+          if (consentError) {
+            console.error('Error recording user consents:', consentError);
+          }
         }
       }
     } catch (error) {
