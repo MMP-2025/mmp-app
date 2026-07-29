@@ -1110,6 +1110,33 @@ export type Database = {
           },
         ]
       }
+      user_consents: {
+        Row: {
+          accepted_at: string
+          consent_type: string
+          created_at: string
+          id: string
+          policy_version: string
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string
+          consent_type: string
+          created_at?: string
+          id?: string
+          policy_version: string
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string
+          consent_type?: string
+          created_at?: string
+          id?: string
+          policy_version?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_onboarding: {
         Row: {
           completed_at: string | null
