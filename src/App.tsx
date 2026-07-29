@@ -32,6 +32,9 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import GuestUpgradePrompt from "./components/auth/GuestUpgradePrompt";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import PrivacyPolicyPage from "./pages/legal/PrivacyPolicyPage";
+import NoticeOfPrivacyPracticesPage from "./pages/legal/NoticeOfPrivacyPracticesPage";
+import TermsOfServicePage from "./pages/legal/TermsOfServicePage";
 
 // Route-level code splitting for heavy / lower-traffic pages.
 // Cuts ~40% off the initial bundle and defers recharts/dashboards.
@@ -60,10 +63,19 @@ const AppContent = () => {
 
   // Public routes that must work regardless of auth state.
   const path = typeof window !== 'undefined' ? window.location.pathname : '/';
-  if (path === '/reset-password') {
+  const PUBLIC_PATHS = [
+    '/reset-password',
+    '/privacy-policy',
+    '/notice-of-privacy-practices',
+    '/terms-of-service',
+  ];
+  if (PUBLIC_PATHS.includes(path)) {
     return (
       <Routes>
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/notice-of-privacy-practices" element={<NoticeOfPrivacyPracticesPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
       </Routes>
     );
   }
@@ -137,6 +149,9 @@ const AppContent = () => {
               } />
               <Route path="/personalization" element={<PersonalizationPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/notice-of-privacy-practices" element={<NoticeOfPrivacyPracticesPage />} />
+              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>

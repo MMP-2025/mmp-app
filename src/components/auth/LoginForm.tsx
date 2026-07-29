@@ -10,6 +10,8 @@ import { Eye, EyeOff, Sparkles, Mail, KeyRound, MailCheck, ArrowLeft } from 'luc
 import InvitationValidation from './InvitationValidation';
 import { PasswordStrength } from './PasswordStrength';
 import logo from '@/assets/logo.png';
+import { Checkbox } from '@/components/ui/checkbox';
+import { LEGAL_DOCS, REQUIRED_SIGNUP_CONSENTS } from '@/lib/legal';
 
 interface ValidatedInvitation {
   token: string;
@@ -27,6 +29,8 @@ const LoginForm = () => {
   const [signupMode, setSignupMode] = useState<'choose' | 'code'>('choose');
   const [forgotMode, setForgotMode] = useState(false);
   const [signupComplete, setSignupComplete] = useState<string | null>(null);
+  const [agreedPrivacyTos, setAgreedPrivacyTos] = useState(false);
+  const [agreedNpp, setAgreedNpp] = useState(false);
 
   const { login, register, loginAsGuest, loading, resetPassword } = useAuth();
   const { toast } = useToast();
@@ -60,14 +64,29 @@ const LoginForm = () => {
       return;
     }
 
+    if (!agreedPrivacyTos || !agreedNpp) {
+      toast({
+        title: 'Please review the required documents',
+        description:
+          'You must acknowledge the Privacy Policy, Terms of Service, and Notice of Privacy Practices to create an account.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
+      const consents = REQUIRED_SIGNUP_CONSENTS.map((key) => ({
+        consent_type: key,
+        policy_version: LEGAL_DOCS[key].id,
+      }));
       await register(
         validatedInvitation.email,
         password,
         name,
         'patient' as UserRole,
-        validatedInvitation.token
+        validatedInvitation.token,
+        consents
       );
       setSignupComplete(validatedInvitation.email);
     } catch (error: any) {
@@ -395,9 +414,69 @@ const LoginForm = () => {
                   <PasswordStrength password={password} />
                 </div>
 
+                <div className="space-y-3 rounded-lg border border-border bg-accent/30 p-3">
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id="consent-privacy-tos"
+                      checked={agreedPrivacyTos}
+                      onCheckedChange={(v) => setAgreedPrivacyTos(v === true)}
+                      aria-required="true"
+                      className="mt-0.5"
+                    />
+                    <Label
+                      htmlFor="consent-privacy-tos"
+                      className="text-xs font-normal leading-relaxed text-foreground cursor-pointer"
+                    >
+                      I acknowledge that I have read and agree to the{' '}
+                      <a
+                        href={LEGAL_DOCS.privacy_policy.route}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        Privacy Policy
+                      </a>{' '}
+                      and{' '}
+                      <a
+                        href={LEGAL_DOCS.terms_of_service.route}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        Terms of Service
+                      </a>
+                      .
+                    </Label>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id="consent-npp"
+                      checked={agreedNpp}
+                      onCheckedChange={(v) => setAgreedNpp(v === true)}
+                      aria-required="true"
+                      className="mt-0.5"
+                    />
+                    <Label
+                      htmlFor="consent-npp"
+                      className="text-xs font-normal leading-relaxed text-foreground cursor-pointer"
+                    >
+                      I acknowledge that I have received and reviewed the{' '}
+                      <a
+                        href={LEGAL_DOCS.notice_of_privacy_practices.route}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        Notice of Privacy Practices
+                      </a>
+                      .
+                    </Label>
+                  </div>
+                </div>
+
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !agreedPrivacyTos || !agreedNpp}
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl h-11"
                 >
                   {isLoading ? 'Creating Account...' : 'Create Account'}
