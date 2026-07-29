@@ -414,9 +414,69 @@ const LoginForm = () => {
                   <PasswordStrength password={password} />
                 </div>
 
+                <div className="space-y-3 rounded-lg border border-border bg-accent/30 p-3">
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id="consent-privacy-tos"
+                      checked={agreedPrivacyTos}
+                      onCheckedChange={(v) => setAgreedPrivacyTos(v === true)}
+                      aria-required="true"
+                      className="mt-0.5"
+                    />
+                    <Label
+                      htmlFor="consent-privacy-tos"
+                      className="text-xs font-normal leading-relaxed text-foreground cursor-pointer"
+                    >
+                      I acknowledge that I have read and agree to the{' '}
+                      <a
+                        href={LEGAL_DOCS.privacy_policy.route}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        Privacy Policy
+                      </a>{' '}
+                      and{' '}
+                      <a
+                        href={LEGAL_DOCS.terms_of_service.route}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        Terms of Service
+                      </a>
+                      .
+                    </Label>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id="consent-npp"
+                      checked={agreedNpp}
+                      onCheckedChange={(v) => setAgreedNpp(v === true)}
+                      aria-required="true"
+                      className="mt-0.5"
+                    />
+                    <Label
+                      htmlFor="consent-npp"
+                      className="text-xs font-normal leading-relaxed text-foreground cursor-pointer"
+                    >
+                      I acknowledge that I have received and reviewed the{' '}
+                      <a
+                        href={LEGAL_DOCS.notice_of_privacy_practices.route}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        Notice of Privacy Practices
+                      </a>
+                      .
+                    </Label>
+                  </div>
+                </div>
+
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !agreedPrivacyTos || !agreedNpp}
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl h-11"
                 >
                   {isLoading ? 'Creating Account...' : 'Create Account'}
