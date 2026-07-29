@@ -10,6 +10,8 @@ import { Eye, EyeOff, Sparkles, Mail, KeyRound, MailCheck, ArrowLeft } from 'luc
 import InvitationValidation from './InvitationValidation';
 import { PasswordStrength } from './PasswordStrength';
 import logo from '@/assets/logo.png';
+import { Checkbox } from '@/components/ui/checkbox';
+import { LEGAL_DOCS, REQUIRED_SIGNUP_CONSENTS } from '@/lib/legal';
 
 interface ValidatedInvitation {
   token: string;
@@ -27,6 +29,8 @@ const LoginForm = () => {
   const [signupMode, setSignupMode] = useState<'choose' | 'code'>('choose');
   const [forgotMode, setForgotMode] = useState(false);
   const [signupComplete, setSignupComplete] = useState<string | null>(null);
+  const [agreedPrivacyTos, setAgreedPrivacyTos] = useState(false);
+  const [agreedNpp, setAgreedNpp] = useState(false);
 
   const { login, register, loginAsGuest, loading, resetPassword } = useAuth();
   const { toast } = useToast();
@@ -60,14 +64,29 @@ const LoginForm = () => {
       return;
     }
 
+    if (!agreedPrivacyTos || !agreedNpp) {
+      toast({
+        title: 'Please review the required documents',
+        description:
+          'You must acknowledge the Privacy Policy, Terms of Service, and Notice of Privacy Practices to create an account.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
+      const consents = REQUIRED_SIGNUP_CONSENTS.map((key) => ({
+        consent_type: key,
+        policy_version: LEGAL_DOCS[key].id,
+      }));
       await register(
         validatedInvitation.email,
         password,
         name,
         'patient' as UserRole,
-        validatedInvitation.token
+        validatedInvitation.token,
+        consents
       );
       setSignupComplete(validatedInvitation.email);
     } catch (error: any) {
