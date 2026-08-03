@@ -21,6 +21,8 @@ export const LEGAL_DOCS = {
 
 export const EFFECTIVE_DATE = '[Effective Date]';
 export const PRIVACY_CONTACT_EMAIL = '[Privacy Contact Email]';
+export const BUSINESS_MAILING_ADDRESS = '[Business Mailing Address]';
+export const PRACTICE_WEBSITE = 'https://makingmeaningpsychology.com';
 
 export type ConsentType = keyof typeof LEGAL_DOCS;
 
