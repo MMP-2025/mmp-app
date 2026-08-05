@@ -1,6 +1,6 @@
 import React from 'react';
 import LegalPageLayout from './LegalPageLayout';
-import { EFFECTIVE_DATE, PRIVACY_CONTACT_EMAIL } from '@/lib/legal';
+import { EFFECTIVE_DATE, PRIVACY_CONTACT_EMAIL, BUSINESS_MAILING_ADDRESS } from '@/lib/legal';
 
 const PrivacyPolicyPage: React.FC = () => (
   <LegalPageLayout title="Privacy Policy" version="privacy-v1.0" effectiveDate={EFFECTIVE_DATE}>
@@ -204,7 +204,7 @@ const PrivacyPolicyPage: React.FC = () => (
       <br />
       Website: <a href="https://makingmeaningpsychology.com">https://makingmeaningpsychology.com</a>
       <br />
-      Mailing Address: [Business Mailing Address]
+      Mailing Address: {BUSINESS_MAILING_ADDRESS}
     </p>
   </LegalPageLayout>
 );

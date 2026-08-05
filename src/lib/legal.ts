@@ -19,9 +19,9 @@ export const LEGAL_DOCS = {
   },
 } as const;
 
-export const EFFECTIVE_DATE = '[Effective Date]';
-export const PRIVACY_CONTACT_EMAIL = '[Privacy Contact Email]';
-export const BUSINESS_MAILING_ADDRESS = '[Business Mailing Address]';
+export const EFFECTIVE_DATE = '11/04/2024';
+export const PRIVACY_CONTACT_EMAIL = 'admin@makingmeaningpsychology.com';
+export const BUSINESS_MAILING_ADDRESS = '42 West 38th Street, Suite 704, New York, NY 10018';
 export const PRACTICE_WEBSITE = 'https://makingmeaningpsychology.com';
 
 export type ConsentType = keyof typeof LEGAL_DOCS;
