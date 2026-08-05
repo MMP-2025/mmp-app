@@ -1022,6 +1022,39 @@ export type Database = {
           },
         ]
       }
+      required_consents: {
+        Row: {
+          consent_type: string
+          created_at: string
+          id: string
+          is_current: boolean
+          policy_version: string
+          route: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          consent_type: string
+          created_at?: string
+          id?: string
+          is_current?: boolean
+          policy_version: string
+          route: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          consent_type?: string
+          created_at?: string
+          id?: string
+          is_current?: boolean
+          policy_version?: string
+          route?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       resources: {
         Row: {
           created_at: string
@@ -1116,7 +1149,9 @@ export type Database = {
           consent_type: string
           created_at: string
           id: string
+          ip_address: string | null
           policy_version: string
+          user_agent: string | null
           user_id: string
         }
         Insert: {
@@ -1124,7 +1159,9 @@ export type Database = {
           consent_type: string
           created_at?: string
           id?: string
+          ip_address?: string | null
           policy_version: string
+          user_agent?: string | null
           user_id: string
         }
         Update: {
@@ -1132,7 +1169,9 @@ export type Database = {
           consent_type?: string
           created_at?: string
           id?: string
+          ip_address?: string | null
           policy_version?: string
+          user_agent?: string | null
           user_id?: string
         }
         Relationships: []
@@ -1270,6 +1309,15 @@ export type Database = {
       mark_notification_read: {
         Args: { _notification_id: string }
         Returns: undefined
+      }
+      missing_consents: {
+        Args: never
+        Returns: {
+          consent_type: string
+          policy_version: string
+          route: string
+          title: string
+        }[]
       }
       validate_invitation: { Args: { p_token: string }; Returns: Json }
     }
