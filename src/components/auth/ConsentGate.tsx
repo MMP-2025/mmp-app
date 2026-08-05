@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Toaster } from '@/components/ui/toaster';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -56,6 +57,7 @@ const ConsentGate: React.FC<Props> = ({ children }) => {
 
   return (
     <div className="min-h-dvh flex items-center justify-center bg-background p-4">
+      <Toaster />
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-xl">Before you continue</CardTitle>
