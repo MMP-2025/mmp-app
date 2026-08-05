@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.reset-provider-mfa]
 verify_jwt = false
+
+[functions.record-consent]
+verify_jwt = true
