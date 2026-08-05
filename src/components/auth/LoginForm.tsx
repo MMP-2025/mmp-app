@@ -29,8 +29,8 @@ const LoginForm = () => {
   const [signupMode, setSignupMode] = useState<'choose' | 'code'>('choose');
   const [forgotMode, setForgotMode] = useState(false);
   const [signupComplete, setSignupComplete] = useState<string | null>(null);
-  const [agreedPrivacyTos, setAgreedPrivacyTos] = useState(false);
-  const [agreedNpp, setAgreedNpp] = useState(false);
+  const [consentChecks, setConsentChecks] = useState<Record<string, boolean>>({});
+  const allConsentsChecked = REQUIRED_SIGNUP_CONSENTS.every((key) => consentChecks[key]);
 
   const { login, register, loginAsGuest, loading, resetPassword } = useAuth();
   const { toast } = useToast();
@@ -64,7 +64,7 @@ const LoginForm = () => {
       return;
     }
 
-    if (!agreedPrivacyTos || !agreedNpp) {
+    if (!allConsentsChecked) {
       toast({
         title: 'Please review the required documents',
         description:
