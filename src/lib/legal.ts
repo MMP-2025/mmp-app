@@ -27,7 +27,7 @@ export const PRACTICE_WEBSITE = 'https://makingmeaningpsychology.com';
 export type ConsentType = keyof typeof LEGAL_DOCS;
 
 export const REQUIRED_SIGNUP_CONSENTS: ConsentType[] = [
-  'privacy_policy',
   'terms_of_service',
+  'privacy_policy',
   'notice_of_privacy_practices',
 ];

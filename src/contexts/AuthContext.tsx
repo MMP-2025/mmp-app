@@ -285,16 +285,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             .eq('token', invitationToken);
         }
 
-        // Record legal consents captured at signup (patients only).
-        // No PHI is stored — only consent_type + policy_version + timestamp.
-        if (role === 'patient' && consents && consents.length > 0) {
-          const rows = consents.map((c) => ({
-            user_id: data.user!.id,
-            consent_type: c.consent_type,
-            policy_version: c.policy_version,
-            accepted_at: new Date().toISOString(),
-          }));
-          const { error: consentError } = await supabase.from('user_consents').insert(rows);
+        // Legal consents are recorded server-side (record-consent edge function),
+        // which captures IP + user agent and validates the current document
+        // versions. If the signup session isn't active yet (email confirmation),
+        // ConsentGate collects and records them on first authenticated load.
+        if (consents && consents.length > 0 && data.session) {
+          const { error: consentError } = await supabase.functions.invoke('record-consent', {
+            body: { consent_types: consents.map((c) => c.consent_type) },
+          });
           if (consentError) {
             console.error('Error recording user consents:', consentError);
           }
