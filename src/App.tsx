@@ -13,6 +13,7 @@ import VoiceControl from "@/components/accessibility/VoiceControl";
 import LoginForm from "@/components/auth/LoginForm";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import ProviderMfaGate from "@/components/auth/ProviderMfaGate";
+import ConsentGate from "@/components/auth/ConsentGate";
 import { registerSW } from './utils/serviceWorker';
 import PageWrapper from "@/components/PageWrapper";
 import OnboardingFlow from "@/components/onboarding/OnboardingFlow";
@@ -85,10 +86,15 @@ const AppContent = () => {
   }
 
   if (shouldShowOnboarding) {
-    return <OnboardingFlow />;
+    return (
+      <ConsentGate>
+        <OnboardingFlow />
+      </ConsentGate>
+    );
   }
 
   return (
+    <ConsentGate>
     <UserPreferencesProvider>
       <AccessibilityProvider>
         <SidebarProvider>
@@ -159,6 +165,7 @@ const AppContent = () => {
         </SidebarProvider>
       </AccessibilityProvider>
     </UserPreferencesProvider>
+    </ConsentGate>
   );
 };
 
