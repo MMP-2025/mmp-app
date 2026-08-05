@@ -11,7 +11,13 @@ import InvitationValidation from './InvitationValidation';
 import { PasswordStrength } from './PasswordStrength';
 import logo from '@/assets/logo.png';
 import { Checkbox } from '@/components/ui/checkbox';
-import { LEGAL_DOCS, REQUIRED_SIGNUP_CONSENTS } from '@/lib/legal';
+import { LEGAL_DOCS, REQUIRED_SIGNUP_CONSENTS, ConsentType } from '@/lib/legal';
+
+const CONSENT_INTRO: Record<ConsentType, string> = {
+  terms_of_service: 'I agree to the',
+  privacy_policy: 'I acknowledge that I have read the',
+  notice_of_privacy_practices: 'I acknowledge that I have received the',
+};
 
 interface ValidatedInvitation {
   token: string;
@@ -414,69 +420,41 @@ const LoginForm = () => {
                   <PasswordStrength password={password} />
                 </div>
 
-                <div className="space-y-3 rounded-lg border border-border bg-accent/30 p-3">
-                  <div className="flex items-start gap-2">
-                    <Checkbox
-                      id="consent-privacy-tos"
-                      checked={agreedPrivacyTos}
-                      onCheckedChange={(v) => setAgreedPrivacyTos(v === true)}
-                      aria-required="true"
-                      className="mt-0.5"
-                    />
-                    <Label
-                      htmlFor="consent-privacy-tos"
-                      className="text-xs font-normal leading-relaxed text-foreground cursor-pointer"
-                    >
-                      I acknowledge that I have read and agree to the{' '}
-                      <a
-                        href={LEGAL_DOCS.privacy_policy.route}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline"
+                <fieldset className="space-y-3 rounded-lg border border-border bg-accent/30 p-3">
+                  <legend className="sr-only">Required legal acknowledgements</legend>
+                  {REQUIRED_SIGNUP_CONSENTS.map((key) => (
+                    <div key={key} className="flex items-start gap-2">
+                      <Checkbox
+                        id={`consent-${key}`}
+                        checked={!!consentChecks[key]}
+                        onCheckedChange={(v) =>
+                          setConsentChecks((prev) => ({ ...prev, [key]: v === true }))
+                        }
+                        aria-required="true"
+                        className="mt-0.5 min-h-5 min-w-5"
+                      />
+                      <Label
+                        htmlFor={`consent-${key}`}
+                        className="text-xs font-normal leading-relaxed text-foreground cursor-pointer"
                       >
-                        Privacy Policy
-                      </a>{' '}
-                      and{' '}
-                      <a
-                        href={LEGAL_DOCS.terms_of_service.route}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline"
-                      >
-                        Terms of Service
-                      </a>
-                      .
-                    </Label>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Checkbox
-                      id="consent-npp"
-                      checked={agreedNpp}
-                      onCheckedChange={(v) => setAgreedNpp(v === true)}
-                      aria-required="true"
-                      className="mt-0.5"
-                    />
-                    <Label
-                      htmlFor="consent-npp"
-                      className="text-xs font-normal leading-relaxed text-foreground cursor-pointer"
-                    >
-                      I acknowledge that I have received and reviewed the{' '}
-                      <a
-                        href={LEGAL_DOCS.notice_of_privacy_practices.route}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline"
-                      >
-                        Notice of Privacy Practices
-                      </a>
-                      .
-                    </Label>
-                  </div>
-                </div>
+                        {CONSENT_INTRO[key]}{' '}
+                        <a
+                          href={LEGAL_DOCS[key].route}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary underline"
+                        >
+                          {LEGAL_DOCS[key].title}
+                        </a>
+                        .
+                      </Label>
+                    </div>
+                  ))}
+                </fieldset>
 
                 <Button
                   type="submit"
-                  disabled={isLoading || !agreedPrivacyTos || !agreedNpp}
+                  disabled={isLoading || !allConsentsChecked}
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl h-11"
                 >
                   {isLoading ? 'Creating Account...' : 'Create Account'}
