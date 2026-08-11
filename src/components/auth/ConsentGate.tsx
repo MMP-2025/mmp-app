@@ -24,14 +24,70 @@ const ACKNOWLEDGEMENT_LABELS: Record<string, string> = {
  * database, so consent cannot be bypassed from the client.
  */
 const ConsentGate: React.FC<Props> = ({ children }) => {
-  const { isAuthenticated, isGuest } = useAuth();
+  const { isAuthenticated, isGuest, logout } = useAuth();
   const { toast } = useToast();
   const enabled = isAuthenticated && !isGuest;
-  const { missing, loading, accept } = useRequiredConsents(enabled);
+  const { missing, loading, error, refresh, accept } = useRequiredConsents(enabled);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [retrying, setRetrying] = useState(false);
 
-  if (!enabled || loading || missing.length === 0) {
+  if (!enabled) {
+    return <>{children}</>;
+  }
+
+  // Never mount authenticated (PHI-bearing) routes until consent status is known.
+  if (loading) {
+    return (
+      <div className="min-h-dvh flex flex-col items-center justify-center bg-background p-4 gap-3">
+        <div
+          className="h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-primary"
+          role="status"
+          aria-label="Loading"
+        />
+        <p className="text-sm text-muted-foreground">Loading…</p>
+      </div>
+    );
+  }
+
+  // Fail closed: if consent status cannot be verified, block access.
+  if (error) {
+    const handleRetry = async () => {
+      setRetrying(true);
+      try {
+        await refresh();
+      } finally {
+        setRetrying(false);
+      }
+    };
+    return (
+      <div className="min-h-dvh flex items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-xl">We couldn't verify your acknowledgements</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              For your privacy, we can't open the app until we've confirmed your legal
+              acknowledgements are up to date. Please check your connection and try again.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Button onClick={handleRetry} disabled={retrying} className="w-full h-11 rounded-xl">
+              {retrying ? 'Retrying…' : 'Try again'}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => logout()}
+              className="w-full h-11 rounded-xl"
+            >
+              Sign out
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (missing.length === 0) {
     return <>{children}</>;
   }
 
