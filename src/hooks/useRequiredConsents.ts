@@ -16,18 +16,23 @@ export interface MissingConsent {
 export const useRequiredConsents = (enabled: boolean) => {
   const [missing, setMissing] = useState<MissingConsent[]>([]);
   const [loading, setLoading] = useState(enabled);
+  const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     if (!enabled) {
       setMissing([]);
+      setError(null);
       setLoading(false);
       return;
     }
     setLoading(true);
+    setError(null);
     const { data, error } = await supabase.rpc('missing_consents');
     if (error) {
       console.error('Error checking required consents:', error);
+      // Fail closed: we cannot verify consent, so nothing may be rendered.
       setMissing([]);
+      setError(error.message || 'Unable to verify your acknowledgements.');
     } else {
       setMissing((data ?? []) as MissingConsent[]);
     }
@@ -49,5 +54,5 @@ export const useRequiredConsents = (enabled: boolean) => {
     [refresh]
   );
 
-  return { missing, loading, refresh, accept };
+  return { missing, loading, error, refresh, accept };
 };
