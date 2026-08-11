@@ -24,7 +24,7 @@ const ACKNOWLEDGEMENT_LABELS: Record<string, string> = {
  * database, so consent cannot be bypassed from the client.
  */
 const ConsentGate: React.FC<Props> = ({ children }) => {
-  const { isAuthenticated, isGuest } = useAuth();
+  const { isAuthenticated, isGuest, logout } = useAuth();
   const { toast } = useToast();
   const enabled = isAuthenticated && !isGuest;
   const { missing, loading, error, refresh, accept } = useRequiredConsents(enabled);
