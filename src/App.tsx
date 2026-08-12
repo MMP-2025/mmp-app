@@ -50,7 +50,9 @@ const queryClient = new QueryClient();
 
 const RouteFallback = () => <GenericPageSkeleton />;
 
-const AppContent = () => {
+// Mounted only after ConsentGate has successfully verified consent.
+// All authenticated app hooks live here so nothing queries before the gate resolves.
+const AuthenticatedApp = () => {
   const { isAuthenticated, isGuest, isProvider } = useAuth();
   const { shouldShowOnboarding } = useOnboarding();
 
@@ -58,43 +60,11 @@ const AppContent = () => {
   // application-wide (not just on the dashboard).
   useIdleLogout(isAuthenticated && isProvider);
 
-  React.useEffect(() => {
-    registerSW();
-  }, []);
-
-  // Public routes that must work regardless of auth state.
-  const path = typeof window !== 'undefined' ? window.location.pathname : '/';
-  const PUBLIC_PATHS = [
-    '/reset-password',
-    '/privacy-policy',
-    '/notice-of-privacy-practices',
-    '/terms-of-service',
-  ];
-  if (PUBLIC_PATHS.includes(path)) {
-    return (
-      <Routes>
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/notice-of-privacy-practices" element={<NoticeOfPrivacyPracticesPage />} />
-        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-      </Routes>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <LoginForm />;
-  }
-
   if (shouldShowOnboarding) {
-    return (
-      <ConsentGate>
-        <OnboardingFlow />
-      </ConsentGate>
-    );
+    return <OnboardingFlow />;
   }
 
   return (
-    <ConsentGate>
     <UserPreferencesProvider>
       <AccessibilityProvider>
         <SidebarProvider>
@@ -165,6 +135,42 @@ const AppContent = () => {
         </SidebarProvider>
       </AccessibilityProvider>
     </UserPreferencesProvider>
+  );
+};
+
+const AppContent = () => {
+  const { isAuthenticated } = useAuth();
+
+  React.useEffect(() => {
+    registerSW();
+  }, []);
+
+  // Public routes that must work regardless of auth state.
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const PUBLIC_PATHS = [
+    '/reset-password',
+    '/privacy-policy',
+    '/notice-of-privacy-practices',
+    '/terms-of-service',
+  ];
+  if (PUBLIC_PATHS.includes(path)) {
+    return (
+      <Routes>
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/notice-of-privacy-practices" element={<NoticeOfPrivacyPracticesPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+      </Routes>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <LoginForm />;
+  }
+
+  return (
+    <ConsentGate>
+      <AuthenticatedApp />
     </ConsentGate>
   );
 };
