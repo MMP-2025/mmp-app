@@ -116,16 +116,40 @@ const ProviderMfaGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
     }
   };
 
-  const recover = async () => {
-    if (!user?.email || !recoverPwd) return;
+  const sendRecoveryCode = async () => {
+    if (!user?.email) return;
     setBusy(true);
     try {
-      const { error } = await supabase.functions.invoke('reset-provider-mfa', {
-        body: { email: user.email, password: recoverPwd },
+      const { error } = await supabase.auth.signInWithOtp({
+        email: user.email,
+        options: { shouldCreateUser: false },
       });
       if (error) throw error;
+      setRecoverSent(true);
+      toast({ title: 'Code sent', description: 'Check your email for a 6-digit recovery code.' });
+    } catch (e: any) {
+      toast({ title: 'Could not send code', description: e.message, variant: 'destructive' });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const recover = async () => {
+    if (!user?.email || recoverCode.length !== 6) return;
+    setBusy(true);
+    try {
+      const { error: otpErr } = await supabase.auth.verifyOtp({
+        email: user.email,
+        token: recoverCode.trim(),
+        type: 'email',
+      });
+      if (otpErr) throw otpErr;
+
+      const { error } = await supabase.functions.invoke('reset-provider-mfa');
+      if (error) throw error;
       toast({ title: 'MFA reset', description: 'Sign in again to set up a new authenticator.' });
-      setRecoverPwd('');
+      setRecoverCode('');
+      setRecoverSent(false);
       await logout();
     } catch (e: any) {
       toast({ title: 'Reset failed', description: e.message, variant: 'destructive' });
