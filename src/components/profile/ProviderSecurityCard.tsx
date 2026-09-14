@@ -43,16 +43,40 @@ const ProviderSecurityCard: React.FC = () => {
     })();
   }, []);
 
-  const handleReset = async () => {
-    if (!user?.email || !pwd) return;
+  const sendCode = async () => {
+    if (!user?.email) return;
     setBusy(true);
     try {
-      const { error } = await supabase.functions.invoke('reset-provider-mfa', {
-        body: { email: user.email, password: pwd },
+      const { error } = await supabase.auth.signInWithOtp({
+        email: user.email,
+        options: { shouldCreateUser: false },
       });
       if (error) throw error;
+      setSent(true);
+      toast.success('Recovery code sent to your email.');
+    } catch (e: any) {
+      toast.error('Could not send code: ' + (e?.message ?? 'unknown error'));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleReset = async () => {
+    if (!user?.email || code.length !== 6) return;
+    setBusy(true);
+    try {
+      const { error: otpErr } = await supabase.auth.verifyOtp({
+        email: user.email,
+        token: code.trim(),
+        type: 'email',
+      });
+      if (otpErr) throw otpErr;
+
+      const { error } = await supabase.functions.invoke('reset-provider-mfa');
+      if (error) throw error;
       toast.success('Two-factor auth reset. Sign in again to set up a new authenticator.');
-      setPwd('');
+      setCode('');
+      setSent(false);
       setOpen(false);
       await logout();
     } catch (e: any) {
