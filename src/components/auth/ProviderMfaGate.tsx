@@ -25,7 +25,8 @@ const ProviderMfaGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [challengeFactorId, setChallengeFactorId] = useState<string | null>(null);
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
-  const [recoverPwd, setRecoverPwd] = useState('');
+  const [recoverSent, setRecoverSent] = useState(false);
+  const [recoverCode, setRecoverCode] = useState('');
 
   const evaluate = useCallback(async () => {
     setPhase('loading');
