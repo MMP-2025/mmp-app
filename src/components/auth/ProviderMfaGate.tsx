@@ -25,7 +25,8 @@ const ProviderMfaGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [challengeFactorId, setChallengeFactorId] = useState<string | null>(null);
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
-  const [recoverPwd, setRecoverPwd] = useState('');
+  const [recoverSent, setRecoverSent] = useState(false);
+  const [recoverCode, setRecoverCode] = useState('');
 
   const evaluate = useCallback(async () => {
     setPhase('loading');
@@ -115,16 +116,40 @@ const ProviderMfaGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
     }
   };
 
-  const recover = async () => {
-    if (!user?.email || !recoverPwd) return;
+  const sendRecoveryCode = async () => {
+    if (!user?.email) return;
     setBusy(true);
     try {
-      const { error } = await supabase.functions.invoke('reset-provider-mfa', {
-        body: { email: user.email, password: recoverPwd },
+      const { error } = await supabase.auth.signInWithOtp({
+        email: user.email,
+        options: { shouldCreateUser: false },
       });
       if (error) throw error;
+      setRecoverSent(true);
+      toast({ title: 'Code sent', description: 'Check your email for a 6-digit recovery code.' });
+    } catch (e: any) {
+      toast({ title: 'Could not send code', description: e.message, variant: 'destructive' });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const recover = async () => {
+    if (!user?.email || recoverCode.length !== 6) return;
+    setBusy(true);
+    try {
+      const { error: otpErr } = await supabase.auth.verifyOtp({
+        email: user.email,
+        token: recoverCode.trim(),
+        type: 'email',
+      });
+      if (otpErr) throw otpErr;
+
+      const { error } = await supabase.functions.invoke('reset-provider-mfa');
+      if (error) throw error;
       toast({ title: 'MFA reset', description: 'Sign in again to set up a new authenticator.' });
-      setRecoverPwd('');
+      setRecoverCode('');
+      setRecoverSent(false);
       await logout();
     } catch (e: any) {
       toast({ title: 'Reset failed', description: e.message, variant: 'destructive' });
@@ -220,21 +245,34 @@ const ProviderMfaGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
           {phase === 'recover' && (
             <>
               <p className="text-sm text-muted-foreground">
-                Re-enter your password to reset two-factor auth. After reset, you'll be signed out and asked to enroll a new authenticator on next sign in.
+                We'll email a 6-digit recovery code to your account address. Entering that code confirms it's you, then two-factor auth is reset and you'll be signed out to enroll a new authenticator.
               </p>
-              <div className="space-y-1.5">
-                <Label htmlFor="rec-pwd">Password</Label>
-                <Input
-                  id="rec-pwd"
-                  type="password"
-                  value={recoverPwd}
-                  onChange={(e) => setRecoverPwd(e.target.value)}
-                  autoComplete="current-password"
-                />
-              </div>
-              <Button onClick={recover} disabled={busy || !recoverPwd} className="w-full rounded-xl h-11" variant="destructive">
-                {busy ? 'Resetting…' : 'Reset two-factor auth'}
-              </Button>
+              {!recoverSent ? (
+                <Button onClick={sendRecoveryCode} disabled={busy} className="w-full rounded-xl h-11">
+                  {busy ? 'Sending…' : 'Email me a recovery code'}
+                </Button>
+              ) : (
+                <>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="rec-code">Recovery code</Label>
+                    <Input
+                      id="rec-code"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      value={recoverCode}
+                      onChange={(e) => setRecoverCode(e.target.value.replace(/\D/g, ''))}
+                      placeholder="123456"
+                    />
+                  </div>
+                  <Button onClick={recover} disabled={busy || recoverCode.length !== 6} className="w-full rounded-xl h-11" variant="destructive">
+                    {busy ? 'Resetting…' : 'Verify & reset two-factor auth'}
+                  </Button>
+                  <button type="button" onClick={sendRecoveryCode} disabled={busy} className="w-full text-center text-sm text-primary hover:underline">
+                    Resend code
+                  </button>
+                </>
+              )}
               <Button variant="ghost" onClick={() => setPhase('challenge')} className="w-full">Back</Button>
             </>
           )}
