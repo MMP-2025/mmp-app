@@ -26,7 +26,8 @@ import { Label } from '@/components/ui/label';
 const ProviderSecurityCard: React.FC = () => {
   const { user, logout } = useAuth();
   const [hasMfa, setHasMfa] = useState<boolean | null>(null);
-  const [pwd, setPwd] = useState('');
+  const [code, setCode] = useState('');
+  const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
 
