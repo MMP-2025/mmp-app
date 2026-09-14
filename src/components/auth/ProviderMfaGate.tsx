@@ -245,21 +245,34 @@ const ProviderMfaGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
           {phase === 'recover' && (
             <>
               <p className="text-sm text-muted-foreground">
-                Re-enter your password to reset two-factor auth. After reset, you'll be signed out and asked to enroll a new authenticator on next sign in.
+                We'll email a 6-digit recovery code to your account address. Entering that code confirms it's you, then two-factor auth is reset and you'll be signed out to enroll a new authenticator.
               </p>
-              <div className="space-y-1.5">
-                <Label htmlFor="rec-pwd">Password</Label>
-                <Input
-                  id="rec-pwd"
-                  type="password"
-                  value={recoverPwd}
-                  onChange={(e) => setRecoverPwd(e.target.value)}
-                  autoComplete="current-password"
-                />
-              </div>
-              <Button onClick={recover} disabled={busy || !recoverPwd} className="w-full rounded-xl h-11" variant="destructive">
-                {busy ? 'Resetting…' : 'Reset two-factor auth'}
-              </Button>
+              {!recoverSent ? (
+                <Button onClick={sendRecoveryCode} disabled={busy} className="w-full rounded-xl h-11">
+                  {busy ? 'Sending…' : 'Email me a recovery code'}
+                </Button>
+              ) : (
+                <>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="rec-code">Recovery code</Label>
+                    <Input
+                      id="rec-code"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      value={recoverCode}
+                      onChange={(e) => setRecoverCode(e.target.value.replace(/\D/g, ''))}
+                      placeholder="123456"
+                    />
+                  </div>
+                  <Button onClick={recover} disabled={busy || recoverCode.length !== 6} className="w-full rounded-xl h-11" variant="destructive">
+                    {busy ? 'Resetting…' : 'Verify & reset two-factor auth'}
+                  </Button>
+                  <button type="button" onClick={sendRecoveryCode} disabled={busy} className="w-full text-center text-sm text-primary hover:underline">
+                    Resend code
+                  </button>
+                </>
+              )}
               <Button variant="ghost" onClick={() => setPhase('challenge')} className="w-full">Back</Button>
             </>
           )}
