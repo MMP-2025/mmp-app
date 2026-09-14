@@ -112,7 +112,7 @@ const ProviderSecurityCard: React.FC = () => {
       </div>
 
       {hasMfa && (
-        <AlertDialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setPwd(''); }}>
+        <AlertDialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) { setCode(''); setSent(false); } }}>
           <AlertDialogTrigger asChild>
             <Button variant="outline" size="sm">Reset authenticator</Button>
           </AlertDialogTrigger>
@@ -120,28 +120,38 @@ const ProviderSecurityCard: React.FC = () => {
             <AlertDialogHeader>
               <AlertDialogTitle>Reset two-factor auth?</AlertDialogTitle>
               <AlertDialogDescription>
-                You'll be signed out and asked to enroll a new authenticator app on your next sign-in. Re-enter your password to confirm.
+                We'll email a 6-digit recovery code to your account address. After you confirm it, you'll be signed out and asked to enroll a new authenticator app on your next sign-in.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <div className="space-y-1.5">
-              <Label htmlFor="sec-pwd">Password</Label>
-              <Input
-                id="sec-pwd"
-                type="password"
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                autoComplete="current-password"
-              />
-            </div>
+            {sent && (
+              <div className="space-y-1.5">
+                <Label htmlFor="sec-code">Recovery code</Label>
+                <Input
+                  id="sec-code"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                  placeholder="123456"
+                />
+              </div>
+            )}
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={handleReset}
-                disabled={!pwd || busy}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              >
-                {busy ? 'Resetting…' : 'Reset & sign out'}
-              </AlertDialogAction>
+              {!sent ? (
+                <Button onClick={sendCode} disabled={busy}>
+                  {busy ? 'Sending…' : 'Email me a code'}
+                </Button>
+              ) : (
+                <AlertDialogAction
+                  onClick={handleReset}
+                  disabled={code.length !== 6 || busy}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  {busy ? 'Resetting…' : 'Verify & reset'}
+                </AlertDialogAction>
+              )}
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
