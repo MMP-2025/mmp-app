@@ -1295,6 +1295,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_invitation: { Args: { p_token: string }; Returns: Json }
       has_current_required_consents: {
         Args: { _user_id: string }
         Returns: boolean
