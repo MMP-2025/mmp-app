@@ -273,16 +273,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.error('Error creating user role:', roleError);
         }
 
-        // If patient registration with invitation, mark invitation as used
+        // If patient registration with invitation, accept it server-side. This
+        // is the only path that creates the provider-patient relationship: the
+        // database function binds the invitation to the signed-in patient's
+        // email and the inviting provider. If the session isn't active yet
+        // (email confirmation pending), stash the token and accept on the
+        // first authenticated load.
         if (role === 'patient' && invitationToken) {
-          await supabase
-            .from('patient_invitations')
-            .update({
-              status: 'used',
-              used_at: new Date().toISOString(),
-              patient_id: data.user.id
-            })
-            .eq('token', invitationToken);
+          if (data.session) {
+            const { error: acceptError } = await supabase
+              .rpc('accept_invitation', { p_token: invitationToken });
+            if (acceptError) {
+              console.error('Error accepting invitation:', acceptError);
+              localStorage.setItem(PENDING_INVITATION_KEY, invitationToken);
+            }
+          } else {
+            localStorage.setItem(PENDING_INVITATION_KEY, invitationToken);
+          }
         }
 
         // Legal consents are recorded server-side (record-consent edge function),
