@@ -1,56 +1,45 @@
+# Fix: provider-patient relationship creation
 
-## Recap — what's already shipped
+Goal: a relationship row can only exist because a specific patient accepted a specific pending invitation addressed to them.
 
-**Provider security**
-- Mandatory MFA (TOTP) for providers via `ProviderMfaGate`, gating `/provider-dashboard`.
-- MFA reset edge function (`reset-provider-mfa`).
-- Provider idle auto-logout after 30 minutes (`useIdleLogout` on dashboard).
-- Provider Audit Log tile reading `phi_audit_log`.
+## Approach
 
-**HIPAA-style audit + access**
-- `phi_audit_log` table (append-only, RLS: providers see their patients' trail, patients see their own).
-- `log_phi_change()` trigger on 12 PHI tables (INSERT/UPDATE/DELETE).
-- Signed-URL TTL for `resource-pdfs` / `meditation-audios` reduced 3600 → 600s.
+Use a **SECURITY DEFINER RPC** (`public.accept_invitation(p_token text)`), not an Edge Function and not a looser RLS rule.
 
-**Patient rights**
-- "Download my data" — client-side JSON export of 14 PHI tables.
-- "Delete my account" — `delete-account` edge function (validates caller JWT, wipes PHI, deletes auth user).
+Why: the check is pure database logic (token lookup, expiry, email match, insert) and must run atomically. An RPC keeps it server-authoritative without a new deployed function or service-role key. The relationship table then needs **no INSERT policy at all** for providers or patients — only the definer function writes to it.
 
-**Plus previously**: PWA, scheduled push, role isolation, invitation flow, dark mode, accessibility toolbar, onboarding.
+## Changes
 
----
+Database (one migration):
 
-## Unclosed loops to close
+1. Drop the current permissive INSERT policy on `public.patient_provider_relationships` that lets a provider insert any `patient_id`. No replacement INSERT policy — direct inserts from `authenticated` become impossible.
+2. Create `public.accept_invitation(p_token text)` (SECURITY DEFINER, `search_path = public`). It must, in a single transaction:
+   - Require `auth.uid()`; resolve the caller's email from `auth.jwt()`.
+   - Load the invitation by token where `status = 'pending'` and `expires_at > now()`.
+   - Require the invitation's `patient_email` to match the caller's verified email (case-insensitive). This is the binding to the patient; `provider_id` on the invitation is the binding to the provider.
+   - Insert `(patient_id = auth.uid(), provider_id = invitation.provider_id, status = 'active')`, `ON CONFLICT DO NOTHING` on the patient/provider pair.
+   - Mark the invitation `status = 'used'`, `used_at = now()`, `patient_id = auth.uid()`.
+   - Return a generic JSON result; never reveal whether a token exists vs. is expired beyond a single generic failure.
+3. `GRANT EXECUTE` on the new function to `authenticated` only (revoke from `anon`, `public`).
+4. Leave `is_patients_provider()`, consent policies, AAL2 enforcement, and all SELECT/UPDATE policies untouched.
 
-### Aesthetic / polish
-1. **Audit Log table is unstyled** — raw `<table>` with no zebra striping, no row hover, no empty-cell muted treatment. Doesn't match the rest of the dashboard (cards with shadow, peach/blue accents). Should use the shared `Table` shadcn component and add column-icon badges for action type (INSERT green, UPDATE blue, DELETE red).
-2. **MFA gate page** uses `bg-gradient-to-b from-sage-light via-background` — `sage-light` isn't in our token system; this renders inconsistently in dark mode. Standardize on existing peach/sage tokens used elsewhere.
-3. **DataExportCard buttons stack on mobile** but the parent "Privacy & Data" section now has two stacked cards (the existing description card + the new actions card) with no shared heading — feels duplicative. Merge into one card.
-4. **Audit Log tile** uses `bg-mental-gray` — same color as Resources/Toolkit. Should get a distinct treatment (e.g. subtle border accent) so providers notice it.
+Application (one file):
 
-### Usability
-5. **No surfaced indicator that MFA is active** in provider profile — once set up, providers can't see the status or proactively reset it from a settings screen (only via the "lost access" link during challenge). Add a Security section to the provider view of Profile.
-6. **"Download my data" gives no progress feedback** for users with lots of data — 14 sequential queries can take 5–10s. Show a per-table progress count.
-7. **"Delete my account" confirm uses `window.confirm`** — jarring, not styled, no typed-confirmation safeguard. Replace with shadcn `AlertDialog` requiring the user to type DELETE.
-8. **Idle logout fires with no warning** — provider loses unsaved work silently. Add a 60-second "You'll be signed out soon" toast with a "Stay signed in" button before signing out.
-9. **Audit log is provider-only in UI** — patients have RLS access to their own audit trail (per policy) but no UI to view it. Add a "Who's accessed my data" section under patient Privacy & Data.
-10. **Idle timeout only runs on the dashboard route** — if a provider opens a patient profile or content tab in a new tab, or navigates away mid-session, timer doesn't follow. Move `useIdleLogout` into a provider-scoped layout wrapper or `AuthProvider` gated by `isProvider`.
+- `src/contexts/AuthContext.tsx` — the signup path around lines 150 and 279 currently calls `validate_invitation` for pre-checks and then marks `patient_invitations` used directly. Replace the direct table update with a single `supabase.rpc('accept_invitation', { p_token: token })` call, made after the session exists (post sign-in / post email confirmation), so `auth.uid()` and the email claim are available. Keep `validate_invitation` for the pre-signup display check only.
 
-### Behind the scenes
-11. **`delete-account` deletes `user_roles` before `profiles`** but `profiles` has no FK cascade from auth.users — relying on edge function ordering. Add an explicit DB-side cascade (or a `handle_user_deletion` trigger on `auth.users` deletion) so accidental admin deletes don't leave orphan rows.
-12. **No DB-level migration for the storage-bucket TTL change** — TTL is enforced only at the call site; if any future code path forgets, links are 1-hour again. Consider a thin `getSignedResourceUrl()` helper and replace direct `createSignedUrl` calls.
-13. **`log_phi_change()` does not record `metadata`** (changed columns, before/after) — column exists but is always `{}`. For UPDATE, capture the column diff so the audit trail is actionable.
-14. **Provider SELECT reads of PHI are still un-audited** (item #9 from the prior backlog) — open.
-15. **No security memory document** — we've made many HIPAA-shaped decisions (intentional public-read on quotes/prompts/reminders, anon access to active content) that future scans will re-flag. Run `security--update_memory` with the accepted-risk inventory.
-16. **`useIdleLogout` listeners use `visibilitychange` on window** — should be `document` (the event only fires on document). Currently the visibility reset doesn't work.
-17. **Manual Supabase dashboard items still open** — leaked-password protection, OTP expiry ≤10 min, Postgres patch upgrade, BAA, `supabase_admin` default-ACL revoke. These remain user-side.
+## Preventing arbitrary provider inserts
 
----
+- No INSERT policy on the relationship table for `authenticated`.
+- Only the definer RPC inserts, and it always uses `auth.uid()` as `patient_id` — a provider calling it can never create a row for someone else.
+- `service_role` retains access for edge functions and admin paths.
 
-## Proposed scope for this pass
+## Targeted verification
 
-If you say go, I'll close items **1, 2, 3, 4, 5, 7, 8, 9, 10, 13, 15, 16** in one batch (aesthetic + UX + the two behind-the-scenes bug fixes — visibility listener and metadata diff capture, plus the security memory). 
+1. Provider attempts a direct insert of a relationship for an arbitrary patient → denied.
+2. Patient calls `accept_invitation` with a valid pending invitation sent to their email → active relationship created, invitation marked used.
+3. Same token replayed → no second row, generic failure.
+4. Patient calls it with a token addressed to a different email → denied, no row.
+5. Expired invitation → denied, no row.
+6. After a real acceptance, provider with AAL2 can read that patient's data; provider without AAL2 still cannot (confirms `is_patients_provider()` behaviour unchanged).
 
-Items **6, 11, 12, 14, 17** are bigger or out-of-scope (DB triggers on `auth.*`, helper refactor, server-side SELECT audit, dashboard toggles) — I'll leave them for a follow-up with their own discussion.
-
-Want me to proceed with that batch, narrow it, or expand it?
+Out of scope: relationship termination/revocation (tracked separately).
