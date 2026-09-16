@@ -63,15 +63,24 @@ const ProviderPatientDetailPage: React.FC = () => {
         </Link>
 
         <div className="flex items-center gap-3 flex-wrap justify-between">
-          <div className="w-12 h-12 rounded-full bg-mental-blue flex items-center justify-center font-semibold text-foreground/80 text-lg">
-            {label || '—'}
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-mental-blue flex items-center justify-center font-semibold text-foreground/80 text-lg">
+              {label || '—'}
+            </div>
+            <div>
+              <h1 className="text-xl font-merriweather font-bold text-foreground">
+                Patient {label || '—'}
+              </h1>
+              <p className="text-sm text-muted-foreground">Between-session overview</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-merriweather font-bold text-foreground">
-              Patient {label || '—'}
-            </h1>
-            <p className="text-sm text-muted-foreground">Between-session overview</p>
-          </div>
+          {id && (
+            <EndRelationshipButton
+              patientId={id}
+              label={label}
+              onEnded={() => navigate('/provider-dashboard')}
+            />
+          )}
         </div>
 
         <ClinicalBoundary />
