@@ -38,6 +38,11 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// Stores an invitation token when it can't be accepted yet (e.g. email
+// confirmation is still pending, so no authenticated session exists). It is
+// consumed by the first authenticated load below.
+const PENDING_INVITATION_KEY = 'pending_invitation_token';
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -136,6 +141,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         identifyUser(profile.id, profile.role);
         trackEvent('user_logged_in');
+      }
+
+      // Retry an invitation that couldn't be accepted during signup (email
+      // confirmation was pending, so there was no session yet). The RPC binds
+      // the token to the signed-in user's verified email; it is removed
+      // regardless of outcome so a stale token doesn't retry forever.
+      const pendingToken = localStorage.getItem(PENDING_INVITATION_KEY);
+      if (pendingToken && profile.role === 'patient') {
+        localStorage.removeItem(PENDING_INVITATION_KEY);
+        const { error: acceptError } = await supabase
+          .rpc('accept_invitation', { p_token: pendingToken });
+        if (acceptError) {
+          console.error('Error accepting pending invitation:', acceptError);
+        }
       }
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
@@ -286,6 +305,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             if (acceptError) {
               console.error('Error accepting invitation:', acceptError);
               localStorage.setItem(PENDING_INVITATION_KEY, invitationToken);
+            } else {
+              localStorage.removeItem(PENDING_INVITATION_KEY);
             }
           } else {
             localStorage.setItem(PENDING_INVITATION_KEY, invitationToken);
