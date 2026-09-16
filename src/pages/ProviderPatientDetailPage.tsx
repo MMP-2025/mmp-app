@@ -27,6 +27,7 @@ const formatDate = (d: Date) =>
 
 const ProviderPatientDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { patients, loading: patientsLoading } = useProviderPatients();
   const labels = useMemo(() => computePatientLabels(patients), [patients]);
   const { entries, loading: journalLoading } = useSharedPatientJournal(id);
@@ -61,7 +62,7 @@ const ProviderPatientDetailPage: React.FC = () => {
           <ArrowLeft className="h-4 w-4" /> Back to Dashboard
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap justify-between">
           <div className="w-12 h-12 rounded-full bg-mental-blue flex items-center justify-center font-semibold text-foreground/80 text-lg">
             {label || '—'}
           </div>
