@@ -1296,6 +1296,10 @@ export type Database = {
     }
     Functions: {
       accept_invitation: { Args: { p_token: string }; Returns: Json }
+      end_provider_relationship: {
+        Args: { p_relationship_id: string }
+        Returns: Json
+      }
       has_current_required_consents: {
         Args: { _user_id: string }
         Returns: boolean
