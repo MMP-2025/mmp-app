@@ -6,6 +6,8 @@ import { PageTransition } from '@/components/ui/animated';
 import { useProviderPatients } from '@/hooks/useProviderPatients';
 import { useSharedPatientJournal } from '@/hooks/useSharedPatientJournal';
 import { computePatientLabels } from '@/lib/patient-display';
+import EndRelationshipButton from '@/components/provider/patients/EndRelationshipButton';
+import { useNavigate } from 'react-router-dom';
 
 const ClinicalBoundary: React.FC = () => (
   <Card className="p-4 bg-sage-light/40 border-primary/20">
