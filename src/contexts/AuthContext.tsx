@@ -305,6 +305,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             if (acceptError) {
               console.error('Error accepting invitation:', acceptError);
               localStorage.setItem(PENDING_INVITATION_KEY, invitationToken);
+            } else {
+              localStorage.removeItem(PENDING_INVITATION_KEY);
             }
           } else {
             localStorage.setItem(PENDING_INVITATION_KEY, invitationToken);
