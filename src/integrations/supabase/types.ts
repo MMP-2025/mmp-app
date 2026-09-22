@@ -1315,6 +1315,7 @@ export type Database = {
         Args: { _patient_id: string; _provider_id: string }
         Returns: boolean
       }
+      is_verified_provider: { Args: { _user_id: string }; Returns: boolean }
       mark_notification_read: {
         Args: { _notification_id: string }
         Returns: undefined
