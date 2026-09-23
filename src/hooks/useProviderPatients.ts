@@ -22,31 +22,12 @@ export function useProviderPatients() {
     const fetchPatients = async () => {
       setLoading(true);
       try {
-        // Get all active patient relationships for this provider
-        const { data: relationships, error: relError } = await supabase
-          .from('patient_provider_relationships')
-          .select('patient_id')
-          .eq('provider_id', user.id)
-          .eq('status', 'active');
+        // Audited, provider-only read (logs to phi_audit_log server-side)
+        const { data, error } = await (supabase.rpc as any)('get_my_patients');
 
-        if (relError) throw relError;
+        if (error) throw error;
 
-        if (!relationships || relationships.length === 0) {
-          setPatients([]);
-          setLoading(false);
-          return;
-        }
-
-        // Get profile details for each patient
-        const patientIds = relationships.map(r => r.patient_id);
-        const { data: profiles, error: profError } = await supabase
-          .from('profiles')
-          .select('id, name')
-          .in('id', patientIds);
-
-        if (profError) throw profError;
-
-        setPatients(profiles || []);
+        setPatients((data as Patient[]) || []);
       } catch (error) {
         console.error('Error fetching patients:', error);
         setPatients([]);
