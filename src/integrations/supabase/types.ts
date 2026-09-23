@@ -1300,6 +1300,24 @@ export type Database = {
         Args: { p_relationship_id: string }
         Returns: Json
       }
+      get_my_patients: {
+        Args: never
+        Returns: {
+          id: string
+          name: string
+        }[]
+      }
+      get_shared_patient_journal: {
+        Args: { p_patient_id: string }
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          prompt_id: string
+          shared_at: string
+          title: string
+        }[]
+      }
       has_current_required_consents: {
         Args: { _user_id: string }
         Returns: boolean
