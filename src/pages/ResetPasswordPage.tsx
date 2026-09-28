@@ -17,16 +17,36 @@ const ResetPasswordPage: React.FC = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Supabase recovery link drops a session in the URL hash.
-    const hash = window.location.hash;
-    if (hash.includes('type=recovery') || hash.includes('access_token')) {
-      setReady(true);
-    } else {
-      // Still allow if a session exists from the link
-      supabase.auth.getSession().then(({ data }) => {
-        setReady(!!data.session);
-      });
-    }
+    // Only allow a password change from a genuine recovery session: the
+    // signed access token's `amr` claim must include method "recovery"
+    // (issued only via the emailed reset link), used within 1 hour.
+    const isRecoverySession = (accessToken?: string) => {
+      if (!accessToken) return false;
+      try {
+        const payload = JSON.parse(
+          atob(accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+        );
+        const amr: Array<{ method?: string; timestamp?: number }> = payload.amr || [];
+        const now = Math.floor(Date.now() / 1000);
+        return amr.some(
+          (m) => m.method === 'recovery' && typeof m.timestamp === 'number' && now - m.timestamp < 3600
+        );
+      } catch {
+        return false;
+      }
+    };
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY' || session) {
+        setReady(isRecoverySession(session?.access_token));
+      } else if (event === 'SIGNED_OUT') {
+        setReady(false);
+      }
+    });
+    supabase.auth.getSession().then(({ data }) => {
+      setReady(isRecoverySession(data.session?.access_token));
+    });
+    return () => sub.subscription.unsubscribe();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
