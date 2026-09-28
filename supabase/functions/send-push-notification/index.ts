@@ -186,23 +186,21 @@ Deno.serve(async (req) => {
 
       if (!subscriptions || subscriptions.length === 0) continue;
 
-      // Build the push payload
+      // Privacy: the push payload must never contain clinical content or PHI
+      // (provider-authored titles, message text, or response options). Push
+      // payloads transit third-party push services unencrypted at the
+      // application layer, so only non-clinical metadata is included.
+      // Patients fetch the full notification content from the database in-app.
       const pushPayload = JSON.stringify({
         notification_id: notification.id,
-        title: notification.title,
-        body: notification.message,
+        title: 'Making Meaning Psychology',
+        body: 'You have a new notification. Tap to view it in the app.',
         icon: '/icon-192.png',
         badge: '/icon-192.png',
         data: {
           notification_id: notification.id,
           action_url: notification.action_url || '/',
-          action_option_1: notification.action_option_1 || null,
-          action_option_2: notification.action_option_2 || null,
         },
-        actions: [
-          ...(notification.action_option_1 ? [{ action: 'option1', title: notification.action_option_1 }] : []),
-          ...(notification.action_option_2 ? [{ action: 'option2', title: notification.action_option_2 }] : []),
-        ],
       });
 
       // Send to each subscription
