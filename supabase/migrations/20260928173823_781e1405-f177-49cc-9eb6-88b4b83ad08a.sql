@@ -1,0 +1,18 @@
+CREATE OR REPLACE FUNCTION public.prevent_role_self_update()
+ RETURNS trigger
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO 'public'
+AS $function$
+BEGIN
+  -- If role is being changed, only allow if the caller is an admin
+  IF OLD.role IS DISTINCT FROM NEW.role THEN
+    IF NOT public.has_role(auth.uid(), 'admin'::app_role) THEN
+      RAISE EXCEPTION 'Role changes require admin privileges'
+        USING ERRCODE = '42501',
+              HINT = 'Only admins may change user roles.';
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$function$;
