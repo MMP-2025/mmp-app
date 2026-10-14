@@ -1300,6 +1300,16 @@ export type Database = {
         Args: { p_relationship_id: string }
         Returns: Json
       }
+      get_my_notification_responses: {
+        Args: { p_limit?: number }
+        Returns: {
+          id: string
+          notification_id: string
+          patient_id: string
+          responded_at: string
+          response: string
+        }[]
+      }
       get_my_patients: {
         Args: never
         Returns: {
