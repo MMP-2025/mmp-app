@@ -30,11 +30,10 @@ const NotificationResponseViewer: React.FC = () => {
 
   const fetchResponses = async () => {
     try {
-      const { data, error } = await supabase
-        .from('notification_responses')
-        .select('*')
-        .order('responded_at', { ascending: false })
-        .limit(50);
+      const { data, error } = await (supabase.rpc as any)(
+        'get_my_notification_responses',
+        { p_limit: 50 }
+      );
 
       if (error) throw error;
       setResponses((data || []) as unknown as NotificationResponse[]);
