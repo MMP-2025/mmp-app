@@ -1,0 +1,13 @@
+DROP POLICY IF EXISTS "Providers can view their patients' cbt sessions" ON public.cbt_sessions;
+DROP POLICY IF EXISTS "Providers can view their patients' crisis plans" ON public.crisis_plans;
+DROP POLICY IF EXISTS "Providers can view their patients' exposure goals" ON public.exposure_goals;
+DROP POLICY IF EXISTS "Providers can view their patients' exposure sessions" ON public.exposure_sessions;
+DROP POLICY IF EXISTS "Providers can view their patients' goals" ON public.goals;
+DROP POLICY IF EXISTS "Providers can view milestones for their patients' goals" ON public.goal_milestones;
+DROP POLICY IF EXISTS "Providers can view their patients' gratitude entries" ON public.gratitude_entries;
+DROP POLICY IF EXISTS "Providers can view their patients' habit logs" ON public.habit_logs;
+DROP POLICY IF EXISTS "Providers can view their patients' mindfulness sessions" ON public.mindfulness_sessions;
+DROP POLICY IF EXISTS "Providers can view their patients' mood entries" ON public.mood_entries;
+DROP POLICY IF EXISTS "Providers can view their patients' progress photos" ON public.progress_photos;
+DROP POLICY IF EXISTS "Providers can view their patients' wellness score history" ON public.wellness_score_history;
+DROP POLICY IF EXISTS "Providers can view their patients' progress photos" ON storage.objects;
