@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.mark_notification_read(uuid) FROM anon;
