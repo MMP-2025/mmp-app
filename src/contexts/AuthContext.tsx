@@ -31,7 +31,7 @@ interface AuthContextType {
   isPatient: boolean;
   isGuest: boolean;
   loading: boolean;
-  validateInvitation: (token: string) => Promise<{ valid: boolean; email?: string; providerName?: string }>;
+  validateInvitation: (token: string, email: string) => Promise<{ valid: boolean; providerName?: string }>;
   sendPatientInvitation: (patientEmail: string, patientName: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
 }
@@ -235,13 +235,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           throw new Error('Invitation token is required for patient registration');
         }
 
-        const invitationResult = await validateInvitation(invitationToken);
+        const invitationResult = await validateInvitation(invitationToken, email);
         if (!invitationResult.valid) {
-          throw new Error('Invalid or expired invitation token');
-        }
-
-        if (invitationResult.email !== email) {
-          throw new Error('Email does not match the invitation');
+          throw new Error('Invalid or expired invitation, or the email does not match');
         }
       }
 
