@@ -18,10 +18,10 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
   onBack 
 }) => {
   const [token, setToken] = useState('');
+  const [email, setEmail] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const [validationResult, setValidationResult] = useState<{
     valid: boolean;
-    email?: string;
     providerName?: string;
   } | null>(null);
   const { validateInvitation } = useAuth();
@@ -33,7 +33,6 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
     const urlToken = urlParams.get('invitation');
     if (urlToken) {
       setToken(urlToken);
-      handleValidateInvitation(urlToken);
     }
   }, []);
 
@@ -48,10 +47,19 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
       });
       return;
     }
+    const enteredEmail = email.trim();
+    if (!enteredEmail) {
+      toast({
+        title: "Missing Email",
+        description: "Please enter the email address your invitation was sent to.",
+        variant: "destructive"
+      });
+      return;
+    }
 
     setIsValidating(true);
     try {
-      const result = await validateInvitation(tokenToValidate);
+      const result = await validateInvitation(tokenToValidate, enteredEmail);
       setValidationResult(result);
       
       if (result.valid) {
@@ -59,11 +67,11 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
           title: "Invitation Valid",
           description: `Welcome! You can now create your account.`,
         });
-        onValidInvitation(tokenToValidate, result.email!);
+        onValidInvitation(tokenToValidate, enteredEmail);
       } else {
         toast({
           title: "Invalid Invitation",
-          description: "This invitation token is invalid or has expired.",
+          description: "This invitation is invalid or expired, or the email does not match.",
           variant: "destructive"
         });
       }
@@ -102,10 +110,22 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
                 className="bg-mental-gray"
               />
             </div>
+            <div>
+              <Label htmlFor="invitation-email">Email address</Label>
+              <Input
+                id="invitation-email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="The email your invitation was sent to"
+                className="bg-mental-gray"
+              />
+            </div>
             
             <Button
               onClick={() => handleValidateInvitation()}
-              disabled={isValidating || !token}
+              disabled={isValidating || !token || !email.trim()}
               className="w-full rounded-xl font-normal text-base bg-mental-peach text-mental-gray"
             >
               {isValidating ? 'Validating...' : 'Validate Invitation'}
@@ -126,7 +146,7 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
                     Invited by: {validationResult.providerName}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Email: {validationResult.email}
+                    Email: {email.trim()}
                   </p>
                 </div>
               </div>
@@ -138,7 +158,7 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
                     Invalid Invitation
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    This invitation token is invalid or has expired.
+                    This invitation is invalid or expired, or the email does not match.
                   </p>
                 </div>
               </div>
