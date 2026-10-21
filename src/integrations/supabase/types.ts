@@ -1357,7 +1357,10 @@ export type Database = {
           title: string
         }[]
       }
-      validate_invitation: { Args: { p_token: string }; Returns: Json }
+      validate_invitation: {
+        Args: { p_email: string; p_token: string }
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "admin" | "provider" | "patient" | "guest"
