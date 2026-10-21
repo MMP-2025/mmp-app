@@ -163,19 +163,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const validateInvitation = async (token: string) => {
+  const validateInvitation = async (token: string, email: string) => {
     try {
-      const { data, error } = await supabase
-        .rpc('validate_invitation', { p_token: token });
+      const { data, error } = await (supabase.rpc as any)(
+        'validate_invitation',
+        { p_token: token.trim(), p_email: email.trim() }
+      );
 
       if (error || !data) {
         return { valid: false };
       }
 
-      const result = data as { valid: boolean; patient_email: string; provider_name: string };
+      const result = data as { valid: boolean; provider_name?: string };
+      if (!result.valid) return { valid: false };
       return {
         valid: true,
-        email: result.patient_email,
         providerName: result.provider_name
       };
     } catch (error) {
