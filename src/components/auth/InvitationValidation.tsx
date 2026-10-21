@@ -161,6 +161,9 @@ const InvitationValidation: React.FC<InvitationValidationProps> = ({
                     This invitation is invalid or expired, or the email does not match.
                   </p>
                 </div>
+                <Button variant="outline" className="w-full" onClick={() => setValidationResult(null)}>
+                  Try again
+                </Button>
               </div>
             )}
           </div>
